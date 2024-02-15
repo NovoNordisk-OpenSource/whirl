@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://jubilant-adventure-yr95p3g.pages.github.io/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://jubilant-adventure-yr95p3g.pages.github.io/LICENSE.html</loc>
+    <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://jubilant-adventure-yr95p3g.pages.github.io/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://jubilant-adventure-yr95p3g.pages.github.io/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://jubilant-adventure-yr95p3g.pages.github.io/reference/hello.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://jubilant-adventure-yr95p3g.pages.github.io/reference/index.html</loc>
+    <loc>/reference/log_document.html</loc>
+  </url>
+  <url>
+    <loc>/reference/log_example.html</loc>
+  </url>
+  <url>
+    <loc>/reference/run_script.html</loc>
   </url>
 </urlset>
