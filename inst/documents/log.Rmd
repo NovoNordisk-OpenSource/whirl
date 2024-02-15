@@ -1,0 +1,67 @@
+---
+title: "`r params$title`"
+date: "`r Sys.Date()`"
+params:
+  title: 'dev'
+  script: 'dev'
+  strace: FALSE
+  renv: FALSE
+---
+
+```{r, include=FALSE}
+
+script <- params$script
+if (script == "dev") script <- whirl::log_example('prg1.R')
+
+root <- gsub(pattern = "^.+/|\\.R$", replacement = "", x = script)
+
+# Create clean R session
+
+p <- callr::r_session$new()
+
+# Attach strace to the process of the new session
+
+if (params$strace){
+ sprintf("strace -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
+        paste0(root,".strace"),
+        p$get_pid()) |>
+  print() |>
+  system(wait = FALSE) 
+}
+
+# Render script to md
+
+child <- p$run(
+  func = rmarkdown::render, 
+  args = list(
+    input = whirl::log_document("dummy.Rmd"),
+    params = list(script = script),
+    knit_root_dir = getwd(),
+    output_format = rmarkdown::md_document(variant = "markdown"),
+    output_file = paste0(root, ".md")
+  ),
+  package = TRUE
+  )
+
+# Cleanup
+
+p$finalize()
+p$close()
+```
+
+```{r, child=whirl::log_document('strace.Rmd'), eval=params$strace}
+```
+
+# Script
+
+```{r, child=child}
+```
+
+# Session info of logger
+
+```{r, echo=FALSE}
+sessionInfo()
+```
+
+```{r, child=whirl::log_document('renv.Rmd'), eval=params$renv}
+```
