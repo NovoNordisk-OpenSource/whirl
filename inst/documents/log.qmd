@@ -1,0 +1,95 @@
+---
+title: "`r params$title`"
+date: "`r Sys.Date()`"
+params:
+  title: 'dev'
+  script: 'dev'
+  strace: FALSE
+  renv: FALSE
+format:
+  html:
+    embed-resources: true
+---
+
+```{r, include=FALSE}
+
+script <- params$script
+if (script == "dev") script <- whirl::log_example('prg1.R')
+
+root <- gsub(pattern = "^.+/|\\.R$", replacement = "", x = script)
+
+# Create clean R session
+
+p <- callr::r_session$new()
+
+# Attach strace to the process of the new session
+
+if (params$strace == "yes"){
+ sprintf("strace -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
+        paste0(root,".strace"),
+        p$get_pid()) |>
+  print() |>
+  system(wait = FALSE)
+}
+
+#' Get Path of file
+#'
+#' @param pat file to find search 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+retrive_fpath <- function(pat){
+  list.files(
+    pattern = pat,
+    recursive = TRUE,
+    full.names = TRUE,
+    include.dirs = TRUE
+  )[[1]]
+}
+
+# Render script to md
+child <- p$run(
+  func = whirl::quarto_render_move,
+  args = list(
+    input = retrive_fpath("dummy.qmd"),
+    execute_params = list(script = script),
+    # knit_root_dir = getwd(),
+    output_format = "md",
+    output_file = paste0(root, ".md")
+  ),
+  package = TRUE
+  )
+
+# Cleanup
+
+p$finalize()
+p$close()
+```
+```{r, child = "strace.qmd"}
+
+```
+
+<!-- {{< include strace.qmd >}} -->
+
+# Script
+
+```{r, child = "dummy.md"}
+
+```
+
+
+<!-- {{< include dummy.md >}} -->
+
+# Session info of logger
+
+```{r, echo=FALSE}
+sessionInfo()
+```
+
+```{r, child="renv.qmd", eval=(params$renv=="yes")}
+```
+
+
+

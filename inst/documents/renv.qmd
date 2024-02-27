@@ -1,0 +1,18 @@
+# Renv status
+
+```{r}
+r <- renv::status()
+r$synchronized
+
+r1 <- r$library$Packages |> 
+  lapply(\(x) x[c("Package", "Version")] |> 
+           unlist() |> paste(collapse = "_")) |> 
+  unlist()
+
+r2 <- r$lockfile$Packages |> 
+  lapply(\(x) x[c("Package", "Version")] |> 
+           unlist() |> paste(collapse = "_")) |> 
+  unlist()
+
+setdiff(r1, r2)
+```

@@ -17,5 +17,5 @@ Config/testthat/edition: 3
 Imports: 
     callr,
     knitr,
-    renv,
-    rmarkdown
+    quarto,
+    renv
