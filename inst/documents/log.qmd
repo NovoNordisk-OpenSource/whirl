@@ -14,7 +14,7 @@ format:
 ```{r, include=FALSE}
 
 script <- params$script
-if ( script == "dev") script <- retrive_fpath("prg1.R")
+if ( script == "dev") script <- log_example("prg1.R")
 
 root <- gsub(pattern = "^.+/|\\.R$", replacement = "", x = script)
 
@@ -36,7 +36,7 @@ if (params$strace == "yes") {
 child <- p$run(
   func = whirl::quarto_render_move,
   args = list(
-    input = whirl::retrive_fpath("dummy.qmd"),
+    input = whirl::log_document("dummy.qmd"),
     execute_params = list(script = script),
     output_format = "md",
     output_file = paste0(root, ".md")

@@ -12,14 +12,14 @@ run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE) {
   output <- gsub(pattern = "\\.R$", replacement = "\\.html", x = script)
 
   x <- quarto_render_move(
-    input = retrive_fpath("log.qmd"),
+    input = log_document("log.qmd"),
     execute_params = list(title = title, script = script, strace = strace, renv = renv),
     output_file = basename(output),
     output_dir = dirname(output)
   )
 
   if (cleanup) {
-    list.files(path = dirname(retrive_fpath("log.qmd")), pattern = "\\.strace|\\.md", recursive = TRUE, full.names = TRUE) |>
+    list.files(path = dirname(log_document("log.qmd")), pattern = "\\.strace|\\.md", recursive = TRUE, full.names = TRUE) |>
       unlink(recursive = TRUE)
   }
 
@@ -40,31 +40,6 @@ log_document <- function(doc) {
 
 log_example <- function(doc) {
   system.file("examples", doc, package = "whirl")
-}
-
-#' Retrieve path of file
-#'
-#' @param pat `file` to search for.
-#'
-#' @return file path
-#' @export
-#'
-#' @examples
-#' retrive_fpath("dummy.qmd")
-retrive_fpath <- function(pat) {
-  tryCatch(
-    expr = {
-      list.files(
-        pattern = pat,
-        recursive = TRUE,
-        full.names = TRUE,
-        include.dirs = TRUE
-      )[[1]]
-    },
-    error = function(e) {
-      return(NULL)
-    }
-  )
 }
 
 #' `quarto::quarto_render()`, but output file is moved to `output_dir`
