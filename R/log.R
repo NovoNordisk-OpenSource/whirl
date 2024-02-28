@@ -6,21 +6,20 @@
 #' @param cleanup logical
 #' @export
 
-run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE){
-
+run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE) {
   title <- gsub(pattern = "^.*/", replacement = "", x = script)
   script <- normalizePath(script)
   output <- gsub(pattern = "\\.R$", replacement = "\\.html", x = script)
 
-  x <- whirl::quarto_render_move(
+  x <- quarto_render_move(
     input = retrive_fpath("log.qmd"),
     execute_params = list(title = title, script = script, strace = strace, renv = renv),
     output_file = basename(output),
     output_dir = dirname(output)
   )
 
-  if (cleanup){
-      list.files(path = dirname(retrive_fpath("log.qmd")), pattern = "\\.strace|\\.md", recursive = TRUE, full.names = TRUE) |>
+  if (cleanup) {
+    list.files(path = dirname(retrive_fpath("log.qmd")), pattern = "\\.strace|\\.md", recursive = TRUE, full.names = TRUE) |>
       unlink(recursive = TRUE)
   }
 
@@ -31,7 +30,7 @@ run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE){
 #' @param doc name
 #' @export
 
-log_document <- function(doc){
+log_document <- function(doc) {
   system.file("documents", doc, package = "whirl")
 }
 
@@ -39,25 +38,33 @@ log_document <- function(doc){
 #' @param doc name
 #' @export
 
-log_example <- function(doc){
+log_example <- function(doc) {
   system.file("examples", doc, package = "whirl")
 }
 
-#' Retrieve path of file from folder/subfolders
+#' Retrieve path of file
 #'
-#' @param pat - file to search for
+#' @param pat `file` to search for.
 #'
-#' @return
+#' @return file path
 #' @export
 #'
 #' @examples
-retrive_fpath <- function(pat){
-  list.files(
-    pattern = pat,
-    recursive = TRUE,
-    full.names = TRUE,
-    include.dirs = TRUE
-  )[[1]]
+#' retrive_fpath("dummy.qmd")
+retrive_fpath <- function(pat) {
+  tryCatch(
+    expr = {
+      list.files(
+        pattern = pat,
+        recursive = TRUE,
+        full.names = TRUE,
+        include.dirs = TRUE
+      )[[1]]
+    },
+    error = function(e) {
+      return(NULL)
+    }
+  )
 }
 
 #' `quarto::quarto_render()`, but output file is moved to `output_dir`
@@ -71,20 +78,22 @@ retrive_fpath <- function(pat){
 #' @param output_dir Path to the output directory.
 #' @param ... Other args passed to `quarto::quarto_render()`
 #' @export
-quarto_render_move <- function(
-    input,
-    output_file = NULL,
-    output_dir = NULL,
-    ...
-) {
+quarto_render_move <- function(input,
+                               output_file = NULL,
+                               output_dir = NULL,
+                               ...) {
   # https://github.com/jhelvy/jph/blob/master/R/quarto_render_move.R
   # Get all the input / output file names and paths
   x <- quarto::quarto_inspect(input)
   output_format <- names(x$formats)
   output <- x$formats[[output_format]]$pandoc$`output-file`
-  if (is.null(output_file)) { output_file <- output }
+  if (is.null(output_file)) {
+    output_file <- output
+  }
   input_dir <- dirname(input)
-  if (is.null(output_dir)) { output_dir <- input_dir }
+  if (is.null(output_dir)) {
+    output_dir <- input_dir
+  }
   output_path_from <- file.path(input_dir, output)
   output_path_to <- file.path(output_dir, output_file)
 
@@ -96,7 +105,9 @@ quarto_render_move <- function(
   if (input_dir != output_dir) {
 
     # Try to make the folder if it doesn't yet exist
-    if (!dir.exists(output_dir)) { dir.create(output_dir) }
+    if (!dir.exists(output_dir)) {
+      dir.create(output_dir)
+    }
 
     # Now move the output to the output_dir and remove the original output
     file.copy(
@@ -113,32 +124,32 @@ quarto_render_move <- function(
   }
 }
 
+# To avoid NOTEs the R CMD check
+utils::globalVariables(".data")
 #' Read STRACE file
 #'
-#' @param Path to the input strace file.
-#' @param strace_discards
+#' @param strace_discards characters to identify records to discard
+#' @param path Path to the .strace file
 #'
-#' @return
+#' @return A `tibble` with strace information.
 #' @export
 #'
-#' @examples
 #' @importFrom tibble `%>%`
-read_strace <- function(path,  strace_discards = c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys" , "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))
-) {
-
+#' @importFrom tidyr separate
+read_strace <- function(path, strace_discards = c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))) {
   all_strace <- readLines(path)
-  #browser()
+
   strace_filter <- grep("openat\\(AT_FDCWD|unlink\\(|chdir\\(", all_strace, value = TRUE)
   strace_filter <- grep("ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)", strace_filter, value = TRUE, invert = TRUE)
-  #data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '(\\sopenat\\(AT_FDCWD,\\s\\")|(unlink\\(\\")|(chdir\\(\\")',  into = c("time", "file"), fill = "right", remove = FALSE) %>%
-  data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"',  into = c("time", "type", "file"), fill = "right", extra = "merge", remove = TRUE) %>%
+  # data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '(\\sopenat\\(AT_FDCWD,\\s\\")|(unlink\\(\\")|(chdir\\(\\")',  into = c("time", "file"), fill = "right", remove = FALSE) %>%
+  data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"', into = c("time", "type", "file"), fill = "right", extra = "merge", remove = TRUE) %>%
     tidyr::separate(.data$file, sep = "\\)\\s*= ", into = c("file", "num"), remove = FALSE) %>%
     tidyr::separate(.data$file, sep = '\\", ', into = c("file", "what"), remove = FALSE, fill = "right") %>%
-    tidyr::separate(.data$what, sep = ', ', into = c("what", "access"), remove = FALSE, fill = "right") %>%
-    tidyr::separate(.data$num, sep = ' <', into = c("num", "duration"), remove = FALSE, fill = "right")
+    tidyr::separate(.data$what, sep = ", ", into = c("what", "access"), remove = FALSE, fill = "right") %>%
+    tidyr::separate(.data$num, sep = " <", into = c("num", "duration"), remove = FALSE, fill = "right")
 
   data_strace$entrynum <- seq_len(nrow(data_strace))
-  data_strace$file <- gsub('\\"', '', data_strace$file)
+  data_strace$file <- gsub('\\"', "", data_strace$file)
 
   relative_files <- data_strace[!grepl("^/", data_strace$file) & data_strace$type != "chdir", "entrynum"]
   chdirs <- c(0, data_strace[grepl("^/", data_strace$file) & data_strace$type == "chdir", "entrynum"])
@@ -180,6 +191,3 @@ read_strace <- function(path,  strace_discards = c("^/lib", "^/etc", "^/lib64", 
 
   return(data_strace[data_strace$type != "chdir", ])
 }
-
-
-
