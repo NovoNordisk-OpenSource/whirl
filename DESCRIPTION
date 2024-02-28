@@ -10,7 +10,7 @@ Description: Defines common standards, workflows, and actions for new R packages
 License: Apache License (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.2.0
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -18,4 +18,5 @@ Imports:
     callr,
     knitr,
     quarto,
-    renv
+    renv,
+    roxygen2

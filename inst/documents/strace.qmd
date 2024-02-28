@@ -4,7 +4,7 @@
 library(tidyverse)
 
 # Need to be rewritten!
-retrive_fpath(".strace") |>
+whirl::retrive_fpath(".strace") |>
   whirl::read_strace() |>
   tibble::as_tibble() 
   # dplyr::select(file, action) |>
