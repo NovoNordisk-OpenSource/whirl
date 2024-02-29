@@ -2,4 +2,8 @@
 
 export(log_document)
 export(log_example)
+export(quarto_render_move)
+export(read_strace)
 export(run_script)
+importFrom(tibble,`%>%`)
+importFrom(tidyr,separate)

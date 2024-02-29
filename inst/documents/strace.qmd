@@ -1,0 +1,12 @@
+# Read strace
+
+```{r}
+# Need to be rewritten!
+# whirl::retrive_fpath(".strace") |>
+#   whirl::read_strace() |>
+#   tibble::as_tibble() 
+  # dplyr::select(file, action) |>
+  # dplyr::filter(!grepl("^/scer/localprojstat|^~/.cache", file)) |> #Only to remove clutter for now
+  # dplyr::distinct() |>
+  # print(n = 200)
+```
