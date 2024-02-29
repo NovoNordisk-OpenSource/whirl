@@ -6,16 +6,23 @@
 #' @param cleanup logical
 #' @export
 
-run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE) {
+run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE, output_dir = NULL) {
   title <- gsub(pattern = "^.*/", replacement = "", x = script)
   script <- normalizePath(script)
   output <- gsub(pattern = "\\.R$", replacement = "\\.html", x = script)
+
+
+  if (is.null(output_dir)) {
+    output_dir_val <- dirname(output)
+  } else{
+    output_dir_val <- (normalizePath(output_dir))
+  }
 
   x <- quarto_render_move(
     input = log_document("log.qmd"),
     execute_params = list(title = title, script = script, strace = strace, renv = renv),
     output_file = basename(output),
-    output_dir = dirname(output)
+    output_dir = output_dir_val
   )
 
   if (cleanup) {
