@@ -22,6 +22,12 @@
     <loc>/reference/log_example.html</loc>
   </url>
   <url>
+    <loc>/reference/quarto_render_move.html</loc>
+  </url>
+  <url>
+    <loc>/reference/read_strace.html</loc>
+  </url>
+  <url>
     <loc>/reference/run_script.html</loc>
   </url>
 </urlset>
