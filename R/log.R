@@ -9,7 +9,7 @@
 run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE, output_dir = NULL) {
   title <- gsub(pattern = "^.*/", replacement = "", x = script)
   script <- normalizePath(script)
-  output <- gsub(pattern = "\\.R$", replacement = "\\.html", x = script)
+  output <- gsub(pattern = "\\.qmd$|\\.R$|\\.Rmd$", replacement = "\\.html", x = script)
 
 
   if (is.null(output_dir)) {
@@ -47,6 +47,30 @@ log_document <- function(doc) {
 
 log_example <- function(doc) {
   system.file("examples", doc, package = "whirl")
+}
+
+#' Retrieve path of file from folder/subfolders
+#'
+#' @param pat - file to search for
+#'
+#' @return A path to a file
+#' @export
+#'
+#' @examples
+#' retrieve_fpath("prog1.R")
+retrieve_fpath <- function(pat) {
+  tryCatch(
+    expr = {
+      list.files(
+        pattern = pat,
+        recursive = TRUE,
+        full.names = TRUE,
+        include.dirs = TRUE
+      )[[1]]
+    },
+    error = function(e)
+      e
+  )
 }
 
 #' `quarto::quarto_render()`, but output file is moved to `output_dir`
