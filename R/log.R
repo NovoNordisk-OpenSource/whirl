@@ -1,9 +1,12 @@
 #' Run script
 #' test with a single script
+#'
 #' @param script path
 #' @param strace logical
 #' @param renv logical
+#' @param output_dir path
 #' @param cleanup logical
+#'
 #' @export
 
 run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE, output_dir = NULL) {
@@ -51,25 +54,26 @@ log_example <- function(doc) {
 
 #' Retrieve path of file from folder/subfolders
 #'
-#' @param pat - file to search for
+#' @param in_file - file to search path for
 #'
 #' @return A path to a file
 #' @export
 #'
 #' @examples
-#' retrieve_fpath("prog1.R")
-retrieve_fpath <- function(pat) {
+#' retrieve_fpath("prg1.R")
+retrieve_fpath <- function(in_file) {
   tryCatch(
     expr = {
       list.files(
-        pattern = pat,
+        pattern = in_file,
         recursive = TRUE,
         full.names = TRUE,
         include.dirs = TRUE
-      )[[1]]
+      )[[1]] |> normalizePath(winslash = "/")
     },
-    error = function(e)
-      e
+    error = function(e){
+      stop(paste("File does not seem to exist: ", in_file))
+    }
   )
 }
 

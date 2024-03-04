@@ -4,11 +4,11 @@
 \alias{retrieve_fpath}
 \title{Retrieve path of file from folder/subfolders}
 \usage{
-retrieve_fpath(pat)
+retrieve_fpath(in_file)
 }
 \arguments{
-\item{pat}{\itemize{
-\item file to search for
+\item{in_file}{\itemize{
+\item file to search path for
 }}
 }
 \value{
@@ -18,5 +18,5 @@ A path to a file
 Retrieve path of file from folder/subfolders
 }
 \examples{
-retrieve_fpath("prog1.R")
+retrieve_fpath("prg1.R")
 }

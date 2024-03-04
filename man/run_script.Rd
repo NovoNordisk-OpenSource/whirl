@@ -21,6 +21,8 @@ run_script(
 \item{renv}{logical}
 
 \item{cleanup}{logical}
+
+\item{output_dir}{path}
 }
 \description{
 Run script
