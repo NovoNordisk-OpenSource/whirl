@@ -16,9 +16,6 @@ knitr::opts_chunk$set(
 knitr::spin_child(params$script)
 ```
 
-# Session info
-
-```{r, echo=FALSE}
-sessionInfo()
+```{r, child=system.file("documents/session.qmd", package = "whirl")}
 ```
 
