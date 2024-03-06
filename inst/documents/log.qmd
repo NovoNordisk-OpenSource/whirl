@@ -16,7 +16,7 @@ format:
 script <- params$script
 if ( script == "dev") script <- log_example("prg1.R")
 
-root <- gsub(pattern = "^.+/|\\.R$", replacement = "", x = script)
+root <- gsub(pattern = "^.+/|\\.R$|\\.qmd$|\\.Rmd$", replacement = "", x = script)
 
 # Create clean R session
 

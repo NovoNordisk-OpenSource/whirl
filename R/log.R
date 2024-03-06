@@ -1,21 +1,31 @@
 #' Run script
 #' test with a single script
+#'
 #' @param script path
 #' @param strace logical
 #' @param renv logical
+#' @param output_dir path
 #' @param cleanup logical
+#'
 #' @export
 
-run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE) {
+run_script <- function(script, strace = FALSE, renv = TRUE, cleanup = TRUE, output_dir = NULL) {
   title <- gsub(pattern = "^.*/", replacement = "", x = script)
   script <- normalizePath(script)
-  output <- gsub(pattern = "\\.R$", replacement = "\\.html", x = script)
+  output <- gsub(pattern = "\\.qmd$|\\.R$|\\.Rmd$", replacement = "\\.html", x = script)
+
+
+  if (is.null(output_dir)) {
+    output_dir_val <- dirname(output)
+  } else{
+    output_dir_val <- (normalizePath(output_dir))
+  }
 
   x <- quarto_render_move(
     input = log_document("log.qmd"),
     execute_params = list(title = title, script = script, strace = strace, renv = renv),
     output_file = basename(output),
-    output_dir = dirname(output)
+    output_dir = output_dir_val
   )
 
   if (cleanup) {
@@ -40,6 +50,31 @@ log_document <- function(doc) {
 
 log_example <- function(doc) {
   system.file("examples", doc, package = "whirl")
+}
+
+#' Retrieve path of file from folder/subfolders
+#'
+#' @param in_file - file to search path for
+#'
+#' @return A path to a file
+#' @export
+#'
+#' @examples
+#' retrieve_fpath("prg1.R")
+retrieve_fpath <- function(in_file) {
+  tryCatch(
+    expr = {
+      list.files(
+        pattern = in_file,
+        recursive = TRUE,
+        full.names = TRUE,
+        include.dirs = TRUE
+      )[[1]] |> normalizePath(winslash = "/")
+    },
+    error = function(e){
+      stop(paste("File does not seem to exist: ", in_file))
+    }
+  )
 }
 
 #' `quarto::quarto_render()`, but output file is moved to `output_dir`
