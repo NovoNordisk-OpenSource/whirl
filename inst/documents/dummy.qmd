@@ -12,8 +12,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=(grepl("\\.R$", params$script))}
 knitr::spin_child(params$script)
+```
+
+```{r, child = params$script, eval=(grepl("\\.qmd$", params$script))}
+
+```
+
+```{r, child = params$script, eval=(grepl("\\.Rmd$", params$script))}
+
 ```
 
 # Session info
