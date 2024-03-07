@@ -1,0 +1,88 @@
+# Session info
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  error = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE
+)
+```
+
+```{r}
+# Retrieve session info and add quarto info if not already there
+
+session_info <- sessioninfo::session_info()
+
+# TODO: Extend to also cover external and python below in methods.
+session_info[!names(session_info) %in% c("platform", "packages")] <- NULL
+
+if (is.null(session_info$platform$quarto)){
+
+  quarto_path <- Sys.getenv("QUARTO_PATH")
+  if (!nzchar(quarto_path)) quarto_path <- unname(Sys.which("quarto"))
+
+  if (nzchar(quarto_path)){
+    quarto_version <- system2(quarto_path, "--version", stdout = TRUE)
+
+    session_info$platform$quarto <- paste(quarto_version, "@", normalizePath(quarto_path, winslash = "/"))
+  }
+}
+```
+
+```{r}
+# Knit print methods to print session_info output nicely
+
+## General printing of all components of session info
+
+knit_print <- knitr::knit_print
+
+  knit_print.session_info <- function(x, ...){
+  
+    x |>
+      lapply(knitr::knit_print)
+}
+
+## Print platform info in a simple table
+  
+knit_print.platform_info <- function(x, ...){
+  
+  data.frame(
+    Setting = names(x),
+    Value = x |>
+      lapply(paste0, collapse = ", ") |>
+      unlist() |>
+      unname()
+  ) |>
+    knitr::kable(caption = "Platform") |>
+    knitr::knit_print()
+  
+}
+
+# Print only selected package information in a table
+
+knit_print.packages_info <- function(x, ...){
+  
+  data.frame(
+    Package = x$package,
+    Version = x$loadedversion,
+    `Date (UTC)` = x$date,
+    Source = x$source, 
+    check.names = FALSE
+    ) |> 
+    knitr::kable(caption = "Packages") |> 
+    knitr::knit_print()
+  
+}
+
+# Register the individual methods
+
+registerS3method(genname = "knit_print", class = "session_info", method = knit_print.session_info)
+registerS3method(genname = "knit_print", class = "platform_info", method = knit_print.platform_info)
+registerS3method(genname = "knit_print", class = "packages_info", method = knit_print.packages_info)
+```
+
+```{r}
+# Print everything to the log
+session_info
+```

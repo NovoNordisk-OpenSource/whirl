@@ -38,7 +38,7 @@ child <- p$run(
   args = list(
     input = whirl::log_document("dummy.qmd"),
     execute_params = list(script = script),
-    output_format = "md",
+    output_format = "markdown", # Important to keep as markdown to get tables etc. formatted correctly
     output_file = paste0(root, ".md")
   ),
   package = TRUE
@@ -59,16 +59,4 @@ p$close()
 ```{r, child = "dummy.md"}
 
 ```
-
-
-# Session info of logger
-
-```{r, echo=FALSE}
-sessionInfo()
-```
-
-```{r, child="renv.qmd", eval=(params$renv=="yes")}
-```
-
-
 
