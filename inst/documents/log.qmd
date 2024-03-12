@@ -14,7 +14,7 @@ format:
 ```{r, include=FALSE}
 
 script <- params$script
-if ( script == "dev") script <- log_example("prg1.R")
+if ( script == "dev") script <- whirl::log_example("prg1.R")
 
 root <- gsub(pattern = "^.+/|\\.R$|\\.qmd$|\\.Rmd$", replacement = "", x = script)
 
@@ -43,12 +43,18 @@ child <- p$run(
   ),
   package = TRUE
 )
+```
+
+
+```{r, echo=FALSE}
+p$run(\() whirl::renv_callout())
 
 # Cleanup
 
 p$finalize()
 p$close()
 ```
+
 
 ```{r, child = "strace.qmd"}
 
