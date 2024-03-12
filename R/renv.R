@@ -44,8 +44,7 @@ knit_print.whirl_renv_status <- function(x, ...){
     title = renv_title,
     type = renv_note,
     collapse = if (!is.null(renv_message)) {TRUE} else {NULL}
-  ) |>
-    knitr::asis_output()
+  )
 
 }
 

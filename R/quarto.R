@@ -28,5 +28,6 @@ quarto_callout <- function(text = NULL, title = NULL,
     },
     ":::"
   ) |>
-    paste(collapse = "\n")
+    paste(collapse = "\n") |>
+    knitr::asis_output()
 }
