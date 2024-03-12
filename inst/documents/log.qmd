@@ -47,7 +47,7 @@ child <- p$run(
 
 
 ```{r, echo=FALSE}
-p$run(\() whirl::renv_callout())
+p$run(\() whirl::renv_status())
 
 # Cleanup
 

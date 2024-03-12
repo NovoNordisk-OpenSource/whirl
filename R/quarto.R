@@ -6,7 +6,7 @@
 #' @param title description
 #' @param type description
 #' @param collapse description
-#' @export
+#' @noRd
 
 quarto_callout <- function(text = NULL, title = NULL,
                            type = c("note", "warning", "important", "tip", "caution"),
@@ -18,17 +18,15 @@ quarto_callout <- function(text = NULL, title = NULL,
     sprintf("::: {.callout-%s}",
             ifelse(!is.null(collapse),
                    paste0(type, " collapse=",collapse),
-                   type
-            )
-    ),
+                   type)
+            ),
     if (!is.null(title)) {
       paste("##", title)
     },
-    if (!is.null(title)) {
+    if (!is.null(text)) {
       text
     },
     ":::"
   ) |>
-    paste(collapse = "\n") |>
-    knitr::asis_output()
+    paste(collapse = "\n")
 }
