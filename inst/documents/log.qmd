@@ -25,7 +25,7 @@ p <- callr::r_session$new()
 # Attach strace to the process of the new session
 
 if (params$strace == "yes") {
-  sprintf("strace -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
+  sprintf("strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
         paste0(root, ".strace"),
         p$get_pid()) |>
     print() |>
