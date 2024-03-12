@@ -2,11 +2,11 @@
 
 ```{r}
 # Need to be rewritten!
-# whirl::retrive_fpath(".strace") |>
-#   whirl::read_strace() |>
-#   tibble::as_tibble() 
-  # dplyr::select(file, action) |>
-  # dplyr::filter(!grepl("^/scer/localprojstat|^~/.cache", file)) |> #Only to remove clutter for now
-  # dplyr::distinct() |>
-  # print(n = 200)
+strace_discards <- c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt",
+                         "^/sys" , "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))
+    if (Sys.getenv("RENV_PATHS_ROOT") != "")
+      strace_discards <- c(strace_discards, paste0("^", Sys.getenv("RENV_PATHS_ROOT")))
+
+data_strace <- read_strace(whirl::retrieve_fpath(".strace"), strace_discards = strace_discards)
+file_actions <- refine_strace(data_strace)
 ```
