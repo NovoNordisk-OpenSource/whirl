@@ -24,5 +24,17 @@ knitr::spin_child(params$script)
 
 ```
 
-```{r, child=system.file("documents/session.qmd", package = "whirl")}
+# Session info
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  error = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE
+)
+```
+
+```{r}
+whirl::session_info()
 ```
