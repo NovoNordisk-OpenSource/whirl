@@ -15,9 +15,14 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
+    callr,
     cli,
+    knitr,
     quarto,
     renv,
+    rlang,
     sessioninfo,
     tibble,
-    tidyr
+    tidyr,
+    utils,
+    vctrs
