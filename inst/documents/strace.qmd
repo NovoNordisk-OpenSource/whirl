@@ -1,7 +1,6 @@
 # Read strace
 
 ```{r}
-getwd()
 # Need to be rewritten!
 strace_discards <- c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt",
                          "^/sys" , "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))
@@ -9,5 +8,5 @@ strace_discards <- c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt",
 data_strace <- whirl::read_strace("prgQmd.strace") |> dplyr::tibble()
 str(data_strace)
 file_actions <- whirl::refine_strace(data_strace)
-file_actions$input|> dplyr::tibble()|> head()|> dplyr::select(c("time", "type"))
+file_actions$input |> dplyr::tibble() |> head() |> dplyr::select(c("time", "type"))
 ```
