@@ -1,12 +1,68 @@
+---
+params:
+  script: 'dev'
+---
+
 # Read strace
 
-```{r}
-# Need to be rewritten!
-strace_discards <- c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt",
-                         "^/sys" , "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  error = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE
+)
+```
 
-data_strace <- whirl::read_strace("prgQmd.strace") |> dplyr::tibble()
-str(data_strace)
+
+```{r}
+root <- gsub(pattern = "^.+/|\\.R$|\\.qmd$|\\.Rmd$", replacement = "", x = script)
+strace_discards <- c("/lib", "/etc", "/lib64", "/usr", "/var", "/opt",
+                         "/sys" , "/proc", "/tmp", "/.$")
+data_strace <- whirl::read_strace(paste0(root, ".strace"), strace_discards = strace_discards) |> dplyr::tibble()
 file_actions <- whirl::refine_strace(data_strace)
-file_actions$input |> dplyr::tibble() |> head() |> dplyr::select(c("time", "type"))
+input_files <- file_actions$input |>
+    dplyr::select("file", "duration", "time")
+output_files <- file_actions$output |>
+    dplyr::select("file", "duration", "time")
+```
+
+
+```{r}
+# Knit print methods to print file actions output nicely
+
+# knit_print <- knitr::knit_print
+# 
+# knit_print.file_actions <- function(x, ...){
+#   
+#     x |>
+#       lapply(knitr::knit_print)
+# }
+# ## Print input files info in a simple table
+#   
+# knit_print.input_files <- function(x, ...){
+#   input_files  |>
+#     knitr::kable(caption = "Input Files") |>
+#     knitr::knit_print()
+#   
+# }
+# 
+# 
+# # Register the individual methods
+# registerS3method(genname = "knit_print", class = "file_actions", method = knit_print.file_actions)
+# registerS3method(genname = "knit_print", class = "input_files", method = knit_print.input_files)
+```
+
+```{r}
+# Print everything to the log
+  input_files  |>
+    knitr::kable(caption = "Input Files") |>
+    knitr::knit_print()
+```
+
+```{r}
+# Print everything to the log
+  output_files  |>
+    knitr::kable(caption = "Ouput Files") |>
+    knitr::knit_print()
 ```
