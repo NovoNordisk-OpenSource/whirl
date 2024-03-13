@@ -24,4 +24,5 @@ Imports:
     sessioninfo,
     tibble,
     tidyr,
-    utils
+    utils,
+    vctrs
