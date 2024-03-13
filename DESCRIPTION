@@ -20,6 +20,8 @@ Imports:
     knitr,
     quarto,
     renv,
+    rlang,
     sessioninfo,
     tibble,
-    tidyr
+    tidyr,
+    utils

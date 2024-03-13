@@ -3,7 +3,7 @@
 
 renv_status <- function(){
 
-  msg <- capture.output(status <- renv::status())
+  msg <- utils::capture.output(status <- renv::status())
 
   structure(
     list(message = msg, status = status),
@@ -13,7 +13,7 @@ renv_status <- function(){
 
 #' @export
 
-print.whirl_renv_status <- function(x){
+print.whirl_renv_status <- function(x, ...){
 
   x$message |>
     cat(sep = "\n")
@@ -61,8 +61,8 @@ renv_message_table <- function(renv_message){
   j <- i[[1]]
 
   c(
-    head(renv_message, j),
+    utils::head(renv_message, j),
     gsub(pattern = "[^|]", replacement = "-", x = renv_message[j]),
-    tail(renv_message, -j)
+    utils::tail(renv_message, -j)
   )
 }
