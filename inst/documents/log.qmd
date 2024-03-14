@@ -56,8 +56,8 @@ p$close()
 ```
 
 
-```{r, child = "strace.qmd", eval=(params$strace == "yes")}
-
+```{r, echo = FALSE, eval=(params$strace == "yes")}
+whirl::readstrace_info(paste0(root, ".strace"))
 ```
 
 # Script
