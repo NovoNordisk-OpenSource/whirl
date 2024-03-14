@@ -6,6 +6,9 @@
 \usage{
 readstrace_info(path)
 }
+\arguments{
+\item{path}{a character vector with path name}
+}
 \description{
 Retrieve session info and add quarto info if not already there
 }
