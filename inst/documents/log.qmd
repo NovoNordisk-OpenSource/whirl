@@ -56,7 +56,7 @@ p$close()
 ```
 
 
-```{r, child = "strace.qmd"}
+```{r, child = "strace.qmd", eval=(params$strace == "yes")}
 
 ```
 
