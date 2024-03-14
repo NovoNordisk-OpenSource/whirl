@@ -4,9 +4,10 @@
 #' @param script path
 #' @param strace logical
 #' @param renv logical
+#' @param out_dir description
 #' @export
 
-run_script <- function(script, strace = FALSE, renv = TRUE) {
+run_script <- function(script, strace = FALSE, renv = TRUE, out_dir = dirname(script)) {
 
   dummy_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/dummy.qmd", package = "whirl")), fileext = ".qmd")
   log_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/log.qmd", package = "whirl")), fileext = ".qmd")
@@ -54,7 +55,7 @@ run_script <- function(script, strace = FALSE, renv = TRUE) {
 
   p$close()
 
-  output <- gsub(pattern = "\\.[^\\.]*$", replacement = ".html", x = script)
+  output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".html", x = basename(script)))
 
   file.copy(
     from = log_html,

@@ -5,7 +5,7 @@
 \title{Run script
 test with a single script}
 \usage{
-run_script(script, strace = FALSE, renv = TRUE)
+run_script(script, strace = FALSE, renv = TRUE, out_dir = dirname(script))
 }
 \arguments{
 \item{script}{path}
@@ -13,6 +13,8 @@ run_script(script, strace = FALSE, renv = TRUE)
 \item{strace}{logical}
 
 \item{renv}{logical}
+
+\item{out_dir}{description}
 }
 \description{
 Run script
