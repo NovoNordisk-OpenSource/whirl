@@ -3,6 +3,7 @@
 #' Retrieve session info and add quarto info if not already there
 #'
 #' @param path a character vector with path name
+#' @import dplyr
 #'
 #' @export
 
