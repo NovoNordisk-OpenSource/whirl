@@ -3,7 +3,7 @@ title: "`r params$title`"
 date: "`r Sys.Date()`"
 params:
   title: 'dev'
-  script: 'dev'
+  script_md: 'dev'
   strace: FALSE
   renv: FALSE
 format:
@@ -11,58 +11,12 @@ format:
     embed-resources: true
 ---
 
-```{r, include=FALSE}
-
-script <- params$script
-if ( script == "dev") script <- whirl::log_example("prg1.R")
-
-root <- gsub(pattern = "^.+/|\\.R$|\\.qmd$|\\.Rmd$", replacement = "", x = script)
-
-# Create clean R session
-
-p <- callr::r_session$new()
-
-# Attach strace to the process of the new session
-
-if (params$strace == "yes") {
-  sprintf("strace -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
-        paste0(root, ".strace"),
-        p$get_pid()) |>
-    print() |>
-  system(wait = FALSE)
-}
-
-# Render script to md
-child <- p$run(
-  func = whirl::quarto_render_move,
-  args = list(
-    input = whirl::log_document("dummy.qmd"),
-    execute_params = list(script = script),
-    output_format = "markdown", # Important to keep as markdown to get tables etc. formatted correctly
-    output_file = paste0(root, ".md")
-  ),
-  package = TRUE
-)
-```
-
-
 ```{r, echo=FALSE}
-p$run(\() whirl::renv_status())
-
-# Cleanup
-
-p$finalize()
-p$close()
-```
-
-
-```{r, child = "strace.qmd"}
-
+whirl::renv_status()
 ```
 
 # Script
 
-```{r, child = "dummy.md"}
+```{r, child = params$script_md}
 
 ```
-
