@@ -7,7 +7,15 @@
 #' @param out_dir description
 #' @export
 
-run_script <- function(script, strace = FALSE, renv = TRUE, out_dir = dirname(script)) {
+run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirname(script)) {
+
+  stopifnot(file.exists(script))
+  stopifnot(tools::file_ext(script) %in% c("R", "qmd", "Rmd"))
+  stopifnot(is.logical(track_files))
+  stopifnot(is.logical(renv))
+  stopifnot(dir.exists(out_dir))
+
+  # TODO: Input validation
 
   dummy_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/dummy.qmd", package = "whirl")), fileext = ".qmd")
   log_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/log.qmd", package = "whirl")), fileext = ".qmd")
