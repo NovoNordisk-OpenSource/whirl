@@ -10,11 +10,11 @@ run_script(script, track_files = FALSE, renv = TRUE, out_dir = dirname(script))
 \arguments{
 \item{script}{path}
 
+\item{track_files}{logical}
+
 \item{renv}{logical}
 
 \item{out_dir}{description}
-
-\item{strace}{logical}
 }
 \description{
 Run script
