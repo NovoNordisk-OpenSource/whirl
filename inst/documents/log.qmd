@@ -46,11 +46,13 @@ child <- p$run(
 ```
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=(params$renv == "yes")}
 p$run(\() whirl::renv_status())
 
-# Cleanup
+```
 
+```{r}
+# Cleanup
 p$finalize()
 p$close()
 ```
@@ -62,7 +64,7 @@ whirl::readstrace_info(paste0(root, ".strace"))
 
 # Script
 
-```{r, child = "dummy.md"}
+```{r, child = "dummy.md", eval=file.exists("dummy.md")}
 
 ```
 
