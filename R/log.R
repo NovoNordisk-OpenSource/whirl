@@ -2,7 +2,7 @@
 #' test with a single script
 #'
 #' @param script path
-#' @param strace logical
+#' @param track_files logical
 #' @param renv logical
 #' @param out_dir description
 #' @export
