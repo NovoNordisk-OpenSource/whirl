@@ -15,10 +15,18 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
   stopifnot(is.logical(renv))
   stopifnot(dir.exists(out_dir))
 
-  # TODO: Input validation
+  # Create temp files for all documents.
+  # Note: Documents are copied from package folder to make sure nothing is evaluated there.
 
-  dummy_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/dummy.qmd", package = "whirl")), fileext = ".qmd")
-  log_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/log.qmd", package = "whirl")), fileext = ".qmd")
+  dummy_qmd <- withr::local_tempfile(
+    lines = readLines(system.file("documents/dummy.qmd", package = "whirl")),
+    fileext = ".qmd"
+    )
+
+  log_qmd <- withr::local_tempfile(
+    lines = readLines(system.file("documents/log.qmd", package = "whirl")),
+    fileext = ".qmd"
+    )
 
   doc_md <- withr::local_tempfile(fileext = ".md")
 
