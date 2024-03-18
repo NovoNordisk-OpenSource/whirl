@@ -1,6 +1,7 @@
 ---
 title: "`r params$title`"
 date: "`r Sys.Date()`"
+date-format: "YYYY-MM-DDTHH:mm:sszzz"
 params:
   title: 'dev'
   script_md: 'dev'
