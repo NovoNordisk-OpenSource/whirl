@@ -51,12 +51,12 @@ p$run(\() whirl::renv_status())
 
 ```
 
+
 ```{r, echo=FALSE}
 # Cleanup
 p$finalize()
 p$close()
 ```
-
 
 ```{r, echo = FALSE, eval=(params$strace == "yes")}
 whirl::readstrace_info(paste0(root, ".strace"))
