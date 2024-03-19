@@ -6,18 +6,19 @@ params:
   title: 'dev'
   script_md: 'dev'
   strace: FALSE
-  renv: FALSE
+  strace_path: ''
+  renv: TRUE
 format:
   html:
     embed-resources: true
 ---
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=(params$renv == "yes")}
 whirl::renv_status()
 ```
 
 ```{r, echo = FALSE, eval=(params$strace == "yes")}
-whirl::readstrace_info(paste0(root, ".strace"))
+whirl::readstrace_info(params$strace_path)
 ```
 
 # Script

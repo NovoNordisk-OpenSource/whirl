@@ -12,7 +12,7 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
   # Input validation
 
   stopifnot(is.character(script) && file.exists(script) && tools::file_ext(script) %in% c("R", "qmd", "Rmd"))
-  stopifnot(is.logical(track_files))
+  stopifnot(is.logical(track_files) && (!track_files | Sys.info()[["sysname"]] == "Linux"))
   stopifnot(is.logical(renv))
   stopifnot(is.character(out_dir) && dir.exists(out_dir))
 
@@ -46,9 +46,10 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
 
   doc_md <- withr::local_tempfile(fileext = ".md")
 
-  # TODO: Temp path to store strace
-
   log_html <- withr::local_tempfile(fileext = ".html")
+
+  # Create new R session used to run all documents
+  # Working directory is set to tempdir to redirect quarto outputs there
 
   p <- callr::r_session$new()
 
@@ -57,9 +58,20 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
     args = list(dir = tempdir())
   )
 
-  p$run(getwd)
+  # If track_files start strace tracking the process and which files are used
 
-  # TODO: Start strace
+  if (track_files){
+
+    strace_log <- withr::local_tempfile(fileext = ".strace")
+
+    start_strace(pid = p$get_pid(), file = strace_log)
+
+  } else {
+
+    strace_log <- ''
+  }
+
+  # Run the input script and create markdown document with the output and session information
 
   p$run(
     func = \(...) quarto::quarto_render(...),
@@ -72,20 +84,29 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
     )
   )
 
-  # TODO: Stop strace?
-  # TODO: Strace input path
+  # Create the final log with extra information
 
   p$run(
     func = \(...) quarto::quarto_render(...),
     args = list(
       input = log_qmd,
       output_file = basename(log_html),
-      execute_params = list(title = script, script_md = doc_md),
+      execute_params = list(
+        title = script,
+        script_md = doc_md,
+        strace = track_files,
+        strace_path = strace_log,
+        renv = track_files
+        ),
       execute_dir = getwd()
     )
   )
 
+  # Close R session
+
   p$close()
+
+  # Copy created log to output directory
 
   file.copy(
     from = log_html,

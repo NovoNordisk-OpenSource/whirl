@@ -1,3 +1,16 @@
+#' Start strace
+#' @param pid pid
+#' @param file file
+#' @export
+
+start_strace <- function(pid, file) {
+
+  sprintf("strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
+          file,
+          pid) |>
+    system(wait = FALSE)
+}
+
 #' Get session info
 #'
 #' Retrieve session info and add quarto info if not already there
