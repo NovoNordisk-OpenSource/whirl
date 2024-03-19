@@ -1,5 +1,20 @@
-test_that("log executes", {
-  log_example("prg1.R") |>
-    run_script(track_files = FALSE, renv = FALSE) |>
+
+test_that("R script works", {
+
+  script <- log_example("prg1.R")
+
+  run_script(script = script) |>
     expect_invisible()
-})
+
+  run_script(script = script, renv = FALSE) |>
+    expect_invisible()
+
+  run_script(script = script, out_dir = tempdir()) |>
+    expect_invisible()
+
+  skip_on_os(c("windows", "mac", "solaris"))
+
+  run_script(script = script, track_files = TRUE) |>
+    expect_invisible()
+
+  })
