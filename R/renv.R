@@ -36,7 +36,9 @@ knit_print.whirl_renv_status <- function(x, ...){
   } else {
     renv_note <- "important"
     renv_title <- "renv out of sync"
-    renv_message <- renv_message_table(x$message)
+    renv_message <- x$message |>
+      renv_message_table() |>
+      renv_message_headers()
   }
 
   quarto_callout(
@@ -48,13 +50,15 @@ knit_print.whirl_renv_status <- function(x, ...){
 
 }
 
-#' Format renv message with markdown table
+#' Format renv message with markdown table. Used when packages are in inconsistent state only.
 #' @noRd
 
 renv_message_table <- function(renv_message){
 
   i <- grepl(pattern = "^ +", x = renv_message) |>
     which()
+
+  if (!length(i)) return(renv_message)
 
   renv_message[i] <- gsub(pattern = "( |$)(?! )", replacement = "|", x = renv_message[i], perl = TRUE)
 
@@ -66,3 +70,12 @@ renv_message_table <- function(renv_message){
     utils::tail(renv_message, -j)
   )
 }
+
+#' Bump renv status headers down to header 3
+#' @noRd
+
+renv_message_headers <- function(renv_message) {
+
+  gsub(pattern = "^#", replacement = "###", x = renv_message)
+}
+
