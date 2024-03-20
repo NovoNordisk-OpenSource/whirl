@@ -49,14 +49,8 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
   log_html <- withr::local_tempfile(fileext = ".html")
 
   # Create new R session used to run all documents
-  # Working directory is set to tempdir to redirect quarto outputs there
 
   p <- callr::r_session$new()
-
-  p$run(
-    func = setwd,
-    args = list(dir = tempdir())
-  )
 
   # If track_files start strace tracking the process and which files are used
 
@@ -71,12 +65,16 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
     strace_log <- ''
   }
 
-  # Run the input script and create markdown document with the output and session information
+  # Run the input script and create markdown document with the output and session information.
+  # withr::with_dir is used to temporarily change the working directory of the sub session
+  # making sure content to be included in the log is saved in the temp dir.
+  # Meanwhile execute_dir is used to execute script in the right directory.
 
   p$run(
-    func = \(...) quarto::quarto_render(...),
+    func = \(dir, ...) withr::with_dir(dir, quarto::quarto_render(...)),
     args = list(
-      input = dummy_qmd,
+      dir = tempdir(),
+      input = basename(dummy_qmd),
       output_format = "markdown",
       output_file = basename(doc_md),
       execute_params = list(script = normalizePath(script)),
@@ -87,8 +85,9 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
   # Create the final log with extra information
 
   p$run(
-    func = \(...) quarto::quarto_render(...),
+    func = \(dir, ...) withr::with_dir(dir, quarto::quarto_render(...)),
     args = list(
+      dir = tempdir(),
       input = log_qmd,
       output_file = basename(log_html),
       execute_params = list(
@@ -96,7 +95,7 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
         script_md = doc_md,
         strace = track_files,
         strace_path = strace_log,
-        renv = track_files
+        renv = renv
         ),
       execute_dir = getwd()
     )
