@@ -21,7 +21,7 @@ if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) 
 
 ```{r, echo=FALSE}
 if (is.character(params$strace) && params$strace == "yes" | is.logical(params$strace) && params$strace){
-  whirl::renv_status()
+  whirl::readstrace_info(params$strace_path)
 }
 ```
 
