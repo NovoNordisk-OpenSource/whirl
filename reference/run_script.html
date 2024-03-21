@@ -48,13 +48,7 @@ test with a single script</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_script</span><span class="op">(</span></span>
-<span>  <span class="va">script</span>,</span>
-<span>  strace <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  renv <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  cleanup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  output_dir <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_script</span><span class="op">(</span><span class="va">script</span>, track_files <span class="op">=</span> <span class="cn">FALSE</span>, renv <span class="op">=</span> <span class="cn">TRUE</span>, out_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">script</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -63,7 +57,7 @@ test with a single script</p>
 <dd><p>path</p></dd>
 
 
-<dt>strace</dt>
+<dt>track_files</dt>
 <dd><p>logical</p></dd>
 
 
@@ -71,12 +65,8 @@ test with a single script</p>
 <dd><p>logical</p></dd>
 
 
-<dt>cleanup</dt>
-<dd><p>logical</p></dd>
-
-
-<dt>output_dir</dt>
-<dd><p>path</p></dd>
+<dt>out_dir</dt>
+<dd><p>description</p></dd>
 
 </dl></div>
 
