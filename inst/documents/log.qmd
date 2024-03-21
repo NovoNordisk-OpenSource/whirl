@@ -1,70 +1,31 @@
 ---
 title: "`r params$title`"
-date: "`r Sys.Date()`"
+date: "`r Sys.time()`"
+date-format: "YYYY-MM-DDTHH:mm:ss zzz"
 params:
   title: 'dev'
-  script: 'dev'
+  script_md: 'dev'
   strace: FALSE
-  renv: FALSE
+  strace_path: ''
+  renv: TRUE
 format:
   html:
     embed-resources: true
 ---
 
-```{r, include=FALSE}
-
-script <- params$script
-if ( script == "dev") script <- whirl::log_example("prg1.R")
-
-root <- gsub(pattern = "^.+/|\\.R$|\\.qmd$|\\.Rmd$", replacement = "", x = script)
-
-# Create clean R session
-
-p <- callr::r_session$new()
-
-# Attach strace to the process of the new session
-
-if (params$strace == "yes") {
-  sprintf("strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
-        paste0(root, ".strace"),
-        p$get_pid()) |>
-    print() |>
-  system(wait = FALSE)
+```{r, echo=FALSE}
+if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv){
+  whirl::renv_status()
 }
-
-# Render script to md
-child <- p$run(
-  func = whirl::quarto_render_move,
-  args = list(
-    input = whirl::log_document("dummy.qmd"),
-    execute_params = list(script = script),
-    output_format = "markdown", # Important to keep as markdown to get tables etc. formatted correctly
-    output_file = paste0(root, ".md")
-  ),
-  package = TRUE
-)
 ```
-
-
-```{r, echo=FALSE, eval=(params$renv == "yes")}
-p$run(\() whirl::renv_status())
-
-```
-
 
 ```{r, echo=FALSE}
-# Cleanup
-p$finalize()
-p$close()
-```
-
-```{r, echo = FALSE, eval=(params$strace == "yes")}
-whirl::readstrace_info(paste0(root, ".strace"))
+if (is.character(params$strace) && params$strace == "yes" | is.logical(params$strace) && params$strace){
+  whirl::readstrace_info(params$strace_path)
+}
 ```
 
 # Script
 
-```{r, child = "dummy.md", eval=file.exists("dummy.md")}
-
+```{r, child = params$script_md}
 ```
-

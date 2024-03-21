@@ -5,24 +5,16 @@
 \title{Run script
 test with a single script}
 \usage{
-run_script(
-  script,
-  strace = FALSE,
-  renv = TRUE,
-  cleanup = TRUE,
-  output_dir = NULL
-)
+run_script(script, track_files = FALSE, renv = TRUE, out_dir = dirname(script))
 }
 \arguments{
 \item{script}{path}
 
-\item{strace}{logical}
+\item{track_files}{logical}
 
 \item{renv}{logical}
 
-\item{cleanup}{logical}
-
-\item{output_dir}{path}
+\item{out_dir}{description}
 }
 \description{
 Run script
