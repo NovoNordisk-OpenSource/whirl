@@ -1,5 +1,5 @@
 #' Get renv status
-#' @export
+#' @noRd
 
 renv_status <- function(){
 
@@ -11,7 +11,7 @@ renv_status <- function(){
     )
 }
 
-#' @export
+#' @noRd
 
 print.whirl_renv_status <- function(x, ...){
 
