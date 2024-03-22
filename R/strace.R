@@ -16,8 +16,6 @@ start_strace <- function(pid, file) {
 #' Retrieve session info and add quarto info if not already there
 #'
 #' @param path a character vector with path name
-#' @import dplyr
-#'
 #' @export
 
 readstrace_info <- function(path){
@@ -85,20 +83,18 @@ knit_print.whirl_strace_output <- function(x, ...){
 #'
 #' @return A `tibble` with strace information.
 #' @export
-#'
-#' @importFrom tibble `%>%`
-#' @importFrom tidyr separate
 
 read_strace <- function(path, strace_discards = c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))) {
   all_strace <- readLines(path)
 
   strace_filter <- grep("openat\\(AT_FDCWD|unlink\\(|chdir\\(", all_strace, value = TRUE)
   strace_filter <- grep("ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)", strace_filter, value = TRUE, invert = TRUE)
-  # data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '(\\sopenat\\(AT_FDCWD,\\s\\")|(unlink\\(\\")|(chdir\\(\\")',  into = c("time", "file"), fill = "right", remove = FALSE) %>%
-  data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"', into = c("time", "type", "file"), fill = "right", extra = "merge", remove = TRUE) %>%
-    tidyr::separate(.data$file, sep = "\\)\\s*= ", into = c("file", "num"), remove = FALSE) %>%
-    tidyr::separate(.data$file, sep = '\\", ', into = c("file", "what"), remove = FALSE, fill = "right") %>%
-    tidyr::separate(.data$what, sep = ", ", into = c("what", "access"), remove = FALSE, fill = "right") %>%
+
+  data_strace <- data.frame(x = strace_filter) |>
+    tidyr::separate(.data$x, sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"', into = c("time", "type", "file"), fill = "right", extra = "merge", remove = TRUE) |>
+    tidyr::separate(.data$file, sep = "\\)\\s*= ", into = c("file", "num"), remove = FALSE) |>
+    tidyr::separate(.data$file, sep = '\\", ', into = c("file", "what"), remove = FALSE, fill = "right") |>
+    tidyr::separate(.data$what, sep = ", ", into = c("what", "access"), remove = FALSE, fill = "right") |>
     tidyr::separate(.data$num, sep = " <", into = c("num", "duration"), remove = FALSE, fill = "right")
 
   data_strace$entrynum <- seq_len(nrow(data_strace))
