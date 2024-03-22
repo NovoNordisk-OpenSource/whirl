@@ -2,7 +2,7 @@
 #'
 #' Retrieve session info and add quarto info if not already there
 #'
-#' @export
+#' @noRd
 
 session_info <- function(){
 

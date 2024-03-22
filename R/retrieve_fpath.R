@@ -3,7 +3,7 @@
 #' @param in_file - file to search path for
 #'
 #' @return A path to a file
-#' @export
+#' @noRd
 #'
 #' @examples
 #' retrieve_fpath("prg1.R")

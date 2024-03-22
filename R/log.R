@@ -118,7 +118,7 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
 
 #' Internal log documents
 #' @param doc name
-#' @export
+#' @noRd
 
 log_document <- function(doc) {
   system.file("documents", doc, package = "whirl")
@@ -126,7 +126,7 @@ log_document <- function(doc) {
 
 #' Example scripts
 #' @param doc name
-#' @export
+#' @noRd
 
 log_example <- function(doc) {
   system.file("examples", doc, package = "whirl")
