@@ -16,33 +16,6 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/log_document.html</loc>
-  </url>
-  <url>
-    <loc>/reference/log_example.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_strace.html</loc>
-  </url>
-  <url>
-    <loc>/reference/readstrace_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/refine_strace.html</loc>
-  </url>
-  <url>
-    <loc>/reference/renv_status.html</loc>
-  </url>
-  <url>
-    <loc>/reference/retrieve_fpath.html</loc>
-  </url>
-  <url>
     <loc>/reference/run_script.html</loc>
-  </url>
-  <url>
-    <loc>/reference/session_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/start_strace.html</loc>
   </url>
 </urlset>
