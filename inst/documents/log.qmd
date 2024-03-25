@@ -11,6 +11,7 @@ params:
 format:
   html:
     embed-resources: true
+    toc: true
 ---
 
 ```{r, echo=FALSE}
