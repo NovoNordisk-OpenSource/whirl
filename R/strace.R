@@ -94,8 +94,7 @@ read_strace <- function(path, strace_discards = c("^/lib", "^/etc", "^/lib64", "
 
   strace_filter <- grep("openat\\(AT_FDCWD|unlink\\(|chdir\\(", all_strace, value = TRUE)
   strace_filter <- grep("ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)", strace_filter, value = TRUE, invert = TRUE)
-  # data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '(\\sopenat\\(AT_FDCWD,\\s\\")|(unlink\\(\\")|(chdir\\(\\")',  into = c("time", "file"), fill = "right", remove = FALSE) %>%
-  data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"', into = c("time", "type", "file"), fill = "right", extra = "merge", remove = TRUE) %>%
+  data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"', into = c("pid", "time", "file"), fill = "right", extra = "merge", remove = TRUE) %>%
     tidyr::separate(.data$file, sep = "\\)\\s*= ", into = c("file", "num"), remove = FALSE) %>%
     tidyr::separate(.data$file, sep = '\\", ', into = c("file", "what"), remove = FALSE, fill = "right") %>%
     tidyr::separate(.data$what, sep = ", ", into = c("what", "access"), remove = FALSE, fill = "right") %>%
