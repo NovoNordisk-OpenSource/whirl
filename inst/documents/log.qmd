@@ -12,7 +12,11 @@ format:
   html:
     embed-resources: true
     toc: true
+    toc-depth: 3
+    smooth-scroll: true
 ---
+
+# Summary
 
 ```{r, echo=FALSE}
 if (is.character(params$renv) && params$renv == "yes" || is.logical(params$renv) && params$renv){

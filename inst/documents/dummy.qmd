@@ -33,8 +33,20 @@ knitr::opts_chunk$set(
   message = FALSE,
   echo = FALSE
 )
+
+info <- whirl:::session_info()
+
 ```
 
+## Platform
+
 ```{r}
-whirl:::session_info()
+info$platform
 ```
+
+## Packages
+
+```{r}
+info$packages
+```
+
