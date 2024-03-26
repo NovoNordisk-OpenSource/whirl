@@ -116,17 +116,13 @@ read_strace <- function(path, strace_discards) {
       data.frame(x = strace_filter),
       .data$x,
       sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"',
-      into = c("pid", "time", "rawfile"),
+      into = c("pid", "time", "rawfile0"),
       fill = "right",
       extra = "merge",
       remove = TRUE
     ) %>%
-    tidyr::separate(
-      .data$rawfile,
-      sep = "\\)\\s*= ",
-      into = c("rawfile", "num"),
-      remove = FALSE
-    ) %>%
+    mutate(rawfile = ifelse(grepl("=", .data$rawfile0), stringr::str_extract(.data$rawfile0, "[^\\)=]+"), .data$rawfile0),
+           num = ifelse(grepl("=", .data$rawfile0), sub('.+=(.+)', '\\1', .data$rawfile0), NA)) %>%
     tidyr::separate(
       .data$rawfile,
       sep = '\\", ',
@@ -155,13 +151,13 @@ read_strace <- function(path, strace_discards) {
   data_strace <- data_strace %>%
     mutate(
       file = stringr::str_remove(
-        stringr::str_remove(rawfile, "openat\\(AT_FDCWD,"),
+        stringr::str_remove(.data$rawfile, "openat\\(AT_FDCWD,"),
         "chdir\\("
       ),
       type = ifelse(
-        grepl("chdir", rawfile),
+        grepl("chdir", .data$rawfile),
         "chdir",
-        ifelse(grepl("unlink", rawfile), "unlink", "other")
+        ifelse(grepl("unlink", .data$rawfile), "unlink", "other")
       )
     )
 
