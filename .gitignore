@@ -17,6 +17,7 @@
 
 # Output files from R CMD check
 /*.Rcheck/
+tests/testthat/*.png
 
 # Output files from test coverage
 cobertura.xml
