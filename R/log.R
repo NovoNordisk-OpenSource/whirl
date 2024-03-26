@@ -7,7 +7,7 @@
 #' @param out_dir description
 #' @export
 
-run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirname(script)) {
+run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = TRUE, out_dir = dirname(script)) {
 
   # Input validation
 
@@ -95,6 +95,7 @@ run_script <- function(script, track_files = FALSE, renv = TRUE, out_dir = dirna
         script_md = doc_md,
         strace = track_files,
         strace_path = strace_log,
+        strace_discards = strace_discards,
         renv = renv
         ),
       execute_dir = getwd()

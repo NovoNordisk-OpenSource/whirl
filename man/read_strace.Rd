@@ -4,11 +4,7 @@
 \alias{read_strace}
 \title{Read STRACE file}
 \usage{
-read_strace(
-  path,
-  strace_discards = c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys",
-    "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))
-)
+read_strace(path, strace_discards)
 }
 \arguments{
 \item{path}{Path to the .strace file}

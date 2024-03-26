@@ -15,15 +15,17 @@ start_strace <- function(pid, file) {
 #'
 #' Retrieve session info and add quarto info if not already there
 #'
+#' @param strace_discards keywords to use to discard not required lines
 #' @param path a character vector with path name
+#'
 #' @import dplyr
 #'
 #' @export
 
-readstrace_info <- function(path){
-
-  strace_discards <-
-    c("/lib",
+readstrace_info <- function(path, strace_discards = NULL){
+  if (is.null(strace_discards)){
+    strace_discards <- c(
+      "/lib",
       "/etc",
       "/lib64",
       "/usr",
@@ -32,7 +34,14 @@ readstrace_info <- function(path){
       "/sys" ,
       "/proc",
       "/tmp",
-      "/.$")
+      "/.$",
+      "/null",
+      "/urandom",
+      "/.cache",
+      "./file",
+      .libPaths()
+    )
+  }
 
   data_strace <-
     whirl::read_strace(path, strace_discards = strace_discards) |> dplyr::tibble()
@@ -89,23 +98,82 @@ knit_print.whirl_strace_output <- function(x, ...){
 #' @importFrom tibble `%>%`
 #' @importFrom tidyr separate
 
-read_strace <- function(path, strace_discards = c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", "^/proc", "^/tmp", "^.$", paste0("^", .libPaths()))) {
+
+read_strace <- function(path, strace_discards) {
   all_strace <- readLines(path)
 
-  strace_filter <- grep("openat\\(AT_FDCWD|unlink\\(|chdir\\(", all_strace, value = TRUE)
-  strace_filter <- grep("ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)", strace_filter, value = TRUE, invert = TRUE)
-  data_strace <- tidyr::separate(data.frame(x = strace_filter), .data$x, sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"', into = c("pid", "time", "file"), fill = "right", extra = "merge", remove = TRUE) %>%
-    tidyr::separate(.data$file, sep = "\\)\\s*= ", into = c("file", "num"), remove = FALSE) %>%
-    tidyr::separate(.data$file, sep = '\\", ', into = c("file", "what"), remove = FALSE, fill = "right") %>%
-    tidyr::separate(.data$what, sep = ", ", into = c("what", "access"), remove = FALSE, fill = "right") %>%
-    tidyr::separate(.data$num, sep = " <", into = c("num", "duration"), remove = FALSE, fill = "right")
+  strace_filter <-
+    grep("openat\\(AT_FDCWD|unlink\\(|chdir\\(", all_strace, value = TRUE)
+  strace_filter <-
+    grep(
+      "ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)",
+      strace_filter,
+      value = TRUE,
+      invert = TRUE
+    )
+  data_strace <-
+    tidyr::separate(
+      data.frame(x = strace_filter),
+      .data$x,
+      sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"',
+      into = c("pid", "time", "rawfile"),
+      fill = "right",
+      extra = "merge",
+      remove = TRUE
+    ) %>%
+    tidyr::separate(
+      .data$rawfile,
+      sep = "\\)\\s*= ",
+      into = c("rawfile", "num"),
+      remove = FALSE
+    ) %>%
+    tidyr::separate(
+      .data$rawfile,
+      sep = '\\", ',
+      into = c("rawfile", "what"),
+      remove = FALSE,
+      fill = "right"
+    ) %>%
+    tidyr::separate(
+      .data$what,
+      sep = ", ",
+      into = c("what", "access"),
+      remove = FALSE,
+      fill = "right"
+    ) %>%
+    tidyr::separate(
+      .data$num,
+      sep = " <",
+      into = c("num", "duration"),
+      remove = FALSE,
+      fill = "right"
+    )
 
   data_strace$entrynum <- seq_len(nrow(data_strace))
-  data_strace$file <- gsub('\\"', "", data_strace$file)
+  data_strace$rawfile <- gsub('\\"', "", data_strace$rawfile)
 
-  relative_files <- data_strace[!grepl("^/", data_strace$file) & data_strace$type != "chdir", "entrynum"]
-  chdirs <- c(0, data_strace[grepl("^/", data_strace$file) & data_strace$type == "chdir", "entrynum"])
-  rel_chdirs <- c(0, data_strace[!grepl("^/", data_strace$file) & data_strace$type == "chdir", "entrynum"])
+  data_strace <- data_strace %>%
+    mutate(
+      file = stringr::str_remove(
+        stringr::str_remove(rawfile, "openat\\(AT_FDCWD,"),
+        "chdir\\("
+      ),
+      type = ifelse(
+        grepl("chdir", rawfile),
+        "chdir",
+        ifelse(grepl("unlink", rawfile), "unlink", "other")
+      )
+    )
+
+  relative_files <-
+    data_strace[!grepl("/", data_strace$file) &
+                  data_strace$type != "chdir", "entrynum"]
+  chdirs <-
+    c(0, data_strace[grepl("/", data_strace$file) &
+                       data_strace$type == "chdir", "entrynum"])
+  rel_chdirs <-
+    c(0, data_strace[!grepl("/", data_strace$file) &
+                       data_strace$type == "chdir", "entrynum"])
 
   max.ch <- 0
   rel_dirs <- list()
@@ -113,35 +181,50 @@ read_strace <- function(path, strace_discards = c("^/lib", "^/etc", "^/lib64", "
   for (i in seq_along(relative_files)) {
     pos <- chdirs[chdirs < relative_files[i]]
     max.ch[i] <- pos[length(pos)]
-    rel_dirs[[i]] <- rel_chdirs[max.ch[i] < rel_chdirs & rel_chdirs < relative_files[i]]
+    rel_dirs[[i]] <-
+      rel_chdirs[max.ch[i] < rel_chdirs &
+                   rel_chdirs < relative_files[i]]
     chdirs <- chdirs[chdirs >= max.ch[i]]
 
     if (max.ch[i] == 0) {
-      file_paths[i] <- paste(c(getwd(), data_strace$file[c(rel_dirs[[i]], relative_files[i])]), collapse = "/")
+      file_paths[i] <-
+        paste(c(getwd(), data_strace$file[c(rel_dirs[[i]], relative_files[i])]), collapse = "/")
     } else {
-      file_paths[i] <- paste(data_strace$file[c(max.ch[i], rel_dirs[[i]], relative_files[i])], collapse = "/")
+      file_paths[i] <-
+        paste(data_strace$file[c(max.ch[i], rel_dirs[[i]], relative_files[i])], collapse = "/")
     }
   }
 
   data_strace$file[relative_files] <- file_paths
 
 
-  data_strace <- data_strace[grep(paste(strace_discards, collapse = "|"), data_strace$file, invert = TRUE), ]
+  data_strace <-
+    data_strace[grep(paste(strace_discards, collapse = "|"),
+                     data_strace$file,
+                     invert = TRUE), ]
 
   if (nrow(data_strace)) {
-    data_strace$time <- as.POSIXct(as.numeric(data_strace$time), origin = "1970-01-01")
-    data_strace$duration <- as.numeric(gsub(">", "", data_strace$duration))
+    data_strace$time <-
+      as.POSIXct(as.numeric(data_strace$time), origin = "1970-01-01")
+    data_strace$duration <-
+      as.numeric(gsub(">", "", data_strace$duration))
     data_strace$action <- NA
     data_strace$action[data_strace$type == "chdir"] <- "Change dir"
-    data_strace$action[is.na(data_strace$what) & data_strace$num == 0 & data_strace$type == "unlink"] <- "Deleted"
-    data_strace$action[is.na(data_strace$action) & grepl("O_DIRECTORY", data_strace$what)] <- "Lookup"
-    data_strace$action[is.na(data_strace$action) & is.na(data_strace$access)] <- "Read"
-    data_strace$action[is.na(data_strace$action) & !is.na(data_strace$access)] <- "Write"
+    data_strace$action[is.na(data_strace$what) &
+                         data_strace$num == 0 &
+                         data_strace$type == "unlink"] <- "Deleted"
+    data_strace$action[is.na(data_strace$action) &
+                         grepl("O_DIRECTORY", data_strace$what)] <-
+      "Lookup"
+    data_strace$action[is.na(data_strace$action) &
+                         is.na(data_strace$access)] <- "Read"
+    data_strace$action[is.na(data_strace$action) &
+                         !is.na(data_strace$access)] <- "Write"
   }
 
-  data_strace$file <- gsub(normalizePath("~"), "~", data_strace$file)
+  # data_strace$file <- gsub(normalizePath("~"), "~", data_strace$file)
 
-  return(data_strace[data_strace$type != "chdir", ])
+  return(data_strace[data_strace$type != "chdir",])
 }
 
 #' refine strace output
@@ -152,32 +235,45 @@ read_strace <- function(path, strace_discards = c("^/lib", "^/etc", "^/lib64", "
 #' @export
 
 refine_strace <- function(data_strace) {
-  # remove consecutive duplicates
+  # remove empty lines and folders
+  data_strace <- data_strace %>%
+    filter(trimws(file) != "/" & grepl( "\\.", basename(file)))
 
-  rm_dup <- rle(paste(data_strace$file, data_strace$num, data_strace$action))
-  data_strace_s1 <- data_strace[cumsum(c(1, rm_dup$lengths[-length(rm_dup$lengths)])), ]
+  # remove consecutive duplicates
+  rm_dup <-
+    rle(paste(data_strace$file, data_strace$num, data_strace$action))
+  data_strace_s1 <-
+    data_strace[cumsum(c(1, rm_dup$lengths[-length(rm_dup$lengths)])), ]
 
   # First entry
-  data_strace_s1_first <- data_strace_s1[!duplicated(data_strace_s1$file), ]
+  data_strace_s1_first <-
+    data_strace_s1[!duplicated(data_strace_s1$file), ]
 
   # last entry
-  data_strace_s1_last <- data_strace_s1[!duplicated(data_strace_s1$file, fromLast = TRUE), ]
+  data_strace_s1_last <-
+    data_strace_s1[!duplicated(data_strace_s1$file, fromLast = TRUE), ]
 
   # Input files: if first entry is read
-  input_files <- data_strace_s1_first$file[data_strace_s1_first$action == "Read"]
+  input_files <-
+    data_strace_s1_first$file[data_strace_s1_first$action == "Read"]
 
   # Temporary: if write followed by deleted
   writes <- data_strace_s1$file[data_strace_s1$action == "Write"]
-  last_deleted <- data_strace_s1_last$file[data_strace_s1_last$action == "Deleted"]
+  last_deleted <-
+    data_strace_s1_last$file[data_strace_s1_last$action == "Deleted"]
 
-  temporary_files <- setdiff(intersect(writes, last_deleted), input_files)
+  temporary_files <-
+    setdiff(intersect(writes, last_deleted), input_files)
 
   # Output:
   output_files <- setdiff(writes, temporary_files)
 
   # Deleted
-  deleted_files_all <- data_strace_s1$file[data_strace_s1$action == "Deleted"]
-  deleted_files <- setdiff(deleted_files_all, c(input_files, temporary_files, output_files))
+  deleted_files_all <-
+    data_strace_s1$file[data_strace_s1$action == "Deleted"]
+  deleted_files <-
+    setdiff(deleted_files_all,
+            c(input_files, temporary_files, output_files))
 
   input <- data_strace[data_strace$file %in% input_files, ]
   output <-  data_strace[data_strace$file %in% output_files, ]
@@ -189,9 +285,11 @@ refine_strace <- function(data_strace) {
   temporary <- temporary[!duplicated(temporary$file), ]
   deleted <- deleted[!duplicated(deleted$file), ]
 
-  list(input = input,
-       output =  output,
-       temporary =  temporary,
-       deleted =  deleted)
+  list(
+    input = input,
+    output =  output,
+    temporary =  temporary,
+    deleted =  deleted
+  )
 
 }

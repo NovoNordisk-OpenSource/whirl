@@ -4,10 +4,12 @@
 \alias{readstrace_info}
 \title{Get session info}
 \usage{
-readstrace_info(path)
+readstrace_info(path, strace_discards = NULL)
 }
 \arguments{
 \item{path}{a character vector with path name}
+
+\item{strace_discards}{keywords to use to discard not required lines}
 }
 \description{
 Retrieve session info and add quarto info if not already there
