@@ -97,6 +97,7 @@ knit_print.whirl_strace_output <- function(x, ...){
 #'
 #' @importFrom tibble `%>%`
 #' @importFrom tidyr separate
+#' @importFrom stringr str_extract str_remove
 
 
 read_strace <- function(path, strace_discards) {

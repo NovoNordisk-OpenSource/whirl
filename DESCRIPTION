@@ -22,6 +22,7 @@ Imports:
     renv,
     rlang,
     sessioninfo,
+    stringr,
     tibble,
     tidyr,
     utils,

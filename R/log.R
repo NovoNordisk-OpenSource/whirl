@@ -4,7 +4,9 @@
 #' @param script path
 #' @param track_files logical
 #' @param renv logical
+#' @param strace_discards keywords to use to discard not required lines
 #' @param out_dir description
+#'
 #' @export
 
 run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = TRUE, out_dir = dirname(script)) {

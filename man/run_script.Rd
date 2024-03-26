@@ -18,6 +18,8 @@ run_script(
 
 \item{track_files}{logical}
 
+\item{strace_discards}{keywords to use to discard not required lines}
+
 \item{renv}{logical}
 
 \item{out_dir}{description}
