@@ -37,6 +37,7 @@ readstrace_info <- function(path, strace_discards = NULL){
       "/urandom",
       "/.cache",
       "./file",
+      "/renv",
       .libPaths()
     )
   }
@@ -78,10 +79,16 @@ knit_print.whirl_strace_input <- function(x, ...){
 
 knit_print.whirl_strace_output <- function(x, ...){
 
-  x |>
-    dplyr::select("file", "duration", "time") |>
+  if (nrow(x) != 0) {
+    x |>
+      dplyr::select("file", "duration", "time") |>
+      knitr::kable() |>
+      knitr::knit_print()
+  }else{
+    dplyr::tibble(file = "No output files") |>
     knitr::kable() |>
     knitr::knit_print()
+  }
 
 }
 
@@ -175,7 +182,8 @@ read_strace <- function(path, strace_discards) {
       # Remove all discards based on current working directory
 
       stringr::str_detect(string = .data$directory, pattern = paste(strace_discards, collapse = "|"), negate = TRUE) |
-        stringr::str_detect(string = .data$file, pattern = "^/")
+        stringr::str_detect(string = .data$file, pattern = "^/"),
+      trimws(.data$file) != "/"
     )
 
   data_strace <- data_strace_4
