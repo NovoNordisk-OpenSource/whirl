@@ -69,7 +69,7 @@ knit_print.whirl_strace_input <- function(x, ...){
 
   x |>
     dplyr::select("file", "duration", "time") |>
-    knitr::kable(caption = "Input") |>
+    knitr::kable() |>
     knitr::knit_print()
 
 }
@@ -80,7 +80,7 @@ knit_print.whirl_strace_output <- function(x, ...){
 
   x |>
     dplyr::select("file", "duration", "time") |>
-    knitr::kable(caption = "Output") |>
+    knitr::kable() |>
     knitr::knit_print()
 
 }
