@@ -118,3 +118,19 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   return(invisible(path_output))
 }
+
+#' Internal log documents
+#' @param doc name
+#' @export
+
+log_document <- function(doc) {
+  system.file("documents", doc, package = "whirl")
+}
+
+#' Example scripts
+#' @param doc name
+#' @export
+
+log_example <- function(doc) {
+  system.file("examples", doc, package = "whirl")
+}

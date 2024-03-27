@@ -36,5 +36,5 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
-whirl:::session_info()
+whirl::session_info()
 ```

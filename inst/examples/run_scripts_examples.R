@@ -10,26 +10,6 @@ rm_files <- function(file){
   }
 }
 
-# Retrieve path of file from folder/subfolders
-
-retrieve_fpath <- function(in_file) {
-  tryCatch(
-    expr = {
-      list.files(
-        pattern = in_file,
-        recursive = TRUE,
-        full.names = TRUE,
-        include.dirs = TRUE
-      )[[1]] |> normalizePath(winslash = "/")
-    },
-    error = function(e){
-      stop(paste("File does not seem to exist: ", in_file))
-    }
-  )
-}
-
-# Test runs for development:
-
 rm_files("/scer/homedirs/lvgk/test_output/prgQmd.html")
 
 run_script(

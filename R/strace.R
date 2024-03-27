@@ -1,7 +1,7 @@
 #' Start strace
 #' @param pid pid
 #' @param file file
-#' @noRd
+#' @export
 
 start_strace <- function(pid, file) {
 
@@ -17,7 +17,10 @@ start_strace <- function(pid, file) {
 #'
 #' @param strace_discards keywords to use to discard not required lines
 #' @param path a character vector with path name
-#' @noRd
+#'
+#' @import dplyr
+#'
+#' @export
 
 readstrace_info <- function(path, strace_discards = NULL){
   if (is.null(strace_discards)){
@@ -40,9 +43,10 @@ readstrace_info <- function(path, strace_discards = NULL){
     )
   }
 
-  data_strace <- read_strace(path, strace_discards = strace_discards) |> dplyr::tibble()
+  data_strace <-
+    whirl::read_strace(path, strace_discards = strace_discards) |> dplyr::tibble()
 
-  file_actions <- refine_strace(data_strace)[c("input", "output")]
+  file_actions <- whirl::refine_strace(data_strace)[c("input", "output")]
 
   class(file_actions) <- c("whirl_strace_info", class(file_actions))
   for (i in seq_along(file_actions)) {
@@ -89,7 +93,11 @@ knit_print.whirl_strace_output <- function(x, ...){
 #' @param path Path to the .strace file
 #'
 #' @return A `tibble` with strace information.
-#' @noRd
+#' @export
+#'
+#' @importFrom tibble `%>%`
+#' @importFrom tidyr separate
+#' @importFrom stringr str_extract str_remove
 
 
 read_strace <- function(path, strace_discards) {
@@ -225,7 +233,7 @@ read_strace <- function(path, strace_discards) {
 #' @param data_strace - file lines
 #'
 #' @return tibble
-#' @noRd
+#' @export
 
 refine_strace <- function(data_strace) {
   # remove empty lines and folders
