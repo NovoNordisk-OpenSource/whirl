@@ -18,6 +18,8 @@ format:
     smooth-scroll: true
 ---
 
+# Summary
+
 ```{r, echo=FALSE}
 if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv){
   whirl::renv_status()
