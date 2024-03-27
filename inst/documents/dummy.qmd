@@ -50,9 +50,3 @@ info$platform
 info$packages
 ```
 
-## Packages
-
-```{r}
-info$packages
-```
-
