@@ -1,7 +1,7 @@
 
 test_that("R script works", {
 
-  script <- log_example("prg1.R")
+  script <- system.file("examples/prg1.R", package = "whirl")
 
   run_script(script = script) |>
     expect_invisible()

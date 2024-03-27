@@ -23,7 +23,6 @@ Imports:
     rlang,
     sessioninfo,
     stringr,
-    tibble,
     tidyr,
     utils,
     vctrs,

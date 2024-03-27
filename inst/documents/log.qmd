@@ -22,13 +22,15 @@ format:
 
 ```{r, echo=FALSE}
 if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv){
-  whirl::renv_status()
+  whirl:::renv_status()
 }
 ```
 
 ```{r, echo=FALSE}
 if (is.character(params$strace) && params$strace == "yes" | is.logical(params$strace) && params$strace){
-  whirl::readstrace_info(params$strace_path, params$strace_discards)
+  whirl:::readstrace_info(
+    path = params$strace_path, 
+    strace_discards = params$strace_discards)
 }
 ```
 
