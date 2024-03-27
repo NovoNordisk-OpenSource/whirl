@@ -49,3 +49,10 @@ info$platform
 ```{r}
 info$packages
 ```
+
+## Packages
+
+```{r}
+info$packages
+```
+

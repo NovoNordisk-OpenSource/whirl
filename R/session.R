@@ -49,7 +49,7 @@ knit_print.whirl_platform_info <- function(x, ...){
       lapply(paste0, collapse = ", ") |>
       unlist() |>
       unname()
-  ) |>
+    ) |>
     knitr::kable() |>
     knitr::knit_print()
 }
@@ -64,7 +64,7 @@ knit_print.whirl_packages_info <- function(x, ...){
     `Date (UTC)` = x$date,
     Source = x$source,
     check.names = FALSE
-  ) |>
+    ) |>
     knitr::kable() |>
     knitr::knit_print()
 }
