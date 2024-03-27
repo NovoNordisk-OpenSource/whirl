@@ -2,7 +2,7 @@
 #'
 #' Retrieve session info and add quarto info if not already there
 #'
-#' @export
+#' @noRd
 
 session_info <- function(){
 
@@ -50,9 +50,8 @@ knit_print.whirl_platform_info <- function(x, ...){
       unlist() |>
       unname()
   ) |>
-    knitr::kable(caption = "Platform") |>
+    knitr::kable() |>
     knitr::knit_print()
-
 }
 
 #' @noRd
@@ -66,7 +65,6 @@ knit_print.whirl_packages_info <- function(x, ...){
     Source = x$source,
     check.names = FALSE
   ) |>
-    knitr::kable(caption = "Packages") |>
+    knitr::kable() |>
     knitr::knit_print()
-
 }

@@ -12,6 +12,10 @@ params:
 format:
   html:
     embed-resources: true
+    toc: true
+    toc-depth: 2
+    toc-expand: true
+    smooth-scroll: true
 ---
 
 ```{r, echo=FALSE}
