@@ -106,6 +106,7 @@ read_strace <- function(path, strace_discards) {
       value = TRUE,
       invert = TRUE
     )
+
   data_strace <-
     tidyr::separate(
       data.frame(x = strace_filter),
@@ -140,59 +141,44 @@ read_strace <- function(path, strace_discards) {
       fill = "right"
     )
 
-  data_strace$entrynum <- seq_len(nrow(data_strace))
-  data_strace$rawfile <- gsub('\\"', "", data_strace$rawfile)
+  data_strace_2 <- data_strace |>
+    dplyr::as_tibble() |>
+    dplyr::mutate(
+      entrynum = dplyr::row_number(),
+      rawfile = gsub('\\"', "", .data$rawfile)
+    )
 
-  data_strace <- data_strace |>
+  data_strace_3 <- data_strace_2 |>
     dplyr::mutate(
       file = stringr::str_remove(
         stringr::str_remove(.data$rawfile, "openat\\(AT_FDCWD,"),
-        "chdir\\("
-      ),
+        "chdir\\(") |>
+        stringr::str_trim()
+      ,
       type = ifelse(
         grepl("chdir", .data$rawfile),
         "chdir",
         ifelse(grepl("unlink", .data$rawfile), "unlink", "other")
-      )
+        ),
+
+      directory = ifelse(.data$type == "chdir", file, NA_character_) |>
+        zoo::na.locf(na.rm = FALSE)
+      ) |>
+    dplyr::select("time", "duration", "file", "type", "entrynum", "directory", "what", "num", "access")
+
+  data_strace_4 <- data_strace_3 |>
+    dplyr::filter(
+
+      # Remove all discards based on file path
+      stringr::str_detect(string = .data$file, pattern = paste(strace_discards, collapse = "|"), negate = TRUE),
+
+      # Remove all discards based on current working directory
+
+      stringr::str_detect(string = .data$directory, pattern = paste(strace_discards, collapse = "|"), negate = TRUE) |
+        stringr::str_detect(string = .data$file, pattern = "^/")
     )
 
-  relative_files <-
-    data_strace[!grepl("/", data_strace$file) &
-                  data_strace$type != "chdir", "entrynum"]
-  chdirs <-
-    c(0, data_strace[grepl("/", data_strace$file) &
-                       data_strace$type == "chdir", "entrynum"])
-  rel_chdirs <-
-    c(0, data_strace[!grepl("/", data_strace$file) &
-                       data_strace$type == "chdir", "entrynum"])
-
-  max.ch <- 0
-  rel_dirs <- list()
-  file_paths <- vector()
-  for (i in seq_along(relative_files)) {
-    pos <- chdirs[chdirs < relative_files[i]]
-    max.ch[i] <- pos[length(pos)]
-    rel_dirs[[i]] <-
-      rel_chdirs[max.ch[i] < rel_chdirs &
-                   rel_chdirs < relative_files[i]]
-    chdirs <- chdirs[chdirs >= max.ch[i]]
-
-    if (max.ch[i] == 0) {
-      file_paths[i] <-
-        paste(c(getwd(), data_strace$file[c(rel_dirs[[i]], relative_files[i])]), collapse = "/")
-    } else {
-      file_paths[i] <-
-        paste(data_strace$file[c(max.ch[i], rel_dirs[[i]], relative_files[i])], collapse = "/")
-    }
-  }
-
-  data_strace$file[relative_files] <- file_paths
-
-
-  data_strace <-
-    data_strace[grep(paste(strace_discards, collapse = "|"),
-                     data_strace$file,
-                     invert = TRUE), ]
+  data_strace <- data_strace_4
 
   if (nrow(data_strace)) {
     data_strace$time <-
@@ -228,7 +214,7 @@ read_strace <- function(path, strace_discards) {
 refine_strace <- function(data_strace) {
   # remove empty lines and folders
   data_strace <- data_strace |>
-    dplyr::filter(trimws(file) != "/" & grepl( "\\.", basename(file)))
+    dplyr::filter(.data$directory != ".")
 
   # remove consecutive duplicates
   rm_dup <-

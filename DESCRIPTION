@@ -26,4 +26,5 @@ Imports:
     tidyr,
     utils,
     vctrs,
-    withr
+    withr,
+    zoo
