@@ -22,7 +22,9 @@ Imports:
     renv,
     rlang,
     sessioninfo,
+    stringr,
     tidyr,
     utils,
     vctrs,
-    withr
+    withr,
+    zoo

@@ -5,12 +5,20 @@
 \title{Run script
 test with a single script}
 \usage{
-run_script(script, track_files = FALSE, renv = TRUE, out_dir = dirname(script))
+run_script(
+  script,
+  track_files = FALSE,
+  strace_discards = NULL,
+  renv = TRUE,
+  out_dir = dirname(script)
+)
 }
 \arguments{
 \item{script}{path}
 
 \item{track_files}{logical}
+
+\item{strace_discards}{keywords to use to discard not required lines}
 
 \item{renv}{logical}
 

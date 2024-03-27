@@ -7,6 +7,7 @@ params:
   script_md: 'dev'
   strace: FALSE
   strace_path: ''
+  strace_discards: NULL
   renv: TRUE
 format:
   html:
@@ -20,15 +21,36 @@ format:
 # Summary
 
 ```{r, echo=FALSE}
-if (is.character(params$renv) && params$renv == "yes" || is.logical(params$renv) && params$renv){
+if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv){
   whirl:::renv_status()
 }
 ```
 
 ```{r, echo=FALSE}
-if (is.character(params$strace) && params$strace == "yes" || is.logical(params$strace) && params$strace){
-  whirl:::readstrace_info(params$strace_path)
+use_strace <- (is.character(params$strace) && params$strace == "yes" | is.logical(params$strace) && params$strace)
+
+if (use_strace){
+  strace_info <- whirl:::readstrace_info(
+    path = params$strace_path, 
+    strace_discards = params$strace_discards)
 }
+
+```
+
+```{r, echo=FALSE, results='asis', eval=use_strace}
+cat("## Input", "\n")
+```
+
+```{r, echo=FALSE, eval=use_strace}
+strace_info$input
+```
+
+```{r, echo=FALSE, results='asis', eval=use_strace}
+cat("## Output", "\n")
+```
+
+```{r, echo=FALSE, eval=use_strace}
+strace_info$output
 ```
 
 # Script
