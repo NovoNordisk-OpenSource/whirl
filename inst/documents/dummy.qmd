@@ -50,3 +50,9 @@ info$platform
 info$packages
 ```
 
+## Environment variables
+
+```{r}
+info$environment
+```
+

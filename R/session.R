@@ -8,8 +8,11 @@ session_info <- function(){
 
   info <- sessioninfo::session_info()
 
+  info$environment <- Sys.getenv()
+  class(info$environment) <- c("environment_info", class(info$environment))
+
   # TODO: Extend to also cover external and python below in methods.
-  info[!names(info) %in% c("platform", "packages")] <- NULL
+  info[!names(info) %in% c("platform", "packages", "environment")] <- NULL
 
   if (is.null(info$platform$quarto)){
 
@@ -65,6 +68,24 @@ knit_print.whirl_packages_info <- function(x, ...){
     Source = x$source,
     check.names = FALSE
     ) |>
+    knitr::kable() |>
+    knitr::knit_print()
+}
+
+#' @noRd
+
+knit_print.whirl_environment_info <- function(x, ...){
+
+  dropped_info <- c("BASH_FUNC", "_SSL_CERT", "PRIVATE_KEY", "PUBLIC_KEY", "SIGNING_KEY")
+
+  data.frame(
+    Setting = names(x),
+    Value = x |>
+      lapply(paste0, collapse = ", ") |>
+      unlist() |>
+      unname()
+  ) |>
+    subset(!(grepl(paste0("(?=.*", dropped_info, ")", collapse = "|"), Setting, perl = TRUE))) |>
     knitr::kable() |>
     knitr::knit_print()
 }
