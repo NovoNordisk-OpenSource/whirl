@@ -56,3 +56,9 @@ info$packages
 info$environment
 ```
 
+## Option settings
+
+```{r}
+info$options
+```
+

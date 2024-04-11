@@ -11,8 +11,11 @@ session_info <- function(){
   info$environment <- Sys.getenv()
   class(info$environment) <- c("environment_info", class(info$environment))
 
+  info$options <- options()
+  class(info$options) <- c("options_info", class(info$options))
+
   # TODO: Extend to also cover external and python below in methods.
-  info[!names(info) %in% c("platform", "packages", "environment")] <- NULL
+  info[!names(info) %in% c("platform", "packages", "environment", "options")] <- NULL
 
   if (is.null(info$platform$quarto)){
 
@@ -33,6 +36,7 @@ session_info <- function(){
 
   return(info)
 }
+
 
 #' @noRd
 
@@ -89,3 +93,16 @@ knit_print.whirl_environment_info <- function(x, ...){
     knitr::kable() |>
     knitr::knit_print()
 }
+
+#' @noRd
+
+knit_print.whirl_options_info <- function(x, ...){
+  data.frame(t(sapply(unlist(x),c))) |>
+    tidyr::pivot_longer(everything(),
+                        values_to = "Value",
+                        names_to = "Setting"
+    ) |>
+    knitr::kable() |>
+    knitr::knit_print()
+}
+
