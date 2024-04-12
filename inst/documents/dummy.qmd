@@ -38,27 +38,31 @@ info <- whirl:::session_info()
 
 ```
 
-## Platform
 
-```{r}
+```{r, results="asis"}
+cat('\n## Platform \n')
 info$platform
+cat("\n")
 ```
 
-## Packages
 
-```{r}
+```{r, results="asis"}
+cat('\n## Packages\n')
 info$packages
+cat("\n")
 ```
 
-## Environment variables
 
-```{r}
+```{r, results="asis"}
+cat('\n## Environment variables \n')
 info$environment
+cat("\n")
 ```
 
-## Option settings
 
-```{r}
+```{r, results="asis"}
+cat('\n## Option settings\n')
 info$options
+cat("\n")
 ```
 

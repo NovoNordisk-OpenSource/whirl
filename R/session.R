@@ -8,10 +8,12 @@ session_info <- function(){
 
   info <- sessioninfo::session_info()
 
-  info$environment <- Sys.getenv()
+  info$environment <- Sys.getenv() |> as.list() |> unlist(recursive = F) |> tibble::enframe(name= "Setting", value = "Value")
   class(info$environment) <- c("environment_info", class(info$environment))
 
+  # TODO: fix printing and exclude rows with special characters
   info$options <- options()
+  info$options <- info$options[!names(info$options)  %in% "rl_word_breaks"]
   class(info$options) <- c("options_info", class(info$options))
 
   # TODO: Extend to also cover external and python below in methods.
@@ -82,26 +84,21 @@ knit_print.whirl_environment_info <- function(x, ...){
 
   dropped_info <- c("BASH_FUNC", "_SSL_CERT", "PRIVATE_KEY", "PUBLIC_KEY", "SIGNING_KEY")
 
-  data.frame(
-    Setting = names(x),
-    Value = x |>
-      lapply(paste0, collapse = ", ") |>
-      unlist() |>
-      unname()
-  ) |>
-    subset(!(grepl(paste0("(?=.*", dropped_info, ")", collapse = "|"), Setting, perl = TRUE))) |>
+  x |>
+    dplyr::filter(!(grepl(paste0("(?=.*", dropped_info, ")", collapse = "|"), Setting, perl = TRUE))) |>
+    dplyr::mutate(Setting = stringi::stri_escape_unicode(Setting), Value = stringi::stri_escape_unicode(Value)) |>
     knitr::kable() |>
     knitr::knit_print()
 }
 
 #' @noRd
-
 knit_print.whirl_options_info <- function(x, ...){
   data.frame(t(sapply(unlist(x),c))) |>
     tidyr::pivot_longer(everything(),
                         values_to = "Value",
                         names_to = "Setting"
     ) |>
+    dplyr::mutate(Value = stringi::stri_escape_unicode(as.character(Value))) |>
     knitr::kable() |>
     knitr::knit_print()
 }
