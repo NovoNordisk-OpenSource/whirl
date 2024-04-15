@@ -11,6 +11,7 @@ params:
   renv: TRUE
 format:
   html:
+    page-layout: full
     embed-resources: true
     toc: true
     toc-depth: 2
