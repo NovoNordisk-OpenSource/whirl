@@ -84,8 +84,8 @@ knit_print.whirl_environment_info <- function(x, ...){
   dropped_info <- c("BASH_FUNC", "_SSL_CERT", "PRIVATE_KEY", "PUBLIC_KEY", "SIGNING_KEY")
 
   x |>
-    dplyr::filter(!(grepl(paste0("(?=.*", dropped_info, ")", collapse = "|"), Setting, perl = TRUE))) |>
-    dplyr::mutate(Setting = ifelse(substring(Setting, 1, 1) == "_", paste0("\\", (stringi::stri_escape_unicode(Setting))), Setting)) |>
+    dplyr::filter(!(grepl(paste0("(?=.*", dropped_info, ")", collapse = "|"), .data$Setting, perl = TRUE))) |>
+    dplyr::mutate(Setting = ifelse(substring(.data$Setting, 1, 1) == "_", paste0("\\", (stringi::stri_escape_unicode(.data$Setting))), .data$Setting)) |>
     knitr::kable() |>
     knitr::knit_print()
 }
