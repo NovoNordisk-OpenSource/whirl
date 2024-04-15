@@ -85,7 +85,7 @@ knit_print.whirl_environment_info <- function(x, ...){
 
   x |>
     dplyr::filter(!(grepl(paste0("(?=.*", dropped_info, ")", collapse = "|"), Setting, perl = TRUE))) |>
-    dplyr::mutate(Setting = ifelse(substring(Setting, 1, 1) == "_", paste0("\\", (stringi::stri_escape_unicode(Setting))), Setting)) |>
+    dplyr::mutate(Setting = ifelse(substring(.data$Setting, 1, 1) == "_", paste0("\\", (stringi::stri_escape_unicode(.data$Setting))), .data$Setting)) |>
     knitr::kable() |>
     knitr::knit_print()
 }
