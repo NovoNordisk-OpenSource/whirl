@@ -59,34 +59,50 @@ knit_print.whirl_platform_info <- function(x, ...){
       unname()
     ) |>
     knitr::kable() |>
+    kableExtra::kable_styling(bootstrap_options = "striped"
+                              , full_width = TRUE) |>
     knitr::knit_print()
 }
 
 #' @noRd
 
-knit_print.whirl_packages_info <- function(x, ...){
-
+knit_print.whirl_packages_info <- function(x, ...) {
   data.frame(
     Package = x$package,
     Version = x$loadedversion,
     `Date (UTC)` = x$date,
     Source = x$source,
     check.names = FALSE
-    ) |>
+  ) |>
     knitr::kable() |>
+    kableExtra::kable_styling(bootstrap_options = "striped"
+                              , full_width = TRUE) |>
     knitr::knit_print()
 }
 
 #' @noRd
 
-knit_print.whirl_environment_info <- function(x, ...){
-
-  dropped_info <- c("BASH_FUNC", "_SSL_CERT", "PRIVATE_KEY", "PUBLIC_KEY", "SIGNING_KEY")
+knit_print.whirl_environment_info <- function(x, ...) {
+  dropped_info <-
+    c("BASH_FUNC",
+      "_SSL_CERT",
+      "PRIVATE_KEY",
+      "PUBLIC_KEY",
+      "SIGNING_KEY")
 
   x |>
-    dplyr::filter(!(grepl(paste0("(?=.*", dropped_info, ")", collapse = "|"), .data$Setting, perl = TRUE))) |>
-    dplyr::mutate(Setting = ifelse(substring(.data$Setting, 1, 1) == "_", paste0("\\", (stringi::stri_escape_unicode(.data$Setting))), .data$Setting)) |>
-    knitr::kable() |>
+    dplyr::filter(!(grepl(
+      paste0("(?=.*", dropped_info, ")", collapse = "|"),
+      .data$Setting,
+      perl = TRUE
+    ))) |>
+    dplyr::mutate(Setting = gsub('(?=(?:.{10})+$)', " ", .data$Setting, perl = TRUE),
+                  Value = gsub('(?=(?:.{10})+$)', " ", .data$Value, perl = TRUE)
+                  ) |>
+    knitr::kable(escape = F, row.names = F) |>
+    kableExtra::kable_styling(bootstrap_options = "striped"
+                              , full_width = TRUE) |>
+    kableExtra::column_spec(1:2, width = "20px") |>
     knitr::knit_print()
 }
 
@@ -97,6 +113,8 @@ knit_print.whirl_options_info <- function(x, ...) {
                         values_to = "Value",
                         names_to = "Setting") |>
     knitr::kable() |>
+    kableExtra::kable_styling(bootstrap_options = "striped"
+                              , full_width = TRUE) |>
     knitr::knit_print()
 }
 

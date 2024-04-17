@@ -11,7 +11,6 @@ params:
   renv: TRUE
 format:
   html:
-    page-layout: full
     embed-resources: true
     toc: true
     toc-depth: 2
@@ -57,4 +56,48 @@ strace_info$output
 # Script
 
 ```{r, child = params$script_md}
+```
+
+
+
+# Session info
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  error = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE
+)
+
+info <- whirl:::session_info()
+
+```
+
+
+```{r, results="asis"}
+cat('\n## Platform \n')
+info$platform
+cat("\n")
+```
+
+
+```{r, results="asis"}
+cat('\n## Packages\n')
+info$packages
+cat("\n")
+```
+
+
+```{r, results="asis"}
+cat('\n## Environment variables \n')
+info$environment
+cat("\n")
+```
+
+
+```{r, results="asis"}
+cat('\n## Option settings\n')
+info$options
+cat("\n")
 ```
