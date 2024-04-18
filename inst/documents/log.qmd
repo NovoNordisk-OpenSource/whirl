@@ -58,8 +58,6 @@ strace_info$output
 ```{r, child = params$script_md}
 ```
 
-
-
 # Session info
 
 ```{r, include=FALSE}
@@ -74,13 +72,11 @@ info <- whirl:::session_info()
 
 ```
 
-
 ```{r, results="asis"}
 cat('\n## Platform \n')
 info$platform
 cat("\n")
 ```
-
 
 ```{r, results="asis"}
 cat('\n## Packages\n')
@@ -88,13 +84,11 @@ info$packages
 cat("\n")
 ```
 
-
 ```{r, results="asis"}
 cat('\n## Environment variables \n')
 info$environment
 cat("\n")
 ```
-
 
 ```{r, results="asis"}
 cat('\n## Option settings\n')
