@@ -100,6 +100,7 @@ insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
 #' @noRd
 
 
+
 knit_print.whirl_environment_info <- function(x, ...) {
   dropped_info <-
     c("BASH_FUNC",
@@ -108,7 +109,17 @@ knit_print.whirl_environment_info <- function(x, ...) {
       "PUBLIC_KEY",
       "SIGNING_KEY")
 
+  other_sensitive <- c("_PAT")
+
   x |>
+    dplyr::filter(!(grepl(
+      paste0("(?=.*", dropped_info, ")", collapse = "|"),
+      .data$Setting,
+      perl = TRUE
+    )) & !grepl(sprintf('(%s)$',
+                        paste0(
+                          other_sensitive, collapse = '|'
+                        )), .data$Setting)) |>
     insert_at_intervals_df(
       column_name = "Setting",
       char_to_insert = "<br>",
@@ -119,11 +130,6 @@ knit_print.whirl_environment_info <- function(x, ...) {
       char_to_insert = "<br>",
       interval = 45
     ) |>
-    dplyr::filter(!(grepl(
-      paste0("(?=.*", dropped_info, ")", collapse = "|"),
-      .data$Setting,
-      perl = TRUE
-    ))) |>
     knitr::kable(escape = F) |>
     kableExtra::kable_styling(bootstrap_options = "striped"
                               , full_width = TRUE) |>
