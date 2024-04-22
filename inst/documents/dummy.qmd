@@ -24,29 +24,4 @@ knitr::spin_child(params$script)
 
 ```
 
-# Session info
-
-```{r, include=FALSE}
-knitr::opts_chunk$set(
-  error = FALSE,
-  warning = FALSE,
-  message = FALSE,
-  echo = FALSE
-)
-
-info <- whirl:::session_info()
-
-```
-
-## Platform
-
-```{r}
-info$platform
-```
-
-## Packages
-
-```{r}
-info$packages
-```
 
