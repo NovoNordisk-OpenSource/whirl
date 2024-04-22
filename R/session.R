@@ -81,6 +81,24 @@ knit_print.whirl_packages_info <- function(x, ...) {
 }
 
 #' @noRd
+insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
+  df[[column_name]] <- sapply(df[[column_name]], function(input_string) {
+    if (nchar(input_string) < interval) {
+      return(input_string)
+    } else {
+      result <- input_string
+      insert_positions <- seq(interval, nchar(input_string), by = interval)
+      for (i in length(insert_positions):1) {
+        result <- paste(substr(result, 1, insert_positions[i] - 1), char_to_insert, substr(result, insert_positions[i], nchar(result)), sep = "")
+      }
+      return(result)
+    }
+  })
+  return(df)
+}
+
+#' @noRd
+
 
 knit_print.whirl_environment_info <- function(x, ...) {
   dropped_info <-
@@ -90,19 +108,27 @@ knit_print.whirl_environment_info <- function(x, ...) {
       "PUBLIC_KEY",
       "SIGNING_KEY")
 
-  x |>
+  x <-
+    insert_at_intervals_df(
+      x,
+      column_name = "Setting",
+      char_to_insert = "<br>",
+      interval = 45
+    ) |>
+    insert_at_intervals_df(
+      x,
+      column_name = "Value",
+      char_to_insert = "<br>",
+      interval = 45
+    ) |>
     dplyr::filter(!(grepl(
       paste0("(?=.*", dropped_info, ")", collapse = "|"),
       .data$Setting,
       perl = TRUE
     ))) |>
-    dplyr::mutate(Setting = gsub('(?=(?:.{10})+$)', " ", .data$Setting, perl = TRUE),
-                  Value = gsub('(?=(?:.{10})+$)', " ", .data$Value, perl = TRUE)
-                  ) |>
-    knitr::kable(escape = F, row.names = F) |>
+    knitr::kable(escape = F) |>
     kableExtra::kable_styling(bootstrap_options = "striped"
                               , full_width = TRUE) |>
-    kableExtra::column_spec(1:2, width = "20px") |>
     knitr::knit_print()
 }
 
