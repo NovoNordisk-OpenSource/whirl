@@ -17,12 +17,12 @@ Config/testthat/edition: 3
 Imports: 
     callr,
     dplyr,
+    kableExtra,
     knitr,
     quarto,
     renv,
     rlang,
     sessioninfo,
-    stringi,
     stringr,
     tibble,
     tidyr,

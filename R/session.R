@@ -108,15 +108,13 @@ knit_print.whirl_environment_info <- function(x, ...) {
       "PUBLIC_KEY",
       "SIGNING_KEY")
 
-  x <-
+  x |>
     insert_at_intervals_df(
-      x,
       column_name = "Setting",
       char_to_insert = "<br>",
       interval = 45
     ) |>
     insert_at_intervals_df(
-      x,
       column_name = "Value",
       char_to_insert = "<br>",
       interval = 45
