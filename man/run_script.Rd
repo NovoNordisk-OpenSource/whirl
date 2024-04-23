@@ -10,6 +10,7 @@ run_script(
   track_files = FALSE,
   strace_discards = NULL,
   renv = TRUE,
+  r_objects = TRUE,
   out_dir = dirname(script)
 )
 }

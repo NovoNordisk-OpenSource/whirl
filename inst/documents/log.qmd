@@ -9,6 +9,7 @@ params:
   strace_path: ''
   strace_discards: NULL
   objects_path: ''
+  r_objects: FALSE
   renv: TRUE
 format:
   html:
@@ -97,7 +98,7 @@ info$options
 cat("\n")
 ```
 
-```{r collect-objects, echo = FALSE}
+```{r collect-objects, echo = FALSE, eval = params$r_objects}
 whirl_objects <- list(strace = strace_info, environment_options = info)
 saveRDS(whirl_objects, file = params$objects_path )
 ```
