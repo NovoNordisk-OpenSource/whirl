@@ -116,5 +116,9 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
     overwrite = TRUE
   )
 
-  return(invisible(path_output))
+  # Return object
+
+  get_status(md = doc_md) |>
+    c(log = path_output) |>
+    invisible()
 }
