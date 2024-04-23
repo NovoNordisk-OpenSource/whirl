@@ -6,10 +6,11 @@
 #' @param renv logical
 #' @param strace_discards keywords to use to discard not required lines
 #' @param out_dir description
+#' @param create_r_objects logical
 #'
 #' @export
 
-run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = TRUE, create_r_objects = TRUE, out_dir = dirname(script)) {
+run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = TRUE, create_r_objects = FALSE, out_dir = dirname(script)) {
 
   # Input validation
 
