@@ -31,6 +31,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   # Derive output path
 
   path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".html", x = basename(script)))
+  objects_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".rds", x = basename(script)))
 
   # Create temp files for all documents.
   # Note: Documents are copied from package folder to make sure nothing is evaluated there.
@@ -49,6 +50,8 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   doc_md <- withr::local_tempfile(fileext = ".md")
 
   log_html <- withr::local_tempfile(fileext = ".html")
+
+  objects_rds <- withr::local_tempfile(fileext = ".rds")
 
   # Create new R session used to run all documents
 
@@ -98,6 +101,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
         strace = track_files,
         strace_path = strace_log,
         strace_discards = strace_discards,
+        objects_path = objects_rds,
         renv = renv
         ),
       execute_dir = getwd()
@@ -116,5 +120,11 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
     overwrite = TRUE
   )
 
-  return(invisible(path_output))
+  file.copy(
+    from = objects_rds,
+    to = objects_output,
+    overwrite = TRUE
+  )
+
+  return(invisible(list(path_output, objects_output)))
 }
