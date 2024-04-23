@@ -29,19 +29,19 @@ get_status <- function(md) {
   # Status
 
   if (length(errors)) {
-    status = "Error"
+    status = "error"
   } else if (length(warnings)) {
-    status = "Warnings"
+    status = "warning"
   } else {
-    status = "Completed"
+    status = "success"
   }
 
   # Return list with status
 
   list(
     status = status,
-    errors = errors,
-    warnings = warnings
+    error = errors,
+    warning = warnings
   )
 }
 
