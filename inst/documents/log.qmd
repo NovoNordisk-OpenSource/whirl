@@ -98,7 +98,7 @@ info$options
 cat("\n")
 ```
 
-```{r collect-objects, echo = FALSE, eval = params$r_objects}
+```{r collect-objects, echo = FALSE, eval = (params$r_objects == "yes")}
 whirl_objects <- list(strace = strace_info, environment_options = info)
 saveRDS(whirl_objects, file = params$objects_path )
 ```
