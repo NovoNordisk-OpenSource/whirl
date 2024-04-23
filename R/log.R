@@ -16,7 +16,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   stopifnot(is.character(script) && file.exists(script) && tools::file_ext(script) %in% c("R", "qmd", "Rmd"))
   stopifnot(is.logical(track_files) && (!track_files | Sys.info()[["sysname"]] == "Linux"))
   stopifnot(is.logical(renv))
-  stopifnot(is.logical(r_objects))
+  stopifnot(is.logical(create_r_objects))
   stopifnot(is.character(out_dir) && dir.exists(out_dir))
 
   # Derive execute directory for the quarto render process of the document
