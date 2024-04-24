@@ -9,8 +9,7 @@ run_script(
   script,
   track_files = FALSE,
   strace_discards = NULL,
-  renv = TRUE,
-  create_r_objects = FALSE,
+  renv = FALSE,
   out_dir = dirname(script)
 )
 }
@@ -22,8 +21,6 @@ run_script(
 \item{strace_discards}{keywords to use to discard not required lines}
 
 \item{renv}{logical}
-
-\item{create_r_objects}{logical}
 
 \item{out_dir}{description}
 }

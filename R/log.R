@@ -6,18 +6,16 @@
 #' @param renv logical
 #' @param strace_discards keywords to use to discard not required lines
 #' @param out_dir description
-#' @param create_r_objects logical
 #'
 #' @export
 
-run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = TRUE, create_r_objects = FALSE, out_dir = dirname(script)) {
+run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = FALSE, out_dir = dirname(script)) {
 
   # Input validation
 
   stopifnot(is.character(script) && file.exists(script) && tools::file_ext(script) %in% c("R", "qmd", "Rmd"))
   stopifnot(is.logical(track_files) && (!track_files | Sys.info()[["sysname"]] == "Linux"))
   stopifnot(is.logical(renv))
-  stopifnot(is.logical(create_r_objects))
   stopifnot(is.character(out_dir) && dir.exists(out_dir))
 
   # Derive execute directory for the quarto render process of the document
@@ -103,7 +101,6 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
         strace = track_files,
         strace_path = strace_log,
         strace_discards = strace_discards,
-        r_objects = create_r_objects,
         objects_path = objects_rds,
         renv = renv
         ),
@@ -123,11 +120,10 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
     overwrite = TRUE
   )
 
-  file.copy(
-    from = objects_rds,
-    to = objects_output,
-    overwrite = TRUE
-  )
+  # Read in session info list
+  objects_rds_lst <- readRDS(objects_rds) |>
+    unlist(recursive = FALSE)
 
-  return(invisible(list(path_output, objects_output)))
+
+  return(invisible(list(log_path = path_output, session_info = objects_rds_lst)))
 }

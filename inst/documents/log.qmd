@@ -9,7 +9,6 @@ params:
   strace_path: ''
   strace_discards: NULL
   objects_path: ''
-  r_objects: FALSE
   renv: TRUE
 format:
   html:
@@ -98,7 +97,7 @@ info$options
 cat("\n")
 ```
 
-```{r collect-objects, eval = (params$r_objects == "yes")}
+```{r collect-objects}
 whirl_objects <- vector("list")
 
 if (exists("strace_info")) {
