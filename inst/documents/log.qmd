@@ -21,6 +21,27 @@ format:
 
 # Summary
 
+```{r, echo=FALSE, eval=TRUE}
+status <- params$script_md |> 
+  whirl:::get_status()
+
+status_txt <- status[c("error", "warning")]
+status_txt <- status_txt[lapply(status_txt, length) > 0] |> 
+  lapply(\(x) paste("*", x, collapse = "\n")) |> 
+  unlist()
+
+whirl:::quarto_callout(
+  text = status_txt, 
+  title = status$status, 
+  type = switch(status$status,
+                "error" = "important",
+                "warning" = "warning",
+                "success" = "tip"
+                ), 
+  collapse = status$status != "success"
+)
+```
+
 ```{r, echo=FALSE}
 if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv){
   whirl:::renv_status()

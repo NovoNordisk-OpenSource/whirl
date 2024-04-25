@@ -11,6 +11,8 @@ x <- mtcars |>
 x |>
   print(n = 100)
 
+message("this is good")
+
 #' Plot
 
 ggplot(data = x) +

@@ -119,10 +119,17 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
     overwrite = TRUE
   )
 
+  # Return object
   # Read in session info list
+
   objects_rds_lst <- readRDS(objects_rds) |>
     unlist(recursive = FALSE)
 
+  output <- list(
+    log_path = path_output,
+    status = get_status(md = doc_md),
+    session_info = objects_rds_lst
+    )
 
-  return(invisible(list(log_path = path_output, session_info = objects_rds_lst)))
+  return(invisible(output))
 }

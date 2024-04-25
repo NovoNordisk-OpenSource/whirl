@@ -13,11 +13,14 @@ quarto_callout <- function(text = NULL, title = NULL,
                            collapse = NULL){
 
   type <- rlang::arg_match(type)
+  if (!is.null(collapse)) {
+    collapse <- ifelse(collapse, "true", "false")
+  }
 
   c(
     sprintf("::: {.callout-%s}",
             ifelse(!is.null(collapse),
-                   paste0(type, " collapse=",collapse),
+                   paste0(type, " collapse=", collapse),
                    type)
             ),
     if (!is.null(title)) {
