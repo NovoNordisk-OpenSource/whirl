@@ -9,7 +9,7 @@ run_script(
   script,
   track_files = FALSE,
   strace_discards = NULL,
-  renv = TRUE,
+  renv = FALSE,
   out_dir = dirname(script)
 )
 }

@@ -6,6 +6,9 @@ test_that("R script works", {
   run_script(script = script) |>
     expect_invisible()
 
+  run_script(script = script, renv = TRUE) |>
+    expect_invisible()
+
   run_script(script = script, renv = FALSE) |>
     expect_invisible()
 
@@ -14,7 +17,17 @@ test_that("R script works", {
 
   skip_on_os(c("windows", "mac", "solaris"))
 
-  run_script(script = script, track_files = TRUE) |>
+  run_script(script = script, track_files = TRUE, renv = TRUE) |>
+    expect_invisible()
+
+  run_script(script = script, track_files = TRUE, renv = FALSE) |>
+    expect_invisible()
+
+  run_script(script = script, track_files = TRUE, strace_discards = c("/lib", "/etc", "/lib64"), renv = TRUE) |>
+    expect_invisible()
+
+  run_script(script = script, track_files = TRUE,  strace_discards = c("/lib", "/etc", "/lib64"), renv = FALSE) |>
     expect_invisible()
 
   })
+

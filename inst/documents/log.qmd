@@ -8,6 +8,7 @@ params:
   strace: FALSE
   strace_path: ''
   strace_discards: NULL
+  objects_path: ''
   renv: TRUE
 format:
   html:
@@ -94,4 +95,16 @@ cat("\n")
 cat('\n## Option settings\n')
 info$options
 cat("\n")
+```
+
+```{r collect-objects}
+whirl_objects <- vector("list")
+
+if (exists("strace_info")) {
+  whirl_objects$strace_info <- strace_info
+}
+if (exists("info")) {
+  whirl_objects$environment_options <- info
+}
+saveRDS(whirl_objects, file = params$objects_path)
 ```
