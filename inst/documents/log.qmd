@@ -25,8 +25,13 @@ format:
 status <- params$script_md |> 
   whirl:::get_status()
 
+status_txt <- status[c("error", "warning")]
+status_txt <- status_txt[lapply(status_txt, length) > 0] |> 
+  lapply(\(x) paste("*", x, collapse = "\n")) |> 
+  unlist()
+
 whirl:::quarto_callout(
-  text = status[[status$status]], 
+  text = status_txt, 
   title = status$status, 
   type = switch(status$status,
                 "error" = "important",

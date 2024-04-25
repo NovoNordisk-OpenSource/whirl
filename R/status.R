@@ -15,16 +15,17 @@ get_status <- function(md) {
   # Errors
 
   errors <- x |>
-    stringr::str_subset(pattern = "cell-output-error") |>
+    stringr::str_subset(pattern = "^ *\\{\\.cell-output \\.cell-output-error\\}") |>
     stringr::str_remove_all("\\{[^\\}]*\\}") |>
     stringr::str_squish()
 
   # Warnings
 
   warnings <- x |>
-    stringr::str_subset(pattern = "cell-output-stderr") |>
+    stringr::str_subset(pattern = "^ *\\{\\.cell-output \\.cell-output-stderr\\}") |>
     stringr::str_remove_all("\\{[^\\}]*\\}") |>
-    stringr::str_squish()
+    stringr::str_squish() |>
+    stringr::str_subset(pattern = "^(W|w)arning")
 
   # Status
 
