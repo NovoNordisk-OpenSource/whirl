@@ -31,7 +31,6 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   # Derive output path
 
   path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".html", x = basename(script)))
-  objects_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".rds", x = basename(script)))
 
   # Create temp files for all documents.
   # Note: Documents are copied from package folder to make sure nothing is evaluated there.
