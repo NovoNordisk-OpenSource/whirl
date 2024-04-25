@@ -9,7 +9,7 @@
 #'
 #' @export
 
-run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = TRUE, out_dir = dirname(script)) {
+run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = FALSE, out_dir = dirname(script)) {
 
   # Input validation
 
@@ -49,6 +49,8 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   doc_md <- withr::local_tempfile(fileext = ".md")
 
   log_html <- withr::local_tempfile(fileext = ".html")
+
+  objects_rds <- withr::local_tempfile(fileext = ".rds")
 
   # Create new R session used to run all documents
 
@@ -98,6 +100,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
         strace = track_files,
         strace_path = strace_log,
         strace_discards = strace_discards,
+        objects_path = objects_rds,
         renv = renv
         ),
       execute_dir = getwd()
@@ -117,8 +120,16 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   )
 
   # Return object
+  # Read in session info list
 
-  get_status(md = doc_md) |>
-    c(log = path_output) |>
-    invisible()
+  objects_rds_lst <- readRDS(objects_rds) |>
+    unlist(recursive = FALSE)
+
+  output <- list(
+    log_path = path_output,
+    status = get_status(md = doc_md),
+    session_info = objects_rds_lst
+    )
+
+  return(invisible(output))
 }
