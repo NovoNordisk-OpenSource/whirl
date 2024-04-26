@@ -7,9 +7,8 @@ test with a single script}
 \usage{
 run_script(
   script,
-  track_files = FALSE,
-  strace_discards = NULL,
-  renv = FALSE,
+  track_files = options::opt("track_files"),
+  renv = options::opt("check_renv"),
   out_dir = dirname(script)
 )
 }
@@ -17,8 +16,6 @@ run_script(
 \item{script}{path}
 
 \item{track_files}{logical}
-
-\item{strace_discards}{keywords to use to discard not required lines}
 
 \item{renv}{logical}
 
