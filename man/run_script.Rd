@@ -8,16 +8,16 @@ test with a single script}
 run_script(
   script,
   track_files = options::opt("track_files"),
-  renv = options::opt("check_renv"),
+  check_renv = options::opt("check_renv"),
   out_dir = dirname(script)
 )
 }
 \arguments{
 \item{script}{path}
 
-\item{track_files}{logical}
+\item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
-\item{renv}{logical}
+\item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 
 \item{out_dir}{description}
 }

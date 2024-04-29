@@ -2,26 +2,33 @@
 #' test with a single script
 #'
 #' @param script path
-#' @param track_files logical
-#' @param renv logical
+#' @inheritParams options_params
 #' @param out_dir description
 #'
 #' @export
 
 run_script <- function(script,
                        track_files = options::opt("track_files"),
-                       renv = options::opt("check_renv"),
+                       check_renv = options::opt("check_renv"),
                        out_dir = dirname(script)) {
-
-  strace_discards = options::opt("track_files_discards")
-  if (all(strace_discards == "")) strace_discards <- NULL
 
   # Input validation
 
-  stopifnot(is.character(script) && file.exists(script) && tools::file_ext(script) %in% c("R", "qmd", "Rmd"))
-  stopifnot(is.logical(track_files) && (!track_files | Sys.info()[["sysname"]] == "Linux"))
-  stopifnot(is.logical(renv))
-  stopifnot(is.character(out_dir) && dir.exists(out_dir))
+  val <- checkmate::makeAssertCollection()
+
+  checkmate::assert_character(x = script, any.missing = FALSE, len = 1, add = val)
+  checkmate::assert_file_exists(x = script, access = "r", extension = c("R", "qmd", "Rmd"), add = val)
+
+  checkmate::assert_logical(x = track_files, any.missing = FALSE, len = 1, add = val)
+  checkmate::assert_logical(x = check_renv, any.missing = FALSE, len = 1, add = val)
+
+  checkmate::assert_character(x = out_dir, any.missing = FALSE, len = 1, add = val)
+  checkmate::assert_path_for_output(x = out_dir, overwrite = TRUE, add = val)
+
+  track_files_discards <- options::opt("track_files_discards") |>
+    checkmate::assert_character(any.missing = FALSE, add = val)
+
+  checkmate::reportAssertions(val)
 
   # Derive execute directory for the quarto render process of the document
   # Abides to standards for R, Rmd, and qmd scripts,
@@ -33,8 +40,9 @@ run_script <- function(script,
     quarto_execute_dir <- normalizePath(dirname(script))
   }
 
-  # Derive output path
+  # Derive output path and create out_dir if it does not exist
 
+  if (!dir.exists(out_dir)) dir.create(out_dir)
   path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".html", x = basename(script)))
 
   # Create temp files for all documents.
@@ -104,9 +112,9 @@ run_script <- function(script,
         script_md = doc_md,
         strace = track_files,
         strace_path = strace_log,
-        strace_discards = strace_discards,
+        strace_discards = track_files_discards,
         objects_path = objects_rds,
-        renv = renv
+        renv = check_renv
         ),
       execute_dir = getwd()
     )

@@ -20,27 +20,7 @@ start_strace <- function(pid, file) {
 #'
 #' @noRd
 
-readstrace_info <- function(path, strace_discards = NULL){
-  if (is.null(strace_discards)){
-    strace_discards <- c(
-      "/lib",
-      "/etc",
-      "/lib64",
-      "/usr",
-      "/var",
-      "/opt",
-      "/sys" ,
-      "/proc",
-      "/tmp",
-      "/.$",
-      "/null",
-      "/urandom",
-      "/.cache",
-      "./file",
-      "/renv",
-      .libPaths()
-    )
-  }
+readstrace_info <- function(path, strace_discards = character()){
 
   data_strace <- read_strace(path, strace_discards = strace_discards) |>
     dplyr::tibble()
@@ -99,7 +79,6 @@ knit_print.whirl_strace_output <- function(x, ...){
 #'
 #' @return A `tibble` with strace information.
 #' @noRd
-
 
 read_strace <- function(path, strace_discards) {
   all_strace <- readLines(path)
