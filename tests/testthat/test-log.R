@@ -35,5 +35,17 @@ test_that("R script works", {
 
     })
 
+  withr::with_options(
+    new = list(whirl.track_files_discards = character()),
+    code = {
+
+      run_script(script = script, track_files = TRUE, check_renv = TRUE) |>
+        expect_invisible()
+
+      run_script(script = script, track_files = TRUE, check_renv = FALSE) |>
+        expect_invisible()
+
+    })
+
 })
 
