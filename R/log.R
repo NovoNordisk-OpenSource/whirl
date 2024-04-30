@@ -23,7 +23,12 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   # Abides to standards for R, Rmd, and qmd scripts,
   # in order for relative paths to work as expected inside the scripts.
 
-  out_format <- paste0(".", out_format)
+  # Set output options depending on declared format.
+  out_format_ext <- paste0(".", out_format)
+
+  if (out_format == "md") {
+    out_format <- "hugo-md"
+  }
 
   if (tools::file_ext(script) == "R") {
     quarto_execute_dir <- getwd()
@@ -33,7 +38,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   # Derive output path
 
-  path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = out_format, x = basename(script)))
+  path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = out_format_ext, x = basename(script)))
 
   # Create temp files for all documents.
   # Note: Documents are copied from package folder to make sure nothing is evaluated there.
@@ -51,9 +56,11 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   doc_md <- withr::local_tempfile(fileext = ".md")
 
-  log_output <- withr::local_tempfile(fileext = out_format)
+  log_output <- withr::local_tempfile(fileext = out_format_ext)
 
   objects_rds <- withr::local_tempfile(fileext = ".rds")
+
+  # withr::with_options(list(out_format = out_format), getOption("out_format"))
 
   # Create new R session used to run all documents
 
@@ -61,7 +68,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   # If track_files start strace tracking the process and which files are used
 
-  if (track_files){
+  if (track_files) {
 
     strace_log <- withr::local_tempfile(fileext = ".strace")
 
@@ -97,7 +104,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
       dir = tempdir(),
       input = log_qmd,
       output_file = basename(log_output),
-      output_format = "hugo-md",
+      output_format = out_format,
       execute_params = list(
         title = script,
         script_md = doc_md,

@@ -10,17 +10,20 @@ run_script(
   track_files = FALSE,
   strace_discards = NULL,
   renv = FALSE,
+  out_format = "html",
   out_dir = dirname(script)
 )
 }
 \arguments{
-\item{script}{path}
+\item{script}{path The .R/qmd/Rmd files to be executed}
 
 \item{track_files}{logical}
 
 \item{strace_discards}{keywords to use to discard not required lines}
 
 \item{renv}{logical}
+
+\item{out_format}{format of the log output either html/md}
 
 \item{out_dir}{description}
 }
