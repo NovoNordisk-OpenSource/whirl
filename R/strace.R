@@ -156,11 +156,11 @@ read_strace <- function(path, strace_discards) {
     dplyr::filter(
 
       # Remove all discards based on file path
-      stringr::str_detect(string = .data$file, pattern = paste(strace_discards, collapse = "|"), negate = TRUE),
+      stringr::str_detect(string = .data$file, pattern = paste(strace_discards, collapse = "|"), negate = length(strace_discards) > 0),
 
       # Remove all discards based on current working directory
 
-      stringr::str_detect(string = .data$directory, pattern = paste(strace_discards, collapse = "|"), negate = TRUE) |
+      stringr::str_detect(string = .data$directory, pattern = paste(strace_discards, collapse = "|"), negate = length(strace_discards) > 0) |
         stringr::str_detect(string = .data$file, pattern = "^/"),
       trimws(.data$file) != "/"
     )
