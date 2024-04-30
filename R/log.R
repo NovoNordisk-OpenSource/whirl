@@ -1,26 +1,29 @@
 #' Run script
 #' test with a single script
 #'
-#' @param script path
+#' @param script path The .R/qmd/Rmd files to be executed
 #' @param track_files logical
 #' @param renv logical
 #' @param strace_discards keywords to use to discard not required lines
 #' @param out_dir description
+#' @param out_format format of the log output either html/md
 #'
 #' @export
 
-run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = FALSE, out_dir = dirname(script)) {
+run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = FALSE, out_format = "html", out_dir = dirname(script)) {
 
   # Input validation
 
   stopifnot(is.character(script) && file.exists(script) && tools::file_ext(script) %in% c("R", "qmd", "Rmd"))
   stopifnot(is.logical(track_files) && (!track_files | Sys.info()[["sysname"]] == "Linux"))
   stopifnot(is.logical(renv))
+  stopifnot(is.character(out_format) && out_format %in% c("html", "md"))
   stopifnot(is.character(out_dir) && dir.exists(out_dir))
-
   # Derive execute directory for the quarto render process of the document
   # Abides to standards for R, Rmd, and qmd scripts,
   # in order for relative paths to work as expected inside the scripts.
+
+  out_format <- paste0(".", out_format)
 
   if (tools::file_ext(script) == "R") {
     quarto_execute_dir <- getwd()
@@ -30,7 +33,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   # Derive output path
 
-  path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".html", x = basename(script)))
+  path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = out_format, x = basename(script)))
 
   # Create temp files for all documents.
   # Note: Documents are copied from package folder to make sure nothing is evaluated there.
@@ -48,7 +51,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   doc_md <- withr::local_tempfile(fileext = ".md")
 
-  log_html <- withr::local_tempfile(fileext = ".html")
+  log_output <- withr::local_tempfile(fileext = out_format)
 
   objects_rds <- withr::local_tempfile(fileext = ".rds")
 
@@ -93,7 +96,8 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
     args = list(
       dir = tempdir(),
       input = log_qmd,
-      output_file = basename(log_html),
+      output_file = basename(log_output),
+      output_format = "hugo-md",
       execute_params = list(
         title = script,
         script_md = doc_md,
@@ -114,7 +118,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   # Copy created log to output directory
 
   file.copy(
-    from = log_html,
+    from = log_output,
     to = path_output,
     overwrite = TRUE
   )
