@@ -17,6 +17,7 @@ Config/testthat/edition: 3
 Imports: 
     callr,
     dplyr,
+    jsonlite,
     kableExtra,
     knitr,
     quarto,

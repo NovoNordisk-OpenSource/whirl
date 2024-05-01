@@ -1,34 +1,30 @@
 #' Run script
 #' test with a single script
 #'
-#' @param script path The .R/qmd/Rmd files to be executed
+#' @param script path
 #' @param track_files logical
 #' @param renv logical
 #' @param strace_discards keywords to use to discard not required lines
 #' @param out_dir description
-#' @param out_format format of the log output either html/md
+#' @param output_format format of the log output in addition to html
+#' @param session_info_json session_info in json format
+#' @importFrom jsonlite toJSON
+#' @importFrom jsonlite prettify
 #'
 #' @export
 
-run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = FALSE, out_format = "html", out_dir = dirname(script)) {
+run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv = FALSE, output_format = "gfm", session_info_json = FALSE, out_dir = dirname(script)) {
 
   # Input validation
 
   stopifnot(is.character(script) && file.exists(script) && tools::file_ext(script) %in% c("R", "qmd", "Rmd"))
   stopifnot(is.logical(track_files) && (!track_files | Sys.info()[["sysname"]] == "Linux"))
   stopifnot(is.logical(renv))
-  stopifnot(is.character(out_format) && out_format %in% c("html", "md"))
   stopifnot(is.character(out_dir) && dir.exists(out_dir))
+
   # Derive execute directory for the quarto render process of the document
   # Abides to standards for R, Rmd, and qmd scripts,
   # in order for relative paths to work as expected inside the scripts.
-
-  # Set output options depending on declared format.
-  out_format_ext <- paste0(".", out_format)
-
-  if (out_format == "md") {
-    out_format <- "hugo-md"
-  }
 
   if (tools::file_ext(script) == "R") {
     quarto_execute_dir <- getwd()
@@ -38,7 +34,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   # Derive output path
 
-  path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = out_format_ext, x = basename(script)))
+  path_output <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".html", x = basename(script)))
 
   # Create temp files for all documents.
   # Note: Documents are copied from package folder to make sure nothing is evaluated there.
@@ -47,20 +43,18 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   dummy_qmd <- withr::local_tempfile(
     lines = readLines(system.file("documents/dummy.qmd", package = "whirl")),
     fileext = ".qmd"
-    )
+  )
 
   log_qmd <- withr::local_tempfile(
     lines = readLines(system.file("documents/log.qmd", package = "whirl")),
     fileext = ".qmd"
-    )
+  )
 
   doc_md <- withr::local_tempfile(fileext = ".md")
 
-  log_output <- withr::local_tempfile(fileext = out_format_ext)
+  log_html <- withr::local_tempfile(fileext = ".html")
 
   objects_rds <- withr::local_tempfile(fileext = ".rds")
-
-  # withr::with_options(list(out_format = out_format), getOption("out_format"))
 
   # Create new R session used to run all documents
 
@@ -68,7 +62,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
 
   # If track_files start strace tracking the process and which files are used
 
-  if (track_files) {
+  if (track_files){
 
     strace_log <- withr::local_tempfile(fileext = ".strace")
 
@@ -103,8 +97,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
     args = list(
       dir = tempdir(),
       input = log_qmd,
-      output_file = basename(log_output),
-      output_format = out_format,
+      output_file = basename(log_html),
       execute_params = list(
         title = script,
         script_md = doc_md,
@@ -113,7 +106,7 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
         strace_discards = strace_discards,
         objects_path = objects_rds,
         renv = renv
-        ),
+      ),
       execute_dir = getwd()
     )
   )
@@ -125,10 +118,18 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   # Copy created log to output directory
 
   file.copy(
-    from = log_output,
+    from = log_html,
     to = path_output,
     overwrite = TRUE
   )
+
+  # if output_format is not NULL then set output options depending on declared format.
+  if (!is.null(output_format)){
+    if (output_format %in%  c("gfm", "commonmark", "hugo-md", "docusaurus-md", "markua")) {
+      path_output_other <- file.path(out_dir, gsub(pattern = "\\.[^\\.]*$", replacement = ".md", x = basename(script)))
+      knitr::pandoc(input = path_output, format = output_format, ext = "md")
+    }
+  }
 
   # Return object
   # Read in session info list
@@ -139,8 +140,17 @@ run_script <- function(script, track_files = FALSE, strace_discards = NULL, renv
   output <- list(
     log_path = path_output,
     status = get_status(md = doc_md),
-    session_info = objects_rds_lst
-    )
+    session_info_rlist = objects_rds_lst
+  )
+
+  if (!is.null(output_format)) {
+    output$log_path_other <- path_output_other
+  }
+
+  if (session_info_json) {
+    objects_rds_json <- jsonlite::toJSON(objects_rds_lst, force = TRUE) |> jsonlite::prettify()
+    output$session_info_json <- objects_rds_json
+  }
 
   return(invisible(output))
 }

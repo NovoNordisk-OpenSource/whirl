@@ -10,12 +10,13 @@ run_script(
   track_files = FALSE,
   strace_discards = NULL,
   renv = FALSE,
-  out_format = "html",
+  output_format = "gfm",
+  session_info_json = FALSE,
   out_dir = dirname(script)
 )
 }
 \arguments{
-\item{script}{path The .R/qmd/Rmd files to be executed}
+\item{script}{path}
 
 \item{track_files}{logical}
 
@@ -23,7 +24,9 @@ run_script(
 
 \item{renv}{logical}
 
-\item{out_format}{format of the log output either html/md}
+\item{output_format}{format of the log output in addition to html}
+
+\item{session_info_json}{session_info in json format}
 
 \item{out_dir}{description}
 }
