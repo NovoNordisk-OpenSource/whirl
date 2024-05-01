@@ -37,7 +37,7 @@ List of file naming patterns not be tracked when track_files = TRUE\item{default
     "/tmp", "/.$", "/null", "/urandom", "/.cache", "./file", 
     "/renv", .libPaths())}}
 \item{option: }{whirl.track_files_discards}
-\item{envvar: }{R_WHIRL_TRACK_FILES_DISCARDS (as character vector, split on ',' delimiter)}
+\item{envvar: }{R_WHIRL_TRACK_FILES_DISCARDS (as character vector, split on ';' delimiter)}
 }}
 
 }

@@ -43,5 +43,5 @@ options::define_option(
     .libPaths()
     ),
   desc = "List of file naming patterns not be tracked when track_files = TRUE",
-  envvar_fn = options::envvar_str_split(delim = ",")
+  envvar_fn = options::envvar_str_split(delim = ";")
 )
