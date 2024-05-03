@@ -5,6 +5,7 @@ date-format: "YYYY-MM-DDTHH:mm:ss zzz"
 params:
   title: 'dev'
   script_md: 'dev'
+  p_wd: ""
   strace: FALSE
   strace_path: ''
   strace_discards: NULL
@@ -52,9 +53,11 @@ if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) 
 use_strace <- (is.character(params$strace) && params$strace == "yes" | is.logical(params$strace) && params$strace)
 
 if (use_strace){
-  strace_info <- whirl:::readstrace_info(
+  strace_info <- whirl:::read_strace_info(
     path = params$strace_path, 
-    strace_discards = params$strace_discards)
+    p_wd = params$p_wd, 
+    strace_discards = params$strace_discards
+  )
 }
 
 ```
@@ -64,7 +67,7 @@ cat("## Input", "\n")
 ```
 
 ```{r, echo=FALSE, eval=use_strace}
-strace_info$input
+strace_info$read
 ```
 
 ```{r, echo=FALSE, results='asis', eval=use_strace}
@@ -72,7 +75,7 @@ cat("## Output", "\n")
 ```
 
 ```{r, echo=FALSE, eval=use_strace}
-strace_info$output
+strace_info$write
 ```
 
 # Script

@@ -110,6 +110,7 @@ run_script <- function(script,
       execute_params = list(
         title = script,
         script_md = doc_md,
+        p_wd = tempdir(),
         strace = track_files,
         strace_path = strace_log,
         strace_discards = track_files_discards,
