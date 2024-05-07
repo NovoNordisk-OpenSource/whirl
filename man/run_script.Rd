@@ -10,23 +10,20 @@ run_script(
   track_files = FALSE,
   strace_discards = NULL,
   renv = FALSE,
-  output_format = "gfm",
-  session_info_json = FALSE,
+  output_format = c("html"),
   out_dir = dirname(script)
 )
 }
 \arguments{
 \item{script}{path}
 
-\item{track_files}{logical}
+\item{track_files}{\code{logical}}
 
 \item{strace_discards}{keywords to use to discard not required lines}
 
-\item{renv}{logical}
+\item{renv}{\code{logical}}
 
-\item{output_format}{format of the log output in addition to html}
-
-\item{session_info_json}{session_info in json format}
+\item{output_format}{\code{vector} either html, gfm, commonmark or markua format(s) of the log output(s)}
 
 \item{out_dir}{description}
 }
