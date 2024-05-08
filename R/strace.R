@@ -4,10 +4,11 @@
 #' @noRd
 
 start_strace <- function(pid, file) {
-
-  sprintf("strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s -y",
-          file,
-          pid) |>
+  sprintf(
+    "strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s -y",
+    file,
+    pid
+  ) |>
     system(wait = FALSE)
 }
 
@@ -20,8 +21,7 @@ start_strace <- function(pid, file) {
 #' @return [list] of `data.frame`(s) of the relevant files for each type of info
 #' @noRd
 
-read_strace_info <- function(path, p_wd, strace_discards = character(), types = c("read", "write", "deleted")){
-
+read_strace_info <- function(path, p_wd, strace_discards = character(), types = c("read", "write", "deleted")) {
   strace <- path |>
     read_strace(p_wd = p_wd) |>
     refine_strace(strace_discards = strace_discards)
@@ -39,7 +39,9 @@ read_strace_info <- function(path, p_wd, strace_discards = character(), types = 
 
   out[names(strace)] <- strace
 
-  i <- lapply(X = out, FUN = is.null) |> unlist() |> which()
+  i <- lapply(X = out, FUN = is.null) |>
+    unlist() |>
+    which()
   dummy <- tibble::tibble(file = "No files")
   class(dummy) <- c("whirl_strace_info", class(dummy))
   out[i] <- list(dummy)
@@ -50,8 +52,7 @@ read_strace_info <- function(path, p_wd, strace_discards = character(), types = 
 
 #' @noRd
 
-knit_print.whirl_strace_info <- function(x, ...){
-
+knit_print.whirl_strace_info <- function(x, ...) {
   x |>
     knitr::kable() |>
     knitr::knit_print()
@@ -90,7 +91,6 @@ read_strace <- function(path, p_wd) {
       time = as.POSIXct(as.numeric(time), origin = "1970-01-01"),
       result = as.numeric(result),
       duration = as.numeric(duration),
-
       type = dplyr::case_when(
         funct == "chdir" ~ "chdir",
         stringr::str_detect(funct, "unlink") ~ "delete",
@@ -98,14 +98,12 @@ read_strace <- function(path, p_wd) {
         funct == "openat" & is.na(access) ~ "read",
         funct == "openat" & !is.na(access) ~ "write",
       ),
-
       wd = dplyr::case_when(
         type == "chdir" & path == "." ~ p_wd,
         type == "chdir" ~ path
       ) |>
         zoo::na.locf(na.rm = FALSE) |>
         dplyr::coalesce(p_wd),
-
       dir = dplyr::coalesce(dir, wd)
     )
 
@@ -116,14 +114,13 @@ read_strace <- function(path, p_wd) {
       time,
       type,
       file = dplyr::if_else(
-        stringr::str_detect(string = path, pattern ="^/", negate = TRUE),
+        stringr::str_detect(string = path, pattern = "^/", negate = TRUE),
         file.path(dir, path),
         path
       )
     ) |>
     dplyr::filter(type %in% c("read", "write", "delete")) |>
     dplyr::select(seq, time, file, type)
-
 }
 
 #' refine strace output
@@ -142,7 +139,8 @@ refine_strace <- function(strace_df, strace_discards = character()) {
         stringr::str_detect(
           string = file,
           pattern = paste0(strace_discards, collapse = "|"),
-          negate = TRUE)
+          negate = TRUE
+        )
       )
   }
 
@@ -158,10 +156,9 @@ refine_strace <- function(strace_df, strace_discards = character()) {
     dplyr::filter(
       type == "read" & !cumsum(type == "write") | # Remove reads from  a file created earlier
         type == "write" & !cumsum(rev(type) == "delete") | # Remove write when the file is deleted afterwards
-        type == "delete" & (!cumsum(type == "write") | head(type,1) == "read") # Remove delete when the file was created earlier, and not read before that creation
+        type == "delete" & (!cumsum(type == "write") | head(type, 1) == "read") # Remove delete when the file was created earlier, and not read before that creation
     ) |>
     dplyr::ungroup() |>
-    dplyr::arrange(seq,file) |>
+    dplyr::arrange(seq, file) |>
     dplyr::select(time, file, type)
-
 }

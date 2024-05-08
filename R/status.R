@@ -5,7 +5,6 @@
 #' @noRd
 
 get_status <- function(md) {
-
   x <- readChar(con = md, nchars = file.size(md)) |>
     paste(collapse = "\n") |>
     stringr::str_split("\n:::")
@@ -30,11 +29,11 @@ get_status <- function(md) {
   # Status
 
   if (length(errors)) {
-    status = "error"
+    status <- "error"
   } else if (length(warnings)) {
-    status = "warning"
+    status <- "warning"
   } else {
-    status = "success"
+    status <- "success"
   }
 
   # Return list with status
@@ -45,5 +44,3 @@ get_status <- function(md) {
     warning = warnings
   )
 }
-
-

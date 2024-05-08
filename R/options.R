@@ -37,7 +37,7 @@ options::define_option(
     "/usr",
     "/var",
     "/opt",
-    "/sys" ,
+    "/sys",
     "/proc",
     "/tmp",
     "/.$",
@@ -46,7 +46,7 @@ options::define_option(
     "/.cache",
     "/renv",
     .libPaths()
-    ),
+  ),
   desc = "List of file naming patterns not be tracked when track_files = TRUE",
   envvar_fn = options::envvar_str_split(delim = ";")
 )

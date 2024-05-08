@@ -1,20 +1,18 @@
 #' Get renv status
 #' @noRd
 
-renv_status <- function(){
-
+renv_status <- function() {
   msg <- utils::capture.output(status <- renv::status())
 
   structure(
     list(message = msg, status = status),
     class = c("whirl_renv_status", "list")
-    )
+  )
 }
 
 #' @noRd
 
-print.whirl_renv_status <- function(x, ...){
-
+print.whirl_renv_status <- function(x, ...) {
   x$message |>
     cat(sep = "\n")
 
@@ -23,9 +21,8 @@ print.whirl_renv_status <- function(x, ...){
 
 #' @noRd
 
-knit_print.whirl_renv_status <- function(x, ...){
-
-  if (!length(x$status$lockfile$Packages)){
+knit_print.whirl_renv_status <- function(x, ...) {
+  if (!length(x$status$lockfile$Packages)) {
     renv_note <- "warning"
     renv_title <- "renv not used"
     renv_message <- NULL
@@ -45,20 +42,24 @@ knit_print.whirl_renv_status <- function(x, ...){
     text = renv_message,
     title = renv_title,
     type = renv_note,
-    collapse = if (!is.null(renv_message)) {TRUE} else {NULL}
+    collapse = if (!is.null(renv_message)) {
+      TRUE
+    } else {
+      NULL
+    }
   )
-
 }
 
 #' Format renv message with markdown table. Used when packages are in inconsistent state only.
 #' @noRd
 
-renv_message_table <- function(renv_message){
-
+renv_message_table <- function(renv_message) {
   i <- grepl(pattern = "^ +", x = renv_message) |>
     which()
 
-  if (!length(i)) return(renv_message)
+  if (!length(i)) {
+    return(renv_message)
+  }
 
   renv_message[i] <- gsub(pattern = "( |$)(?! )", replacement = "|", x = renv_message[i], perl = TRUE)
 
@@ -75,7 +76,5 @@ renv_message_table <- function(renv_message){
 #' @noRd
 
 renv_message_headers <- function(renv_message) {
-
   gsub(pattern = "^#", replacement = "###", x = renv_message)
 }
-
