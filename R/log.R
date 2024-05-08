@@ -27,6 +27,7 @@ run_script <-
     )
     stopifnot(is.logical(track_files) &&
       (!track_files | Sys.info()[["sysname"]] == "Linux"))
+
     stopifnot(is.logical(renv))
     stopifnot(is.character(out_dir) && dir.exists(out_dir))
 
@@ -138,35 +139,7 @@ run_script <-
       )
     }
 
-    sapply(
-      output_format[output_format %in% c("gfm", "commonmark", "markua")],
-      function(x) {
-        knitr::pandoc(
-          input = log_html,
-          format = x,
-          ext = "md"
-        )
-        file.copy(
-          from = file.path(
-            tempdir(),
-            gsub(
-              pattern = "\\.[^\\.]*$",
-              replacement = ".md",
-              x = basename(log_html)
-            )
-          ),
-          to = file.path(
-            out_dir,
-            gsub(
-              pattern = "\\.[^\\.]*$",
-              replacement = paste0("-", x, ".md"),
-              x = basename(script)
-            )
-          ),
-          overwrite = TRUE
-        )
-      }
-    )
+    mdformats(script = script, log_html = log_html, mdfmt = output_format[output_format %in% c("gfm", "commonmark", "markua")], out_dir = out_dir)
 
     # Return object
     # Read in session info list
