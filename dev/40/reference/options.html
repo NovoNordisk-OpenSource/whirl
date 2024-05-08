@@ -55,7 +55,22 @@ accessed by passing the package name to <code>env</code>.</p>
     <h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a></h2>
     
 
-<dl><dt>track_files</dt>
+<dl><dt>out_formats</dt>
+<dd><dl>
+Which log format(s) to produce. Possiblities are html, json, and markdown formats:gfm, commonmark, and markua. See also details.<dt>default: </dt>
+<dd><div class="sourceCode"><pre><code><span><span class="st">"html"</span></span></code></pre></div></dd>
+
+<dt>option: </dt>
+<dd><p>whirl.out_formats</p></dd>
+
+<dt>envvar: </dt>
+<dd><p>R_WHIRL_OUT_FORMATS (evaluated if possible, raw string otherwise)</p></dd>
+
+
+</dl></dd>
+
+
+<dt>track_files</dt>
 <dd><dl>
 Should files read and written be tracked? Currently only supported on Linux.<dt>default: </dt>
 <dd><div class="sourceCode"><pre><code><span><span class="cn">FALSE</span></span></code></pre></div></dd>
@@ -89,8 +104,7 @@ Should the projects renv status be checked?<dt>default: </dt>
 <dd><dl>
 List of file naming patterns not be tracked when track_files = TRUE<dt>default: </dt>
 <dd><div class="sourceCode"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"/lib"</span>, <span class="st">"/etc"</span>, <span class="st">"/lib64"</span>, <span class="st">"/usr"</span>, <span class="st">"/var"</span>, <span class="st">"/opt"</span>, <span class="st">"/sys"</span>, <span class="st">"/proc"</span>, </span>
-<span>    <span class="st">"/tmp"</span>, <span class="st">"/.$"</span>, <span class="st">"/null"</span>, <span class="st">"/urandom"</span>, <span class="st">"/.cache"</span>, <span class="st">"./file"</span>, </span>
-<span>    <span class="st">"/renv"</span>, <span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div></dd>
+<span>    <span class="st">"/tmp"</span>, <span class="st">"/.$"</span>, <span class="st">"/null"</span>, <span class="st">"/urandom"</span>, <span class="st">"/.cache"</span>, <span class="st">"/renv"</span>, <span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div></dd>
 
 <dt>option: </dt>
 <dd><p>whirl.track_files_discards</p></dd>
