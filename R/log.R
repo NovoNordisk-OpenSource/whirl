@@ -138,35 +138,7 @@ run_script <-
       )
     }
 
-    sapply(
-      output_format[output_format %in% c("gfm", "commonmark", "markua")],
-      function(x) {
-        knitr::pandoc(
-          input = log_html,
-          format = x,
-          ext = "md"
-        )
-        file.copy(
-          from = file.path(
-            tempdir(),
-            gsub(
-              pattern = "\\.[^\\.]*$",
-              replacement = ".md",
-              x = basename(log_html)
-            )
-          ),
-          to = file.path(
-            out_dir,
-            gsub(
-              pattern = "\\.[^\\.]*$",
-              replacement = paste0("-", x, ".md"),
-              x = basename(script)
-            )
-          ),
-          overwrite = TRUE
-        )
-      }
-    )
+    mdformats(log_html = log_html, mdfmt = output_format[output_format %in% c("gfm", "commonmark", "markua")], out_dir = path_output)
 
     # Return object
     # Read in session info list
