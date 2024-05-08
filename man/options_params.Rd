@@ -8,6 +8,8 @@
 
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
+\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
+
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 }
 \description{

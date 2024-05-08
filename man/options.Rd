@@ -20,6 +20,12 @@ options::opt(x, default, env = "whirl")
 \section{Options}{
 
 \describe{
+\item{out_formats}{\describe{
+Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details.\item{default: }{\preformatted{"html"}}
+\item{option: }{whirl.out_formats}
+\item{envvar: }{R_WHIRL_OUT_FORMATS (evaluated if possible, raw string otherwise)}
+}}
+
 \item{track_files}{\describe{
 Should files read and written be tracked? Currently only supported on Linux.\item{default: }{\preformatted{FALSE}}
 \item{option: }{whirl.track_files}

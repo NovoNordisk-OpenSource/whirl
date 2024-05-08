@@ -9,6 +9,12 @@ NULL
 NULL
 
 options::define_option(
+  option = "out_formats",
+  default = "html",
+  desc = "Which log format(s) to produce. Possiblities are `html`, `json`, and markdown formats:`gfm`, `commonmark`, and `markua`. See also details."
+)
+
+options::define_option(
   option = "track_files",
   default = FALSE,
   desc = "Should files read and written be tracked? Currently only supported on Linux.",

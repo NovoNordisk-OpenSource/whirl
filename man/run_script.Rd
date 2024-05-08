@@ -9,6 +9,7 @@ run_script(
   script,
   track_files = options::opt("track_files"),
   check_renv = options::opt("check_renv"),
+  out_formats = options::opt("out_formats"),
   out_dir = dirname(script)
 )
 }
@@ -18,6 +19,8 @@ run_script(
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
+
+\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
 \item{out_dir}{description}
 }
