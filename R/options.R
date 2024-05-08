@@ -38,7 +38,6 @@ options::define_option(
     "/null",
     "/urandom",
     "/.cache",
-    "./file",
     "/renv",
     .libPaths()
     ),

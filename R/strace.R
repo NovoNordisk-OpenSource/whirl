@@ -158,7 +158,7 @@ refine_strace <- function(strace_df, strace_discards = character()) {
     dplyr::filter(
       type == "read" & !cumsum(type == "write") | # Remove reads from  a file created earlier
         type == "write" & !cumsum(rev(type) == "delete") | # Remove write when the file is deleted afterwards
-        type == "delete" & (!cumsum(type == "write") | type[[1]] == "read") # Remove delete when the file was created earlier, and not read before that creation
+        type == "delete" & (!cumsum(type == "write") | head(type,1) == "read") # Remove delete when the file was created earlier, and not read before that creation
     ) |>
     dplyr::ungroup() |>
     dplyr::arrange(seq,file) |>

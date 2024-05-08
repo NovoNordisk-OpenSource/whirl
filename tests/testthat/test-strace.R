@@ -12,14 +12,20 @@ test_that("strace works", {
 
     p$close()
 
-    strace_info <- readstrace_info(path = "strace", strace_discards = options::opt("track_files_discards"))
-  })
+    strace_info <- read_strace_info(
+      path = "strace",
+      p_wd = getwd(),
+      strace_discards = options::opt("track_files_discards")
+      )
+  }, tmpdir = getwd())
 
-  strace_info$input |>
-    nrow() |>
-    expect_equal(0)
+  strace_info$read$file |>
+    expect_equal("No files")
 
-  strace_info$output$file |>
-    expect_equal("mtcars.rds")
+  strace_info$deleted$file |>
+    expect_equal("No files")
+
+  strace_info$write$file |>
+    expect_match("/mtcars.rds$")
 
 })
