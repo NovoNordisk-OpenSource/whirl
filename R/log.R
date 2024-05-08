@@ -139,7 +139,9 @@ run_script <-
       )
     }
 
-    mdformats(script = script, log_html = log_html, mdfmt = output_format[output_format %in% c("gfm", "commonmark", "markua")], out_dir = out_dir)
+    if (length(output_format[output_format %in% c("gfm", "commonmark", "markua")]) > 0){
+      mdformats(script = script, log_html = log_html, mdfmt = output_format[output_format %in% c("gfm", "commonmark", "markua")], out_dir = out_dir)
+    }
 
     # Return object
     # Read in session info list
