@@ -1,4 +1,5 @@
 *.png
 *.md
 *.html
+*.json
 *_files/*

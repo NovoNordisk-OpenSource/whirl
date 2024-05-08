@@ -124,34 +124,7 @@ run_script <- function(script,
 
     p$close()
 
-    # Copy created log to output directory
-
-    # if output_format is not NULL then set output options depending on declared format.
-    if (is.null(output_format) | "html" %in% output_format) {
-      # Derive output path
-      path_output <-
-        file.path(
-          out_dir,
-          gsub(
-            pattern = "\\.[^\\.]*$",
-            replacement = ".html",
-            x = basename(script)
-          )
-        )
-
-      file.copy(
-        from = log_html,
-        to = path_output,
-        overwrite = TRUE
-      )
-    }
-
-    if (length(output_format[output_format %in% c("gfm", "commonmark", "markua")]) > 0){
-      mdformats(script = script, log_html = log_html, mdfmt = output_format[output_format %in% c("gfm", "commonmark", "markua")], out_dir = out_dir)
-    }
-
-    # Return object
-    # Read in session info list
+    # Create R object for return
 
     objects_rds_lst <- readRDS(objects_rds) |>
       unlist(recursive = FALSE)
@@ -161,10 +134,38 @@ run_script <- function(script,
       session_info_rlist = objects_rds_lst
     )
 
-    if ("json" %in% output_format) {
-      write(
-        jsonlite::toJSON(output, force = TRUE) |> jsonlite::prettify(),
-        file.path(
+    # Create requested outputs
+
+    if ("html" %in% out_formats) {
+
+      file.copy(
+        from = log_html,
+        to = file.path(
+          out_dir,
+          gsub(
+            pattern = "\\.[^\\.]*$",
+            replacement = ".html",
+            x = basename(script)
+          )),
+        overwrite = TRUE
+      )
+    }
+
+    if (any(c("gfm", "commonmark", "markua") %in% out_formats)) {
+      mdformats(
+        script = script,
+        log_html = log_html,
+        mdfmt = out_formats[out_formats %in% c("gfm", "commonmark", "markua")],
+        out_dir = out_dir
+        )
+    }
+
+    if ("json" %in% out_formats) {
+      jsonlite::write_json(
+        x = output,
+        force = TRUE,
+        pretty = TRUE,
+        path = file.path(
           out_dir,
           gsub(
             pattern = "\\.[^\\.]*$",
@@ -174,5 +175,6 @@ run_script <- function(script,
         )
       )
     }
+
     return(invisible(output))
   }
