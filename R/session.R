@@ -149,7 +149,7 @@ knit_print.whirl_environment_info <- function(x, ...) {
 #' @noRd
 knit_print.whirl_options_info <- function(x, ...) {
   data.frame(t(sapply(unlist(x), c))) |>
-    tidyr::pivot_longer(everything(),
+    tidyr::pivot_longer(tidyselect::everything(),
       values_to = "Value",
       names_to = "Setting"
     ) |>

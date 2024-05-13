@@ -4,13 +4,15 @@
 \alias{options_params}
 \title{Internal reuse of options description}
 \arguments{
-\item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE (Defaults to \verb{c("/lib", "/etc", "/lib64", "/usr", "/var", "/opt", "/sys", "/proc", ;     "/tmp", "/.$", "/null", "/urandom", "/.cache", "/renv", .libPaths())}, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')}
+\item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE (Defaults to \verb{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")}, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')}
 
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
 \item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
+
+\item{track_files_keep}{List of file naming patterns alway to be tracked when track_files = TRUE (Defaults to \code{paste0("^", getwd())}, overwritable using option 'whirl.track_files_keep' or environment variable 'R_WHIRL_TRACK_FILES_KEEP')}
 }
 \description{
 Internal reuse of options description

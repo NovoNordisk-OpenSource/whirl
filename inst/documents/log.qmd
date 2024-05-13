@@ -9,6 +9,7 @@ params:
   strace: FALSE
   strace_path: ''
   strace_discards: NULL
+  strace_keep: NULL
   objects_path: ''
   renv: TRUE
 format:
@@ -57,6 +58,7 @@ if (use_strace){
     path = params$strace_path, 
     p_wd = params$p_wd, 
     strace_discards = params$strace_discards
+    strace_keep = params$strace_keep
   )
 }
 

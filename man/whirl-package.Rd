@@ -9,7 +9,12 @@
 Defines common standards, workflows, and actions for new R packages.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Aksel Thomsen \email{oath@novonordisk.com}
+
+Authors:
+\itemize{
+  \item Lovemore Gakava \email{lvgk@novonordisk.com}
+}
 
 Other contributors:
 \itemize{

@@ -31,22 +31,28 @@ options::define_option(
 options::define_option(
   option = "track_files_discards",
   default = c(
-    "/lib",
-    "/etc",
-    "/lib64",
-    "/usr",
-    "/var",
-    "/opt",
-    "/sys",
-    "/proc",
-    "/tmp",
-    "/.$",
-    "/null",
-    "/urandom",
-    "/.cache",
-    "/renv",
+    "^/lib",
+    "^/etc",
+    "^/lib64",
+    "^/usr",
+    "^/var",
+    "^/opt",
+    "^/sys",
+    "^/proc",
+    "^/tmp",
+    "^/null",
+    "^/urandom",
+    "^/.cache",
+    #"^/renv"#,
     .libPaths()
   ),
   desc = "List of file naming patterns not be tracked when track_files = TRUE",
+  envvar_fn = options::envvar_str_split(delim = ";")
+)
+
+options::define_option(
+  option = "track_files_keep",
+  default = paste0("^", getwd()),
+  desc = "List of file naming patterns alway to be tracked when track_files = TRUE",
   envvar_fn = options::envvar_str_split(delim = ";")
 )

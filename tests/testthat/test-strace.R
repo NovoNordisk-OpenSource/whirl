@@ -15,9 +15,12 @@ test_that("strace works", {
     strace_info <- read_strace_info(
       path = "strace",
       p_wd = getwd(),
-      strace_discards = options::opt("track_files_discards")
+      strace_discards = options::opt("track_files_discards"),
+      strace_keep = options::opt("track_files_keep")
       )
-  }, tmpdir = getwd())
+    },
+    tmpdir = getwd()
+  )
 
   strace_info$read$file |>
     expect_equal("No files")

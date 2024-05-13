@@ -34,6 +34,9 @@ run_script <- function(script,
   track_files_discards <- options::opt("track_files_discards") |>
     checkmate::assert_character(any.missing = FALSE, add = val)
 
+  track_files_keep <- options::opt("track_files_keep") |>
+    checkmate::assert_character(any.missing = FALSE, add = val)
+
   checkmate::reportAssertions(val)
 
   # Derive execute directory for the quarto render process of the document
@@ -113,6 +116,7 @@ run_script <- function(script,
         strace = track_files,
         strace_path = strace_log,
         strace_discards = track_files_discards,
+        strace_keep = track_files_keep,
         objects_path = objects_rds,
         renv = check_renv
       ),
