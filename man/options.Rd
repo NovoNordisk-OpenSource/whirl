@@ -40,7 +40,7 @@ Should the projects renv status be checked?\item{default: }{\preformatted{FALSE}
 
 \item{track_files_discards}{\describe{
 List of file naming patterns not be tracked when track_files = TRUE\item{default: }{\preformatted{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", 
-    "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")}}
+    "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())}}
 \item{option: }{whirl.track_files_discards}
 \item{envvar: }{R_WHIRL_TRACK_FILES_DISCARDS (as character vector, split on ';' delimiter)}
 }}

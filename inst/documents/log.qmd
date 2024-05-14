@@ -57,7 +57,7 @@ if (use_strace){
   strace_info <- whirl:::read_strace_info(
     path = params$strace_path, 
     p_wd = params$p_wd, 
-    strace_discards = params$strace_discards
+    strace_discards = params$strace_discards,
     strace_keep = params$strace_keep
   )
 }

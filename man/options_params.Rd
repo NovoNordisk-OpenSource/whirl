@@ -4,7 +4,7 @@
 \alias{options_params}
 \title{Internal reuse of options description}
 \arguments{
-\item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE (Defaults to \verb{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")}, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')}
+\item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE (Defaults to \verb{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())}, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')}
 
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
