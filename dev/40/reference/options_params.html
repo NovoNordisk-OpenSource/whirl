@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>track_files_discards</dt>
-<dd><p>List of file naming patterns not be tracked when track_files = TRUE (Defaults to <code>c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")</code>, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')</p></dd>
+<dd><p>List of file naming patterns not be tracked when track_files = TRUE (Defaults to <code>c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())</code>, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')</p></dd>
 
 
 <dt>track_files</dt>
