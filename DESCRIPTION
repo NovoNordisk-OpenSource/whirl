@@ -1,9 +1,9 @@
 Package: whirl
 Title: Loggin package
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID")),
+    person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
+    person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = c("aut")),
     person("Novo Nordisk A/S", role = c("cph"))
   )
 Description: Defines common standards, workflows, and actions for new R packages.
@@ -16,10 +16,12 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     callr,
+    checkmate,
     dplyr,
     jsonlite,
     kableExtra,
     knitr,
+    options,
     quarto,
     renv,
     rlang,
@@ -27,6 +29,8 @@ Imports:
     stringr,
     tibble,
     tidyr,
+    tidyselect,
+    unglue,
     utils,
     vctrs,
     withr,

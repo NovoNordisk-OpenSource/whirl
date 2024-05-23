@@ -1,280 +1,177 @@
 #' Start strace
-#' @param pid pid
-#' @param file file
+#' @param pid [integer] process id to attach strace onto
+#' @param file [character] path to the file in which to store the strace log
 #' @noRd
 
 start_strace <- function(pid, file) {
-
-  sprintf("strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s",
-          file,
-          pid) |>
+  sprintf(
+    "strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s -y",
+    file,
+    pid
+  ) |>
     system(wait = FALSE)
 }
 
-#' Get session info
+#' Get strace info ready for reporting
 #'
-#' Retrieve session info and add quarto info if not already there
-#'
-#' @param strace_discards keywords to use to discard not required lines
-#' @param path a character vector with path name
-#'
+#' @param path [character] path to the strace log
+#' @param p_wd [character] path to the working directory used for the process tracked in strace
+#' @param strace_discards [character] keywords to use to discard files from the info
+#' @param types [character] which element(s) to report in the info. If not found in strace, a dummy `data.frame` is inserted.
+#' @return [list] of `data.frame`(s) of the relevant files for each type of info
 #' @noRd
 
-readstrace_info <- function(path, strace_discards = NULL){
-  if (is.null(strace_discards)){
-    strace_discards <- c(
-      "/lib",
-      "/etc",
-      "/lib64",
-      "/usr",
-      "/var",
-      "/opt",
-      "/sys" ,
-      "/proc",
-      "/tmp",
-      "/.$",
-      "/null",
-      "/urandom",
-      "/.cache",
-      "./file",
-      "/renv",
-      .libPaths()
-    )
-  }
+read_strace_info <- function(path, p_wd, strace_discards = character(), strace_keep = character(), types = c("read", "write", "deleted")) {
+  strace <- path |>
+    read_strace(p_wd = p_wd) |>
+    refine_strace(strace_discards = strace_discards, strace_keep = strace_keep)
 
-  data_strace <- read_strace(path, strace_discards = strace_discards) |>
-    dplyr::tibble()
+  class(strace) <- c("whirl_strace_info", class(strace))
 
-  file_actions <- refine_strace(data_strace)[c("input", "output")]
+  # Split in a tibble for each type of output
 
-  class(file_actions) <- c("whirl_strace_info", class(file_actions))
-  for (i in seq_along(file_actions)) {
-    class(file_actions[[i]]) <- c(paste0("whirl_strace_", names(file_actions)[[i]]), class(file_actions[[i]]))
-  }
+  strace <- split(strace[c("time", "file")], strace$type)
 
-  return(file_actions)
+  # Add empty table for types not reported
+
+  out <- vector(mode = "list", length = length(types)) |>
+    rlang::set_names(types)
+
+  out[names(strace)] <- strace
+
+  i <- lapply(X = out, FUN = is.null) |>
+    unlist() |>
+    which()
+  dummy <- tibble::tibble(file = "No files")
+  class(dummy) <- c("whirl_strace_info", class(dummy))
+  out[i] <- list(dummy)
+
+  return(out)
 }
 
 
 #' @noRd
 
-knit_print.whirl_strace_info <- function(x, ...){
-
+knit_print.whirl_strace_info <- function(x, ...) {
   x |>
-    lapply(knitr::knit_print)
-}
-
-#' @noRd
-
-knit_print.whirl_strace_input <- function(x, ...){
-
-  x |>
-    dplyr::select("file", "duration", "time") |>
     knitr::kable() |>
     knitr::knit_print()
-
-}
-
-#' @noRd
-
-knit_print.whirl_strace_output <- function(x, ...){
-
-  if (nrow(x) != 0) {
-    x |>
-      dplyr::select("file", "duration", "time") |>
-      knitr::kable() |>
-      knitr::knit_print()
-  }else{
-    dplyr::tibble(file = "No output files") |>
-    knitr::kable() |>
-    knitr::knit_print()
-  }
-
 }
 
 #' Read STRACE file
 #'
-#' @param strace_discards characters to identify records to discard
-#' @param path Path to the .strace file
-#'
-#' @return A `tibble` with strace information.
+#' @param path [character] path to the strace log
+#' @param p_wd [character] path to the working directory used for the process tracked in strace
+#' @return [data.frame] with strace information where all files are reported with their full path
 #' @noRd
 
-
-read_strace <- function(path, strace_discards) {
-  all_strace <- readLines(path)
-
-  strace_filter <-
-    grep("openat\\(AT_FDCWD|unlink\\(|chdir\\(", all_strace, value = TRUE)
-  strace_filter <-
-    grep(
-      "ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)",
-      strace_filter,
-      value = TRUE,
-      invert = TRUE
-    )
-
-  data_strace <-
-    tidyr::separate(
-      data.frame(x = strace_filter),
-      .data$x,
-      sep = '[^,]\\s|\\([a-zA-Z_,\\s]*\\"',
-      into = c("pid", "time", "rawfile0"),
-      fill = "right",
-      extra = "merge",
-      remove = TRUE
+read_strace <- function(path, p_wd) {
+  strace <- readLines(path) |>
+    stringr::str_squish() |>
+    stringr::str_subset("openat|unlink|chdir") |>
+    stringr::str_subset(
+      pattern = "ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)",
+      negate = TRUE
     ) |>
-    dplyr::mutate(rawfile = ifelse(grepl("=", .data$rawfile0), stringr::str_extract(.data$rawfile0, "[^\\)=]+"), .data$rawfile0),
-           num = ifelse(grepl("=", .data$rawfile0), sub('.+=(.+)', '\\1', .data$rawfile0), NA)) |>
-    tidyr::separate(
-      .data$rawfile,
-      sep = '\\", ',
-      into = c("rawfile", "what"),
-      remove = FALSE,
-      fill = "right"
-    ) |>
-    tidyr::separate(
-      .data$what,
-      sep = ", ",
-      into = c("what", "access"),
-      remove = FALSE,
-      fill = "right"
-    ) |>
-    tidyr::separate(
-      .data$num,
-      sep = " <",
-      into = c("num", "duration"),
-      remove = FALSE,
-      fill = "right"
-    )
+    stringr::str_subset("<unfinished \\.{3}>|<\\.{3} [a-zA-Z]+ resumed>", negate = TRUE)
 
-  data_strace_2 <- data_strace |>
-    dplyr::as_tibble() |>
+  strace_df <- strace |>
+    unglue::unglue_data(
+      patterns = list(
+        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}, {access}) = {result}<{result_dir}> <{duration}>",
+        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}) = {result}<{result_dir}> <{duration}>",
+        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}) = {result} <{duration}>",
+        "{pid} {time} {funct}(\"{path}\") = {result} <{duration}>"
+      )
+    ) |>
+    tibble::as_tibble() |>
     dplyr::mutate(
-      entrynum = dplyr::row_number(),
-      rawfile = gsub('\\"', "", .data$rawfile)
-    )
-
-  data_strace_3 <- data_strace_2 |>
-    dplyr::mutate(
-      file = stringr::str_remove(
-        stringr::str_remove(.data$rawfile, "openat\\(AT_FDCWD,"),
-        "chdir\\(") |>
-        stringr::str_trim()
-      ,
-      type = ifelse(
-        grepl("chdir", .data$rawfile),
-        "chdir",
-        ifelse(grepl("unlink", .data$rawfile), "unlink", "other")
-        ),
-
-      directory = ifelse(.data$type == "chdir", file, NA_character_) |>
-        zoo::na.locf(na.rm = FALSE)
+      seq = dplyr::row_number(),
+      pid = as.numeric(.data$pid),
+      time = as.POSIXct(as.numeric(.data$time), origin = "1970-01-01"),
+      result = as.numeric(.data$result),
+      duration = as.numeric(.data$duration),
+      type = dplyr::case_when(
+        .data$funct == "chdir" ~ "chdir",
+        stringr::str_detect(.data$funct, "unlink") ~ "delete",
+        .data$funct == "openat" & stringr::str_detect(.data$action, "O_DIRECTORY") ~ "lookup",
+        .data$funct == "openat" & is.na(.data$access) ~ "read",
+        .data$funct == "openat" & !is.na(.data$access) ~ "write",
+      ),
+      wd = dplyr::case_when(
+        .data$type == "chdir" & .data$path == "." ~ p_wd,
+        .data$type == "chdir" ~ .data$path
       ) |>
-    dplyr::select("time", "duration", "file", "type", "entrynum", "directory", "what", "num", "access")
-
-  data_strace_4 <- data_strace_3 |>
-    dplyr::filter(
-
-      # Remove all discards based on file path
-      stringr::str_detect(string = .data$file, pattern = paste(strace_discards, collapse = "|"), negate = TRUE),
-
-      # Remove all discards based on current working directory
-
-      stringr::str_detect(string = .data$directory, pattern = paste(strace_discards, collapse = "|"), negate = TRUE) |
-        stringr::str_detect(string = .data$file, pattern = "^/"),
-      trimws(.data$file) != "/"
+        zoo::na.locf(na.rm = FALSE) |>
+        dplyr::coalesce(p_wd),
+      dir = dplyr::coalesce(.data$dir, .data$wd)
     )
 
-  data_strace <- data_strace_4
+  # Full paths etc
 
-  if (nrow(data_strace)) {
-    data_strace$time <-
-      as.POSIXct(as.numeric(data_strace$time), origin = "1970-01-01")
-    data_strace$duration <-
-      as.numeric(gsub(">", "", data_strace$duration))
-    data_strace$action <- NA
-    data_strace$action[data_strace$type == "chdir"] <- "Change dir"
-    data_strace$action[is.na(data_strace$what) &
-                         data_strace$num == 0 &
-                         data_strace$type == "unlink"] <- "Deleted"
-    data_strace$action[is.na(data_strace$action) &
-                         grepl("O_DIRECTORY", data_strace$what)] <-
-      "Lookup"
-    data_strace$action[is.na(data_strace$action) &
-                         is.na(data_strace$access)] <- "Read"
-    data_strace$action[is.na(data_strace$action) &
-                         !is.na(data_strace$access)] <- "Write"
-  }
-
-  # data_strace$file <- gsub(normalizePath("~"), "~", data_strace$file)
-
-  return(data_strace[data_strace$type != "chdir",])
+  strace_df |>
+    dplyr::mutate(
+      .data$time,
+      .data$type,
+      file = dplyr::if_else(
+        stringr::str_detect(string = .data$path, pattern = "^/", negate = TRUE),
+        file.path(.data$dir, .data$path),
+        .data$path
+      )
+    ) |>
+    dplyr::filter(.data$type %in% c("read", "write", "delete")) |>
+    dplyr::select(.data$seq, .data$time, .data$file, .data$type)
 }
 
 #' refine strace output
 #'
-#' @param data_strace - file lines
-#'
-#' @return tibble
+#' @param strace_df [data.frame] with strace information as returned from `read_strace`
+#' @param strace_discards [character] keywords to use to discard files from the info
+#' @return [data.frame] with strace information where discarded and duplicate files are removed
 #' @noRd
 
-refine_strace <- function(data_strace) {
-  # remove empty lines and folders
-  data_strace <- data_strace |>
-    dplyr::filter(.data$directory != ".")
+refine_strace <- function(strace_df, strace_discards = character(), strace_keep = character()) {
+  # Remove discards if provided
 
-  # remove consecutive duplicates
-  rm_dup <-
-    rle(paste(data_strace$file, data_strace$num, data_strace$action))
-  data_strace_s1 <-
-    data_strace[cumsum(c(1, rm_dup$lengths[-length(rm_dup$lengths)])), ]
+  if (length(strace_discards) & length(strace_keep)) {
+    strace_df <- strace_df |>
+      dplyr::filter(
+        stringr::str_detect(
+          string = .data$file,
+          pattern = paste0(strace_discards, collapse = "|"),
+          negate = TRUE
+        ) |
+          stringr::str_detect(
+            string = .data$file,
+            pattern = paste0(strace_keep, collapse = "|")
+          )
+      )
+  } else if (length(strace_discards)) {
+    strace_df <- strace_df |>
+      dplyr::filter(
+        stringr::str_detect(
+          string = .data$file,
+          pattern = paste0(strace_discards, collapse = "|"),
+          negate = TRUE
+        )
+      )
+  }
 
-  # First entry
-  data_strace_s1_first <-
-    data_strace_s1[!duplicated(data_strace_s1$file), ]
+  # Derive net status (clean duplicate entries)
 
-  # last entry
-  data_strace_s1_last <-
-    data_strace_s1[!duplicated(data_strace_s1$file, fromLast = TRUE), ]
-
-  # Input files: if first entry is read
-  input_files <-
-    data_strace_s1_first$file[data_strace_s1_first$action == "Read"]
-
-  # Temporary: if write followed by deleted
-  writes <- data_strace_s1$file[data_strace_s1$action == "Write"]
-  last_deleted <-
-    data_strace_s1_last$file[data_strace_s1_last$action == "Deleted"]
-
-  temporary_files <-
-    setdiff(intersect(writes, last_deleted), input_files)
-
-  # Output:
-  output_files <- setdiff(writes, temporary_files)
-
-  # Deleted
-  deleted_files_all <-
-    data_strace_s1$file[data_strace_s1$action == "Deleted"]
-  deleted_files <-
-    setdiff(deleted_files_all,
-            c(input_files, temporary_files, output_files))
-
-  input <- data_strace[data_strace$file %in% input_files, ]
-  output <-  data_strace[data_strace$file %in% output_files, ]
-  temporary <- data_strace[data_strace$file %in% temporary_files, ]
-  deleted <- data_strace[data_strace$file %in% deleted_files, ]
-
-  input <- input[!duplicated(input$file), ]
-  output <- output[!duplicated(output$file), ]
-  temporary <- temporary[!duplicated(temporary$file), ]
-  deleted <- deleted[!duplicated(deleted$file), ]
-
-  list(
-    input = input,
-    output =  output,
-    temporary =  temporary,
-    deleted =  deleted
-  )
-
+  strace_df |>
+    dplyr::filter(
+      .data$type %in% c("read", "write") & !duplicated(strace_df[c("file", "type")]) | # First read or write
+        .data$type %in% c("delete") & !duplicated(strace_df[c("file", "type")], fromLast = TRUE) # Last delete
+    ) |>
+    dplyr::group_by(.data$file) |>
+    dplyr::arrange(.data$file, .data$seq) |>
+    dplyr::filter(
+      .data$type == "read" & !cumsum(.data$type == "write") | # Remove reads from  a file created earlier
+        .data$type == "write" & !cumsum(rev(.data$type) == "delete") | # Remove write when the file is deleted afterwards
+        .data$type == "delete" & (!cumsum(.data$type == "write") | utils::head(.data$type, 1) == "read") # Remove delete when the file was created earlier, and not read before that creation
+    ) |>
+    dplyr::ungroup() |>
+    dplyr::arrange(.data$seq, .data$file) |>
+    dplyr::select(.data$time, .data$file, .data$type)
 }

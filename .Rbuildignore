@@ -7,3 +7,5 @@
 ^README\.Rmd$
 ^\.lintr$
 ^\.github$
+^inst/output$
+^inst/examples/*\\.html$

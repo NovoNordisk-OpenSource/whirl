@@ -7,23 +7,20 @@ test with a single script}
 \usage{
 run_script(
   script,
-  track_files = FALSE,
-  strace_discards = NULL,
-  renv = FALSE,
-  output_format = c("html"),
+  track_files = NULL,
+  check_renv = NULL,
+  out_formats = NULL,
   out_dir = dirname(script)
 )
 }
 \arguments{
 \item{script}{path}
 
-\item{track_files}{\code{logical}}
+\item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
-\item{strace_discards}{keywords to use to discard not required lines}
+\item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 
-\item{renv}{\code{logical}}
-
-\item{output_format}{\code{vector} either html, gfm, commonmark or markua format(s) of the log output(s)}
+\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
 \item{out_dir}{description}
 }

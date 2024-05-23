@@ -1,6 +1,6 @@
 #' @noRd
 mdformats <- function(script, log_html, mdfmt, out_dir) {
-    newname <- gsub(
+  newname <- gsub(
     pattern = "\\.[^\\.]*$",
     replacement = "",
     x = basename(script)
