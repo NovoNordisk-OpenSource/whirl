@@ -16,6 +16,15 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/options.html</loc>
+  </url>
+  <url>
+    <loc>/reference/options_params.html</loc>
+  </url>
+  <url>
     <loc>/reference/run_script.html</loc>
+  </url>
+  <url>
+    <loc>/reference/whirl-package.html</loc>
   </url>
 </urlset>
