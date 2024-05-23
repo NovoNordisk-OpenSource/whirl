@@ -7,9 +7,9 @@ test with a single script}
 \usage{
 run_script(
   script,
-  track_files = options::opt("track_files"),
-  check_renv = options::opt("check_renv"),
-  out_formats = options::opt("out_formats"),
+  track_files = NULL,
+  check_renv = NULL,
+  out_formats = NULL,
   out_dir = dirname(script)
 )
 }
