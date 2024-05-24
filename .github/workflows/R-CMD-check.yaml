@@ -47,7 +47,7 @@ jobs:
           needs: check
 
       - name: Allow strace to attach to a process
-        if: ${{ matrix.config.os }} == "ubuntu-latest"
+        if: runner.os == 'Linux'
         run: |
           echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
