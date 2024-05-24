@@ -46,6 +46,11 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - name: Allow strace to attach to a process
+        if: ${{ matrix.config.os }} == "ubuntu-latest"
+        run: |
+          echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
