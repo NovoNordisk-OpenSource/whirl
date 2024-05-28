@@ -11,6 +11,7 @@ params:
   strace_discards: NULL
   strace_keep: NULL
   objects_path: ''
+  check_approvedpkgs: NULL
   renv: TRUE
 format:
   html:
@@ -95,7 +96,7 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 
-info <- whirl:::session_info()
+info <- whirl:::session_info(params$check_approvedpkgs)
 
 ```
 

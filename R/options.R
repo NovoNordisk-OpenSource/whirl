@@ -56,3 +56,10 @@ options::define_option(
   desc = "List of file naming patterns alway to be tracked when track_files = TRUE",
   envvar_fn = options::envvar_str_split(delim = ";")
 )
+
+options::define_option(
+  option = "approved_pkg_loc",
+  default =  NULL,
+  desc = "Approved library packages",
+  envvar_fn = options::envvar_str_split(delim = ";")
+)

@@ -11,6 +11,7 @@ run_script <- function(script,
                        track_files = NULL,
                        check_renv = NULL,
                        out_formats = NULL,
+                       approved_pkg_loc = NULL,
                        out_dir = dirname(script)) {
 
   # Use options
@@ -18,6 +19,7 @@ run_script <- function(script,
   if (is.null(track_files)) track_files <- options::opt("track_files")
   if (is.null(check_renv)) check_renv <- options::opt("check_renv")
   if (is.null(out_formats)) out_formats <- options::opt("out_formats")
+  if (is.null(approved_pkg_loc)) approved_pkg_loc <- options::opt("approved_pkg_loc")
 
   # Input validation
 
@@ -42,6 +44,9 @@ run_script <- function(script,
 
   track_files_keep <- options::opt("track_files_keep") |>
     checkmate::assert_character(any.missing = FALSE, add = val)
+
+  # approved_pkg_loc <- options::opt("approved_pkg_loc") |>
+  #   checkmate::assert_character(x = approved_pkg_loc, add = val)
 
   checkmate::reportAssertions(val)
 
@@ -124,6 +129,7 @@ run_script <- function(script,
         strace_discards = track_files_discards,
         strace_keep = track_files_keep,
         objects_path = objects_rds,
+        check_approvedpkgs = approved_pkg_loc,
         renv = check_renv
       ),
       execute_dir = getwd()

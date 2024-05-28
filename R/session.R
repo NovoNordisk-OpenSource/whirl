@@ -4,8 +4,19 @@
 #'
 #' @noRd
 
-session_info <- function() {
+session_info <- function(approve_pkgs) {
   info <- sessioninfo::session_info()
+
+  if (!is.null(approve_pkgs)) {
+    info$packages <- check_approved(
+      approved_pkg_loc = approve_pkgs,
+      session_pkgs = info$packages
+    )
+    class(info$packages) <- c("approve_pkgs", class(info$packages))
+  } else {
+    info$packages
+    class(info$packages) <- c("packages_info", class(info$packages))
+  }
 
   info$environment <- Sys.getenv() |>
     as.list() |>
@@ -50,7 +61,7 @@ knit_print.whirl_session_info <- function(x, ...) {
 #' @noRd
 
 knit_print.whirl_platform_info <- function(x, ...) {
-  data.frame(
+data.frame(
     Setting = names(x),
     Value = x |>
       lapply(paste0, collapse = ", ") |>
@@ -73,6 +84,25 @@ knit_print.whirl_packages_info <- function(x, ...) {
     Version = x$loadedversion,
     `Date (UTC)` = x$date,
     Source = x$source,
+    check.names = FALSE
+  ) |>
+    knitr::kable() |>
+    kableExtra::kable_styling(
+      bootstrap_options = "striped",
+      full_width = TRUE
+    ) |>
+    knitr::knit_print()
+}
+
+#' @noRd
+
+knit_print.whirl_approve_pkgs <- function(x, ...) {
+  data.frame(
+    Package = x$package,
+    Version = x$loadedversion,
+    `Date (UTC)` = x$date,
+    Source = x$source,
+    Approved = x$Approved,
     check.names = FALSE
   ) |>
     knitr::kable() |>

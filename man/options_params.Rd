@@ -10,6 +10,8 @@
 
 \item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
+\item{approved_pkg_loc}{Approved library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkg_loc' or environment variable 'R_WHIRL_APPROVED_PKG_LOC')}
+
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 
 \item{track_files_keep}{List of file naming patterns alway to be tracked when track_files = TRUE (Defaults to \code{paste0("^", getwd())}, overwritable using option 'whirl.track_files_keep' or environment variable 'R_WHIRL_TRACK_FILES_KEEP')}
