@@ -97,19 +97,22 @@ knit_print.whirl_packages_info <- function(x, ...) {
 #' @noRd
 
 knit_print.whirl_approve_pkgs <- function(x, ...) {
-  data.frame(
+  hold <- data.frame(
     Package = x$package,
     Version = x$loadedversion,
     `Date (UTC)` = x$date,
     Source = x$source,
     Approved = x$Approved,
     check.names = FALSE
-  ) |>
+  )
+
+  hold |>
     knitr::kable() |>
     kableExtra::kable_styling(
       bootstrap_options = "striped",
       full_width = TRUE
     ) |>
+    kableExtra::column_spec(1:5, background = ifelse(hold$Approved == "No", "orange", "white")) |>
     knitr::knit_print()
 }
 
