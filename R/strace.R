@@ -21,7 +21,7 @@ start_strace <- function(pid, file) {
 #' @return [list] of `data.frame`(s) of the relevant files for each type of info
 #' @noRd
 
-read_strace_info <- function(path, p_wd, strace_discards = character(), strace_keep = character(), types = c("read", "write", "deleted")) {
+read_strace_info <- function(path, p_wd, strace_discards = character(), strace_keep = character(), types = c("read", "write", "delete")) {
   strace <- path |>
     read_strace(p_wd = p_wd) |>
     refine_strace(strace_discards = strace_discards, strace_keep = strace_keep)
@@ -74,6 +74,21 @@ read_strace <- function(path, p_wd) {
       negate = TRUE
     ) |>
     stringr::str_subset("<unfinished \\.{3}>|<\\.{3} [a-zA-Z]+ resumed>", negate = TRUE)
+
+  # Early return if no information
+
+  if (length(strace) == 0) {
+    return(
+      tibble::tibble(
+        seq = integer(),
+        time = as.POSIXct(character()),
+        file = character(),
+        type = character()
+      )
+    )
+  }
+
+  # Otherwise extract information
 
   strace_df <- strace |>
     unglue::unglue_data(
