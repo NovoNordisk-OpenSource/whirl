@@ -106,8 +106,32 @@ info$platform
 cat("\n")
 ```
 
-```{r, results="asis"}
+
+```{r, results="asis", fig.height = 0.5}
 cat('\n## Packages\n')
+
+if (!is.null(params$check_approvedpkgs)) {
+ # whirl::create_approval_plot(info$packages )
+  library("ggplot2")
+  library("dplyr")
+  info$packages |>
+    as.data.frame() |>
+    count(Approved) |>
+    mutate(pct = prop.table(n),
+           status = "Approved",
+           lbl = paste0(Approved, ": ", n, "/", sum(n), " (", scales::percent(pct), ")")) |>
+    ggplot(aes(x = pct, y = status, fill = Approved, label = lbl)) +
+    geom_bar(position = "fill", stat = "identity") +
+    geom_text(position = position_stack(vjust = 0.5, reverse = FALSE)) +
+    theme_void() +
+    theme(legend.position = "none", 
+          plot.title = element_text(hjust = 0.5)) +
+    scale_fill_manual(values = c("Yes" = "green", "No" = "orange")) + 
+    labs(title = "Approved")
+}
+
+cat("\n")
+
 info$packages
 cat("\n")
 ```

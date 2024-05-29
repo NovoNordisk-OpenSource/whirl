@@ -18,6 +18,7 @@ Imports:
     callr,
     checkmate,
     dplyr,
+    ggplot2,
     jsonlite,
     kableExtra,
     knitr,

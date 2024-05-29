@@ -1,23 +1,7 @@
 #' Add Approved column on session packages tibble
 #'
 #' A utility function to help you build your approved packages .
-#'
-#' @param approved_pkg_loc The library location where the approved packages are
-#' @param session_pkgs The loaded packages in the current session
-#' @param output_file String. Name of file where the modified tibble will be saved.
-#'
-#' @return session_pkgs with additional column of Approved indicating if the package is approved or not
-#' @export
-#'
-#' @examples
-#' approved_pkgs <- c( "/opt/R/4.2.0/lib/R/library", "/opt/R/4.2.0/lib/R/site-library" )
-#' # build and return
-#' check_approved(approved_pkgs, sessioninfo::package_info())
-#'
-#' # build and save
-#' dir <- tempdir()
-#' check_approved(approved_pkgs, sessioninfo::package_info(), file.path(dir, "approved.rds"))
-#'
+#' @noRd
 check_approved <- function(approved_pkg_loc,
                            session_pkgs,
                            output_file = NULL) {
@@ -34,3 +18,23 @@ check_approved <- function(approved_pkg_loc,
     saveRDS(approved_dset, output_file)
   }
 }
+
+#' @noRd
+create_approval_plot <- function(data) {
+  data |>
+    as.data.frame() |>
+    count(.data[["Approved"]]) |>
+    mutate(pct = prop.table(n),
+           status = "Approved",
+           lbl = paste0(.data[["Approved"]], ": ", n, "/", sum(n), " (", scales::percent(pct), ")")) |>
+    ggplot(aes(x = pct, y = .data[["status"]], fill = .data[["Approved"]], label = lbl)) +
+    geom_bar(position = "fill", stat = "identity") +
+    geom_text(position = position_stack(vjust = 0.5, reverse = FALSE)) +
+    theme_void() +
+    theme(legend.position = "none",
+          plot.title = element_text(hjust = 0.5)) +
+    scale_fill_manual(values = c("Yes" = "green", "No" = "orange")) +
+    labs(title = "Approved")
+
+}
+
