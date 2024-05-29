@@ -111,8 +111,6 @@ read_strace <- function(path, p_wd) {
 
   strace_df |>
     dplyr::mutate(
-      .data$time,
-      .data$type,
       file = dplyr::if_else(
         stringr::str_detect(string = .data$path, pattern = "^/", negate = TRUE),
         file.path(.data$dir, .data$path),
@@ -120,7 +118,7 @@ read_strace <- function(path, p_wd) {
       )
     ) |>
     dplyr::filter(.data$type %in% c("read", "write", "delete")) |>
-    dplyr::select(.data$seq, .data$time, .data$file, .data$type)
+    dplyr::select("seq", "time", "file", "type")
 }
 
 #' refine strace output
@@ -173,5 +171,5 @@ refine_strace <- function(strace_df, strace_discards = character(), strace_keep 
     ) |>
     dplyr::ungroup() |>
     dplyr::arrange(.data$seq, .data$file) |>
-    dplyr::select(.data$time, .data$file, .data$type)
+    dplyr::select("time", "file", "type")
 }
