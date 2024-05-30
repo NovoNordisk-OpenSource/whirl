@@ -13,7 +13,7 @@ run_script <- function(script,
                        out_formats = NULL,
                        out_dir = dirname(script)) {
 
-  # Use options
+  # Use options if not provided
 
   if (is.null(track_files)) track_files <- options::opt("track_files")
   if (is.null(check_renv)) check_renv <- options::opt("check_renv")
@@ -43,7 +43,7 @@ run_script <- function(script,
   track_files_keep <- options::opt("track_files_keep") |>
     checkmate::assert_character(any.missing = FALSE, add = val)
 
-  checkmate::reportAssertions(val)
+  zephyr::report_checkmate_assertations(val)
 
   # Derive execute directory for the quarto render process of the document
   # Abides to standards for R, Rmd, and qmd scripts,
