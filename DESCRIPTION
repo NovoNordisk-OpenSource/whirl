@@ -1,5 +1,5 @@
 Package: whirl
-Title: Loggin package
+Title: Logging package
 Version: 0.0.0.9001
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
@@ -19,7 +19,9 @@ Depends:
 Imports: 
     callr,
     checkmate,
+    cli,
     dplyr,
+    glue,
     jsonlite,
     kableExtra,
     knitr,
