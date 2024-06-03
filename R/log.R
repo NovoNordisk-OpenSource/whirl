@@ -79,6 +79,7 @@ run_script <- function(script,
   # Create new R session used to run all documents
 
   p <- callr::r_session$new()
+  on.exit({p$close()}) # Close R session on exit
 
   # If track_files start strace tracking the process and which files are used
 
@@ -95,7 +96,9 @@ run_script <- function(script,
   # making sure content to be included in the log is saved in the temp dir.
   # Meanwhile execute_dir is used to execute script in the right directory.
 
-  p$run(
+  if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner <- cli::make_spinner(template = paste("{spin}", glue::glue("{script}: Running script ...")))
+
+  p$call(
     func = \(dir, ...) withr::with_dir(dir, quarto::quarto_render(...)),
     args = list(
       dir = tempdir(),
@@ -107,9 +110,22 @@ run_script <- function(script,
     )
   )
 
+  status <- p$read()
+  while (is.null(status)) {
+    if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$spin()
+    Sys.sleep(0.05)
+    status <- p$read()
+  }
+  if (!is.null(status$error)) {
+    if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$finish()
+    status$error |> as.character() |> rlang::abort()
+  }
+
   # Create the final log with extra information
 
-  p$run(
+  if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$spin(template = paste("{spin}", glue::glue("{script}: Creating log ...")))
+
+  p$call(
     func = \(dir, ...) withr::with_dir(dir, quarto::quarto_render(...)),
     args = list(
       dir = tempdir(),
@@ -130,9 +146,16 @@ run_script <- function(script,
     )
   )
 
-  # Close R session
-
-  p$close()
+  status <- p$read()
+  while (is.null(status)) {
+    if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$spin()
+    Sys.sleep(0.05)
+    status <- p$read()
+  }
+  if (!is.null(status$error)) {
+    if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$finish()
+    status$error |> as.character() |> rlang::abort()
+  }
 
   # Create R object for return
 
@@ -184,6 +207,18 @@ run_script <- function(script,
         )
       )
     )
+  }
+
+  # Final report and return
+
+  if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$finish()
+
+  if (output$status$status == "error") {
+    zephyr::msg(message = "{script}: Completed with errors", msg_fun = cli::cli_alert_danger)
+  } else if (output$status$status == "warning") {
+    zephyr::msg(message = "{script}: Completed with warnings", msg_fun = cli::cli_alert_warning)
+  } else {
+    zephyr::msg_success("{script}: Completed succesfully")
   }
 
   return(invisible(output))

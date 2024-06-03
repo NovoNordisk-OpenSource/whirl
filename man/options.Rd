@@ -51,6 +51,12 @@ List of file naming patterns alway to be tracked when track_files = TRUE\item{de
 \item{envvar: }{R_WHIRL_TRACK_FILES_KEEP (as character vector, split on ';' delimiter)}
 }}
 
+\item{verbosity_level}{\describe{
+How chatty should the log be? Possibilities are \code{quiet}, \code{verbose}, and \code{debug}.\item{default: }{\preformatted{"verbose"}}
+\item{option: }{whirl.verbosity_level}
+\item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
+}}
+
 }
 }
 

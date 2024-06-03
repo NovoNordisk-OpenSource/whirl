@@ -56,3 +56,9 @@ options::define_option(
   desc = "List of file naming patterns alway to be tracked when track_files = TRUE",
   envvar_fn = options::envvar_str_split(delim = ";")
 )
+
+options::define_option(
+  option = "verbosity_level",
+  default = "verbose",
+  desc = "How chatty should the log be? Possibilities are `quiet`, `verbose`, and `debug`."
+)
