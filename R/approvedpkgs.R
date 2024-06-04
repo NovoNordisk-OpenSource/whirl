@@ -1,7 +1,6 @@
-
 #' Add Approved column on session packages tibble
 #'
-#' A utility function to help you build your approved packages .
+#' An utility function to help you build your approved packages .
 #' @noRd
 check_approved <- function(approved_pkg_folder,
                            approved_pkg_url,
@@ -69,7 +68,7 @@ check_approved <- function(approved_pkg_folder,
       dplyr::arrange(Approved, package)
   } else {
     approved_dset <- dplyr::full_join(approved_dset_url, approved_dset_file, by = c("package", "loadedversion")) |>
-      dplyr::select(package, loadedversion, date.x, source.x, Approved.x, Approved.y, "Approved Repository.x", "Approved Repository.y") |>
+      dplyr::select("package", "loadedversion", "date.x", "source.x", "Approved.x", "Approved Repository.x", "Approved.y", "Approved Repository.y") |>
       dplyr::rename(
         "date" = "date.x",
         "source" = "source.x",
@@ -91,28 +90,26 @@ check_approved <- function(approved_pkg_folder,
 
 #' @noRd
 create_approval_plot <- function(data) {
-  library(ggplot2)
-  library(dplyr)
 
   row.names(data) <- NULL
 
   data$grpvar <- ifelse(rowSums(as.matrix(data[, grepl("^Approved", colnames(data))]) == "No") == ncol(as.matrix(data[, grepl("^Approved", colnames(data))])), "No", "Yes")
 
   data |>
-    count(.data[["grpvar"]]) |>
-    mutate(
+    dplyr::count(.data[["grpvar"]]) |>
+    dplyr::mutate(
       pct = prop.table(n),
       status = "grpvar",
       lbl = paste0(.data[["grpvar"]], ": ", n, "/", sum(n), " (", scales::percent(pct), ")")
     ) |>
-    ggplot(aes(x = pct, y = .data[["status"]], fill = .data[["grpvar"]], label = lbl)) +
-    geom_bar(position = "fill", stat = "identity") +
-    geom_text(position = position_stack(vjust = 0.5, reverse = FALSE)) +
-    theme_void() +
-    theme(
+    ggplot2::ggplot(ggplot2::aes(x = pct, y = .data[["status"]], fill = .data[["grpvar"]], label = lbl)) +
+    ggplot2::geom_bar(position = "fill", stat = "identity") +
+    ggplot2::geom_text(position = ggplot2::position_stack(vjust = 0.5, reverse = FALSE)) +
+    ggplot2::theme_void() +
+    ggplot2::theme(
       legend.position = "none",
-      plot.title = element_text(hjust = 0.5)
+      plot.title = ggplot2::element_text(hjust = 0.5)
     ) +
-    scale_fill_manual(values = c( "Yes" = "green", "No" = "orange")) +
-    labs(title = "Approved")
+    ggplot2::scale_fill_manual(values = c( "Yes" = "green", "No" = "orange")) +
+    ggplot2::labs(title = "Approved")
 }

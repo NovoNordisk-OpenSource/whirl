@@ -101,7 +101,14 @@ knit_print.whirl_packages_info <- function(x, ...) {
 knit_print.whirl_approved_pkgs <- function(x, ...) {
   hold <- x |> data.frame(
     check.names = FALSE
-  )
+  ) |>
+    dplyr::rename(
+      Package = package,
+      Version = loadedversion,
+      `Date (UTC)` = date,
+      Source = source
+    )
+
   row.names(hold) <- NULL
   ncols <- ncol(hold)
 
