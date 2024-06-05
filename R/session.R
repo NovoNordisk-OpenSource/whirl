@@ -103,10 +103,10 @@ knit_print.whirl_approved_pkgs <- function(x, ...) {
     check.names = FALSE
   ) |>
     dplyr::rename(
-      Package = package,
-      Version = loadedversion,
-      `Date (UTC)` = date,
-      Source = source
+      Package = .data[["package"]],
+      Version = .data[["loadedversion"]],
+      `Date (UTC)` = .data[["date"]],
+      Source = .data[["source"]]
     )
 
   row.names(hold) <- NULL

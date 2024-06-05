@@ -27,7 +27,7 @@ check_approved <- function(approved_pkg_folder,
         stop("The repository is not available")
       }
 
-      src_url <- available.packages(url) |> as.data.frame() |>
+      src_url <- utils::available.packages(url) |> as.data.frame() |>
         dplyr::mutate(
           Repository = url
         ) |>
@@ -35,10 +35,10 @@ check_approved <- function(approved_pkg_folder,
       session_pkgs |>
         dplyr::left_join(src_url, by = c("package" = "Package", "loadedversion" = "Version")) |>
         dplyr::mutate(
-          Approved = ifelse(is.na(Repository), "No", "Yes"),
+          Approved = ifelse(is.na(.data[["Repository"]]), "No", "Yes"),
           "Approved Repository" = url
         ) |>
-        dplyr::arrange(Approved, package) |>
+        dplyr::arrange(.data[["Approved"]], .data[["package"]]) |>
         dplyr::select(-c("Repository"))
     })
     approved_dset_url <- do.call(dplyr::bind_rows, approved_dset_url_list)
@@ -51,7 +51,7 @@ check_approved <- function(approved_pkg_folder,
           Approved = ifelse(library %in% folder, "Yes", "No"),
           "Approved Repository" = folder
         ) |>
-        dplyr::arrange(Approved, package)
+        dplyr::arrange(.data[["Approved"]], .data[["package"]])
     })
     approved_dset_file <- do.call(dplyr::bind_rows, approved_dset_file_list)
   }
@@ -60,12 +60,12 @@ check_approved <- function(approved_pkg_folder,
     approved_dset <- approved_dset_url |>
       dplyr::select("package", "loadedversion", "date", "source", "Approved", "Approved Repository") |>
       dplyr::rename("Repository URL" = "Approved Repository") |>
-      dplyr::arrange(Approved, package)
+      dplyr::arrange(.data[["Approved"]], .data[["package"]])
   } else if (is.null(approved_pkg_url) || length(approved_pkg_url) == 0) {
     approved_dset <- approved_dset_file |>
       dplyr::select("package", "loadedversion", "date", "source", "Approved", "Approved Repository") |>
       dplyr::rename("Repository Folder" = "Approved Repository") |>
-      dplyr::arrange(Approved, package)
+      dplyr::arrange(.data[["Approved"]], .data[["package"]])
   } else {
     approved_dset <- dplyr::full_join(approved_dset_url, approved_dset_file, by = c("package", "loadedversion")) |>
       dplyr::select("package", "loadedversion", "date.x", "source.x", "Approved.x", "Approved Repository.x", "Approved.y", "Approved Repository.y") |>
@@ -77,7 +77,7 @@ check_approved <- function(approved_pkg_folder,
         "Approved in Repository URL" = "Approved.x",
         "Approved in Repository Folder" = "Approved.y"
       ) |>
-      dplyr::arrange(`Approved in Repository URL`, `Approved in Repository Folder`, package)
+      dplyr::arrange(.data[["Approved in Repository URL"]], .data[["Approved in Repository Folder"]], .data[["package"]])
   }
 
   if (is.null(output_file)) {
@@ -98,11 +98,11 @@ create_approval_plot <- function(data) {
   data |>
     dplyr::count(.data[["grpvar"]]) |>
     dplyr::mutate(
-      pct = prop.table(n),
+      pct = prop.table(.data[["n"]]),
       status = "grpvar",
-      lbl = paste0(.data[["grpvar"]], ": ", n, "/", sum(n), " (", scales::percent(pct), ")")
+      lbl = paste0(.data[["grpvar"]], ": ", .data[["n"]], "/", sum(.data[["n"]]), " (", scales::percent(.data[["pct"]]), ")")
     ) |>
-    ggplot2::ggplot(ggplot2::aes(x = pct, y = .data[["status"]], fill = .data[["grpvar"]], label = lbl)) +
+    ggplot2::ggplot(ggplot2::aes(x = .data[["pct"]], y = .data[["status"]], fill = .data[["grpvar"]], label = .data[["lbl"]])) +
     ggplot2::geom_bar(position = "fill", stat = "identity") +
     ggplot2::geom_text(position = ggplot2::position_stack(vjust = 0.5, reverse = FALSE)) +
     ggplot2::theme_void() +
