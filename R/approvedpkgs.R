@@ -46,12 +46,23 @@ check_approved <- function(approved_pkg_folder,
 
   if (!is.null(approved_pkg_folder) && length(approved_pkg_folder) > 0) {
     approved_dset_file_list <- lapply(approved_pkg_folder, function(folder) {
-      session_pkgs |>
+      if (!dir.exists(folder)) {
+        stop("The folder does not exist")
+      }
+      src_file <- as.data.frame(installed.packages(folder)) |>
         dplyr::mutate(
-          Approved = ifelse(library %in% folder, "Yes", "No"),
+          Repository = folder
+        ) |>
+        dplyr::select("Package", "Version", "Repository")
+      session_pkgs |>
+        dplyr::left_join(src_file, by = c("package" = "Package", "loadedversion" = "Version")) |>
+        dplyr::mutate(
+          Approved = ifelse(is.na(.data[["Repository"]]), "No", "Yes"),
           "Approved Repository" = folder
         ) |>
-        dplyr::arrange(.data[["Approved"]], .data[["package"]])
+        dplyr::arrange(.data[["Approved"]], .data[["package"]]) |>
+        dplyr::select(-c("Repository"))
+
     })
     approved_dset_file <- do.call(dplyr::bind_rows, approved_dset_file_list)
   }
