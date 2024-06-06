@@ -29,6 +29,10 @@ whirl_r_session <- R6::R6Class(
 p <- whirl_r_session$new()
 on.exit(p$kill())
 
+whirl_r_session
+
+p
+
 p$set_inputs()
 p$set_dir()
 p$set_verbosity_level()
@@ -42,3 +46,6 @@ p$create_outputs()
 p$call(\() Sys.sleep(10))
 p$wait(timeout = 1)
 p$read()
+
+
+p <- whirl:::whirl_r_session$new()
