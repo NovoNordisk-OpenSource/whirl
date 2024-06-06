@@ -50,6 +50,8 @@ test with a single script</p>
 <span>  track_files <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  check_renv <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  out_formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  approved_pkgs_folder <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  approved_pkgs_url <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  out_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">script</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -70,6 +72,14 @@ test with a single script</p>
 
 <dt>out_formats</dt>
 <dd><p>Which log format(s) to produce. Possiblities are <code>html</code>, <code>json</code>, and markdown formats:<code>gfm</code>, <code>commonmark</code>, and <code>markua</code>. See also details. (Defaults to <code>"html"</code>, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')</p></dd>
+
+
+<dt>approved_pkgs_folder</dt>
+<dd><p>Approved folder library packages (Defaults to <code>NULL</code>, overwritable using option 'whirl.approved_pkgs_folder' or environment variable 'R_WHIRL_APPROVED_PKGS_FOLDER')</p></dd>
+
+
+<dt>approved_pkgs_url</dt>
+<dd><p>Approved URL library packages (Defaults to <code>NULL</code>, overwritable using option 'whirl.approved_pkgs_url' or environment variable 'R_WHIRL_APPROVED_PKGS_URL')</p></dd>
 
 
 <dt>out_dir</dt>

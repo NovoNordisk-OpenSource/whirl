@@ -43,7 +43,11 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>track_files_discards</dt>
+    <dl><dt>verbosity_level</dt>
+<dd><p>How chatty should the log be? Possibilities are <code>quiet</code>, <code>verbose</code>, and <code>debug</code>. (Defaults to <code>"verbose"</code>, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')</p></dd>
+
+
+<dt>track_files_discards</dt>
 <dd><p>List of file naming patterns not be tracked when track_files = TRUE (Defaults to <code>c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())</code>, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')</p></dd>
 
 
@@ -55,12 +59,20 @@
 <dd><p>Which log format(s) to produce. Possiblities are <code>html</code>, <code>json</code>, and markdown formats:<code>gfm</code>, <code>commonmark</code>, and <code>markua</code>. See also details. (Defaults to <code>"html"</code>, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')</p></dd>
 
 
+<dt>approved_pkgs_folder</dt>
+<dd><p>Approved folder library packages (Defaults to <code>NULL</code>, overwritable using option 'whirl.approved_pkgs_folder' or environment variable 'R_WHIRL_APPROVED_PKGS_FOLDER')</p></dd>
+
+
 <dt>check_renv</dt>
 <dd><p>Should the projects renv status be checked? (Defaults to <code>FALSE</code>, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')</p></dd>
 
 
 <dt>track_files_keep</dt>
 <dd><p>List of file naming patterns alway to be tracked when track_files = TRUE (Defaults to <code>paste0("^", getwd())</code>, overwritable using option 'whirl.track_files_keep' or environment variable 'R_WHIRL_TRACK_FILES_KEEP')</p></dd>
+
+
+<dt>approved_pkgs_url</dt>
+<dd><p>Approved URL library packages (Defaults to <code>NULL</code>, overwritable using option 'whirl.approved_pkgs_url' or environment variable 'R_WHIRL_APPROVED_PKGS_URL')</p></dd>
 
 </dl></div>
 
