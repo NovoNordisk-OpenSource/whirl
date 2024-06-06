@@ -51,6 +51,18 @@ List of file naming patterns alway to be tracked when track_files = TRUE\item{de
 \item{envvar: }{R_WHIRL_TRACK_FILES_KEEP (as character vector, split on ';' delimiter)}
 }}
 
+\item{approved_pkgs_folder}{\describe{
+Approved folder library packages\item{default: }{\preformatted{NULL}}
+\item{option: }{whirl.approved_pkgs_folder}
+\item{envvar: }{R_WHIRL_APPROVED_PKGS_FOLDER (as character vector, split on ';' delimiter)}
+}}
+
+\item{approved_pkgs_url}{\describe{
+Approved URL library packages\item{default: }{\preformatted{NULL}}
+\item{option: }{whirl.approved_pkgs_url}
+\item{envvar: }{R_WHIRL_APPROVED_PKGS_URL (as character vector, split on ';' delimiter)}
+}}
+
 }
 }
 

@@ -56,3 +56,17 @@ options::define_option(
   desc = "List of file naming patterns alway to be tracked when track_files = TRUE",
   envvar_fn = options::envvar_str_split(delim = ";")
 )
+
+options::define_option(
+  option = "approved_pkgs_folder",
+  default =  NULL,
+  desc = "Approved folder library packages",
+  envvar_fn = options::envvar_str_split(delim = ";")
+)
+
+options::define_option(
+  option = "approved_pkgs_url",
+  default =  NULL,
+  desc = "Approved URL library packages",
+  envvar_fn = options::envvar_str_split(delim = ";")
+)

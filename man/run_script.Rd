@@ -10,6 +10,8 @@ run_script(
   track_files = NULL,
   check_renv = NULL,
   out_formats = NULL,
+  approved_pkgs_folder = NULL,
+  approved_pkgs_url = NULL,
   out_dir = dirname(script)
 )
 }
@@ -21,6 +23,10 @@ run_script(
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 
 \item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
+
+\item{approved_pkgs_folder}{Approved folder library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkgs_folder' or environment variable 'R_WHIRL_APPROVED_PKGS_FOLDER')}
+
+\item{approved_pkgs_url}{Approved URL library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkgs_url' or environment variable 'R_WHIRL_APPROVED_PKGS_URL')}
 
 \item{out_dir}{description}
 }
