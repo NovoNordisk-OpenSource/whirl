@@ -43,7 +43,7 @@ options::define_option(
     "^/null",
     "^/urandom",
     "^/.cache",
-    #"^/renv"#,
+    # "^/renv"#,
     .libPaths()
   ),
   desc = "List of file naming patterns not be tracked when track_files = TRUE",
@@ -65,14 +65,14 @@ options::define_option(
 
 options::define_option(
   option = "approved_pkgs_folder",
-  default =  NULL,
+  default = NULL,
   desc = "Approved folder library packages",
   envvar_fn = options::envvar_str_split(delim = ";")
 )
 
 options::define_option(
   option = "approved_pkgs_url",
-  default =  NULL,
+  default = NULL,
   desc = "Approved URL library packages",
   envvar_fn = options::envvar_str_split(delim = ";")
 )

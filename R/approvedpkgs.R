@@ -27,7 +27,8 @@ check_approved <- function(approved_pkg_folder,
         stop("The repository is not available")
       }
 
-      src_url <- utils::available.packages(url) |> as.data.frame() |>
+      src_url <- utils::available.packages(url) |>
+        as.data.frame() |>
         dplyr::mutate(
           Repository = url
         ) |>
@@ -62,7 +63,6 @@ check_approved <- function(approved_pkg_folder,
         ) |>
         dplyr::arrange(.data[["Approved"]], .data[["package"]]) |>
         dplyr::select(-c("Repository"))
-
     })
     approved_dset_file <- do.call(dplyr::bind_rows, approved_dset_file_list)
   }
@@ -101,7 +101,6 @@ check_approved <- function(approved_pkg_folder,
 
 #' @noRd
 create_approval_plot <- function(data) {
-
   row.names(data) <- NULL
 
   data$grpvar <- ifelse(rowSums(as.matrix(data[, grepl("^Approved", colnames(data))]) == "No") == ncol(as.matrix(data[, grepl("^Approved", colnames(data))])), "No", "Yes")
@@ -121,6 +120,6 @@ create_approval_plot <- function(data) {
       legend.position = "none",
       plot.title = ggplot2::element_text(hjust = 0.5)
     ) +
-    ggplot2::scale_fill_manual(values = c( "Yes" = "green", "No" = "orange")) +
+    ggplot2::scale_fill_manual(values = c("Yes" = "green", "No" = "orange")) +
     ggplot2::labs(title = "Approved")
 }

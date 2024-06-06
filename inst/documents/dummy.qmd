@@ -17,11 +17,9 @@ knitr::spin_child(params$script)
 ```
 
 ```{r, child = params$script, eval=(grepl("\\.qmd$", params$script))}
-
 ```
 
 ```{r, child = params$script, eval=(grepl("\\.Rmd$", params$script))}
-
 ```
 
 

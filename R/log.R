@@ -13,9 +13,7 @@ run_script <- function(script,
                        out_formats = NULL,
                        approved_pkgs_folder = NULL,
                        approved_pkgs_url = NULL,
-                       out_dir = dirname(script)
-                       ) {
-
+                       out_dir = dirname(script)) {
   # Use options if not provided
 
   if (is.null(track_files)) track_files <- options::opt("track_files")
@@ -88,7 +86,9 @@ run_script <- function(script,
   # Create new R session used to run all documents
 
   p <- callr::r_session$new()
-  on.exit({p$close()}) # Close R session on exit
+  on.exit({
+    p$close()
+  }) # Close R session on exit
 
   # If track_files start strace tracking the process and which files are used
 
@@ -127,7 +127,9 @@ run_script <- function(script,
   }
   if (!is.null(status$error)) {
     if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$finish()
-    status$error |> as.character() |> rlang::abort()
+    status$error |>
+      as.character() |>
+      rlang::abort()
   }
 
   # Create the final log with extra information
@@ -165,7 +167,9 @@ run_script <- function(script,
   }
   if (!is.null(status$error)) {
     if (zephyr::get_opt("verbosity_level") %in% c("verbose", "debug")) spinner$finish()
-    status$error |> as.character() |> rlang::abort()
+    status$error |>
+      as.character() |>
+      rlang::abort()
   }
 
   # Create R object for return
