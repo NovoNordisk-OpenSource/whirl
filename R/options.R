@@ -62,3 +62,17 @@ options::define_option(
   default = "verbose",
   desc = "How chatty should the log be? Possibilities are `quiet`, `verbose`, and `debug`."
 )
+
+options::define_option(
+  option = "approved_pkgs_folder",
+  default =  NULL,
+  desc = "Approved folder library packages",
+  envvar_fn = options::envvar_str_split(delim = ";")
+)
+
+options::define_option(
+  option = "approved_pkgs_url",
+  default =  NULL,
+  desc = "Approved URL library packages",
+  envvar_fn = options::envvar_str_split(delim = ";")
+)

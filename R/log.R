@@ -11,14 +11,18 @@ run_script <- function(script,
                        track_files = NULL,
                        check_renv = NULL,
                        out_formats = NULL,
-                       out_dir = dirname(script)) {
+                       approved_pkgs_folder = NULL,
+                       approved_pkgs_url = NULL,
+                       out_dir = dirname(script)
+                       ) {
 
   # Use options if not provided
 
   if (is.null(track_files)) track_files <- options::opt("track_files")
   if (is.null(check_renv)) check_renv <- options::opt("check_renv")
   if (is.null(out_formats)) out_formats <- options::opt("out_formats")
-
+  if (is.null(approved_pkgs_folder)) approved_pkgs_folder <- options::opt("approved_pkgs_folder")
+  if (is.null(approved_pkgs_url)) approved_pkgs_url <- options::opt("approved_pkgs_url")
   # Input validation
 
   val <- checkmate::makeAssertCollection()
@@ -37,6 +41,9 @@ run_script <- function(script,
   checkmate::assert_character(x = out_dir, any.missing = FALSE, len = 1, add = val)
   checkmate::assert_path_for_output(x = out_dir, overwrite = TRUE, add = val)
 
+  checkmate::assert_character(x = approved_pkgs_folder, len = 1, null.ok = TRUE, add = val)
+  checkmate::assert_character(x = approved_pkgs_url, len = 1, null.ok = TRUE, add = val)
+
   track_files_discards <- options::opt("track_files_discards") |>
     checkmate::assert_character(any.missing = FALSE, add = val)
 
@@ -44,6 +51,8 @@ run_script <- function(script,
     checkmate::assert_character(any.missing = FALSE, add = val)
 
   zephyr::report_checkmate_assertations(val)
+
+  checkmate::reportAssertions(val)
 
   # Derive execute directory for the quarto render process of the document
   # Abides to standards for R, Rmd, and qmd scripts,
@@ -140,6 +149,8 @@ run_script <- function(script,
         strace_discards = track_files_discards,
         strace_keep = track_files_keep,
         objects_path = objects_rds,
+        check_approved_folder_pkgs = approved_pkgs_folder,
+        check_approved_url_pkgs = approved_pkgs_url,
         renv = check_renv
       ),
       execute_dir = getwd()

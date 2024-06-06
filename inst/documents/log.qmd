@@ -11,6 +11,8 @@ params:
   strace_discards: NULL
   strace_keep: NULL
   objects_path: ''
+  check_approved_folder_pkgs: NULL
+  check_approved_url_pkgs: NULL
   renv: TRUE
 format:
   html:
@@ -95,7 +97,7 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 
-info <- whirl:::session_info()
+info <- whirl:::session_info(params$check_approved_folder_pkgs, params$check_approved_url_pkgs)
 
 ```
 
@@ -105,10 +107,20 @@ info$platform
 cat("\n")
 ```
 
-```{r, results="asis"}
+
+```{r, results="asis", fig.height = 0.5}
 cat('\n## Packages\n')
-info$packages
+
+if (!is.null(params$check_approved_folder_pkgs) |
+    !is.null(params$check_approved_url_pkgs)) {
+  whirl:::create_approval_plot(info$packages |> data.frame())
+}
+
 cat("\n")
+```
+
+```{r, results="asis", fig.height = 0.5}
+info$packages
 ```
 
 ```{r, results="asis"}
