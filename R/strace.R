@@ -21,7 +21,7 @@ start_strace <- function(pid, file) {
 #' @return [list] of `data.frame`(s) of the relevant files for each type of info
 #' @noRd
 
-read_strace_info <- function(path, p_wd, strace_discards = character(), strace_keep = character(), types = c("read", "write", "deleted")) {
+read_strace_info <- function(path, p_wd, strace_discards = character(), strace_keep = character(), types = c("read", "write", "delete")) {
   strace <- path |>
     read_strace(p_wd = p_wd) |>
     refine_strace(strace_discards = strace_discards, strace_keep = strace_keep)
@@ -75,6 +75,21 @@ read_strace <- function(path, p_wd) {
     ) |>
     stringr::str_subset("<unfinished \\.{3}>|<\\.{3} [a-zA-Z]+ resumed>", negate = TRUE)
 
+  # Early return if no information
+
+  if (length(strace) == 0) {
+    return(
+      tibble::tibble(
+        seq = integer(),
+        time = as.POSIXct(character()),
+        file = character(),
+        type = character()
+      )
+    )
+  }
+
+  # Otherwise extract information
+
   strace_df <- strace |>
     unglue::unglue_data(
       patterns = list(
@@ -111,8 +126,6 @@ read_strace <- function(path, p_wd) {
 
   strace_df |>
     dplyr::mutate(
-      .data$time,
-      .data$type,
       file = dplyr::if_else(
         stringr::str_detect(string = .data$path, pattern = "^/", negate = TRUE),
         file.path(.data$dir, .data$path),
@@ -120,7 +133,7 @@ read_strace <- function(path, p_wd) {
       )
     ) |>
     dplyr::filter(.data$type %in% c("read", "write", "delete")) |>
-    dplyr::select(.data$seq, .data$time, .data$file, .data$type)
+    dplyr::select("seq", "time", "file", "type")
 }
 
 #' refine strace output
@@ -173,5 +186,5 @@ refine_strace <- function(strace_df, strace_discards = character(), strace_keep 
     ) |>
     dplyr::ungroup() |>
     dplyr::arrange(.data$seq, .data$file) |>
-    dplyr::select(.data$time, .data$file, .data$type)
+    dplyr::select("time", "file", "type")
 }

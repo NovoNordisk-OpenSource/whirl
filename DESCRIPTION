@@ -1,5 +1,5 @@
 Package: whirl
-Title: Loggin package
+Title: Logging package
 Version: 0.0.0.9001
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
@@ -14,10 +14,14 @@ RoxygenNote: 7.3.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: 
+    R (>= 4.1)
 Imports: 
     callr,
     checkmate,
+    cli,
     dplyr,
+    glue,
     ggplot2,
     httr,
     jsonlite,
@@ -37,4 +41,7 @@ Imports:
     utils,
     vctrs,
     withr,
+    zephyr (>= 0.0.0.9000),
     zoo
+Remotes: 
+    NN-OpenSource/zephyr
