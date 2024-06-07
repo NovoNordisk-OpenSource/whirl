@@ -5,7 +5,8 @@
 
 start_strace <- function(pid, file) {
   sprintf(
-    "strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s -y",
+    # "strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir,network -o %s -p %s -y",
+    "strace -f -q -ttt -T -e trace=all -s 256 -o %s -p %s -y",
     file,
     pid
   ) |>
