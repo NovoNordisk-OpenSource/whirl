@@ -14,6 +14,7 @@ params:
   check_approved_folder_pkgs: NULL
   check_approved_url_pkgs: NULL
   renv: TRUE
+  with_library_paths: library_paths
 format:
   html:
     embed-resources: true
@@ -26,6 +27,9 @@ format:
 # Summary
 
 ```{r, echo=FALSE, eval=TRUE}
+
+.libPaths(c(character(), params$with_library_paths))
+
 status <- params$script_md |>
   whirl:::get_status()
 

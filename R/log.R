@@ -84,6 +84,8 @@ run_script <- function(script,
   objects_rds <- withr::local_tempfile(fileext = ".rds")
 
   # Create new R session used to run all documents
+  # ensure the new r session uses the same current library paths as the current session
+  curr_libs <- .libPaths()
 
   p <- callr::r_session$new()
   on.exit({
@@ -114,7 +116,7 @@ run_script <- function(script,
       input = basename(dummy_qmd),
       output_format = "markdown",
       output_file = basename(doc_md),
-      execute_params = list(script = normalizePath(script)),
+      execute_params = list(script = normalizePath(script), with_library_paths = curr_libs),
       execute_dir = quarto_execute_dir
     )
   )
@@ -153,7 +155,8 @@ run_script <- function(script,
         objects_path = objects_rds,
         check_approved_folder_pkgs = approved_pkgs_folder,
         check_approved_url_pkgs = approved_pkgs_url,
-        renv = check_renv
+        renv = check_renv,
+        with_library_paths = curr_libs
       ),
       execute_dir = getwd()
     )
