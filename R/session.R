@@ -4,8 +4,21 @@
 #'
 #' @noRd
 
-session_info <- function() {
+session_info <- function(approved_folder_pkgs, approved_url_pkgs) {
   info <- sessioninfo::session_info()
+
+  if (!is.null(approved_folder_pkgs) |
+    !is.null(approved_url_pkgs)) {
+    info$packages <- check_approved(
+      approved_pkg_folder = approved_folder_pkgs,
+      approved_pkg_url = approved_url_pkgs,
+      session_pkgs = info$packages
+    )
+    class(info$packages) <- c("approved_pkgs", class(info$packages))
+  } else {
+    info$packages
+    class(info$packages) <- c("packages_info", class(info$packages))
+  }
 
   info$environment <- Sys.getenv() |>
     as.list() |>
@@ -80,6 +93,36 @@ knit_print.whirl_packages_info <- function(x, ...) {
       bootstrap_options = "striped",
       full_width = TRUE
     ) |>
+    knitr::knit_print()
+}
+
+#' @noRd
+#'
+knit_print.whirl_approved_pkgs <- function(x, ...) {
+  hold <- x |>
+    data.frame(
+      check.names = FALSE
+    ) |>
+    dplyr::rename(
+      Package = .data[["package"]],
+      Version = .data[["loadedversion"]],
+      `Date (UTC)` = .data[["date"]],
+      Source = .data[["source"]]
+    )
+
+  row.names(hold) <- NULL
+  ncols <- ncol(hold)
+
+  # Select columns whose names start with 'Approved' and
+  # Use the columns to determine color of the row
+
+  hold |>
+    knitr::kable() |>
+    kableExtra::kable_styling(
+      bootstrap_options = "striped",
+      full_width = TRUE
+    ) |>
+    kableExtra::column_spec(1:ncols, background = ifelse(as.integer(rowSums(as.matrix(hold[, grepl("^Approved", colnames(hold))]) == "No") == ncol(as.matrix(hold[, grepl("^Approved", colnames(hold))]))) == 1, "orange", "white")) |>
     knitr::knit_print()
 }
 

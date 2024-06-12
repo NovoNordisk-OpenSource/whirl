@@ -1,6 +1,7 @@
 ---
 params:
   script: 'dev'
+  with_library_paths: library_paths
 ---
 
 ```{r, include=FALSE}
@@ -13,15 +14,15 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, echo=FALSE, eval=(grepl("\\.R$", params$script))}
+.libPaths(c(character(), params$with_library_paths))
+
 knitr::spin_child(params$script)
 ```
 
 ```{r, child = params$script, eval=(grepl("\\.qmd$", params$script))}
-
 ```
 
 ```{r, child = params$script, eval=(grepl("\\.Rmd$", params$script))}
-
 ```
 
 

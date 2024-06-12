@@ -57,6 +57,18 @@ How chatty should the log be? Possibilities are \code{quiet}, \code{verbose}, an
 \item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
 }}
 
+\item{approved_pkgs_folder}{\describe{
+Approved folder library packages\item{default: }{\preformatted{NULL}}
+\item{option: }{whirl.approved_pkgs_folder}
+\item{envvar: }{R_WHIRL_APPROVED_PKGS_FOLDER (as character vector, split on ';' delimiter)}
+}}
+
+\item{approved_pkgs_url}{\describe{
+Approved URL library packages\item{default: }{\preformatted{NULL}}
+\item{option: }{whirl.approved_pkgs_url}
+\item{envvar: }{R_WHIRL_APPROVED_PKGS_URL (as character vector, split on ';' delimiter)}
+}}
+
 }
 }
 
