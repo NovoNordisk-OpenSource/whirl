@@ -35,6 +35,8 @@ db <- DBI::dbConnect(
 
 DBI::dbListTables(db)
 
+DBI::dbWriteTable(db, "mtcars", mtcars)
+
 DBI::dbDisconnect(db)
 
 do_something <- function() {
