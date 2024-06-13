@@ -1,3 +1,5 @@
+#' Internal whirl extention of the callr::r_session class to be used in `run_script()`
+#' @export
 
 whirl_r_session <- R6::R6Class(
 
@@ -5,122 +7,82 @@ whirl_r_session <- R6::R6Class(
 
   public = list(
 
-    initialize = \(lib_paths = .libPaths(), verbosity_level = zephyr::get_opt("verbosity_level")) {
-
-      super$initialize()
-
-      private$dir <- withr::local_tempdir(clean = FALSE)
-      private$dummy_qmd <- file.path(private$dir, "dummy.qmd")
-      private$log_qmd <- file.path(private$dir, "log.qmd")
-      private$strace_log <- file.path(private$dir, "strace_log")
-      private$lib_paths <- lib_paths
-      private$verbosity_level <- verbosity_level
-
-      file.copy(from = system.file("documents/dummy.qmd", package = "whirl"), to = private$dummy_qmd)
-      file.copy(from = system.file("documents/log.qmd", package = "whirl"), to = private$log_qmd)
+    #' @description
+    #' Initialize a new whirl R session
+    #' @param lib_paths character vector of library paths
+    #' @return An `whirl_r_session` object, that inherits from `callr::r_session`
+    initialize = \(lib_paths = .libPaths()) {
+      wrs_init(self, private, super, lib_paths)
       },
 
+    #' @description
+    #' Finalize the R session, and clean up temp files etc.
     finalize = \() {
-      unlink(private$dir, recursive = TRUE)
-      private$spinner$finish()
-      super$finalize()
+      wrs_finalize(self, private, super)
       },
 
-    print = \() {
-      cat("whirl_r_session object\n")
-      super$print()
-      cat("  Directory: ", private$dir, "\n")
-      cat("  Dummy QMD: ", private$dummy_qmd, "\n")
-      cat("  Log QMD: ", private$log_qmd, "\n")
+    #' @description
+    #' Print the whirl R session object
+    #' @return [invisible] self
+    print = \() { # For easier debugging
+      wrs_print(self, private, super)
       },
 
+    #' @description Get the directory of the whirl R session
     get_dir = \() {private$dir},
 
-    start_strace = \() {start_strace(pid = super$get_pid(), file = private$strace_log)},
+    #' @description Start strace
+    use_strace = \() {start_strace(pid = super$get_pid(), file = private$strace_log)},
 
+    #' @description Get strace
+    get_strace = \() read_strace_info(),
+
+    #' @description Run
     run_something = \() for (i in seq(100)) {Sys.sleep(0.1); private$spinner$spin()}
 
   ),
 
   private = list(
     dir = NULL,
-    dummy_qmd = NULL,
-    log_qmd = NULL,
-    strace_log = NULL,
+    dummy_qmd = "dummy.qmd",
+    log_qmd = "log.qmd",
+    strace_log = "strace.log",
     lib_paths = NULL,
-    verbosity_level = NULL,
     spinner = cli::make_spinner()
   ),
 
   inherit = callr::r_session
 )
 
-p <- whirl_r_session$new(verbosity_level = "a")
+wrs_init <- function(self, private, super, lib_paths) {
+  super$initialize()
 
-p
+  private$dir <- withr::local_tempdir(clean = FALSE)
+  private$lib_paths <- lib_paths
 
-a <- p$get_dir() |> print()
+  file.copy(from = system.file("documents/dummy.qmd", package = "whirl"), to = private$dummy_qmd)
+  file.copy(from = system.file("documents/log.qmd", package = "whirl"), to = private$log_qmd)
+}
 
-dir.exists(a)
-a |> list.files()
+wrs_finalize <- function(self, private, super) {
+  unlink(private$dir, recursive = TRUE)
+  private$spinner$finish()
+  super$finalize()
+}
 
-p$run_something()
+wrs_print <- function(self, private, super) {
 
+  msg <- c(
+    capture.output(super$print()),
+    "Directory: {private$dir}"
+    ) |>
+    rlang::set_names("*")
 
-p$kill()
-p$finalize()
-rm(p)
-gc()
-dir.exists(a)
-
-
-# Pseudo code for whirl_r_session
-
-whirl_r_session <- R6::R6Class(
-  classname = "whirl_r_session",
-  public = list(
-    set_inputs = \(...) private$script <- script,
-    start_strace = \() super$get_pid() |> print(),
-    set_verbosity_level = \(level) private$verbosity_level <- level,
-    set_dir = \(dir) private$dir <- dir,
-    render_script = \() TRUE,
-    read_strace = \() TRUE,
-    render_log = \() TRUE,
-    report_status = \() TRUE,
-    create_outputs = \(formats) TRUE
-  ),
-  private = list(
-    script = NULL,
-    verbosity_level = "verbose",
-    dir = NULL,
-    last_status = NULL,
-    spinner = NULL
-  ),
-  inherit = callr::r_session
-)
-
-# Pseudo use inside run_script()
-
-p <- whirl_r_session$new()
-on.exit(p$kill())
-
-whirl_r_session
-
-p
-
-p$set_inputs()
-p$set_dir()
-p$set_verbosity_level()
-p$start_strace()
-p$render_script()
-p$read_strace()
-p$render_log()
-p$report_status()
-p$create_outputs()
-
-p$call(\() Sys.sleep(10))
-p$wait(timeout = 1)
-p$read()
-
-
-p <- whirl:::whirl_r_session$new()
+  cli::cli_bullets(
+    c(
+      "<whirl_r_session> object",
+      msg
+    )
+  )
+  return(invisible(self))
+}
