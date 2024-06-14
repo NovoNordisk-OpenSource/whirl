@@ -1,5 +1,5 @@
 
-# SQLite
+# SQLite ----
 
 db <- DBI::dbConnect(drv = RSQLite::SQLite(), dbname = "test.sqllite")
 
@@ -22,7 +22,7 @@ do_something <- function() {
 
 p$kill()
 
-# Postgres
+# Postgres ----
 
 db <- DBI::dbConnect(
   drv = RPostgres::Postgres(),
@@ -71,4 +71,27 @@ start_strace(p$get_pid(), "strace.log")
 p$run(do_something)
 
 p$kill()
+
+# databricks ----
+
+# Connect to spark cluster
+
+client <- connector.databricks::DatabricksClient()
+
+client$debug_string()
+client$login
+
+sc <- sparklyr::spark_connect(
+  cluster_id = "0506-070754-es7n1qmj", # "cluster_id"
+  method = "databricks_connect"
+)
+
+
+
+
+
+
+
+
+
 
