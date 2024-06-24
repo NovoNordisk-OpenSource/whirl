@@ -34,11 +34,17 @@
 #' }
 #'
 #' @export
-execute_scripts <- function(scripts = NULL, folder = NULL, parallel = FALSE, num_cores = NULL, ...) {
-
+execute_scripts <- function(scripts = NULL,
+                            folder = NULL,
+                            parallel = FALSE,
+                            num_cores = NULL,
+                            summary_dir = getwd(),
+                            ...) {
   if (!is.null(folder)) {
     # If a folder is specified, get all supported script files in the folder
-    script_files <- list.files(path = folder, pattern = "\\.(R|Rmd|qmd)$", full.names = TRUE)
+    script_files <- list.files(path = folder,
+                               pattern = "\\.(R|Rmd|qmd)$",
+                               full.names = TRUE)
   } else if (is.character(scripts)) {
     # If scripts is a character vector, assume it's a list of file paths
     script_files <- scripts
@@ -51,10 +57,17 @@ execute_scripts <- function(scripts = NULL, folder = NULL, parallel = FALSE, num
     cat("Executing script:", script, "\n")
     result <- tryCatch({
       # source(script, local = TRUE)
-      output <- run_script(script,  ...)
-      dplyr::tibble( script = script, status = output$status$status, log = output$log)
+      output <- run_script(script, ...)
+      dplyr::tibble(
+        script = script,
+        status = output$status$status,
+        location = output$log_details$location
+      )
     }, error = function(e) {
-      paste("Error executing script:", script, "\nError message:", conditionMessage(e))
+      paste("Error executing script:",
+            script,
+            "\nError message:",
+            conditionMessage(e))
     })
     return(result)
   }
@@ -86,7 +99,32 @@ execute_scripts <- function(scripts = NULL, folder = NULL, parallel = FALSE, num
   }
 
   # After obtaining the results, create a summary data frame
-  summary_df <- dplyr::bind_rows(results)
+  summary_df <- dplyr::bind_rows(results) |>
+    dplyr::mutate(
+      status = factor(.data[["status"]], levels = c("error", "warning", "success"))
+    ) |>
+    dplyr::arrange(factor(.data[["status"]]))
+
+  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
+
+  summary_log_html <- withr::local_tempfile(fileext = ".html")
+
+  render(
+    input = summary_qmd,
+    output_format = "html_document",
+    output_file = summary_log_html,
+    params = list(summary_df = summary_df)
+  )
+
+  # Create requested outputs
+
+  # if ("html" %in% out_formats) {
+  file.copy(
+    from = summary_log_html,
+    to = file.path(summary_dir, "summary.html"),
+    overwrite = TRUE
+  )
+  # }
 
   return(summary_df)
 }

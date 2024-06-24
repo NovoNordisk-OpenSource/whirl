@@ -1,0 +1,58 @@
+---
+title: "Summary"
+date: "`r Sys.time()`"
+date-format: "YYYY-MM-DDTHH:mm:ss zzz"
+params:
+  summary_df: summary_df
+  title: 'dev'
+  script_md: 'dev'
+  p_wd: ""
+  strace: FALSE
+  strace_path: ''
+  strace_discards: NULL
+  strace_keep: NULL
+  objects_path: ''
+  check_approved_folder_pkgs: NULL
+  check_approved_url_pkgs: NULL
+  renv: TRUE
+  with_library_paths: library_paths
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    toc-expand: true
+    smooth-scroll: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  warning = TRUE,
+  message = TRUE,
+  echo = TRUE
+)
+```
+
+```{r, echo = FALSE}
+hold <- params$summary_df
+ncols <- ncol(hold)
+hold |>
+  knitr::kable() |>
+  kableExtra::column_spec(3, link = params$summary_df[[3]]) |>
+  kableExtra::column_spec(1:ncols, background = ifelse(
+    hold[["status"]] == "error",
+    "#fceeef",
+    ifelse(
+      hold[["status"]]  == "warning",
+      "#fffaea",
+      ifelse(hold[["status"]]  == "success", "#ebf5f1", "white")
+    )
+  )) |>
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) 
+```
+
+
+
+
+

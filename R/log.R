@@ -181,6 +181,12 @@ run_script <- function(script,
     unlist(recursive = FALSE)
 
   output <- list(
+    log_details = list(location = file.path(out_dir,
+                                            gsub(
+                                              pattern = "\\.[^\\.]*$",
+                                              replacement = ".html",
+                                              x = basename(script)
+                                            ))),
     status = get_status(md = doc_md),
     session_info_rlist = objects_rds_lst
   )

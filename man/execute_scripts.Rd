@@ -9,6 +9,7 @@ execute_scripts(
   folder = NULL,
   parallel = FALSE,
   num_cores = NULL,
+  summary_dir = getwd(),
   ...
 )
 }
