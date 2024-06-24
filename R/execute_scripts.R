@@ -59,9 +59,9 @@ execute_scripts <- function(scripts = NULL,
       # source(script, local = TRUE)
       output <- run_script(script, ...)
       dplyr::tibble(
-        script = script,
+        script = normalizePath(script),
         status = output$status$status,
-        location = output$log_details$location
+        location = normalizePath(output$log_details$location)
       )
     }, error = function(e) {
       paste("Error executing script:",
@@ -105,7 +105,10 @@ execute_scripts <- function(scripts = NULL,
     ) |>
     dplyr::arrange(factor(.data[["status"]]))
 
-  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
+  summary_qmd <- withr::local_tempfile(
+    lines = readLines(system.file("documents/summary.qmd", package = "whirl")),
+    fileext = ".qmd"
+    )
 
   summary_log_html <- withr::local_tempfile(fileext = ".html")
 
