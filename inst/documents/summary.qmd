@@ -36,20 +36,8 @@ knitr::opts_chunk$set(
 
 ```{r, echo = FALSE}
 hold <- params$summary_df
-ncols <- ncol(hold)
-hold |>
-  knitr::kable() |>
-  kableExtra::column_spec(3, link = params$summary_df[[3]]) |>
-  kableExtra::column_spec(1:ncols, background = ifelse(
-    hold[["status"]] == "error",
-    "#fceeef",
-    ifelse(
-      hold[["status"]]  == "warning",
-      "#fffaea",
-      ifelse(hold[["status"]]  == "success", "#ebf5f1", "white")
-    )
-  )) |>
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) 
+class(hold) <- c("whirl_summary_info", "summary_info", "list")
+hold
 ```
 
 

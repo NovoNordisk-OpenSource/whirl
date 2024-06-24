@@ -55,13 +55,14 @@ execute_scripts <- function(scripts = NULL,
   # Function to execute a single script
   execute_single_script <- function(script) {
     cat("Executing script:", script, "\n")
+
     result <- tryCatch({
       # source(script, local = TRUE)
       output <- run_script(script, ...)
       dplyr::tibble(
-        script = script,
+        script = normalizePath(script),
         status = output$status$status,
-        location = output$log_details$location
+        location = normalizePath(output$log_details$location)
       )
     }, error = function(e) {
       paste("Error executing script:",
@@ -69,13 +70,12 @@ execute_scripts <- function(scripts = NULL,
             "\nError message:",
             conditionMessage(e))
     })
+
     return(result)
   }
 
   if (parallel) {
     # Parallel execution with progress display
-    library(parallel)
-
     if (is.null(num_cores)) {
       num_cores <- detectCores() - 1  # Use one less than the total number of cores
     }
@@ -105,7 +105,10 @@ execute_scripts <- function(scripts = NULL,
     ) |>
     dplyr::arrange(factor(.data[["status"]]))
 
-  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
+  summary_qmd <- withr::local_tempfile(
+    lines = readLines(system.file("documents/summary.qmd", package = "whirl")),
+    fileext = ".qmd"
+    )
 
   summary_log_html <- withr::local_tempfile(fileext = ".html")
 
@@ -119,12 +122,45 @@ execute_scripts <- function(scripts = NULL,
   # Create requested outputs
 
   # if ("html" %in% out_formats) {
-  file.copy(
-    from = summary_log_html,
-    to = file.path(summary_dir, "summary.html"),
-    overwrite = TRUE
+  file_copy <- tryCatch(
+    file.copy(
+      from = summary_log_html,
+      to = file.path(summary_dir, "summary.html"),
+      overwrite = TRUE
+    )
   )
+
+  # if(file_copy!=TRUE) print(file_copy)
+
   # }
 
-  return(summary_df)
+  # return(summary_df)
+}
+
+#' @noRd
+knit_print.whirl_summary_info <- function(x, ...) {
+  hold <- x |>
+    data.frame(
+      check.names = FALSE
+    )
+
+  row.names(hold) <- NULL
+  ncols <- ncol(hold)
+
+  hold |>
+    knitr::kable() |>
+    kableExtra::column_spec(3, link = hold[[3]]) |>
+    kableExtra::column_spec(1:ncols, background = ifelse(
+      hold[["status"]] == "error",
+      "#fceeef",
+      ifelse(
+        hold[["status"]]  == "warning",
+        "#fffaea",
+        ifelse(hold[["status"]]  == "success", "#ebf5f1", "white")
+      )
+    )) |>
+    kableExtra::kable_styling(
+      bootstrap_options = "striped", full_width = TRUE
+    ) |>
+    knitr::knit_print()
 }
