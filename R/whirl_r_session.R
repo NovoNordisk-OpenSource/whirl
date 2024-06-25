@@ -31,8 +31,8 @@ whirl_r_session <- R6::R6Class(
     #' @description
     #' Run an expression with strace and spinner
     #'
-    wrun = \(func, args = list(), package = FALSE) {
-      wrs_run_with_output_spinner(self, private, func, args, package)
+    run = \(func, args = list(), package = FALSE) {
+      wrs_run(self, private, super, func, args, package)
       },
 
     #' @description Get the directory of the whirl R session
@@ -61,7 +61,7 @@ whirl_r_session <- R6::R6Class(
     strace_log = "strace.log",
     lib_paths = NULL,
     verbosity = NULL,
-    spinner = cli::make_spinner()
+    spinner = NULL
   ),
 
   inherit = callr::r_session
@@ -70,9 +70,14 @@ whirl_r_session <- R6::R6Class(
 wrs_init <- function(self, private, super, lib_paths, verbosity) {
   super$initialize()
 
+  # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
   private$dir <- withr::local_tempdir(clean = FALSE)
   private$lib_paths <- lib_paths
   private$verbosity <- verbosity
+
+  if (private$verbosity > 0) {
+    private$spinner <- cli::make_spinner()
+  }
 
   file.copy(from = system.file("documents/dummy.qmd", package = "whirl"), to = private$dummy_qmd)
   file.copy(from = system.file("documents/log.qmd", package = "whirl"), to = private$log_qmd)
@@ -102,51 +107,23 @@ wrs_print <- function(self, private, super) {
   return(invisible(self))
 }
 
-# From: https://github.com/r-lib/callr/blob/main/R/r-session.R
-
-wrs_run_with_output_spinner <- function(self, private, func, args, package) {
-  self$call(func, args, package)
-
-  go <- TRUE
-  res <- NULL
-
+wrs_run <- function(self, private, super, func, args, package) {
+  super$call(func = func, args = args, package = package)
+  go = TRUE
   while (go) {
-    ## TODO: why is this in a tryCatch?
-    res <- tryCatch(
-      { processx::poll(list(private$pipe), -1)
-        msg <- self$read()
-        if (is.null(msg)) {
-          private$spinner$spin()
-          next
-          }
-        if (msg$code == 200 || (msg$code >= 500 && msg$code < 600)) {
-          return(msg)
-        }
-        if (msg$code == 301) {
-          rs__handle_condition(msg$message)
-        }
-      },
-      interrupt = function(e) {
-        self$interrupt()
-        ## The R process will catch the interrupt, and then save the
-        ## error object to a file, but this might still take some time,
-        ## so we need to poll here. If the bg process ignores
-        ## interrupts, then we kill it.
-        ps <- processx::poll(list(private$pipe), 1000)[[1]]
-        if (ps == "timeout") {
-          self$kill()
-        } else {
-          res <<- self$read()
-          go <<- FALSE
-        }
-        iconn <- structure(
-          list(message = "Interrupted"),
-          class = c("interrupt", "condition"))
-        signalCondition(iconn)
-        cat("\n")
-        invokeRestart("abort")
-      })
+    private$spinner$spin(template = "{spin} Running...")
+    if (super$poll_process(timeout = 100) != "timeout") go = FALSE
   }
-  res
+  private$spinner$finish()
+  super$read() |>
+    get_result()
 }
 
+get_result <- function(status, env = parent.frame()) {
+  if (!is.null(status$error)) {
+    status$error |>
+      as.character() |>
+      rlang::abort(call = env)
+  }
+  status$result
+}
