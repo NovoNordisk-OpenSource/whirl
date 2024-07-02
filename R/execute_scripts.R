@@ -20,19 +20,6 @@
 #' @importFrom quarto quarto_render
 #' @importFrom parallel detectCores makeCluster stopCluster parLapply clusterEvalQ
 #'
-#' @examples
-#' \dontrun{
-#' # Execute specific scripts
-#' scripts <- c("inst/examples/prg1.R", "inst/examples/prgRmd.Rmd", "inst/examples/prgQmd.qmd")
-#' results <- execute_scripts(scripts)
-#'
-#' # Execute all supported scripts in a folder
-#' results <- execute_scripts(folder = "inst/examples")
-#'
-#' # Execute scripts in parallel
-#' results <- execute_scripts(folder = "inst/examples", parallel = TRUE, num_cores = 4)
-#' }
-#'
 #' @export
 execute_scripts <- function(scripts = NULL,
                             folder = NULL,
@@ -77,7 +64,7 @@ execute_scripts <- function(scripts = NULL,
   if (parallel) {
     # Parallel execution with progress display
     if (is.null(num_cores)) {
-      num_cores <- detectCores() - 1  # Use one less than the total number of cores
+      num_cores <- min(detectCores() - 1, 8)  # Use one less than the total number of cores
     }
 
     cat("Executing scripts in parallel using", num_cores, "cores\n")
@@ -112,11 +99,21 @@ execute_scripts <- function(scripts = NULL,
 
   summary_log_html <- withr::local_tempfile(fileext = ".html")
 
-  render(
-    input = summary_qmd,
-    output_format = "html_document",
-    output_file = summary_log_html,
-    params = list(summary_df = summary_df)
+  if (summary_dir == getwd()){
+    summary_dir_f <- here::here()
+  } else {
+    summary_dir_f <- normalizePath(summary_dir)
+  }
+
+  withr::with_dir(
+    tempdir(),
+    render(
+      input = summary_qmd,
+      output_format = "html_document",
+      output_file = summary_log_html,
+      params = list(summary_df = summary_df, summary_dir = summary_dir_f),
+      quiet = FALSE
+    )
   )
 
   # Create requested outputs
@@ -130,26 +127,30 @@ execute_scripts <- function(scripts = NULL,
     )
   )
 
-  # if(file_copy!=TRUE) print(file_copy)
-
-  # }
-
-  # return(summary_df)
+  return(summary_df)
 }
 
 #' @noRd
-knit_print.whirl_summary_info <- function(x, ...) {
+knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
   hold <- x |>
-    data.frame(
-      check.names = FALSE
-    )
+    data.frame(check.names = FALSE)
 
   row.names(hold) <- NULL
   ncols <- ncol(hold)
 
-  hold |>
-    knitr::kable() |>
-    kableExtra::column_spec(3, link = hold[[3]]) |>
+  hold <- hold |>
+    dplyr::mutate(
+      formated = file.path(
+        fs::path_rel(.data[["location"]], start = path_rel_start)
+      )
+    )
+
+  hold$location <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', hold$formated, hold$location))
+
+  hold <- hold |>
+    dplyr::select(-.data[["formated"]])
+
+  knitr::kable(hold, format = "html", escape = FALSE) |>
     kableExtra::column_spec(1:ncols, background = ifelse(
       hold[["status"]] == "error",
       "#fceeef",
@@ -159,8 +160,6 @@ knit_print.whirl_summary_info <- function(x, ...) {
         ifelse(hold[["status"]]  == "success", "#ebf5f1", "white")
       )
     )) |>
-    kableExtra::kable_styling(
-      bootstrap_options = "striped", full_width = TRUE
-    ) |>
+    kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) |>
     knitr::knit_print()
 }

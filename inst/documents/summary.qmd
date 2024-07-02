@@ -4,6 +4,7 @@ date: "`r Sys.time()`"
 date-format: "YYYY-MM-DDTHH:mm:ss zzz"
 params:
   summary_df: summary_df
+  summary_dir: summary_dir
   title: 'dev'
   script_md: 'dev'
   p_wd: ""
@@ -19,6 +20,7 @@ params:
 format:
   html:
     embed-resources: true
+    standalone: false
     toc: true
     toc-depth: 2
     toc-expand: true
@@ -35,12 +37,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, echo = FALSE}
-hold <- params$summary_df
+hold <- params$summary_df |> tibble::tibble()
 class(hold) <- c("whirl_summary_info", "summary_info", "list")
-hold
+
+knitr::knit_print(hold, params$summary_dir)
+
+
 ```
-
-
-
-
-

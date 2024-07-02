@@ -36,17 +36,3 @@ This function executes multiple R scripts (.R), renders R Markdown documents (.R
 and Quarto documents (.qmd). It can process individual files or all supported files
 in a specified folder, with options for parallel execution.
 }
-\examples{
-\dontrun{
-# Execute specific scripts
-scripts <- c("inst/examples/prg1.R", "inst/examples/prgRmd.Rmd", "inst/examples/prgQmd.qmd")
-results <- execute_scripts(scripts)
-
-# Execute all supported scripts in a folder
-results <- execute_scripts(folder = "inst/examples")
-
-# Execute scripts in parallel
-results <- execute_scripts(folder = "inst/examples", parallel = TRUE, num_cores = 4)
-}
-
-}
