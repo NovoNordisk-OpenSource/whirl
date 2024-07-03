@@ -212,13 +212,13 @@ Check the status of the callr process
 \subsection{Method \code{spin()}}{
 Spin the spinner
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$spin(msg = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$spin(template = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{msg}}{The message to display}
+\item{\code{template}}{The template to display}
 }
 \if{html}{\out{</div>}}
 }
@@ -291,7 +291,7 @@ Create all log outputs
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\link{invisible, list} of logging information
+\link{invisible},\link{list} of logging information
 }
 }
 \if{html}{\out{<hr>}}

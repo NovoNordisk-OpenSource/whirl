@@ -9,3 +9,4 @@
 ^\.github$
 ^inst/output$
 ^inst/examples/*\\.html$
+^dev/

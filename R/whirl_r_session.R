@@ -1,6 +1,7 @@
 #' Whirl R session
 #' @description
 #' Extension of [callr::r_session] with additional methods for easier creating logs.
+#' @importFrom callr r_session
 #' @keywords internal
 
 whirl_r_session <- R6::R6Class(
@@ -80,7 +81,7 @@ whirl_r_session <- R6::R6Class(
     #' @description Create all log outputs
     #' @param out_dir [character] Output directory for the log
     #' @param format [character] Output formats to create
-    #' @return [invisible, list] of logging information
+    #' @return [invisible],[list] of logging information
     create_outputs = \(out_dir, format) {
       wrs_create_outputs(out_dir, format, self, private, super)
     }
@@ -138,7 +139,7 @@ wrs_finalize <- function(self, private, super) {
 
 wrs_print <- function(self, private, super) {
   msg <- c(
-    capture.output(super$print()),
+    utils::capture.output(super$print()),
     "Working Directory: {private$wd}",
     "Verbose: {private$verbose}"
   )
@@ -294,7 +295,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
 
   if (any(c("gfm", "commonmark", "markua") %in% format)) {
     mdformats(
-      script = script,
+      script = private$current_script,
       log_html = file.path(self$get_wd(), "log.html"),
       mdfmt = format[format %in% c("gfm", "commonmark", "markua")],
       out_dir = out_dir
