@@ -125,6 +125,10 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
   system.file("documents", package = "whirl") |>
     list.files(full.names = TRUE) |>
     file.copy(to = private$wd)
+
+  if (track_files) {
+    start_strace(pid = super$get_pid(), file = file.path(private$wd, "strace.log"))
+  }
 }
 
 wrs_finalize <- function(self, private, super) {
