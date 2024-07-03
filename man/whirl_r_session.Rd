@@ -2,12 +2,11 @@
 % Please edit documentation in R/whirl_r_session.R
 \name{whirl_r_session}
 \alias{whirl_r_session}
-\title{Internal whirl extention of the callr::r_session class to be used in \code{run_script()}}
+\title{Whirl R session}
 \description{
-Internal whirl extention of the callr::r_session class to be used in \code{run_script()}
-
-Internal whirl extention of the callr::r_session class to be used in \code{run_script()}
+Extension of \link[callr:r_session]{callr::r_session} with additional methods for easier creating logs.
 }
+\keyword{internal}
 \section{Super classes}{
 \code{\link[processx:process]{processx::process}} -> \code{\link[callr:r_session]{callr::r_session}} -> \code{whirl_r_session}
 }
@@ -17,9 +16,14 @@ Internal whirl extention of the callr::r_session class to be used in \code{run_s
 \item \href{#method-whirl_r_session-new}{\code{whirl_r_session$new()}}
 \item \href{#method-whirl_r_session-finalize}{\code{whirl_r_session$finalize()}}
 \item \href{#method-whirl_r_session-print}{\code{whirl_r_session$print()}}
-\item \href{#method-whirl_r_session-get_dir}{\code{whirl_r_session$get_dir()}}
-\item \href{#method-whirl_r_session-start_strace}{\code{whirl_r_session$start_strace()}}
-\item \href{#method-whirl_r_session-run_something}{\code{whirl_r_session$run_something()}}
+\item \href{#method-whirl_r_session-poll}{\code{whirl_r_session$poll()}}
+\item \href{#method-whirl_r_session-wait}{\code{whirl_r_session$wait()}}
+\item \href{#method-whirl_r_session-check_status}{\code{whirl_r_session$check_status()}}
+\item \href{#method-whirl_r_session-spin}{\code{whirl_r_session$spin()}}
+\item \href{#method-whirl_r_session-log_script}{\code{whirl_r_session$log_script()}}
+\item \href{#method-whirl_r_session-create_log}{\code{whirl_r_session$create_log()}}
+\item \href{#method-whirl_r_session-log_finish}{\code{whirl_r_session$log_finish()}}
+\item \href{#method-whirl_r_session-create_outputs}{\code{whirl_r_session$create_outputs()}}
 \item \href{#method-whirl_r_session-clone}{\code{whirl_r_session$clone()}}
 }
 }
@@ -71,7 +75,6 @@ Internal whirl extention of the callr::r_session class to be used in \code{run_s
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="signal"><a href='../../processx/html/process.html#method-process-signal'><code>processx::process$signal()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="supervise"><a href='../../processx/html/process.html#method-process-supervise'><code>processx::process$supervise()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="suspend"><a href='../../processx/html/process.html#method-process-suspend'><code>processx::process$suspend()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="wait"><a href='../../processx/html/process.html#method-process-wait'><code>processx::process$wait()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="write_input"><a href='../../processx/html/process.html#method-process-write_input'><code>processx::process$write_input()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="callr" data-topic="r_session" data-id="attach"><a href='../../callr/html/r_session.html#method-r_session-attach'><code>callr::r_session$attach()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="callr" data-topic="r_session" data-id="call"><a href='../../callr/html/r_session.html#method-r_session-call'><code>callr::r_session$call()</code></a></span></li>
@@ -91,25 +94,40 @@ Internal whirl extention of the callr::r_session class to be used in \code{run_s
 \if{html}{\out{<a id="method-whirl_r_session-new"></a>}}
 \if{latex}{\out{\hypertarget{method-whirl_r_session-new}{}}}
 \subsection{Method \code{new()}}{
-Initialize a new whirl R session
+Initialize the new whirl R session
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$new(
-  lib_paths = .libPaths(),
-  verbosity_level = zephyr::get_opt("verbosity_level")
+  verbose = TRUE,
+  check_renv,
+  track_files,
+  track_files_discards,
+  track_files_keep,
+  approved_pkgs_folder,
+  approved_pkgs_url
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{lib_paths}}{character vector of library paths}
+\item{\code{verbose}}{\link{logical} Should the progress be printed to the console?}
 
-\item{\code{verbosity_level}}{character string of verbosity level}
+\item{\code{check_renv}}{\link{logical} Should renv be checked?}
+
+\item{\code{track_files}}{\link{logical} Should the files be tracked?}
+
+\item{\code{track_files_discards}}{\link{character} Files to discard from tracking}
+
+\item{\code{track_files_keep}}{\link{character} Files to keep from tracking}
+
+\item{\code{approved_pkgs_folder}}{\link{character} Folder with approved packages}
+
+\item{\code{approved_pkgs_url}}{\link{character} URL with approved packages}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-An \code{whirl_r_session} object, that inherits from \code{callr::r_session}
+A \link{whirl_r_session} object
 }
 }
 \if{html}{\out{<hr>}}
@@ -126,7 +144,7 @@ Finalize the whirl R session
 \if{html}{\out{<a id="method-whirl_r_session-print"></a>}}
 \if{latex}{\out{\hypertarget{method-whirl_r_session-print}{}}}
 \subsection{Method \code{print()}}{
-Print the whirl R session object
+Print the whirl R session
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$print()}\if{html}{\out{</div>}}
 }
@@ -136,34 +154,145 @@ Print the whirl R session object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-whirl_r_session-get_dir"></a>}}
-\if{latex}{\out{\hypertarget{method-whirl_r_session-get_dir}{}}}
-\subsection{Method \code{get_dir()}}{
-Get the directory of the whirl R session
+\if{html}{\out{<a id="method-whirl_r_session-poll"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-poll}{}}}
+\subsection{Method \code{poll()}}{
+Poll the process
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$get_dir()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$poll(timeout)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{timeout}}{The timeout in milliseconds}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{invisible} self
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-whirl_r_session-start_strace"></a>}}
-\if{latex}{\out{\hypertarget{method-whirl_r_session-start_strace}{}}}
-\subsection{Method \code{start_strace()}}{
-Start strace
+\if{html}{\out{<a id="method-whirl_r_session-wait"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-wait}{}}}
+\subsection{Method \code{wait()}}{
+Wait for the process to complete
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$start_strace()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$wait(timeout = -1)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{timeout}}{The timeout in milliseconds}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{invisible} self
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-whirl_r_session-run_something"></a>}}
-\if{latex}{\out{\hypertarget{method-whirl_r_session-run_something}{}}}
-\subsection{Method \code{run_something()}}{
-Run
+\if{html}{\out{<a id="method-whirl_r_session-check_status"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-check_status}{}}}
+\subsection{Method \code{check_status()}}{
+Check the status of the callr process
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$run_something()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$check_status()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+\link{invisible} status
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-whirl_r_session-spin"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-spin}{}}}
+\subsection{Method \code{spin()}}{
+Spin the spinner
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$spin(msg = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{msg}}{The message to display}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{invisible} self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-whirl_r_session-log_script"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-log_script}{}}}
+\subsection{Method \code{log_script()}}{
+Log the script
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$log_script(script)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{script}}{The script to log}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{invisible} self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-whirl_r_session-create_log"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-create_log}{}}}
+\subsection{Method \code{create_log()}}{
+Create the html log
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$create_log()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\link{invisible} self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-whirl_r_session-log_finish"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-log_finish}{}}}
+\subsection{Method \code{log_finish()}}{
+Finish the log
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$log_finish()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\link{invisible} self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-whirl_r_session-create_outputs"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-create_outputs}{}}}
+\subsection{Method \code{create_outputs()}}{
+Create all log outputs
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$create_outputs(out_dir, format)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{out_dir}}{\link{character} Output directory for the log}
+
+\item{\code{format}}{\link{character} Output formats to create}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{invisible, list} of logging information
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-whirl_r_session-clone"></a>}}
