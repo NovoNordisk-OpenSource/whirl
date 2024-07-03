@@ -4,23 +4,7 @@
 #' and Quarto documents (.qmd). It can process individual files or all supported files
 #' in a specified folder, with options for parallel execution.
 #'
-#' @param scripts A character vector of file paths to R, R Markdown, or Quarto scripts.
-#'   If NULL, the function will look for scripts in the specified folder.
-#' @param folder A character string specifying the path to a folder containing scripts
-#'   to execute. If provided, all .R, .Rmd, and .qmd files in this folder will be processed.
-#' @param parallel Logical; if TRUE, scripts will be executed in parallel. Default is FALSE.
-#' @param num_cores Integer specifying the number of cores to use for parallel execution.
-#'   If NULL (default), it will use one less than the total number of available cores.
-#' @param ... Other arguments passed on to the run_script function,
-#'
-#' @return A list containing the execution results for each script. Each element of the
-#'   list is a character string indicating the success or failure of the script execution.
-#'
-#' @importFrom rmarkdown render
-#' @importFrom quarto quarto_render
-#' @importFrom parallel detectCores makeCluster stopCluster parLapply clusterEvalQ
-#'
-#' @export
+#' @noRd
 execute_scripts <- function(scripts = NULL,
                             folder = NULL,
                             parallel = FALSE,
@@ -47,9 +31,10 @@ execute_scripts <- function(scripts = NULL,
       # source(script, local = TRUE)
       output <- run_script(script, ...)
       dplyr::tibble(
-        script = normalizePath(script),
-        status = output$status$status,
-        location = normalizePath(output$log_details$location)
+        Directory = dirname(normalizePath(script, winslash = "/")),
+        Filename = basename(normalizePath(script, winslash = "/")),
+        Status = output$status$status,
+        Hyperlink = normalizePath(output$log_details$location, winslash = "/")
       )
     }, error = function(e) {
       paste("Error executing script:",
@@ -88,9 +73,9 @@ execute_scripts <- function(scripts = NULL,
   # After obtaining the results, create a summary data frame
   summary_df <- dplyr::bind_rows(results) |>
     dplyr::mutate(
-      status = factor(.data[["status"]], levels = c("error", "warning", "success"))
+      Status = factor(.data[["Status"]], levels = c("error", "warning", "success"))
     ) |>
-    dplyr::arrange(factor(.data[["status"]]))
+    dplyr::arrange(factor(.data[["Status"]]))
 
   summary_qmd <- withr::local_tempfile(
     lines = readLines(system.file("documents/summary.qmd", package = "whirl")),
@@ -102,7 +87,7 @@ execute_scripts <- function(scripts = NULL,
   if (summary_dir == getwd()){
     summary_dir_f <- here::here()
   } else {
-    summary_dir_f <- normalizePath(summary_dir)
+    summary_dir_f <- normalizePath(summary_dir, winslash = "/")
   }
 
   withr::with_dir(
@@ -112,13 +97,12 @@ execute_scripts <- function(scripts = NULL,
       output_format = "html_document",
       output_file = summary_log_html,
       params = list(summary_df = summary_df, summary_dir = summary_dir_f),
-      quiet = FALSE
+      quiet = TRUE
     )
   )
 
   # Create requested outputs
 
-  # if ("html" %in% out_formats) {
   file_copy <- tryCatch(
     file.copy(
       from = summary_log_html,
@@ -127,7 +111,7 @@ execute_scripts <- function(scripts = NULL,
     )
   )
 
-  return(summary_df)
+  return(invisible(summary_df))
 }
 
 #' @noRd
@@ -141,23 +125,23 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
   hold <- hold |>
     dplyr::mutate(
       formated = file.path(
-        fs::path_rel(.data[["location"]], start = path_rel_start)
+        fs::path_rel(.data[["Hyperlink"]], start = path_rel_start)
       )
     )
 
-  hold$location <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', hold$formated, hold$location))
+  hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', hold$formated, "HTML Log"))
 
   hold <- hold |>
     dplyr::select(-.data[["formated"]])
 
   knitr::kable(hold, format = "html", escape = FALSE) |>
     kableExtra::column_spec(1:ncols, background = ifelse(
-      hold[["status"]] == "error",
+      hold[["Status"]] == "error",
       "#fceeef",
       ifelse(
-        hold[["status"]]  == "warning",
+        hold[["Status"]]  == "warning",
         "#fffaea",
-        ifelse(hold[["status"]]  == "success", "#ebf5f1", "white")
+        ifelse(hold[["Status"]]  == "success", "#ebf5f1", "white")
       )
     )) |>
     kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) |>
