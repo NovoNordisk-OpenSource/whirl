@@ -6,7 +6,7 @@ test_that("interactive whirl R session components not tested in run_script", {
     expect_message()
 
   p$get_wd() |>
-    file.exists() |>
+    dir.exists() |>
     expect_true()
 
   p$get_wd() |>
@@ -30,6 +30,6 @@ test_that("interactive whirl R session components not tested in run_script", {
   rm(p)
   gc()
 
-  expect_false(file.exists(dir))
+  expect_false(dir.exists(dir))
 
 })
