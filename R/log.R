@@ -48,7 +48,7 @@ run_script <- function(script,
   track_files_keep <- options::opt("track_files_keep") |>
     checkmate::assert_character(any.missing = FALSE, add = val)
 
-  zephyr::report_checkmate_assertations(val)
+  zephyr::report_checkmate_assertions(val)
 
   checkmate::reportAssertions(val)
 
