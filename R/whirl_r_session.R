@@ -133,6 +133,7 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
 }
 
 wrs_finalize <- function(self, private, super) {
+  super$run(func = setwd, args = list(dir = getwd())) # Needed for Windows to be able to delete the temp wd
   unlink(private$wd, recursive = TRUE, force = TRUE)
   super$finalize()
 }
