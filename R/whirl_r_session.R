@@ -17,7 +17,7 @@ whirl_r_session <- R6::R6Class(
     #' @param approved_pkgs_folder [character] Folder with approved packages
     #' @param approved_pkgs_url [character] URL with approved packages
     #' @return A [whirl_r_session] object
-    initialize = \(verbose = TRUE, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url) {
+    initialize = \(verbose = TRUE, check_renv = FALSE, track_files = FALSE, track_files_discards = c(), track_files_keep = c(), approved_pkgs_folder = c(), approved_pkgs_url = c()) {
       wrs_initialize(verbose, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url, self, private, super)
     },
 

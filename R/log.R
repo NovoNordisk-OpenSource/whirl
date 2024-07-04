@@ -90,5 +90,5 @@ assert_run_script_input <- function(env = parent.frame()) {
 
   checkmate::assert_character(x = track_files_keep, any.missing = FALSE, add = val)
 
-  zephyr::report_checkmate_assertations(collection = val, env = env)
+  zephyr::report_checkmate_assertions(collection = val, env = env)
 }

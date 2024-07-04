@@ -1,49 +1,35 @@
+test_that("interactive whirl R session components not tested in run_script", {
 
-p <- whirl_r_session$new()
-p$use_strace()
-p$run_script("prg1.R")
-#> debug message
-p$create_log()
-p$create_outputs()
+  p <- whirl_r_session$new(verbose = FALSE)
 
+  p$print() |>
+    expect_message()
 
-a <- p$get_dir() |> print()
+  p$get_wd() |>
+    file.exists() |>
+    expect_true()
 
-dir.exists(a)
-a |> list.files()
+  p$get_wd() |>
+    list.files() |>
+    sort() |>
+    expect_equal(c("dummy.qmd", "log.qmd"))
 
-p$run_something()
+  p$call(func = Sys.sleep, args = list(time = 5)) # Sleep for 10 second
 
+  status <- p$wait(timeout = 10)$check_status() # Timeout after 10 ms
+  expect_null(status) # Still running
 
-p$kill()
-p$finalize()
-rm(p)
-gc()
-dir.exists(a)
+  status <- p$wait()$check_status()
+  expect_equal(status$code, 200L) # Completed successfully
 
+  p$call(func = \() 1 + "a") # Something with an error
+  expect_error(p$wait()$check_status())
 
-# Pseudo use inside run_script()
+  # Test temp dir is deleted correctly
+  dir <- p$get_wd()
+  rm(p)
+  gc()
 
-p <- whirl_r_session$new()
-on.exit(p$kill())
+  expect_false(file.exists(dir))
 
-whirl_r_session
-
-p
-
-p$set_inputs()
-p$set_dir()
-p$set_verbosity_level()
-p$start_strace()
-p$render_script()
-p$read_strace()
-p$render_log()
-p$report_status()
-p$create_outputs()
-
-p$call(\() Sys.sleep(10))
-p$wait(timeout = 1)
-p$read()
-
-
-p <- whirl:::whirl_r_session$new()
+})
