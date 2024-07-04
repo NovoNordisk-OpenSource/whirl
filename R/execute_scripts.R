@@ -12,6 +12,7 @@
 #' @param num_cores Integer specifying the number of cores to use for parallel execution.
 #'   If NULL (default), it will use one less than the total number of available cores.
 #' @param ... Other arguments passed on to the run_script function,
+#' @param summary_dir A character string of file path specifying the directory where the summary log will be stored.
 #'
 #' @return A list containing the execution results for each script. Each element of the
 #'   list is a character string indicating the success or failure of the script execution.

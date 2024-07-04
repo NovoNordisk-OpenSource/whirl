@@ -25,6 +25,8 @@ to execute. If provided, all .R, .Rmd, and .qmd files in this folder will be pro
 \item{num_cores}{Integer specifying the number of cores to use for parallel execution.
 If NULL (default), it will use one less than the total number of available cores.}
 
+\item{summary_dir}{A character string of file path specifying the directory where the summary log will be stored.}
+
 \item{...}{Other arguments passed on to the run_script function,}
 }
 \value{
