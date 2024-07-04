@@ -133,7 +133,7 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
 }
 
 wrs_finalize <- function(self, private, super) {
-  unlink(private$wd, recursive = TRUE)
+  unlink(private$wd, recursive = TRUE, force = TRUE)
   super$finalize()
 }
 
