@@ -274,7 +274,15 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       get_status(),
     session_info_rlist = file.path(self$get_wd(), "objects.rds") |>
       readRDS() |>
-      unlist(recursive = FALSE)
+      unlist(recursive = FALSE),
+    log_details = list(location = file.path(
+      out_dir,
+      gsub(
+        pattern = "\\.[^\\.]*$",
+        replacement = ".html",
+        x = basename(script)
+      )
+    ))
   )
 
   # Create requested outputs
