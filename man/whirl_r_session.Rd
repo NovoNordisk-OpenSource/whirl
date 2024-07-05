@@ -98,12 +98,12 @@ Initialize the new whirl R session
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$new(
   verbose = TRUE,
-  check_renv,
-  track_files,
-  track_files_discards,
-  track_files_keep,
-  approved_pkgs_folder,
-  approved_pkgs_url
+  check_renv = FALSE,
+  track_files = FALSE,
+  track_files_discards = c(),
+  track_files_keep = c(),
+  approved_pkgs_folder = c(),
+  approved_pkgs_url = c()
 )}\if{html}{\out{</div>}}
 }
 
