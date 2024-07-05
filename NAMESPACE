@@ -2,6 +2,7 @@
 
 export(execute_scripts)
 export(run_script)
+importFrom(callr,r_session)
 importFrom(dplyr,.data)
 importFrom(parallel,clusterEvalQ)
 importFrom(parallel,detectCores)

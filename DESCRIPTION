@@ -21,7 +21,6 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glue,
     ggplot2,
     httr,
     jsonlite,
