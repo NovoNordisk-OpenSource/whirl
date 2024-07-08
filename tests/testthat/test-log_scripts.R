@@ -15,26 +15,25 @@ test_that("Execute multiple Scripts", {
 
     # Test for valid input with folder path
     expect_s3_class(
-      execute_scripts(scripts = NULL, folder = scripts_folder),
+      log_scripts(paths = scripts_folder),
       "data.frame"
     )
 
     # Test for valid input with script paths
     expect_s3_class(
-      execute_scripts(scripts = scripts_list, folder = NULL),
+      log_scripts(paths = scripts_list),
       "data.frame"
     )
 
     # Test for invalid input
     expect_error(
-      execute_scripts(scripts = 123, folder = NULL)
+      log_scripts(paths = 123)
     )
 
     # Test parallel execution
     expect_s3_class(
-      execute_scripts(
-        scripts = scripts_list,
-        folder = NULL,
+      log_scripts(
+        paths = scripts_list,
         parallel = TRUE,
         num_cores = 2
       ),
@@ -43,9 +42,8 @@ test_that("Execute multiple Scripts", {
 
     # Test sequential execution
     expect_s3_class(
-      execute_scripts(
-        scripts = scripts_list,
-        folder = NULL,
+      log_scripts(
+        paths = scripts_list,
         parallel = FALSE
       ),
       "data.frame"

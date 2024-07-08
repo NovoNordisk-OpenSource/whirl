@@ -4,7 +4,7 @@
 #' and Quarto documents (.qmd). It can process individual files or all supported files
 #' in a specified folder, with options for parallel execution.
 #'
-#' @param scripts A character vector of file paths to R, R Markdown, or Quarto scripts.
+#' @param paths  A character vector of file paths to R, R Markdown, or Quarto scripts.
 #'   If NULL, the function will look for scripts in the specified folder.
 #' @param folder A character string specifying the path to a folder containing scripts
 #'   to execute. If provided, all .R, .Rmd, and .qmd files in this folder will be processed.
@@ -21,13 +21,13 @@
 #' @importFrom quarto quarto_render
 #' @importFrom parallel detectCores makeCluster stopCluster parLapply clusterEvalQ
 #' @export
-execute_scripts <- function(scripts = NULL,
-                            folder = NULL,
-                            parallel = FALSE,
-                            num_cores = NULL,
-                            summary_dir = getwd(),
-                            ...) {
-  if (!is.null(num_cores) && (!is.numeric(num_cores) || num_cores <= 0)) {
+log_scripts <- function(paths  = NULL,
+                        parallel = FALSE,
+                        num_cores = NULL,
+                        summary_dir = getwd(),
+                        ...) {
+  if (!is.null(num_cores) &&
+      (!is.numeric(num_cores) || num_cores <= 0)) {
     stop("Invalid input for 'num_cores'. Please provide a positive numeric value.")
   }
 
@@ -35,46 +35,28 @@ execute_scripts <- function(scripts = NULL,
     stop("The specified summary directory does not exist.")
   }
 
-  if (!is.null(folder)) {
-    if (!dir.exists(folder)) {
-      stop("The specified folder path does not exist.")
+  script_files <- character(0)  # Initialize all_files as an empty character vector
+
+  for (path in paths) {
+    if (file.exists(path)) {
+      if (file.info(path)$isdir) {
+        # If input is a directory, list files with specific extensions
+        files <- list.files(path = path, recursive = TRUE, pattern = "\\.(R|Rmd|qmd)$", ignore.case = TRUE, full.names = TRUE)
+        script_files <- c(script_files, files)
+      } else {
+        # If input is a file, add it directly to the list
+        script_files <- c(script_files, path)
+      }
+    } else {
+      cli::cat_line("File or folder does not exist: ", path)
     }
-    # If a folder is specified and it exists, get all supported script files in the folder
-    script_files <- list.files(path = folder, pattern = "\\.(R|Rmd|qmd)$", full.names = TRUE)
-  } else if (!is.null(scripts)) {
-    if (!is.character(scripts)) {
-      stop("Invalid input for 'scripts'. Please provide a character vector of script paths.")
-    }
-    # If 'scripts' is a character vector, assume it's a list of file paths
-    script_files <- scripts
-  } else {
-    stop("Missing input. Please provide either a vector of script paths or a folder path.")
   }
 
-  # Function to execute a single script
-  execute_single_script <- function(script) {
-    cat("Executing script:", script, "\n")
+  script_files <- unique(script_files)
 
-    result <- tryCatch({
-      output <- run_script(script, ...)
-      tibble::tibble(
-        Directory = dirname(normalizePath(script, winslash = "/")),
-        Filename = basename(normalizePath(script, winslash = "/")),
-        Status = output$status$status,
-        Hyperlink = normalizePath(output$log_details$location, winslash = "/")
-      )
-    }, error = function(e) {
-      tibble::tibble(
-        Directory = dirname(normalizePath(script, winslash = "/")),
-        Filename = basename(normalizePath(script, winslash = "/")),
-        Status = "error",
-        Hyperlink = NA_character_,
-        ErrorMessage = conditionMessage(e)
-      )
-    })
-
-    return(result)
-  }
+  # else {
+  #   stop("Missing input. Please provide either a vector of script paths or a folder path.")
+  # }
 
   if (parallel) {
     # Parallel execution with progress display
@@ -96,19 +78,14 @@ execute_scripts <- function(scripts = NULL,
 
   # After obtaining the results, create a summary data frame
   summary_df <- dplyr::bind_rows(results) |>
-    dplyr::mutate(
-      Status = factor(.data[["Status"]], levels = c("error", "warning", "success"))
-    ) |>
+    dplyr::mutate(Status = factor(.data[["Status"]], levels = c("error", "warning", "success"))) |>
     dplyr::arrange(factor(.data[["Status"]]))
 
-  summary_qmd <- withr::local_tempfile(
-    lines = readLines(system.file("documents/summary.qmd", package = "whirl")),
-    fileext = ".qmd"
-  )
+  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
 
   summary_log_html <- withr::local_tempfile(fileext = ".html")
 
-  if (summary_dir == getwd()){
+  if (summary_dir == getwd()) {
     summary_dir_f <- here::here()
   } else {
     summary_dir_f <- normalizePath(summary_dir, winslash = "/")
@@ -136,6 +113,31 @@ execute_scripts <- function(scripts = NULL,
   )
 
   return(invisible(summary_df))
+}
+
+# Function to execute a single script
+#' @noRd
+execute_single_script <- function(script) {
+
+  result <- tryCatch({
+    output <- run_script(script, ...)
+    tibble::tibble(
+      Directory = dirname(normalizePath(script, winslash = "/")),
+      Filename = basename(normalizePath(script, winslash = "/")),
+      Status = output$status$status,
+      Hyperlink = normalizePath(output$log_details$location, winslash = "/")
+    )
+  }, error = function(e) {
+    tibble::tibble(
+      Directory = dirname(normalizePath(script, winslash = "/")),
+      Filename = basename(normalizePath(script, winslash = "/")),
+      Status = "error",
+      Hyperlink = NA_character_,
+      ErrorMessage = conditionMessage(e)
+    )
+  })
+
+  return(result)
 }
 
 
