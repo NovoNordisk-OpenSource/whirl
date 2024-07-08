@@ -6,8 +6,6 @@
 #'
 #' @param paths  A character vector of file paths to R, R Markdown, or Quarto scripts.
 #'   If NULL, the function will look for scripts in the specified folder.
-#' @param folder A character string specifying the path to a folder containing scripts
-#'   to execute. If provided, all .R, .Rmd, and .qmd files in this folder will be processed.
 #' @param parallel Logical; if TRUE, scripts will be executed in parallel. Default is FALSE.
 #' @param num_cores Integer specifying the number of cores to use for parallel execution.
 #'   If NULL (default), it will use one less than the total number of available cores.
@@ -117,8 +115,7 @@ log_scripts <- function(paths  = NULL,
 
 # Function to execute a single script
 #' @noRd
-execute_single_script <- function(script) {
-
+execute_single_script <- function(script, ...) {
   result <- tryCatch({
     output <- run_script(script, ...)
     tibble::tibble(
