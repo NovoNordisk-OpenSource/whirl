@@ -44,6 +44,7 @@ Imports:
     zoo,
     rmarkdown,
     here,
-    fs
+    fs,
+    yaml
 Remotes: 
     NN-OpenSource/zephyr

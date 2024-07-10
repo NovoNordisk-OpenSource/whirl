@@ -1,5 +1,4 @@
 test_that("execute_with_yaml function test", {
-  withr::with_tempdir({
     # Define the script list and copy example scripts to a temporary directory
     scripts_list <- c("prg1.R", "prgRmd.Rmd")
     file.copy(from = system.file("examples", scripts_list, package = "whirl"),
@@ -35,12 +34,11 @@ test_that("execute_with_yaml function test", {
 
     expect_equal(nrow(result), 2)
 
-  })
 })
 
 # Empty Paths Test
 test_that("execute_with_yaml handles empty paths", {
-  withr::with_tempdir({
+
     mock_yaml_file <- file.path(tempdir(), "mock_params_empty.yaml")
 
     # Create a mock YAML file with empty paths
@@ -62,12 +60,10 @@ test_that("execute_with_yaml handles empty paths", {
     # Execute the function with the mock YAML and store the result
     expect_error(execute_with_yaml(mock_yaml_file))
 
-  })
 })
 
 # Non-Existent Paths Test
 test_that("execute_with_yaml handles non-existent paths", {
-  withr::with_tempdir({
     mock_yaml_file <- file.path(tempdir(), "mock_params_nonexistent.yaml")
 
     # Create a mock YAML file with non-existent paths
@@ -88,12 +84,10 @@ test_that("execute_with_yaml handles non-existent paths", {
 
     # Assert that the result is as expected
     expect_error(execute_with_yaml(mock_yaml_file))
-  })
 })
 
 # Invalid YAML Test
 test_that("execute_with_yaml handles invalid YAML", {
-  withr::with_tempdir({
     mock_yaml_file <- file.path(tempdir(), "mock_params_invalid.yaml")
 
     # Create a mock YAML file with invalid format
@@ -114,5 +108,4 @@ test_that("execute_with_yaml handles invalid YAML", {
 
     # Assert that the result is as expected
     expect_error(execute_with_yaml(mock_yaml_file))
-  })
 })
