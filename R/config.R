@@ -1,15 +1,15 @@
 #' Function to read and parse the YAML file
 #' @importFrom yaml yaml.load_file
 #' @noRd
-read_yaml_config <- function(yaml_file) {
-  config <- yaml::yaml.load_file(yaml_file)
+read_yaml_config <- function(yaml_file, eval.expr = FALSE) {
+  config <- yaml::yaml.load_file(yaml_file, eval.expr = eval.expr)
   return(config$params)
 }
 
 #' Function to call log_scripts with parameters from YAML file
 #' @noRd
-execute_with_yaml <- function(yaml_file) {
-  params <- read_yaml_config(yaml_file)
+execute_with_yaml <- function(yaml_file, eval.expr) {
+  params <- read_yaml_config(yaml_file, eval.expr)
 
   # Call log_scripts with the parameters from the YAML file
   log_scripts(
