@@ -66,12 +66,12 @@ log_scripts <- function(paths  = NULL,
 
     cl <- parallel::makeCluster(num_cores)
 
-    results <- parallel::parLapply(cl, script_files, execute_single_script)
+    results <- parallel::parLapply(cl, script_files, execute_single_script, ...)
     parallel::stopCluster(cl)
 
   } else {
     # Sequential execution
-    results <- lapply(script_files, execute_single_script)
+    results <- lapply(script_files, execute_single_script, ...)
   }
 
   # After obtaining the results, create a summary data frame

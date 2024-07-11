@@ -12,6 +12,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Suggests: 
+    future,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
@@ -44,6 +45,7 @@ Imports:
     zoo,
     rmarkdown,
     here,
-    fs
+    fs,
+    yaml
 Remotes: 
     NN-OpenSource/zephyr
