@@ -12,7 +12,7 @@ test_that("interactive whirl R session components not tested in run_script", {
   p$get_wd() |>
     list.files() |>
     sort() |>
-    expect_equal(c("dummy.qmd", "log.qmd", "summary.qmd", "mock_config.yaml"))
+    expect_equal(c("dummy.qmd", "log.qmd", "mock_config.yaml", "summary.qmd"))
 
   p$call(func = Sys.sleep, args = list(time = 5)) # Sleep for 10 second
 
