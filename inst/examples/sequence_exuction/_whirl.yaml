@@ -1,0 +1,11 @@
+steps:
+  - name: "Run scripts for dataflow"
+    paths: 
+      - "subfolder_ex"
+  - name: "Prepare adam datasets"
+    paths: 
+      - "prg1.R"
+      - "prgQmd.qmd"
+  - name: "Running outputs"
+    paths: 
+      - "^prg*"
