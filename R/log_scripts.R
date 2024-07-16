@@ -9,7 +9,7 @@
 #' @param parallel Logical; if TRUE, scripts will be executed in parallel. Default is FALSE.
 #' @param num_cores Integer specifying the number of cores to use for parallel execution.
 #'   If NULL (default), it will use one less than the total number of available cores.
-#' @param ... Other arguments passed on to the run_script function,
+#' @param ... Other arguments passed on to the [run_script] function,
 #' @param summary_dir A character string of file path specifying the directory where the summary log will be stored.
 #'
 #' @return A list containing the execution results for each script. Each element of the
@@ -62,7 +62,7 @@ log_scripts <- function(paths  = NULL,
       num_cores <- min(detectCores() - 1, 8)  # Use one less than the total number of cores
     }
 
-    cat("Executing scripts in parallel using", num_cores, "cores\n")
+    cli::cli_inform("Executing scripts in parallel using {num_cores} cores\n")
 
     cl <- parallel::makeCluster(num_cores)
 
@@ -116,21 +116,51 @@ log_scripts <- function(paths  = NULL,
 # Function to execute a single script
 #' @noRd
 execute_single_script <- function(script, ...) {
+  not_null <- function(x){
+    if(length(x) == 0 | is.null(x)){
+      return("")
+    }
+
+    x_max <- x[1:4]
+    msg_ <- paste(x_max[!is.na(x_max)], collapse = "<br>")
+
+    if(length(x) > 4){
+      msg_ <- paste(
+        msg_,
+        "<br>",
+        "... See HTLM logs for more details",
+        collapse = ""
+      )
+    }
+    return(msg_)
+
+  }
+
   result <- tryCatch({
+
+    cli::cli_alert_info(script)
     output <- run_script(script, ...)
     tibble::tibble(
       Directory = dirname(normalizePath(script, winslash = "/")),
       Filename = basename(normalizePath(script, winslash = "/")),
       Status = output$status$status,
-      Hyperlink = normalizePath(output$log_details$location, winslash = "/")
-    )
+      Hyperlink = normalizePath(output$log_details$location, winslash = "/"),
+      Information = ""
+    ) %>%
+      dplyr::mutate(Information = dplyr::case_when(
+        output$status$status == "error" ~ not_null(output$status$error),
+        output$status$status == "warning" ~ not_null(output$status$warning),
+        output$status$status == "success" ~ not_null(output$status$success),
+        TRUE ~ ""
+      )
+      )
   }, error = function(e) {
     tibble::tibble(
       Directory = dirname(normalizePath(script, winslash = "/")),
       Filename = basename(normalizePath(script, winslash = "/")),
       Status = "error",
       Hyperlink = NA_character_,
-      ErrorMessage = conditionMessage(e)
+      Information = conditionMessage(e)
     )
   })
 
@@ -151,7 +181,7 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
   }else{
     hold <- hold |> dplyr::mutate(formated = file.path(fs::path_rel(.data[["Hyperlink"]], start = path_rel_start)))
   }
-
+  #
   hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', hold$formated, "HTML Log"))
 
   hold <- hold |>

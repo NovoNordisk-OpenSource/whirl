@@ -1,11 +1,19 @@
 steps:
   - name: "Run scripts for dataflow"
-    paths: 
+    paths:
       - "subfolder_ex"
+      - "with_whirl_file"
   - name: "Prepare adam datasets"
-    paths: 
+
+    paths:
       - "prg1.R"
       - "prgQmd.qmd"
-  - name: "Running outputs"
-    paths: 
-      - "^prg*"
+      - "error\\.R"
+  - name: "Running files from regexp"
+    paths:
+      - "^prg.*(\\.R|\\.qmd)"
+  - name: "Running with whril file again"
+    parallel: TRUE
+    paths:
+      - "with_whirl_file"
+      - "prg1.R"

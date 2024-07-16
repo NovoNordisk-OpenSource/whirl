@@ -70,7 +70,7 @@ assert_run_script_input <- function(env = parent.frame()) {
   val <- checkmate::makeAssertCollection()
 
   checkmate::assert_character(x = script, any.missing = FALSE, len = 1, add = val)
-  checkmate::assert_file_exists(x = script, access = "r", extension = c("R", "qmd", "Rmd"), add = val)
+  checkmate::assert_file_exists(x = script, access = "r", extension = c("R", "qmd", "Rmd", "py"), add = val)
 
   checkmate::assert_logical(x = track_files, any.missing = FALSE, len = 1, add = val)
   if (track_files) checkmate::assert_true(Sys.info()[["sysname"]] == "Linux", add = val)
