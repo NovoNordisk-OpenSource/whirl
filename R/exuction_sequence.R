@@ -191,7 +191,8 @@ logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h1){
 #'   list is a character string indicating the success or failure of the script execution.
 #' @export
 #'
-#' @examples
+#' @examplesIf FALSE
+#'
 #' file_ <- system.file(
 #'             "examples",
 #'             "sequence_exuction",
