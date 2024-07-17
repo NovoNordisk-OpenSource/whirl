@@ -76,7 +76,7 @@ log_scripts <- function(paths  = NULL,
 
   # After obtaining the results, create a summary data frame
   summary_df <- dplyr::bind_rows(results) |>
-    dplyr::mutate(Status = factor(.data[["Status"]], levels = c("error", "warning", "success"))) |>
+    dplyr::mutate(Status = factor(.data[["Status"]], levels = c("error", "warning", "success", "skip"))) |>
     dplyr::arrange(factor(.data[["Status"]]))
 
   summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
@@ -140,7 +140,7 @@ execute_single_script <- function(script, ...) {
 
     cli::cli_alert_info(script)
 
-    if(!info$already_an_error){
+    if(!whirl_file_exits()){
       output <- run_script(script, ...)
     }else{
       output <- list(
@@ -158,7 +158,7 @@ execute_single_script <- function(script, ...) {
       Directory = dirname(normalizePath(script, winslash = "/")),
       Filename = basename(normalizePath(script, winslash = "/")),
       Status = output$status$status,
-      Hyperlink = normalizePath(output$log_details$location, winslash = "/"),
+      Hyperlink = if(output$log_details$location == ""){""}else{normalizePath(output$log_details$location, winslash = "/")},
       Information = ""
     ) |>
       dplyr::mutate(Information = dplyr::case_when(
@@ -209,9 +209,12 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
       ifelse(
         hold[["Status"]]  == "warning",
         "#fffaea",
-        ifelse(hold[["Status"]]  == "success", "#ebf5f1", "white")
+        ifelse(hold[["Status"]]  == "success", "#ebf5f1",
+               ifelse(hold[["Status"]]  == "skip", "#94CBFF", "white")
+        )
       )
-    )) |>
+    )
+    ) |>
     kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) |>
     knitr::knit_print()
 }

@@ -1,14 +1,42 @@
 info <- new.env()
 
+
 #'@noRd
-assign_to_info <- function(x, value){
-  assign(x, value, envir = info)
+unlink_whirl_error_file <- function(){
+  unlink(
+    file.path(
+      Sys.getenv("HOME"),
+      ".whirl_already_an_error"
+    )
+  )
 }
 
 #'@noRd
-get_from_info <- function(x, value){
-  get(x, envir = info)
+create_whirl_error_file <- function(){
+
+  file_ <- file.path(
+    Sys.getenv("HOME"),
+    ".whirl_already_an_error"
+  )
+  if(!file.exists(file_)){
+    file.create(
+      file_
+    )
+  }
+
 }
+
+#' @noRd
+whirl_file_exits <- function(){
+  file.exists(
+    file.path(
+      Sys.getenv("HOME"),
+      ".whirl_already_an_error"
+    )
+  )
+}
+
+
 
 #' @noRd
 #' @importFrom fs file_exists
@@ -112,13 +140,18 @@ one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h
   ## continue with files and folders whitout whirl yaml config
   to_compute <- c(files, without_whirl)
 
-  test <- log_scripts(to_compute, parallel = TRUE, summary_dir = summary_dir)
+  scripts_ <- log_scripts(to_compute, parallel = TRUE, summary_dir = summary_dir)
 
-  if(any(test$Status == "error")){
-    info$already_an_error <- TRUE
+  if(any(scripts_$Status == "error")){
+
+    create_whirl_error_file()
   }
 
-  results <- rbind(list_of_result, test)
+
+  scripts_<- scripts_ |>
+    dplyr::mutate(.before = "Status", Name = step[["name"]])
+
+  results <- rbind(list_of_result, scripts_)
 
   return(results)
 }
@@ -169,11 +202,11 @@ logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h1){
 logs_from_whirl_config <- function(file, summary_dir = "."){
   # Get the summary df
   ## Setup error as FALSE
-  info$already_an_error <- FALSE
+  unlink_whirl_error_file()
 
   summary_df <- logging_from_yaml(file, summary_dir)
   ## Clean up
-  info$already_an_error <- FALSE
+  unlink_whirl_error_file()
 
   # define path for the knit_print function
   if (summary_dir == getwd()) {
@@ -190,7 +223,7 @@ logs_from_whirl_config <- function(file, summary_dir = "."){
     input = summary_qmd,
     output_format = "html_document",
     output_file = summary_log_html,
-    params = list(summary_df = summary_df %>% purrr::list_rbind(), summary_dir = summary_dir_f),
+    params = list(summary_df = summary_df |> purrr::list_rbind(), summary_dir = summary_dir_f),
     quiet = TRUE
   )
 
