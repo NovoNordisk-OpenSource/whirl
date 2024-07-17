@@ -1,5 +1,5 @@
 ## whirl have to be installed for tests
-pkgs <- installed.packages() %>% row.names()
+pkgs <- installed.packages() |> row.names()
 test <- any(pkgs %in% "whirl")
 
 if(!test){

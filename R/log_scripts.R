@@ -139,18 +139,33 @@ execute_single_script <- function(script, ...) {
   result <- tryCatch({
 
     cli::cli_alert_info(script)
-    output <- run_script(script, ...)
+
+    if(!info$already_an_error){
+      output <- run_script(script, ...)
+    }else{
+      output <- list(
+        log_details = list(
+          location = ""
+        ),
+        status = list(
+          status = "skip",
+          skip = "Skip because of previous errors"
+        )
+      )
+    }
+
     tibble::tibble(
       Directory = dirname(normalizePath(script, winslash = "/")),
       Filename = basename(normalizePath(script, winslash = "/")),
       Status = output$status$status,
       Hyperlink = normalizePath(output$log_details$location, winslash = "/"),
       Information = ""
-    ) %>%
+    ) |>
       dplyr::mutate(Information = dplyr::case_when(
         output$status$status == "error" ~ not_null(output$status$error),
         output$status$status == "warning" ~ not_null(output$status$warning),
         output$status$status == "success" ~ not_null(output$status$success),
+        output$status$status == "skip" ~ not_null(output$status$skip),
         TRUE ~ ""
       )
       )
