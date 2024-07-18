@@ -4,7 +4,7 @@ test_that("R script works", {
 
   withr::with_tempdir(code = {
     file.copy(
-      from = system.file("examples", script, package = "whirl"),
+      from = system.file("examples", "simple", script, package = "whirl"),
       to = getwd()
     )
 

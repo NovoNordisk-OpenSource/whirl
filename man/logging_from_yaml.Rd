@@ -4,7 +4,7 @@
 \alias{logging_from_yaml}
 \title{Read and create summary data frame}
 \usage{
-logging_from_yaml(file, summary_dir, cli_level = cli::cli_h1)
+logging_from_yaml(file, summary_dir, cli_level = cli::cli_h2)
 }
 \arguments{
 \item{file}{configuration to define steps, have to be a yaml}

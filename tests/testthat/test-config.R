@@ -2,7 +2,7 @@ withr::with_tempdir(code = {
 test_that("execute_with_yaml function test", {
     # Define the script list and copy example scripts to a temporary directory
     scripts_list <- c("prg1.R", "prgRmd.Rmd")
-    file.copy(from = system.file("examples", scripts_list, package = "whirl"),
+    file.copy(from = system.file("examples","simple", scripts_list, package = "whirl"),
               to = getwd(), overwrite = TRUE)
 
     # Set up a mock YAML file with parameters for testing

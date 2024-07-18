@@ -73,9 +73,41 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1){
 
   paths <- step[["paths"]]
 
+  ## List dirs
+  dirs_test <- file.path(root_dir, paths)
+  paths_not_dir <- paths[!fs::dir_exists(dirs_test)]
+  dirs_ <- dirs_test[fs::dir_exists(dirs_test)]
+
+  if(length(dirs_) ==0){
+    dirs_ <- NULL
+  }
+
   # List files if regexp
-  files_ <- lapply(paths, function(x)list.files(root_dir, pattern = x, full.names = TRUE)) |>
+  files_ <- lapply(paths_not_dir, function(x){
+    test <- file.path(root_dir, x)
+    if(file_exists(test)){
+      return(test)
+    }else{
+      if(!stringr::str_detect(x, "/")){
+
+        files <- fs::dir_ls(root_dir, regexp = x, type = "file")
+        if(length(files) == 0){
+          cli::cli_abort("No files or folders for this path {x}")
+        }
+      }else{
+        to_construct_path <- as.character(stringr::str_split(x, "/", simplify = TRUE))
+        dir_inter <- file.path(root_dir, paste0(to_construct_path[-length(to_construct_path)], collapse = "/"))
+        regexp_ <- to_construct_path[length(to_construct_path)]
+        files <- fs::dir_ls(dir_inter, regexp = regexp_, type = "file")
+      }
+      return(files)
+    }
+  }) |>
     unlist(use.names = FALSE)
+
+  if(length(files_) == 0){
+    files_ <- NULL
+  }
 
   ## Message for debugging
   message_ <- c("i"= "Running logs for files",
@@ -86,7 +118,7 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1){
     levels_to_write = "verbose"
   )
 
-  return(files_)
+  return(c(dirs_, files_))
 }
 
 
@@ -98,7 +130,6 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1){
 one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h1){
   # check params
   checkmate::assert_directory(summary_dir, access = "rw")
-
   ## Find paths for files or folders
   files_with_folder <- define_paths(step, root_dir, cli_level)
 
@@ -132,15 +163,15 @@ one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h
 
       cli::cli_alert_success("Logs created for this config, {config_file}\n")
 
-      cli::cli_inform("Continue current step")
-
     }
   }
 
   ## continue with files and folders whitout whirl yaml config
   to_compute <- c(files, without_whirl)
-
-  scripts_ <- log_scripts(to_compute, parallel = TRUE, summary_dir = summary_dir)
+  if(length(to_compute) > 0){
+    cli::cli_inform("Continue current step")
+    scripts_ <- log_scripts(to_compute, parallel = TRUE, summary_dir = summary_dir)
+  }
 
   if(any(scripts_$Status == "error")){
 
@@ -163,7 +194,7 @@ one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h
 #' @inheritParams one_step_logging
 #'
 #' @importFrom purrr map
-logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h1){
+logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h2){
   ## check params
   checkmate::assert_file(file, extension = c("yaml", "yml"))
 
@@ -202,12 +233,22 @@ logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h1){
 #' logs_from_whirl_config(file_, tempdir())
 logs_from_whirl_config <- function(file, summary_dir = "."){
   # Get the summary df
-  ## Setup error as FALSE
+  ## Setup error as FALSE before
   unlink_whirl_error_file()
+  ## Clean up when it ends
+  on.exit(unlink_whirl_error_file())
 
-  summary_df <- logging_from_yaml(file, summary_dir)
-  ## Clean up
-  unlink_whirl_error_file()
+  cli::cli_h1("Start process for logs")
+  # On error clean up as well
+  summary_df <- try(
+    logging_from_yaml(file, summary_dir),
+    silent = TRUE)
+
+  if(inherits(summary_df, "try-error")){
+    unlink_whirl_error_file()
+    stop(summary_df)
+  }
+
 
   # define path for the knit_print function
   if (summary_dir == getwd()) {
@@ -229,6 +270,7 @@ logs_from_whirl_config <- function(file, summary_dir = "."){
   )
 
   # Create requested outputs
+  cli::cli_h1("End of log process")
 
   file_copy <- tryCatch(
     file.copy(

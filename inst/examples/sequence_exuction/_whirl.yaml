@@ -1,17 +1,18 @@
 steps:
   - name: "Run scripts for dataflow"
     paths:
-      - "subfolder_ex"
+      - "without_whirl/prg1.R"
+      - "without_whirl/error/error.R"
+      - "without_whirl/error/.*.R"
       - "with_whirl_file"
   - name: "Prepare adam datasets"
-
     paths:
       - "prg1.R"
       - "prgQmd.qmd"
-      - "error\\.R"
+      - "error.R"
   - name: "Running files from regexp"
     paths:
-      - "^prg.*(\\.R|\\.qmd)"
+      - "prg.*(\\.R|\\.qmd)"
   - name: "Running with whril file again"
     parallel: TRUE
     paths:

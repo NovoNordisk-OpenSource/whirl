@@ -75,6 +75,7 @@ log_scripts <- function(paths  = NULL,
   }
 
   # After obtaining the results, create a summary data frame
+
   summary_df <- dplyr::bind_rows(results) |>
     dplyr::mutate(Status = factor(.data[["Status"]], levels = c("error", "warning", "success", "skip"))) |>
     dplyr::arrange(factor(.data[["Status"]]))

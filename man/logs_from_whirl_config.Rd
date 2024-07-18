@@ -19,6 +19,8 @@ list is a character string indicating the success or failure of the script execu
 Create logs for files from a yaml configuration
 }
 \examples{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
 file_ <- system.file(
             "examples",
             "sequence_exuction",
@@ -26,4 +28,5 @@ file_ <- system.file(
              package = "whirl"
              )
 logs_from_whirl_config(file_, tempdir())
+\dontshow{\}) # examplesIf}
 }
