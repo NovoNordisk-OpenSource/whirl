@@ -4,12 +4,14 @@
 \alias{logging_from_yaml}
 \title{Read and create summary data frame}
 \usage{
-logging_from_yaml(file, summary_dir, cli_level = cli::cli_h2)
+logging_from_yaml(file, summary_dir, root_dir, cli_level = cli::cli_h2)
 }
 \arguments{
 \item{file}{configuration to define steps, have to be a yaml}
 
 \item{summary_dir}{A character string of file path specifying the directory where the summary log will be stored.}
+
+\item{root_dir}{the root dir of the yaml file}
 
 \item{cli_level}{Have to be a function from cli}
 }

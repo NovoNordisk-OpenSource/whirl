@@ -4,14 +4,14 @@
 \alias{one_step_logging}
 \title{Logging one step from yaml}
 \usage{
-one_step_logging(step, root_dir, summary_dir, cli_level = cli::cli_h1)
+one_step_logging(step, summary_dir, root_dir, cli_level = cli::cli_h1)
 }
 \arguments{
 \item{step}{a step from yaml (as a list in R)}
 
-\item{root_dir}{the root dir of the yaml file}
-
 \item{summary_dir}{A character string of file path specifying the directory where the summary log will be stored.}
+
+\item{root_dir}{the root dir of the yaml file}
 
 \item{cli_level}{Have to be a function from cli}
 }

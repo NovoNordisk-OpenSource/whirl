@@ -109,16 +109,17 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1){
     files_ <- NULL
   }
 
+  all_contents <- c(dirs_, files_)
   ## Message for debugging
   message_ <- c("i"= "Running logs for files",
-                files_  |> rlang::set_names("*"))
+                all_contents  |> rlang::set_names("*"))
   zephyr::msg(
     message_ ,
     msg_fun = cli::cli_inform,
     levels_to_write = "verbose"
   )
 
-  return(c(dirs_, files_))
+  return(all_contents)
 }
 
 
@@ -127,7 +128,7 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1){
 #' @inheritParams define_paths
 #' @param summary_dir A character string of file path specifying the directory where the summary log will be stored.
 #'
-one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h1){
+one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h1){
   # check params
   checkmate::assert_directory(summary_dir, access = "rw")
   ## Find paths for files or folders
@@ -157,7 +158,7 @@ one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h
       ### What happens if it is not named "_whirl.yaml"
       config_file <- file.path(with_whirl, "_whirl.yaml")
       ### Call logging_from_yaml to create a loop througt nested folders
-      list_of_result <- purrr::map(config_file, logging_from_yaml, summary_dir, cli_level = cli::cli_h3 )   |>
+      list_of_result <- purrr::map(config_file, logging_from_yaml, root_dir = dirname(config_file), summary_dir = summary_dir, cli_level = cli::cli_h3 )   |>
         purrr::map(purrr::list_rbind)  |>
         purrr::list_rbind()
 
@@ -168,19 +169,20 @@ one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h
 
   ## continue with files and folders whitout whirl yaml config
   to_compute <- c(files, without_whirl)
+  scripts_ <- NULL
+
   if(length(to_compute) > 0){
     cli::cli_inform("Continue current step")
     scripts_ <- log_scripts(to_compute, parallel = TRUE, summary_dir = summary_dir)
+
+    if(any(scripts_$Status == "error")){
+
+      create_whirl_error_file()
+    }
+
+    scripts_<- scripts_ |>
+      dplyr::mutate(.before = "Status", Name = step[["name"]])
   }
-
-  if(any(scripts_$Status == "error")){
-
-    create_whirl_error_file()
-  }
-
-
-  scripts_<- scripts_ |>
-    dplyr::mutate(.before = "Status", Name = step[["name"]])
 
   results <- rbind(list_of_result, scripts_)
 
@@ -194,7 +196,7 @@ one_step_logging <- function(step, root_dir, summary_dir, cli_level = cli::cli_h
 #' @inheritParams one_step_logging
 #'
 #' @importFrom purrr map
-logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h2){
+logging_from_yaml <- function(file, summary_dir, root_dir, cli_level = cli::cli_h2){
   ## check params
   checkmate::assert_file(file, extension = c("yaml", "yml"))
 
@@ -204,9 +206,9 @@ logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h2){
   )
 
   steps <- config_whirl$steps
-  root_dir <- dirname(file)
+  # root_dir <- dirname(file)
 
-  summary <- purrr::map(steps, one_step_logging, root_dir, summary_dir, cli_level)
+  summary <- purrr::map(steps, one_step_logging, summary_dir, root_dir, cli_level)
 
   return(summary)
 }
@@ -217,6 +219,7 @@ logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h2){
 #'
 #' @param file yaml configuration file
 #' @param summary_dir A character string of file path specifying the directory where the summary log will be stored.
+#' @param root_dir By default, the root dir of the yaml file.
 #'
 #' @return A list containing the execution results for each script. Each element of the
 #'   list is a character string indicating the success or failure of the script execution.
@@ -231,17 +234,19 @@ logging_from_yaml <- function(file, summary_dir, cli_level = cli::cli_h2){
 #'              package = "whirl"
 #'              )
 #' logs_from_whirl_config(file_, tempdir())
-logs_from_whirl_config <- function(file, summary_dir = "."){
+logs_from_whirl_config <- function(file, summary_dir = ".", root_dir = dirname(file)){
   # Get the summary df
   ## Setup error as FALSE before
   unlink_whirl_error_file()
+
   ## Clean up when it ends
   on.exit(unlink_whirl_error_file())
+  on.exit(cli::cli_h1("End of log process"))
 
   cli::cli_h1("Start process for logs")
   # On error clean up as well
   summary_df <- try(
-    logging_from_yaml(file, summary_dir),
+    logging_from_yaml(file, summary_dir, root_dir = root_dir),
     silent = TRUE)
 
   if(inherits(summary_df, "try-error")){
@@ -269,8 +274,7 @@ logs_from_whirl_config <- function(file, summary_dir = "."){
     quiet = TRUE
   )
 
-  # Create requested outputs
-  cli::cli_h1("End of log process")
+
 
   file_copy <- tryCatch(
     file.copy(

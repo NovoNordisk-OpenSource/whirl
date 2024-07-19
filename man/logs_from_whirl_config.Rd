@@ -4,12 +4,14 @@
 \alias{logs_from_whirl_config}
 \title{Create logs for files from a yaml configuration}
 \usage{
-logs_from_whirl_config(file, summary_dir = ".")
+logs_from_whirl_config(file, summary_dir = ".", root_dir = dirname(file))
 }
 \arguments{
 \item{file}{yaml configuration file}
 
 \item{summary_dir}{A character string of file path specifying the directory where the summary log will be stored.}
+
+\item{root_dir}{By default, the root dir of the yaml file.}
 }
 \value{
 A list containing the execution results for each script. Each element of the
