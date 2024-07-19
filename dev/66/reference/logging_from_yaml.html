@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">logging_from_yaml</span><span class="op">(</span><span class="va">file</span>, <span class="va">summary_dir</span>, cli_level <span class="op">=</span> <span class="fu">cli</span><span class="fu">::</span><span class="va"><a href="https://cli.r-lib.org/reference/cli_h1.html" class="external-link">cli_h2</a></span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">logging_from_yaml</span><span class="op">(</span><span class="va">file</span>, <span class="va">summary_dir</span>, <span class="va">root_dir</span>, cli_level <span class="op">=</span> <span class="fu">cli</span><span class="fu">::</span><span class="va"><a href="https://cli.r-lib.org/reference/cli_h1.html" class="external-link">cli_h2</a></span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -50,6 +50,10 @@
 
 <dt id="arg-summary-dir">summary_dir<a class="anchor" aria-label="anchor" href="#arg-summary-dir"></a></dt>
 <dd><p>A character string of file path specifying the directory where the summary log will be stored.</p></dd>
+
+
+<dt id="arg-root-dir">root_dir<a class="anchor" aria-label="anchor" href="#arg-root-dir"></a></dt>
+<dd><p>the root dir of the yaml file</p></dd>
 
 
 <dt id="arg-cli-level">cli_level<a class="anchor" aria-label="anchor" href="#arg-cli-level"></a></dt>
