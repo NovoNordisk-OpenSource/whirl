@@ -87,7 +87,6 @@ whirl_r_session <- R6::R6Class(
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
-
   private = list(
     verbose = NULL,
     wd = NULL,
@@ -100,12 +99,11 @@ whirl_r_session <- R6::R6Class(
     spinner = NULL,
     current_script = NULL
   ),
-
   inherit = callr::r_session
 )
 
 wrs_initialize <- function(verbose, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url,
-                     self, private, super) {
+                           self, private, super) {
   super$initialize() # uses callr::r_session$initialize()
 
   # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
@@ -189,13 +187,12 @@ wrs_check_status <- function(self, private, super) {
 }
 
 wrs_log_script <- function(script, self, private, super) {
-
   private$current_script <- script
 
   paste("{spin}", cli::format_message("{.file {private$current_script}}: Running script...")) |>
     self$spin()
 
-  quarto_execute_dir <- switch (tools::file_ext(script),
+  quarto_execute_dir <- switch(tools::file_ext(script),
     "R" = getwd(),
     normalizePath(dirname(script)) # TODO: Should this default be changed?
   )
@@ -218,7 +215,6 @@ wrs_log_script <- function(script, self, private, super) {
 }
 
 wrs_create_log <- function(self, private, super) {
-
   paste("{spin}", cli::format_message("{.file {private$current_script}}: Creating log...")) |>
     self$spin()
 
@@ -250,16 +246,15 @@ wrs_create_log <- function(self, private, super) {
 
 wrs_log_finish <- function(self, private, super) {
   if (private$verbose) {
-
     status <- self$get_wd() |>
       file.path("doc.md") |>
       get_status()
 
-    switch (status[["status"]],
+    switch(status[["status"]],
       "error" = c("x" = "{.file {private$current_script}}: Completed with errors"),
       "warning" = c("!" = "{.file {private$current_script}}: Completed with warnings"),
       c("v" = "{.file {private$current_script}}: Completed succesfully")
-      ) |>
+    ) |>
       cli::format_message() |>
       self$spin()
   }

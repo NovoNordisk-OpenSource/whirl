@@ -26,11 +26,11 @@ Create logs for files from a yaml configuration
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 file_ <- system.file(
-            "examples",
-            "sequence_exuction",
-             "_whirl.yaml",
-             package = "whirl"
-             )
+  "examples",
+  "sequence_exuction",
+  "_whirl.yaml",
+  package = "whirl"
+)
 logs_from_whirl_config(file_, tempdir())
 \dontshow{\}) # examplesIf}
 }

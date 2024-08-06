@@ -3,14 +3,18 @@ test_that("Execute multiple Scripts", {
 
   withr::with_tempdir({
     # Setup: Copy example scripts to temp directory
-    file.copy(from = system.file("examples", "simple", scripts_list, package = "whirl"),
-              to = getwd(), overwrite = TRUE)
+    file.copy(
+      from = system.file("examples", "simple", scripts_list, package = "whirl"),
+      to = getwd(), overwrite = TRUE
+    )
 
     # Setup: Copy example folder to temp directory
 
     dir.create("simple")
-    file.copy(from = system.file("examples", "simple", package = "whirl"),
-              to = "./simple", recursive = TRUE)
+    file.copy(
+      from = system.file("examples", "simple", package = "whirl"),
+      to = "./simple", recursive = TRUE
+    )
     scripts_folder <- file.path(".", "simple")
 
     # Test for valid input with folder path

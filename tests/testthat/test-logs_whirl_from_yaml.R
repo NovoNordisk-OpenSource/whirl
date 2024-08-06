@@ -4,19 +4,18 @@ test_that("test from yaml file", {
   file_path_and_regexp <- system.file("examples", "sequence_exuction", "path_and_regexp.yaml", package = "whirl")
 
   withr::with_dir(tempdir(), {
-
     logs_from_whirl_config(file = file_) |>
       expect_no_error()
 
     logs_from_whirl_config(file_error) |>
       expect_error(regexp = "No files or folders for this path")
 
-    file.copy(from = system.file("examples", package = "whirl"),
-              to = ".", recursive = TRUE, overwrite = TRUE)
+    file.copy(
+      from = system.file("examples", package = "whirl"),
+      to = ".", recursive = TRUE, overwrite = TRUE
+    )
 
     logs_from_whirl_config(file_path_and_regexp, root_dir = ".") |>
       expect_no_error()
-
   })
-
 })

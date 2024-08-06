@@ -41,6 +41,4 @@ hold <- params$summary_df |> tibble::tibble()
 class(hold) <- c("whirl_summary_info", "summary_info", "list")
 
 knitr::knit_print(hold, params$summary_dir)
-
-
 ```

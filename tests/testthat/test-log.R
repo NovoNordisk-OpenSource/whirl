@@ -1,5 +1,4 @@
 test_that("R script works", {
-
   script <- "prg1.R"
 
   withr::with_tempdir(code = {

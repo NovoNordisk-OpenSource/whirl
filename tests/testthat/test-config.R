@@ -1,9 +1,11 @@
 withr::with_tempdir(code = {
-test_that("execute_with_yaml function test", {
+  test_that("execute_with_yaml function test", {
     # Define the script list and copy example scripts to a temporary directory
     scripts_list <- c("prg1.R", "prgRmd.Rmd")
-    file.copy(from = system.file("examples","simple", scripts_list, package = "whirl"),
-              to = getwd(), overwrite = TRUE)
+    file.copy(
+      from = system.file("examples", "simple", scripts_list, package = "whirl"),
+      to = getwd(), overwrite = TRUE
+    )
 
     # Set up a mock YAML file with parameters for testing
     mock_yaml_file <- file.path(getwd(), "mock_params.yaml")
@@ -34,12 +36,10 @@ test_that("execute_with_yaml function test", {
     expect_true(is.data.frame(result), "Result should be a data frame")
 
     expect_equal(nrow(result), 2)
+  })
 
-})
-
-# Empty Paths Test
-test_that("execute_with_yaml handles empty paths", {
-
+  # Empty Paths Test
+  test_that("execute_with_yaml handles empty paths", {
     mock_yaml_file <- file.path(getwd(), "mock_params_empty.yaml")
 
     # Create a mock YAML file with empty paths
@@ -60,11 +60,10 @@ test_that("execute_with_yaml handles empty paths", {
 
     # Execute the function with the mock YAML and store the result
     expect_error(execute_with_yaml(mock_yaml_file, eval.expr = TRUE))
+  })
 
-})
-
-# Non-Existent Paths Test
-test_that("execute_with_yaml handles non-existent paths", {
+  # Non-Existent Paths Test
+  test_that("execute_with_yaml handles non-existent paths", {
     mock_yaml_file <- file.path(getwd(), "mock_params_nonexistent.yaml")
 
     # Create a mock YAML file with non-existent paths
@@ -85,10 +84,10 @@ test_that("execute_with_yaml handles non-existent paths", {
 
     # Assert that the result is as expected
     expect_error(execute_with_yaml(mock_yaml_file, eval.expr = TRUE))
-})
+  })
 
-# Invalid YAML Test
-test_that("execute_with_yaml handles invalid YAML", {
+  # Invalid YAML Test
+  test_that("execute_with_yaml handles invalid YAML", {
     mock_yaml_file <- file.path(getwd(), "mock_params_invalid.yaml")
 
     # Create a mock YAML file with invalid format
@@ -109,5 +108,5 @@ test_that("execute_with_yaml handles invalid YAML", {
 
     # Assert that the result is as expected
     expect_error(execute_with_yaml(mock_yaml_file, eval.expr = TRUE))
-})
+  })
 })

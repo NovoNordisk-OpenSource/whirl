@@ -24,26 +24,17 @@
 #' @importFrom parallel detectCores makeCluster stopCluster parLapply
 #'   clusterEvalQ
 #' @export
-<<<<<<< Updated upstream
-log_scripts <- function(paths  = ".",
-=======
-log_scripts <- function(paths = NULL,
->>>>>>> Stashed changes
+log_scripts <- function(paths = ".",
                         parallel = FALSE,
                         num_cores = NULL,
                         summary_dir = getwd(),
                         ...) {
-<<<<<<< Updated upstream
-
   if (!is.character(paths)) {
     stop("Missing valid path input. Path must be a character.")
   }
 
-  if (!is.null(num_cores) && (!is.numeric(num_cores) || num_cores <= 0)) {
-=======
   if (!is.null(num_cores) &&
     (!is.numeric(num_cores) || num_cores <= 0)) {
->>>>>>> Stashed changes
     stop("Invalid input for 'num_cores'. Please provide a positive numeric value.")
   }
 
@@ -51,22 +42,19 @@ log_scripts <- function(paths = NULL,
     stop("The specified summary directory does not exist.")
   }
 
-<<<<<<< Updated upstream
-  # Initialize all_files as an empty character vector
   script_files <- character(0)
-=======
-  script_files <- character(0) # Initialize all_files as an empty character vector
->>>>>>> Stashed changes
 
   for (path in paths) {
     if (file.exists(path)) {
       if (file.info(path)$isdir) {
         # If input is a directory, list files with specific extensions
-        files <- list.files(path = path,
-                            recursive = TRUE,
-                            pattern = "\\.(R|Rmd|qmd)$",
-                            ignore.case = TRUE,
-                            full.names = TRUE)
+        files <- list.files(
+          path = path,
+          recursive = TRUE,
+          pattern = "\\.(R|Rmd|qmd)$",
+          ignore.case = TRUE,
+          full.names = TRUE
+        )
         script_files <- c(script_files, files)
       } else {
         # If input is a file, add it directly to the list
@@ -83,12 +71,8 @@ log_scripts <- function(paths = NULL,
   if (parallel) {
     # Parallel execution with progress display
     if (is.null(num_cores)) {
-<<<<<<< Updated upstream
       # Use one less than the total number of cores
       num_cores <- min(detectCores() - 1, 8)
-=======
-      num_cores <- min(detectCores() - 1, 8) # Use one less than the total number of cores
->>>>>>> Stashed changes
     }
 
     cli::cli_inform("Executing scripts in parallel using {num_cores} cores\n")
@@ -106,8 +90,11 @@ log_scripts <- function(paths = NULL,
 
   summary_df <- dplyr::bind_rows(results) |>
     dplyr::mutate(Status = factor(.data[["Status"]],
-                                  levels = c("error", "warning",
-                                             "success", "skip"))) |>
+      levels = c(
+        "error", "warning",
+        "success", "skip"
+      )
+    )) |>
     dplyr::arrange(factor(.data[["Status"]]))
 
   summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
@@ -147,11 +134,7 @@ log_scripts <- function(paths = NULL,
 # Function to execute a single script
 #' @noRd
 execute_single_script <- function(script, ...) {
-<<<<<<< Updated upstream
-  not_null <- function(x){
-=======
   not_null <- function(x) {
->>>>>>> Stashed changes
     if (length(x) == 0 | is.null(x)) {
       return("")
     }
