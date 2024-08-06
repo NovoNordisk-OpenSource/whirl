@@ -1,5 +1,4 @@
 test_that("interactive whirl R session components not tested in run_script", {
-
   p <- whirl_r_session$new(verbose = FALSE)
 
   p$print() |>
@@ -31,5 +30,4 @@ test_that("interactive whirl R session components not tested in run_script", {
   gc()
 
   expect_false(dir.exists(dir))
-
 })

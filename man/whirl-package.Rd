@@ -14,6 +14,7 @@ Defines common standards, workflows, and actions for new R packages.
 Authors:
 \itemize{
   \item Lovemore Gakava \email{lvgk@novonordisk.com}
+  \item Cervan Girard \email{cgid@novonordisk.com}
 }
 
 Other contributors:

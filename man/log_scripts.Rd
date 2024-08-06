@@ -5,7 +5,7 @@
 \title{Execute multiple R, R Markdown, and Quarto scripts}
 \usage{
 log_scripts(
-  paths = NULL,
+  paths = ".",
   parallel = FALSE,
   num_cores = NULL,
   summary_dir = getwd(),
@@ -13,24 +13,28 @@ log_scripts(
 )
 }
 \arguments{
-\item{paths}{A character vector of file paths to R, R Markdown, or Quarto scripts.
-If NULL, the function will look for scripts in the specified folder.}
+\item{paths}{A character vector of file paths to R, R Markdown, or Quarto
+scripts or a folder.}
 
-\item{parallel}{Logical; if TRUE, scripts will be executed in parallel. Default is FALSE.}
+\item{parallel}{Logical; if TRUE, scripts will be executed in parallel.
+Default is FALSE.}
 
-\item{num_cores}{Integer specifying the number of cores to use for parallel execution.
-If NULL (default), it will use one less than the total number of available cores.}
+\item{num_cores}{Integer specifying the number of cores to use for parallel
+execution. If NULL (default), it will use one less than the total number of
+available cores.}
 
-\item{summary_dir}{A character string of file path specifying the directory where the summary log will be stored.}
+\item{summary_dir}{A character string of file path specifying the directory
+where the summary log will be stored.}
 
-\item{...}{Other arguments passed on to the run_script function,}
+\item{...}{Other arguments passed on to the \link{run_script} function,}
 }
 \value{
-A list containing the execution results for each script. Each element of the
-list is a character string indicating the success or failure of the script execution.
+A list containing the execution results for each script. Each element
+of the list is a character string indicating the success or failure of the
+script execution.
 }
 \description{
-This function executes multiple R scripts (.R), renders R Markdown documents (.Rmd),
-and Quarto documents (.qmd). It can process individual files or all supported files
-in a specified folder, with options for parallel execution.
+This function executes multiple R scripts (.R), renders R Markdown documents
+(.Rmd), and Quarto documents (.qmd). It can process individual files or all
+supported files in a specified folder, with options for parallel execution.
 }

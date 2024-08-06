@@ -3,18 +3,13 @@ Title: Logging package
 Version: 0.0.1
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
-    person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = c("aut")),
-    person("Novo Nordisk A/S", role = c("cph"))
+    person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
+    person("Cervan", "Girard", , "cgid@novonordisk.com", role = "aut"),
+    person("Novo Nordisk A/S", role = "cph")
   )
-Description: Defines common standards, workflows, and actions for new R packages.
+Description: Defines common standards, workflows, and actions for new R
+    packages.
 License: Apache License (>= 2)
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Suggests: 
-    future,
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
 Depends: 
     R (>= 4.1)
 Imports: 
@@ -22,30 +17,41 @@ Imports:
     checkmate,
     cli,
     dplyr,
+    fs,
     ggplot2,
+    here,
     httr,
     jsonlite,
     kableExtra,
     knitr,
     options,
+    parallel,
+    purrr,
     quarto,
+    R6,
     renv,
     rlang,
+    rmarkdown,
     scales,
     sessioninfo,
     stringr,
     tibble,
     tidyr,
     tidyselect,
+    tools,
     unglue,
     utils,
     vctrs,
     withr,
+    yaml,
     zephyr (>= 0.0.0.9000),
-    zoo,
-    rmarkdown,
-    here,
-    fs,
-    yaml
+    zoo
+Suggests: 
+    future,
+    testthat (>= 3.0.0)
 Remotes: 
     NN-OpenSource/zephyr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1

@@ -34,7 +34,8 @@ run_script <- function(script,
     track_files_discards = track_files_discards,
     track_files_keep = track_files_keep,
     approved_pkgs_folder = approved_pkgs_folder,
-    approved_pkgs_url = approved_pkgs_url)
+    approved_pkgs_url = approved_pkgs_url
+  )
 
   p$
     log_script(script = script)$
@@ -49,11 +50,9 @@ run_script <- function(script,
   p$
     log_finish()$
     create_outputs(out_dir = out_dir, format = out_formats)
-
 }
 
 assert_run_script_input <- function(env = parent.frame()) {
-
   withr::with_environment(env, {
     script <- script
     track_files <- track_files
@@ -64,13 +63,12 @@ assert_run_script_input <- function(env = parent.frame()) {
     approved_pkgs_url <- approved_pkgs_url
     track_files_discards <- track_files_discards
     track_files_keep <- track_files_keep
-    }
-  )
+  })
 
   val <- checkmate::makeAssertCollection()
 
   checkmate::assert_character(x = script, any.missing = FALSE, len = 1, add = val)
-  checkmate::assert_file_exists(x = script, access = "r", extension = c("R", "qmd", "Rmd"), add = val)
+  checkmate::assert_file_exists(x = script, access = "r", extension = c("R", "qmd", "Rmd", "py"), add = val)
 
   checkmate::assert_logical(x = track_files, any.missing = FALSE, len = 1, add = val)
   if (track_files) checkmate::assert_true(Sys.info()[["sysname"]] == "Linux", add = val)

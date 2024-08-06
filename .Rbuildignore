@@ -9,4 +9,7 @@
 ^\.github$
 ^inst/output$
 ^inst/examples/*\\.html$
+^inst/examples/*_files$
 ^dev/
+summary.html
+plot1.png

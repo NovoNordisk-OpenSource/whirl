@@ -1,0 +1,4 @@
+steps:
+  - name: "Run scripts because '_whirl.yaml' is detected"
+    paths:
+      - "prg1.R"

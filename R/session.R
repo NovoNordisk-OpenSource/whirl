@@ -203,5 +203,3 @@ knit_print.whirl_options_info <- function(x, ...) {
     ) |>
     knitr::knit_print()
 }
-
-

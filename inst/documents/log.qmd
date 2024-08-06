@@ -27,7 +27,6 @@ format:
 # Summary
 
 ```{r, echo=FALSE, eval=TRUE}
-
 .libPaths(c(character(), params$with_library_paths))
 
 status <- params$script_md |>
