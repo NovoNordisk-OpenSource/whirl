@@ -7,8 +7,7 @@ Authors@R: c(
     person("Cervan", "Girard", , "cgid@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
-Description: Defines common standards, workflows, and actions for new R
-    packages.
+Description: Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
 License: Apache License (>= 2)
 Depends: 
     R (>= 4.1)
