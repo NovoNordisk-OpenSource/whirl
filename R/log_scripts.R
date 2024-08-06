@@ -24,17 +24,26 @@
 #' @importFrom parallel detectCores makeCluster stopCluster parLapply
 #'   clusterEvalQ
 #' @export
+<<<<<<< Updated upstream
 log_scripts <- function(paths  = ".",
+=======
+log_scripts <- function(paths = NULL,
+>>>>>>> Stashed changes
                         parallel = FALSE,
                         num_cores = NULL,
                         summary_dir = getwd(),
                         ...) {
+<<<<<<< Updated upstream
 
   if (!is.character(paths)) {
     stop("Missing valid path input. Path must be a character.")
   }
 
   if (!is.null(num_cores) && (!is.numeric(num_cores) || num_cores <= 0)) {
+=======
+  if (!is.null(num_cores) &&
+    (!is.numeric(num_cores) || num_cores <= 0)) {
+>>>>>>> Stashed changes
     stop("Invalid input for 'num_cores'. Please provide a positive numeric value.")
   }
 
@@ -42,8 +51,12 @@ log_scripts <- function(paths  = ".",
     stop("The specified summary directory does not exist.")
   }
 
+<<<<<<< Updated upstream
   # Initialize all_files as an empty character vector
   script_files <- character(0)
+=======
+  script_files <- character(0) # Initialize all_files as an empty character vector
+>>>>>>> Stashed changes
 
   for (path in paths) {
     if (file.exists(path)) {
@@ -70,8 +83,12 @@ log_scripts <- function(paths  = ".",
   if (parallel) {
     # Parallel execution with progress display
     if (is.null(num_cores)) {
+<<<<<<< Updated upstream
       # Use one less than the total number of cores
       num_cores <- min(detectCores() - 1, 8)
+=======
+      num_cores <- min(detectCores() - 1, 8) # Use one less than the total number of cores
+>>>>>>> Stashed changes
     }
 
     cli::cli_inform("Executing scripts in parallel using {num_cores} cores\n")
@@ -80,7 +97,6 @@ log_scripts <- function(paths  = ".",
 
     results <- parallel::parLapply(cl, script_files, execute_single_script, ...)
     parallel::stopCluster(cl)
-
   } else {
     # Sequential execution
     results <- lapply(script_files, execute_single_script, ...)
@@ -131,7 +147,11 @@ log_scripts <- function(paths  = ".",
 # Function to execute a single script
 #' @noRd
 execute_single_script <- function(script, ...) {
+<<<<<<< Updated upstream
   not_null <- function(x){
+=======
+  not_null <- function(x) {
+>>>>>>> Stashed changes
     if (length(x) == 0 | is.null(x)) {
       return("")
     }
@@ -148,51 +168,55 @@ execute_single_script <- function(script, ...) {
       )
     }
     return(msg_)
-
   }
 
-  result <- tryCatch({
+  result <- tryCatch(
+    {
+      cli::cli_alert_info(script)
 
-    cli::cli_alert_info(script)
-
-    if (!whirl_file_exits()) {
-      output <- run_script(script, ...)
-    } else {
-      output <- list(
-        log_details = list(
-          location = ""
-        ),
-        status = list(
-          status = "skip",
-          skip = "Skip because of previous errors"
+      if (!whirl_file_exits()) {
+        output <- run_script(script, ...)
+      } else {
+        output <- list(
+          log_details = list(
+            location = ""
+          ),
+          status = list(
+            status = "skip",
+            skip = "Skip because of error(s) in the previous step"
+          )
         )
+      }
+
+      tibble::tibble(
+        Directory = dirname(normalizePath(script, winslash = "/")),
+        Filename = basename(normalizePath(script, winslash = "/")),
+        Status = output$status$status,
+        Hyperlink = if (output$log_details$location == "") {
+          ""
+        } else {
+          normalizePath(output$log_details$location, winslash = "/")
+        },
+        Information = ""
+      ) |>
+        dplyr::mutate(Information = dplyr::case_when(
+          output$status$status == "error" ~ not_null(output$status$error),
+          output$status$status == "warning" ~ not_null(output$status$warning),
+          output$status$status == "success" ~ not_null(output$status$success),
+          output$status$status == "skip" ~ not_null(output$status$skip),
+          TRUE ~ ""
+        ))
+    },
+    error = function(e) {
+      tibble::tibble(
+        Directory = dirname(normalizePath(script, winslash = "/")),
+        Filename = basename(normalizePath(script, winslash = "/")),
+        Status = "error",
+        Hyperlink = NA_character_,
+        Information = conditionMessage(e)
       )
     }
-
-    tibble::tibble(
-      Directory = dirname(normalizePath(script, winslash = "/")),
-      Filename = basename(normalizePath(script, winslash = "/")),
-      Status = output$status$status,
-      Hyperlink = if(output$log_details$location == ""){""}else{normalizePath(output$log_details$location, winslash = "/")},
-      Information = ""
-    ) |>
-      dplyr::mutate(Information = dplyr::case_when(
-        output$status$status == "error" ~ not_null(output$status$error),
-        output$status$status == "warning" ~ not_null(output$status$warning),
-        output$status$status == "success" ~ not_null(output$status$success),
-        output$status$status == "skip" ~ not_null(output$status$skip),
-        TRUE ~ ""
-      )
-      )
-  }, error = function(e) {
-    tibble::tibble(
-      Directory = dirname(normalizePath(script, winslash = "/")),
-      Filename = basename(normalizePath(script, winslash = "/")),
-      Status = "error",
-      Hyperlink = NA_character_,
-      Information = conditionMessage(e)
-    )
-  })
+  )
 
   return(result)
 }
@@ -222,14 +246,13 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
       hold[["Status"]] == "error",
       "#fceeef",
       ifelse(
-        hold[["Status"]]  == "warning",
+        hold[["Status"]] == "warning",
         "#fffaea",
-        ifelse(hold[["Status"]]  == "success", "#ebf5f1",
-               ifelse(hold[["Status"]]  == "skip", "#94CBFF", "white")
+        ifelse(hold[["Status"]] == "success", "#ebf5f1",
+          ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
         )
       )
-    )
-    ) |>
+    )) |>
     kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) |>
     knitr::knit_print()
 }
