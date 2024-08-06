@@ -5,8 +5,7 @@
 #' supported files in a specified folder, with options for parallel execution.
 #'
 #' @param paths  A character vector of file paths to R, R Markdown, or Quarto
-#'   scripts. If NULL, the function will look for scripts in the specified
-#'   folder.
+#'   scripts or a folder.
 #' @param parallel Logical; if TRUE, scripts will be executed in parallel.
 #'   Default is FALSE.
 #' @param num_cores Integer specifying the number of cores to use for parallel
@@ -25,11 +24,16 @@
 #' @importFrom parallel detectCores makeCluster stopCluster parLapply
 #'   clusterEvalQ
 #' @export
-log_scripts <- function(paths  = NULL,
+log_scripts <- function(paths  = ".",
                         parallel = FALSE,
                         num_cores = NULL,
                         summary_dir = getwd(),
                         ...) {
+
+  if (!is.character(paths)) {
+    stop("Missing valid path input. Path must be a character.")
+  }
+
   if (!is.null(num_cores) && (!is.numeric(num_cores) || num_cores <= 0)) {
     stop("Invalid input for 'num_cores'. Please provide a positive numeric value.")
   }
@@ -62,9 +66,6 @@ log_scripts <- function(paths  = NULL,
 
   script_files <- unique(script_files)
 
-  # else {
-  #   stop("Missing input. Please provide either a vector of script paths or a folder path.")
-  # }
 
   if (parallel) {
     # Parallel execution with progress display
