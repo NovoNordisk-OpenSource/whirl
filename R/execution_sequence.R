@@ -178,7 +178,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 
   if (length(to_compute) > 0) {
     cli::cli_inform("Continue current step")
-    scripts_ <- log_scripts(to_compute,
+    scripts_ <- run_paths(to_compute,
       parallel = TRUE,
       summary_dir = summary_dir
     )

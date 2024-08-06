@@ -6,7 +6,7 @@
 \alias{whirl-package}
 \title{whirl: Logging package}
 \description{
-Defines common standards, workflows, and actions for new R packages.
+Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
 }
 \author{
 \strong{Maintainer}: Aksel Thomsen \email{oath@novonordisk.com}
