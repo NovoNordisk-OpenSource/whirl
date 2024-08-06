@@ -4,8 +4,12 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/define_paths.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/log_scripts.html</loc></url>
+<url><loc>/reference/logging_from_yaml.html</loc></url>
+<url><loc>/reference/logs_from_whirl_config.html</loc></url>
+<url><loc>/reference/one_step_logging.html</loc></url>
 <url><loc>/reference/options.html</loc></url>
 <url><loc>/reference/options_params.html</loc></url>
 <url><loc>/reference/run_script.html</loc></url>
