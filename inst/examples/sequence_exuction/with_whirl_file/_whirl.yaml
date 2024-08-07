@@ -1,4 +1,4 @@
 steps:
-  - name: "Run scripts because '_whirl.yaml' is detected"
+  - name: "Subfolder with config file"
     paths:
       - "prg1.R"
