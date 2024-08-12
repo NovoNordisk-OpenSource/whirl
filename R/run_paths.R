@@ -24,7 +24,7 @@
 #' @importFrom parallel detectCores makeCluster stopCluster parLapply
 #'   clusterEvalQ
 #' @export
-log_scripts <- function(paths = ".",
+run_paths <- function(paths = ".",
                         parallel = FALSE,
                         num_cores = NULL,
                         summary_dir = getwd(),

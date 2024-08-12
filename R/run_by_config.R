@@ -110,7 +110,7 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1) {
 
   ## Message for users
   message_ <- c(
-    "i" = "Creating logs for files",
+    "i" = "Processing...",
     all_contents |> rlang::set_names("*")
   )
 
@@ -154,7 +154,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
     ## If _whirl.yaml call the function again, create a loop
     if (length(with_whirl) > 0) {
       cli::cat_line("")
-      cli::cli_alert_info("'_whirl files detected', read and creating logs for it.\n")
+      cli::cli_alert_info("'Additional config file(s) detected', read and execute the individual steps.\n")
 
       ### What happens if it is not named "_whirl.yaml"
       config_file <- file.path(with_whirl, "_whirl.yaml")
@@ -177,11 +177,13 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
   scripts_ <- NULL
 
   if (length(to_compute) > 0) {
-    cli::cli_inform("Continue current step")
-    scripts_ <- log_scripts(to_compute,
+    if (exists("with_whirl") && length(with_whirl) > 0) {
+      cli::cli_inform("Continue current step")
+    }
+
+    scripts_ <- run_paths(to_compute,
       parallel = TRUE,
-      summary_dir = summary_dir
-    )
+      summary_dir = summary_dir)
 
     if (any(scripts_$Status == "error")) {
       create_whirl_error_file()
@@ -216,6 +218,20 @@ logging_from_yaml <- function(file,
 
   steps <- config_whirl$steps
 
+  ## Get the step names and output them as messages
+  step_names <- unlist(steps)[grepl("name", names(unlist(steps)))]
+
+  message_ <- c(
+    "The following steps have been identified in the config file",
+    step_names |> rlang::set_names("*")
+  )
+
+  zephyr::msg(
+    message_,
+    msg_fun = cli::cli_inform,
+    levels_to_write = "verbose"
+  )
+
   summary <- purrr::map(
     steps, one_step_logging,
     summary_dir, root_dir, cli_level
@@ -246,10 +262,10 @@ logging_from_yaml <- function(file,
 #'   "_whirl.yaml",
 #'   package = "whirl"
 #' )
-#' logs_from_whirl_config(file_, tempdir())
-logs_from_whirl_config <- function(file,
-                                   summary_dir = ".",
-                                   root_dir = dirname(file)) {
+#' run_by_config(file_, tempdir())
+run_by_config <- function(file,
+                          summary_dir = ".",
+                          root_dir = dirname(file)) {
   # Get the summary df
   ## Setup error as FALSE before
   unlink_whirl_error_file()
