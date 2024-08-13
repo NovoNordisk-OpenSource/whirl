@@ -270,7 +270,7 @@ run_by_config <- function(file,
   ## Setup error as FALSE before
   unlink_whirl_error_file()
 
-  ## Clean up when it ends
+  # Message when ending
   on.exit(cli::cli_h1("End of log process"))
 
   cli::cli_h1("Start process for logs")
@@ -318,6 +318,7 @@ run_by_config <- function(file,
     )
   )
 
+  ## Clean up when it ends
   unlink_whirl_error_file()
 
 }
