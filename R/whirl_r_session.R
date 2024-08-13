@@ -275,7 +275,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       out_dir,
       gsub(
         pattern = "\\.[^\\.]*$",
-        replacement = ".html",
+        replacement = "_log.html",
         x = basename(private$current_script)
       )
     ))
@@ -290,7 +290,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
         out_dir,
         gsub(
           pattern = "\\.[^\\.]*$",
-          replacement = ".html",
+          replacement = "_log.html",
           x = basename(private$current_script)
         )
       ),
