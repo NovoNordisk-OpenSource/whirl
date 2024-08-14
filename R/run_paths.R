@@ -25,10 +25,13 @@
 #'   clusterEvalQ
 #' @export
 run_paths <- function(paths = ".",
-                        parallel = FALSE,
-                        num_cores = NULL,
-                        summary_dir = getwd(),
-                        ...) {
+                      parallel = FALSE,
+                      num_cores = NULL,
+                      summary_dir = getwd(),
+                      ...) {
+
+
+
   if (!is.character(paths)) {
     stop("Missing valid path input. Path must be a character.")
   }
@@ -67,8 +70,8 @@ run_paths <- function(paths = ".",
 
   script_files <- unique(script_files)
 
-
-  if (parallel) {
+  # Only initiate parallel if there are more than one script to execute
+  if (parallel & length(script_files) > 1) {
     # Parallel execution with progress display
     if (is.null(num_cores)) {
       # Use one less than the total number of cores
@@ -83,7 +86,7 @@ run_paths <- function(paths = ".",
     parallel::stopCluster(cl)
   } else {
     # Sequential execution
-    results <- lapply(script_files, execute_single_script, ...)
+    results <- lapply(script_files, execute_single_script,  ...)
   }
 
   # After obtaining the results, create a summary data frame
@@ -146,7 +149,7 @@ execute_single_script <- function(script, ...) {
       msg_ <- paste(
         msg_,
         "<br>",
-        "... See HTLM logs for more details",
+        "... See HTML logs for more details",
         collapse = ""
       )
     }
@@ -155,7 +158,8 @@ execute_single_script <- function(script, ...) {
 
   result <- tryCatch(
     {
-      cli::cli_alert_info(script)
+      #cli::cli_alert_info(script)
+      cat("\n")
 
       if (!whirl_file_exits()) {
         output <- run_script(script, ...)
