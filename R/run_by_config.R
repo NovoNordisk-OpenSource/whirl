@@ -168,6 +168,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
         purrr::map(purrr::list_rbind) |>
         purrr::list_rbind()
 
+      cat("\n") #Ensure that the below message appear on a new line
       cli::cli_alert_success("Logs created for this config, {config_file}\n")
     }
   }
@@ -202,11 +203,14 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 #' Read and create summary data frame
 #'
 #' @param file configuration to define steps, have to be a yaml
+#' @param steps An optional argument that can be used if only certain steps
+#'   within a config files is to be executed.
 #' @inheritParams one_step_logging
 #'
 #' @importFrom purrr map
 
 logging_from_yaml <- function(file,
+                              steps,
                               summary_dir,
                               root_dir,
                               cli_level = cli::cli_h2) {
@@ -216,13 +220,24 @@ logging_from_yaml <- function(file,
   ## create logs
   config_whirl <- yaml::yaml.load_file(file)
 
-  steps <- config_whirl$steps
+  steps_list <- config_whirl$steps
 
-  ## Get the step names and output them as messages
-  step_names <- unlist(steps)[grepl("name", names(unlist(steps)))]
+  ## Get the step names
+  step_names <- unlist(steps_list)[grepl("name", names(unlist(steps_list)))]
 
+  # Prune the list when steps have been selected
+  if (!is.null(steps)) {
+    id <- grep(steps, step_names)
+    #Update the vector of names
+    step_names <- step_names[id]
+    #Update the list
+    steps_list <- steps_list[id]
+
+  }
+
+  #Output the steps that will be executed
   message_ <- c(
-    "The following steps have been identified in the config file",
+    "The following steps in the config file will be executed",
     step_names |> rlang::set_names("*")
   )
 
@@ -233,7 +248,7 @@ logging_from_yaml <- function(file,
   )
 
   summary <- purrr::map(
-    steps, one_step_logging,
+    steps_list, one_step_logging,
     summary_dir, root_dir, cli_level
   )
 
@@ -245,6 +260,8 @@ logging_from_yaml <- function(file,
 #' Create logs for files from a yaml configuration
 #'
 #' @param file yaml configuration file
+#' @param steps An optional argument that can be used if only certain steps
+#'   within a config files is to be executed.
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
 #' @param root_dir By default, the root dir of the yaml file.
@@ -264,6 +281,7 @@ logging_from_yaml <- function(file,
 #' )
 #' run_by_config(file_, tempdir())
 run_by_config <- function(file,
+                          steps,
                           summary_dir = ".",
                           root_dir = dirname(file)) {
   # Get the summary df
@@ -276,7 +294,7 @@ run_by_config <- function(file,
   cli::cli_h1("Start process for logs")
   # On error clean up as well
   summary_df <- try(
-    logging_from_yaml(file, summary_dir, root_dir = root_dir),
+    logging_from_yaml(file, steps = steps, summary_dir, root_dir = root_dir),
     silent = TRUE
   )
 
