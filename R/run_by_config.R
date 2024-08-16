@@ -173,7 +173,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
     }
   }
 
-  ## continue with files and folders whitout whirl yaml config
+  ## continue with files and folders without whirl yaml config
   to_compute <- c(files, without_whirl)
   scripts_ <- NULL
 
