@@ -189,7 +189,7 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
-  paste("{spin}", cli::format_message("{.file {private$current_script}}: Running script...")) |>
+  paste("{spin}", cli::format_message("{.file {basename(private$current_script)}}: Running script...")) |>
     self$spin()
 
   quarto_execute_dir <- switch(tools::file_ext(script),
@@ -215,7 +215,7 @@ wrs_log_script <- function(script, self, private, super) {
 }
 
 wrs_create_log <- function(self, private, super) {
-  paste("{spin}", cli::format_message("{.file {private$current_script}}: Creating log...")) |>
+  paste("{spin}", cli::format_message("{.file {basename(private$current_script)}}: Creating log...")) |>
     self$spin()
 
   self$call(
@@ -251,9 +251,9 @@ wrs_log_finish <- function(self, private, super) {
       get_status()
 
     switch(status[["status"]],
-      "error" = c("x" = "{.file {private$current_script}}: Completed with errors"),
-      "warning" = c("!" = "{.file {private$current_script}}: Completed with warnings"),
-      c("v" = "{.file {private$current_script}}: Completed succesfully")
+      "error" = c("x" = "{.file {basename(private$current_script)}}: Completed with errors"),
+      "warning" = c("!" = "{.file {basename(private$current_script)}}: Completed with warnings"),
+      c("v" = "{.file {basename(private$current_script)}}: Completed succesfully")
     ) |>
       cli::format_message() |>
       self$spin()
