@@ -210,9 +210,9 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 #' @importFrom purrr map
 
 logging_from_yaml <- function(file,
-                              steps,
                               summary_dir,
                               root_dir,
+                              steps = NULL,
                               cli_level = cli::cli_h2) {
   ## check params
   checkmate::assert_file(file, extension = c("yaml", "yml"))
@@ -227,7 +227,7 @@ logging_from_yaml <- function(file,
 
   # Prune the list when steps have been selected
   if (!is.null(steps)) {
-    id <- grep(steps, step_names)
+    id <- which(step_names %in% steps)
     #Update the vector of names
     step_names <- step_names[id]
     #Update the list
