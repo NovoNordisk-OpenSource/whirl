@@ -80,10 +80,22 @@ run_paths <- function(paths = ".",
 
     cli::cli_inform("Executing scripts in parallel using {num_cores} cores\n")
 
-    cl <- parallel::makeCluster(num_cores)
+    # cl <- parallel::makeCluster(num_cores)
+    # results <- parallel::parLapply(cl, script_files, execute_single_script, ...)
+    # parallel::stopCluster(cl)
 
-    results <- parallel::parLapply(cl, script_files, execute_single_script, ...)
-    parallel::stopCluster(cl)
+    #Future
+    oplan <- future::plan(future::multisession,
+                          workers = num_cores,
+                          earlySignal = FALSE)
+
+    on.exit(future::plan(oplan), add = TRUE)
+    cat(" - done\n\n")
+
+    results <- future.apply::future_lapply(X = script_files,
+                                FUN = execute_single_script,
+                                future.seed = 1)
+
   } else {
     # Sequential execution
     results <- lapply(script_files, execute_single_script,  ...)
@@ -158,8 +170,7 @@ execute_single_script <- function(script, ...) {
 
   result <- tryCatch(
     {
-      #cli::cli_alert_info(script)
-      cat("\n")
+      cli::cli_alert_info(script)
 
       if (!whirl_file_exits()) {
         output <- run_script(script, ...)
