@@ -108,18 +108,6 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1) {
 
   all_contents <- c(dirs_, files_)
 
-  ## Message for users
-  message_ <- c(
-    "i" = "Processing...",
-    all_contents |> rlang::set_names("*")
-  )
-
-  zephyr::msg(
-    message_,
-    msg_fun = cli::cli_inform,
-    levels_to_write = "verbose"
-  )
-
   return(all_contents)
 }
 
@@ -153,8 +141,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 
     ## If _whirl.yaml call the function again, create a loop
     if (length(with_whirl) > 0) {
-      cli::cat_line("")
-      cli::cli_alert_info("'Additional config file(s) detected', read and execute the individual steps.\n")
+      cli::cli_alert_info("Additional config file(s) detected, read and execute the individual steps.\n")
 
       ### What happens if it is not named "_whirl.yaml"
       config_file <- file.path(with_whirl, "_whirl.yaml")
@@ -288,10 +275,7 @@ run_by_config <- function(file,
   ## Setup error as FALSE before
   unlink_whirl_error_file()
 
-  # Message when ending
-  on.exit(cli::cli_h1("End of log process"))
 
-  cli::cli_h1("Start process for logs")
   # On error clean up as well
   summary_df <- try(
     logging_from_yaml(file, steps = steps, summary_dir, root_dir = root_dir),

@@ -30,8 +30,6 @@ run_paths <- function(paths = ".",
                       summary_dir = getwd(),
                       ...) {
 
-
-
   if (!is.character(paths)) {
     stop("Missing valid path input. Path must be a character.")
   }
@@ -75,10 +73,10 @@ run_paths <- function(paths = ".",
     # Parallel execution with progress display
     if (is.null(num_cores)) {
       # Use one less than the total number of cores
-      num_cores <- min(detectCores() - 1, 8)
+      num_cores <- min(c(detectCores() - 1, 8, length(script_files)))
     }
 
-    cli::cli_inform("Executing scripts in parallel using {num_cores} cores\n")
+    cli::cli_inform("Executing {length(script_files)} scripts in parallel using {num_cores} cores\n")
 
     # cl <- parallel::makeCluster(num_cores)
     # results <- parallel::parLapply(cl, script_files, execute_single_script, ...)
@@ -90,7 +88,6 @@ run_paths <- function(paths = ".",
                           earlySignal = FALSE)
 
     on.exit(future::plan(oplan), add = TRUE)
-    cat(" - done\n\n")
 
     results <- future.apply::future_lapply(X = script_files,
                                 FUN = execute_single_script,
@@ -98,7 +95,7 @@ run_paths <- function(paths = ".",
 
   } else {
     # Sequential execution
-    results <- lapply(script_files, execute_single_script,  ...)
+    results <- lapply(script_files, execute_single_script,  verbose = FALSE, ...)
   }
 
   # After obtaining the results, create a summary data frame
@@ -148,7 +145,13 @@ run_paths <- function(paths = ".",
 
 # Function to execute a single script
 #' @noRd
-execute_single_script <- function(script, ...) {
+execute_single_script <- function(script, verbose = TRUE, ...) {
+
+  # Force cli to use ANSI colors
+  old_ops <- options(cli.num_colors = 256)
+  on.exit(options(old_ops))
+
+
   not_null <- function(x) {
     if (length(x) == 0 | is.null(x)) {
       return("")
@@ -170,7 +173,7 @@ execute_single_script <- function(script, ...) {
 
   result <- tryCatch(
     {
-      cli::cli_alert_info(script)
+      #cli::cli_alert_info(script)
 
       if (!whirl_file_exits()) {
         output <- run_script(script, ...)
@@ -216,6 +219,18 @@ execute_single_script <- function(script, ...) {
     }
   )
 
+  if (verbose) {
+  # Get the width of the screen
+    width <- getOption("width")
+
+    file_mes <- align_left(paste0(result$Directory, "/", result$Filename),
+                           max(nchar(result$Filename) + 10, width - 20),
+                           sep = ".")
+
+    if (result$Status == "error") {cli::cli_alert_danger(paste0(cli::col_white(file_mes), cli::col_red("error")))
+    } else if (result$Status == "warning") {cli::cli_alert_warning(paste0(cli::col_white(file_mes), cli::col_br_yellow("warning")))
+    } else {cli::cli_alert_success(paste0(cli::col_white(file_mes), cli::col_green("done")))}
+  }
   return(result)
 }
 
