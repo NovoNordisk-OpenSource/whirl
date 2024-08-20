@@ -268,7 +268,7 @@ logging_from_yaml <- function(file,
 #' )
 #' run_by_config(file_, tempdir())
 run_by_config <- function(file,
-                          steps,
+                          steps = NULL,
                           summary_dir = ".",
                           root_dir = dirname(file)) {
   # Get the summary df
