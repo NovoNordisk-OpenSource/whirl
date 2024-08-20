@@ -17,10 +17,6 @@ align_left <- function(text, width = max(nchar(text)),
     text <- trimws(text)
   }
 
-  if(width < max(nchar(text))) {
-    stop("Error: width variable is shorter than longest text.")
-  }
-
   if(nchar(paste(sep, collapse = "")) != 1) {
     warning("Warning: You have supplied a separator value that is not a single character. This may give unexpected results.")
   }
