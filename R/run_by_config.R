@@ -115,6 +115,8 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1) {
 #' Logging one step from yaml
 #'
 #' @inheritParams define_paths
+#' @param summary \code{logical} If \code{TRUE} (default) then a summary.html is
+#'   generated. If \code{FALSE} then the summary generation will be skipped.
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
 #'
