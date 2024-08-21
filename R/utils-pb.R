@@ -60,20 +60,3 @@ pb_script <- R6::R6Class(
     id = NULL
   )
 )
-
-# f <- function(r = "success") {
-#   x <- pb_script$new("R/strace.R")
-#   x$update(status = "Running script")
-#   for (i in 1:10) {
-#     Sys.sleep(.2)
-#     x$update()
-#   }
-#   Sys.sleep(.2)
-#   x$done(status = r)
-#
-# }
-#
-# f()
-# f("warning")
-# f("error")
-# f("ahnsflas")
