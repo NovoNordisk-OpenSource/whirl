@@ -4,7 +4,7 @@
 \alias{run_by_config}
 \title{Create logs for files from a yaml configuration}
 \usage{
-run_by_config(file, steps, summary_dir = ".", root_dir = dirname(file))
+run_by_config(file, steps = NULL, summary_dir = ".", root_dir = dirname(file))
 }
 \arguments{
 \item{file}{yaml configuration file}
