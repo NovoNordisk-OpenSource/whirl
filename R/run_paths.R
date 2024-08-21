@@ -109,36 +109,8 @@ run_paths <- function(paths = ".",
     )) |>
     dplyr::arrange(factor(.data[["Status"]]))
 
-  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
 
-  summary_log_html <- withr::local_tempfile(fileext = ".html")
-
-  if (summary_dir == getwd()) {
-    summary_dir_f <- here::here()
-  } else {
-    summary_dir_f <- normalizePath(summary_dir, winslash = "/")
-  }
-
-  withr::with_dir(
-    tempdir(),
-    rmarkdown::render(
-      input = summary_qmd,
-      output_format = "html_document",
-      output_file = summary_log_html,
-      params = list(summary_df = summary_df, summary_dir = summary_dir_f),
-      quiet = TRUE
-    )
-  )
-
-  # Create requested outputs
-
-  file_copy <- tryCatch(
-    file.copy(
-      from = summary_log_html,
-      to = file.path(summary_dir, "summary.html"),
-      overwrite = TRUE
-    )
-  )
+  render_summary(input = summary_df, summary_dir = summary_dir)
 
   return(invisible(summary_df))
 }

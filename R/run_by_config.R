@@ -178,7 +178,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
     }
 
     scripts_ <- scripts_ |>
-      dplyr::mutate(.before = "Status", Name = step[["name"]])
+      dplyr::mutate(.before = "Status", Step = step[["name"]])
   }
 
   results <- rbind(list_of_result, scripts_)
@@ -295,30 +295,13 @@ run_by_config <- function(file,
     summary_dir_f <- normalizePath(summary_dir, winslash = "/")
   }
 
-  ######## Finalize it
-  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
-  summary_log_html <- withr::local_tempfile(fileext = ".html")
+  #Compile the list into a singel dataframe
+  summary_df <- summary_df |>
+    purrr::list_rbind()
 
-  rmarkdown::render(
-    input = summary_qmd,
-    output_format = "html_document",
-    output_file = summary_log_html,
-    params = list(
-      summary_df = summary_df |> purrr::list_rbind(),
-      summary_dir = summary_dir_f
-    ),
-    quiet = TRUE
-  )
+  render_summary(input = summary_df, summary_dir = summary_dir)
 
-
-
-  file_copy <- tryCatch(
-    file.copy(
-      from = summary_log_html,
-      to = file.path(summary_dir, "summary.html"),
-      overwrite = TRUE
-    )
-  )
+  return(invisible(summary_df))
 
   ## Clean up when it ends
   unlink_whirl_error_file()
