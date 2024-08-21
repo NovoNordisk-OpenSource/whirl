@@ -53,11 +53,18 @@ whirl_r_session <- R6::R6Class(
       wrs_check_status(self, private, super)
     },
 
-    #' @description Spin the spinner
-    #' @param template The template to display
+    #' @description Update the progress bar
+    #' @param ... parsed to [cli::cli_progress_update()]
     #' @return [invisible] self
-    spin = \(template = NULL) {
-      wrs_spin(template, self, private, super)
+    pb_update = \(...) {
+      wrs_pb_update(..., self = self, private = private, super = super)
+    },
+
+    #' @description Finalise the progress bar
+    #' @param status Status of the script. success, warning, or error
+    #' @return [invisible] self
+    pb_done = \(status) {
+      wrs_pb_done(status, self, private, super)
     },
 
     #' @description Log the script
@@ -96,7 +103,7 @@ whirl_r_session <- R6::R6Class(
     approved_pkgs_folder = NULL,
     approved_pkgs_url = NULL,
     check_renv = NULL,
-    spinner = NULL,
+    pb = NULL,
     current_script = NULL
   ),
   inherit = callr::r_session
@@ -117,10 +124,6 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
   private$approved_pkgs_url <- approved_pkgs_url
 
   super$run(func = setwd, args = list(dir = private$wd))
-
-  if (private$verbose) {
-    private$spinner <- cli::make_spinner(template = "{spin} Running ...")
-  }
 
   system.file("documents", package = "whirl") |>
     list.files(full.names = TRUE) |>
@@ -154,14 +157,19 @@ wrs_print <- function(self, private, super) {
   return(invisible(self))
 }
 
-wrs_spin <- function(template = NULL, self, private, super) {
-  if (private$verbose) private$spinner$spin(template)
+wrs_pb_update <- function(..., self, private, super) {
+  if (!is.null(private$verbose)) private$pb$update(...)
+  return(invisible(self))
+}
+
+wrs_pb_done <- function(status, self, private, super) {
+  if (!is.null(private$verbose)) private$pb$done(status)
   return(invisible(self))
 }
 
 wrs_poll <- function(timeout, self, private, super) {
   status <- super$poll_process(timeout)
-  if (status == "timeout") self$spin()
+  if (status == "timeout") self$pb_update()
   return(status)
 }
 
@@ -189,8 +197,11 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
-  paste("{spin}", cli::format_message("{.file {basename(private$current_script)}}: Running script...")) |>
-    self$spin()
+  if (private$verbose) {
+    private$pb <- pb_script$new(script = private$current_script)
+  }
+
+  self$pb_update(status = "Running script")
 
   quarto_execute_dir <- switch(tools::file_ext(script),
     "R" = getwd(),
@@ -215,8 +226,7 @@ wrs_log_script <- function(script, self, private, super) {
 }
 
 wrs_create_log <- function(self, private, super) {
-  paste("{spin}", cli::format_message("{.file {basename(private$current_script)}}: Creating log...")) |>
-    self$spin()
+  self$pb_update(status = "Creating log")
 
   self$call(
     func = \(...) quarto::quarto_render(...),
@@ -250,13 +260,7 @@ wrs_log_finish <- function(self, private, super) {
       file.path("doc.md") |>
       get_status()
 
-    switch(status[["status"]],
-      "error" = c("x" = "{.file {basename(private$current_script)}}: Completed with errors"),
-      "warning" = c("!" = "{.file {basename(private$current_script)}}: Completed with warnings"),
-      c("v" = "{.file {basename(private$current_script)}}: Completed succesfully")
-    ) |>
-      cli::format_message() |>
-      self$spin()
+    self$pb_done(status = status[["status"]])
   }
 
   return(invisible(self))
