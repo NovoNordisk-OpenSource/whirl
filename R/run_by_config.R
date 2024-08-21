@@ -118,7 +118,7 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1) {
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
 #'
-one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h1) {
+one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = cli::cli_h1) {
   # check params
   checkmate::assert_directory(summary_dir, access = "rw")
   ## Find paths for files or folders
@@ -150,13 +150,14 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
         logging_from_yaml,
         root_dir = dirname(config_file),
         summary_dir = summary_dir,
+        summary = summary,
         cli_level = cli::cli_h3
       ) |>
         purrr::map(purrr::list_rbind) |>
         purrr::list_rbind()
 
-      cat("\n") #Ensure that the below message appear on a new line
-      cli::cli_alert_success("Logs created for this config, {config_file}\n")
+      cat("\n") #Ensure that the next message appear on a new line
+
     }
   }
 
@@ -166,11 +167,12 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 
   if (length(to_compute) > 0) {
     if (exists("with_whirl") && length(with_whirl) > 0) {
-      cli::cli_inform("Continue current step")
+      cli::cli_inform("Continue with the following step: {.val {step$name}}")
     }
 
     scripts_ <- run_paths(to_compute,
       parallel = TRUE,
+      summary = summary,
       summary_dir = summary_dir)
 
     if (any(scripts_$Status == "error")) {
@@ -199,6 +201,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 logging_from_yaml <- function(file,
                               summary_dir,
                               root_dir,
+                              summary,
                               steps = NULL,
                               cli_level = cli::cli_h2) {
   ## check params
@@ -236,7 +239,7 @@ logging_from_yaml <- function(file,
 
   summary <- purrr::map(
     steps_list, one_step_logging,
-    summary_dir, root_dir, cli_level
+    summary_dir, summary, root_dir, cli_level
   )
 
   return(summary)
@@ -252,6 +255,8 @@ logging_from_yaml <- function(file,
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
 #' @param root_dir By default, the root dir of the yaml file.
+#' @param summary \code{logical} If \code{TRUE} (default) then a summary.html is
+#'   generated. If \code{FALSE} then the summary generation will be skipped.
 #'
 #' @return A list containing the execution results for each script. Each element
 #'   of the list is a character string indicating the success or failure of the
@@ -270,6 +275,7 @@ logging_from_yaml <- function(file,
 run_by_config <- function(file,
                           steps = NULL,
                           summary_dir = ".",
+                          summary = TRUE,
                           root_dir = dirname(file)) {
   # Get the summary df
   ## Setup error as FALSE before
@@ -278,7 +284,8 @@ run_by_config <- function(file,
 
   # On error clean up as well
   summary_df <- try(
-    logging_from_yaml(file, steps = steps, summary_dir, root_dir = root_dir),
+    logging_from_yaml(file, steps = steps, summary_dir,
+                      summary = summary, root_dir = root_dir),
     silent = TRUE
   )
 
@@ -299,11 +306,13 @@ run_by_config <- function(file,
   summary_df <- summary_df |>
     purrr::list_rbind()
 
+  #Render the summary.html
+  if (summary) {
   render_summary(input = summary_df, summary_dir = summary_dir)
+  }
+
 
   return(invisible(summary_df))
 
-  ## Clean up when it ends
-  unlink_whirl_error_file()
 
 }

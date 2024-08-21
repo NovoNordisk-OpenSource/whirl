@@ -8,6 +8,7 @@ logging_from_yaml(
   file,
   summary_dir,
   root_dir,
+  summary,
   steps = NULL,
   cli_level = cli::cli_h2
 )

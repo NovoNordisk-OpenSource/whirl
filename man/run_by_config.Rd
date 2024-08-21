@@ -4,7 +4,13 @@
 \alias{run_by_config}
 \title{Create logs for files from a yaml configuration}
 \usage{
-run_by_config(file, steps = NULL, summary_dir = ".", root_dir = dirname(file))
+run_by_config(
+  file,
+  steps = NULL,
+  summary_dir = ".",
+  summary = TRUE,
+  root_dir = dirname(file)
+)
 }
 \arguments{
 \item{file}{yaml configuration file}
@@ -14,6 +20,9 @@ within a config files is to be executed.}
 
 \item{summary_dir}{A character string of file path specifying the directory
 where the summary log will be stored.}
+
+\item{summary}{\code{logical} If \code{TRUE} (default) then a summary.html is
+generated. If \code{FALSE} then the summary generation will be skipped.}
 
 \item{root_dir}{By default, the root dir of the yaml file.}
 }

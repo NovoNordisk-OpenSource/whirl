@@ -4,7 +4,7 @@
 \alias{one_step_logging}
 \title{Logging one step from yaml}
 \usage{
-one_step_logging(step, summary_dir, root_dir, cli_level = cli::cli_h1)
+one_step_logging(step, summary_dir, summary, root_dir, cli_level = cli::cli_h1)
 }
 \arguments{
 \item{step}{a step from yaml (as a list in R)}

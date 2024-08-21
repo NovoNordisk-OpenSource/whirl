@@ -11,9 +11,10 @@
 #' @param num_cores Integer specifying the number of cores to use for parallel
 #'   execution. If NULL (default), it will use one less than the total number of
 #'   available cores.
-#' @param ... Other arguments passed on to the [run_script] function,
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
+#' @param summary \code{logical} If \code{TRUE} (default) then a summary.html is
+#'   generated. If \code{FALSE} then the summary generation will be skipped.
 #'
 #' @return A list containing the execution results for each script. Each element
 #'   of the list is a character string indicating the success or failure of the
@@ -28,6 +29,7 @@ run_paths <- function(paths = ".",
                       parallel = FALSE,
                       num_cores = NULL,
                       summary_dir = getwd(),
+                      summary = TRUE,
                       ...) {
 
   if (!is.character(paths)) {
@@ -109,8 +111,10 @@ run_paths <- function(paths = ".",
     )) |>
     dplyr::arrange(factor(.data[["Status"]]))
 
-
-  render_summary(input = summary_df, summary_dir = summary_dir)
+  #Render the summary.html
+  if (summary) {
+    render_summary(input = summary_df, summary_dir = summary_dir)
+  }
 
   return(invisible(summary_df))
 }
@@ -201,6 +205,7 @@ execute_single_script <- function(script, verbose = TRUE, ...) {
 
     if (result$Status == "error") {cli::cli_alert_danger(paste0(cli::col_white(file_mes), cli::col_red("error")))
     } else if (result$Status == "warning") {cli::cli_alert_warning(paste0(cli::col_white(file_mes), cli::col_br_yellow("warning")))
+    } else if (result$Status == "skip") {cli::cli_alert_warning(paste0(cli::col_white(file_mes), cli::col_br_blue("skip")))
     } else {cli::cli_alert_success(paste0(cli::col_white(file_mes), cli::col_green("done")))}
   }
   return(result)
