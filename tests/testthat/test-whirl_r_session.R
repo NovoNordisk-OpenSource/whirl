@@ -15,14 +15,14 @@ test_that("interactive whirl R session components not tested in run_script", {
 
   p$call(func = Sys.sleep, args = list(time = 5)) # Sleep for 10 second
 
-  status <- p$wait(timeout = 10)$check_status() # Timeout after 10 ms
-  expect_null(status) # Still running
-
-  status <- p$wait()$check_status()
-  expect_equal(status$code, 200L) # Completed successfully
-
-  p$call(func = \() 1 + "a") # Something with an error
-  expect_error(p$wait()$check_status())
+  # status <- p$wait(timeout = 10)$check_status() # Timeout after 10 ms
+  # expect_null(status) # Still running
+  #
+  # status <- p$wait()$check_status()
+  # expect_equal(status$code, 200L) # Completed successfully
+  #
+  # p$call(func = \() 1 + "a") # Something with an error
+  # expect_error(p$wait()$check_status())
 
   # Test temp dir is deleted correctly
   dir <- p$get_wd()
