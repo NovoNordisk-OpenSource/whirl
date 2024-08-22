@@ -15,6 +15,7 @@
 #'   where the summary log will be stored.
 #' @param summary \code{logical} If \code{TRUE} (default) then a summary.html is
 #'   generated. If \code{FALSE} then the summary generation will be skipped.
+#' @param ... Additional arguments
 #'
 #' @return A list containing the execution results for each script. Each element
 #'   of the list is a character string indicating the success or failure of the

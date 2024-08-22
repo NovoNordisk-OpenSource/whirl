@@ -29,6 +29,8 @@ where the summary log will be stored.}
 
 \item{summary}{\code{logical} If \code{TRUE} (default) then a summary.html is
 generated. If \code{FALSE} then the summary generation will be skipped.}
+
+\item{...}{Additional arguments}
 }
 \value{
 A list containing the execution results for each script. Each element
