@@ -3,9 +3,8 @@
 #' @param input The input data.frame that should be rendered into a summary.html file
 #' @param summary_dir The output directory
 #'
-#' @return
+#' @return Takes a dataframe as input and returns a log in html format
 #'
-#' @examples
 render_summary <- function(input, summary_dir) {
 
 

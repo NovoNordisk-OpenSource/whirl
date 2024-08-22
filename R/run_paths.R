@@ -80,10 +80,6 @@ run_paths <- function(paths = ".",
 
     cli::cli_inform("Executing {length(script_files)} scripts in parallel using {num_cores} cores\n")
 
-    # cl <- parallel::makeCluster(num_cores)
-    # results <- parallel::parLapply(cl, script_files, execute_single_script, ...)
-    # parallel::stopCluster(cl)
-
     #Future
     oplan <- future::plan(future::multisession,
                           workers = num_cores,

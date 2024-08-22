@@ -199,7 +199,6 @@ one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = c
 #' @inheritParams one_step_logging
 #'
 #' @importFrom purrr map
-
 logging_from_yaml <- function(file,
                               summary_dir,
                               root_dir,

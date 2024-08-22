@@ -12,6 +12,9 @@ one_step_logging(step, summary_dir, summary, root_dir, cli_level = cli::cli_h1)
 \item{summary_dir}{A character string of file path specifying the directory
 where the summary log will be stored.}
 
+\item{summary}{\code{logical} If \code{TRUE} (default) then a summary.html is
+generated. If \code{FALSE} then the summary generation will be skipped.}
+
 \item{root_dir}{the root dir of the yaml file}
 
 \item{cli_level}{Have to be a function from cli}

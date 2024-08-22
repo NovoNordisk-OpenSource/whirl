@@ -11,6 +11,9 @@ render_summary(input, summary_dir)
 
 \item{summary_dir}{The output directory}
 }
+\value{
+Takes a dataframe as input and returns a log in html format
+}
 \description{
 Render dataframe into a summary.html file
 }

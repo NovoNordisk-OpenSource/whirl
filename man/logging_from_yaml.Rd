@@ -21,6 +21,9 @@ where the summary log will be stored.}
 
 \item{root_dir}{the root dir of the yaml file}
 
+\item{summary}{\code{logical} If \code{TRUE} (default) then a summary.html is
+generated. If \code{FALSE} then the summary generation will be skipped.}
+
 \item{steps}{An optional argument that can be used if only certain steps
 within a config files is to be executed.}
 

@@ -5,6 +5,7 @@ Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
     person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
     person("Cervan", "Girard", , "cgid@novonordisk.com", role = "aut"),
+    person("Kristian", "Troejelsgaard", , "ktqn@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
 Description: Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
@@ -24,7 +25,6 @@ Imports:
     kableExtra,
     knitr,
     options,
-    parallel,
     purrr,
     quarto,
     R6,
@@ -44,15 +44,14 @@ Imports:
     withr,
     yaml,
     zephyr (>= 0.0.0.9000),
-    zoo
-    future
+    zoo,
+    future,
     future.apply
 Suggests: 
-    future,
     testthat (>= 3.0.0)
 Remotes: 
     NN-OpenSource/zephyr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.2.3
