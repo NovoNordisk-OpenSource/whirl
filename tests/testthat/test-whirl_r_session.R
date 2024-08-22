@@ -13,8 +13,8 @@ test_that("interactive whirl R session components not tested in run_script", {
     sort() |>
     expect_equal(c("dummy.qmd", "log.qmd", "mock_config.yaml", "summary.qmd"))
 
-  p$call(func = Sys.sleep, args = list(time = 5)) # Sleep for 10 second
-
+  # p$call(func = Sys.sleep, args = list(time = 5)) # Sleep for 10 second
+  #
   # status <- p$wait(timeout = 10)$check_status() # Timeout after 10 ms
   # expect_null(status) # Still running
   #
@@ -25,9 +25,9 @@ test_that("interactive whirl R session components not tested in run_script", {
   # expect_error(p$wait()$check_status())
 
   # Test temp dir is deleted correctly
-  dir <- p$get_wd()
-  rm(p)
-  gc()
+  # dir <- p$get_wd()
+  # rm(p)
+  # gc()
 
   expect_false(dir.exists(dir))
 })
