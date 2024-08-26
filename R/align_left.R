@@ -23,7 +23,7 @@ align_left <- function(text, width = max(nchar(text)),
 
   textWidth <- nchar(text, keepNA = FALSE)
   nspaces   <- floor((width - textWidth))
-  if(nspaces < 0 ) {nspaces <- 8}
+  if(nspaces <= 0 ) {nspaces <- 8}
   spaces    <- sapply(nspaces, function(n) paste(rep(sep, n), collapse = ""))
   r.text    <- paste(text, spaces, sep = "")
 
