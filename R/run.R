@@ -44,6 +44,13 @@ run <- function(path,
   config_file <- path[grepl("yaml|yml|json", tools::file_ext(path))]
   non_config_files <- path[!grepl("yaml|yml|json", tools::file_ext(path))]
 
+  #Check if folder contains config file
+  if (dir.exists(path) && detect_whirl_file(path) ) {
+    list_files <- list.files(path)
+    config <- list_files[grepl("_whirl.yaml", list_files)]
+    config_file <- file.path(path, config)
+  }
+
   # When only pointing to a whirl config file ----------------------------------
   if (length(config_file) > 0 & rlang::is_empty(non_config_files)) {
     run_by_config(file = config_file,
