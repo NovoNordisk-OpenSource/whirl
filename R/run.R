@@ -90,8 +90,3 @@ run <- function(path,
 
 
 
-#TODO
-# Outputting logs: Users should be able to specify a single or multiple
-# folders where they want to store the logs. This argument can either be
-# of length one (everything is stored in the same location) or the same length
-# as number of paths that the user tries to execute.
