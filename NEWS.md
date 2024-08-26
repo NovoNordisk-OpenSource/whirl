@@ -1,4 +1,4 @@
-# whirl 0.0.2 (2024-08-26)
+# whirl 0.0.3 (2024-08-26)
 * Initial commit of `run()` as a wrapper of `run_script()`, `run_paths()` and `run_by_config()`.
 * A `steps` argument have been added to `run()` allowing the user to select certain steps in a config file that should be executed. 
 * Substituting spinner with progress bar when executing single scripts.
