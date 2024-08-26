@@ -7,8 +7,8 @@
 session_info <- function(approved_folder_pkgs, approved_url_pkgs) {
   info <- sessioninfo::session_info()
 
-  if (!is.null(approved_folder_pkgs)|
-      !is.null(approved_url_pkgs)) {
+  if (!is.null(approved_folder_pkgs) |
+    !is.null(approved_url_pkgs)) {
     info$packages <- check_approved(
       approved_pkg_folder = approved_folder_pkgs,
       approved_pkg_url = approved_url_pkgs,
@@ -63,7 +63,7 @@ knit_print.whirl_session_info <- function(x, ...) {
 #' @noRd
 
 knit_print.whirl_platform_info <- function(x, ...) {
-data.frame(
+  data.frame(
     Setting = names(x),
     Value = x |>
       lapply(paste0, collapse = ", ") |>
@@ -99,9 +99,10 @@ knit_print.whirl_packages_info <- function(x, ...) {
 #' @noRd
 #'
 knit_print.whirl_approved_pkgs <- function(x, ...) {
-  hold <- x |> data.frame(
-    check.names = FALSE
-  ) |>
+  hold <- x |>
+    data.frame(
+      check.names = FALSE
+    ) |>
     dplyr::rename(
       Package = .data[["package"]],
       Version = .data[["loadedversion"]],
@@ -202,3 +203,5 @@ knit_print.whirl_options_info <- function(x, ...) {
     ) |>
     knitr::knit_print()
 }
+
+

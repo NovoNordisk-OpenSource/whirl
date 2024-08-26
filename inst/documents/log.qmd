@@ -14,6 +14,7 @@ params:
   check_approved_folder_pkgs: NULL
   check_approved_url_pkgs: NULL
   renv: TRUE
+  with_library_paths: library_paths
 format:
   html:
     embed-resources: true
@@ -26,28 +27,31 @@ format:
 # Summary
 
 ```{r, echo=FALSE, eval=TRUE}
-status <- params$script_md |> 
+
+.libPaths(c(character(), params$with_library_paths))
+
+status <- params$script_md |>
   whirl:::get_status()
 
 status_txt <- status[c("error", "warning")]
-status_txt <- status_txt[lapply(status_txt, length) > 0] |> 
-  lapply(\(x) paste("*", x, collapse = "\n")) |> 
+status_txt <- status_txt[lapply(status_txt, length) > 0] |>
+  lapply(\(x) paste("*", x, collapse = "\n")) |>
   unlist()
 
 whirl:::quarto_callout(
-  text = status_txt, 
-  title = status$status, 
+  text = status_txt,
+  title = status$status,
   type = switch(status$status,
-                "error" = "important",
-                "warning" = "warning",
-                "success" = "tip"
-                ), 
+    "error" = "important",
+    "warning" = "warning",
+    "success" = "tip"
+  ),
   collapse = status$status != "success"
 )
 ```
 
 ```{r, echo=FALSE}
-if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv){
+if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv) {
   whirl:::renv_status()
 }
 ```
@@ -55,15 +59,14 @@ if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) 
 ```{r, echo=FALSE}
 use_strace <- (is.character(params$strace) && params$strace == "yes" | is.logical(params$strace) && params$strace)
 
-if (use_strace){
+if (use_strace) {
   strace_info <- whirl:::read_strace_info(
-    path = params$strace_path, 
-    p_wd = params$p_wd, 
+    path = params$strace_path,
+    p_wd = params$p_wd,
     strace_discards = params$strace_discards,
     strace_keep = params$strace_keep
   )
 }
-
 ```
 
 ```{r, echo=FALSE, results='asis', eval=use_strace}
@@ -98,21 +101,20 @@ knitr::opts_chunk$set(
 )
 
 info <- whirl:::session_info(params$check_approved_folder_pkgs, params$check_approved_url_pkgs)
-
 ```
 
 ```{r, results="asis"}
-cat('\n## Platform \n')
+cat("\n## Platform \n")
 info$platform
 cat("\n")
 ```
 
 
 ```{r, results="asis", fig.height = 0.5}
-cat('\n## Packages\n')
+cat("\n## Packages\n")
 
 if (!is.null(params$check_approved_folder_pkgs) |
-    !is.null(params$check_approved_url_pkgs)) {
+  !is.null(params$check_approved_url_pkgs)) {
   whirl:::create_approval_plot(info$packages |> data.frame())
 }
 
@@ -124,13 +126,13 @@ info$packages
 ```
 
 ```{r, results="asis"}
-cat('\n## Environment variables \n')
+cat("\n## Environment variables \n")
 info$environment
 cat("\n")
 ```
 
 ```{r, results="asis"}
-cat('\n## Option settings\n')
+cat("\n## Option settings\n")
 info$options
 cat("\n")
 ```

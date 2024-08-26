@@ -4,7 +4,7 @@
 \name{whirl-package}
 \alias{whirl}
 \alias{whirl-package}
-\title{whirl: Loggin package}
+\title{whirl: Logging package}
 \description{
 Defines common standards, workflows, and actions for new R packages.
 }
