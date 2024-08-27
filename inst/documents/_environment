@@ -1,0 +1,1 @@
+WHIRL_LOG_MSG="{file.path(private$wd,'log_msg.json')}"

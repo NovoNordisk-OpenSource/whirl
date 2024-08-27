@@ -118,6 +118,7 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
   private$approved_pkgs_url <- approved_pkgs_url
 
   super$run(func = setwd, args = list(dir = private$wd))
+  super$run(func = options, args = list(whirl.log_msgs = data.frame(time = Sys.time()[0], op = character(), msg = character())))
 
   if (private$verbose) {
     private$spinner <- cli::make_spinner(template = "{spin} Running ...")
@@ -126,6 +127,12 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
   system.file("documents", package = "whirl") |>
     list.files(full.names = TRUE) |>
     file.copy(to = private$wd)
+
+  environment_file <- file.path(private$wd, "_environment")
+  environment_file |>
+    readLines() |>
+    glue::glue() |>
+    writeLines(environment_file)
 
   if (track_files) {
     start_strace(pid = super$get_pid(), file = file.path(private$wd, "strace.log"))
