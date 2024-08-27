@@ -44,18 +44,59 @@ run <- function(path,
   config_file <- path[grepl("yaml|yml|json", tools::file_ext(path))]
   non_config_files <- path[!grepl("yaml|yml|json", tools::file_ext(path))]
 
+
+  #Any directories supplied in the path argument -------------------------------
+  dirs_exists <- any(unlist(lapply(path, dir.exists)))
+
   #Check if folder contains config file
-  if (dir.exists(path) && detect_whirl_file(path) ) {
-    list_files <- list.files(path)
-    config <- list_files[grepl("_whirl.yaml", list_files)]
-    config_file <- file.path(path, config)
+  if (dirs_exists) {
+
+    dirs <- path[unlist(lapply(path, dir.exists))]
+
+    #If a config file exists in the directories then only run that one and skip
+    #the individual scripts in the folder
+    config_in_dirs <- dirs[unlist(lapply(dirs, detect_whirl_file))]
+
+    if (length(config_in_dirs) > 0) {
+      temp <- unlist(lapply(dirs, detect_whirl_file))
+      config_in_dirs <- names(temp[temp == TRUE])
+
+      if (length(config_file) > 0) {
+        config_file <- c(config_file, config_in_dirs)
+      } else {
+        config_file <- config_in_dirs
+      }
+
+      #Remove all folder(s) containing config files from the non_config_files
+      #object
+      to_remove <- dirname(config_in_dirs)
+      got <- normalizePath(non_config_files)
+
+      non_config_files <- setdiff(got, to_remove)
+
+    }
   }
+
 
   # When only pointing to a whirl config file ----------------------------------
   if (length(config_file) > 0 & rlang::is_empty(non_config_files)) {
-    run_by_config(file = config_file,
-                  steps = steps,
-                  summary_dir = summary_dir)
+
+    list_from_config <- purrr::map(config_file, run_by_config,
+              steps = steps,
+              summary_dir = summary_dir,
+              summary = FALSE)
+
+    if (length(list_from_config) > 1) {
+      from_config <- data.table::rbindlist(list_from_config)
+    } else {
+      from_config <- list_from_config
+    }
+
+    render_summary(from_config, summary_dir = summary_dir)
+
+  # from_config <- run_by_config(file = config_file,
+  #               steps = steps,
+  #               summary_dir = summary_dir)
   }
 
   # When path do not point to any config file ----------------------------------
@@ -69,10 +110,17 @@ run <- function(path,
 
   # When pointing to a whirl config file plus additional files -----------------
   if (length(config_file) > 0 & length(non_config_files) > 0) {
-    from_config <- run_by_config(file = config_file,
-      steps = steps,
-      summary_dir = summary_dir,
-      summary = FALSE)
+
+    list_from_config <- purrr::map(config_file, run_by_config,
+                                   steps = steps,
+                                   summary_dir = summary_dir,
+                                   summary = FALSE)
+
+    if (length(list_from_config) > 1) {
+      from_config <- data.table::rbindlist(list_from_config)
+    } else {
+      from_config <- list_from_config
+    }
 
     cat("\n") #Ensure that the next message appear on a new line
 
