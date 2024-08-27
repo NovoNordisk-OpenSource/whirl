@@ -87,7 +87,7 @@ run <- function(path,
               summary = FALSE)
 
     if (length(list_from_config) > 1) {
-      from_config <- data.table::rbindlist(list_from_config)
+      from_config <- dplyr::bind_rows(list_from_config)
     } else {
       from_config <- list_from_config
     }
@@ -117,7 +117,8 @@ run <- function(path,
                                    summary = FALSE)
 
     if (length(list_from_config) > 1) {
-      from_config <- data.table::rbindlist(list_from_config)
+      from_config <- dplyr::bind_rows(list_from_config)
+
     } else {
       from_config <- list_from_config
     }
