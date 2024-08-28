@@ -4,21 +4,21 @@
 \alias{log_msg}
 \alias{log_read}
 \alias{log_write}
-\alias{log_custom}
+\alias{log_delete}
 \title{Helper function to log custom messages}
 \usage{
-log_msg(msg, op = c("custom", "read", "write"))
+log_msg(msg, type = c("read", "write", "delete"))
 
 log_read(msg)
 
 log_write(msg)
 
-log_custom(msg)
+log_delete(msg)
 }
 \arguments{
 \item{msg}{\code{\link[=character]{character()}} Message to display in the log}
 
-\item{op}{\code{\link[=character]{character()}} Operation that was performed}
+\item{type}{\code{\link[=character]{character()}} Operation that was performed}
 }
 \description{
 Useful for e.g. read and write operations on databases etc.

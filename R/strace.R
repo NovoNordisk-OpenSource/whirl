@@ -27,7 +27,7 @@ read_strace_info <- function(path, p_wd, strace_discards = character(), strace_k
     read_strace(p_wd = p_wd) |>
     refine_strace(strace_discards = strace_discards, strace_keep = strace_keep)
 
-  class(strace) <- c("whirl_strace_info", class(strace))
+  class(strace) <- c("whirl_log_info", class(strace))
 
   # Split in a tibble for each type of output
 
@@ -44,22 +44,13 @@ read_strace_info <- function(path, p_wd, strace_discards = character(), strace_k
     unlist() |>
     which()
   dummy <- tibble::tibble(file = "No files")
-  class(dummy) <- c("whirl_strace_info", class(dummy))
+  class(dummy) <- c("whirl_log_info", class(dummy))
   out[i] <- list(dummy)
 
   return(out)
 }
 
-
-#' @noRd
-
-knit_print.whirl_strace_info <- function(x, ...) {
-  x |>
-    knitr::kable() |>
-    knitr::knit_print()
-}
-
-#' Read STRACE file
+#' Read strace file
 #'
 #' @param path [character] path to the strace log
 #' @param p_wd [character] path to the working directory used for the process tracked in strace

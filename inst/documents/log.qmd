@@ -69,6 +69,14 @@ if (use_strace) {
 }
 ```
 
+```{r, echo=TRUE, eval=FALSE}
+log_info <- read_log_info()
+log_info$read
+log_infor$write
+log_info$delete
+```
+
+
 ```{r, echo=FALSE, results='asis', eval=use_strace}
 cat("## Input", "\n")
 ```

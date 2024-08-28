@@ -1,8 +1,6 @@
 
 #' This is a test script for user log messages
 
-whirl::log_msg("Hello there!")
-
 whirl::log_msg("adam.adsl", "read")
 whirl::log_msg("sdtm.vs", "read")
 
