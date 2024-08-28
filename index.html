@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,34 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>logging package under development.</p>
+<!-- badges: end -->
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>The whirl package provide functionalities for executing scripts in batch and simultaneously getting a log from the individual executions. A log from script execution is in many pharmaceutical companies a GxP requirement, and the whirl package honors this requirement by generating a log that, among other things, contains information about:</p>
+<ul>
+<li>Status (did the script run with any error or warnings)<br>
+</li>
+<li>The actual code itself<br>
+</li>
+<li>Date and time of execution<br>
+</li>
+<li>The environment the script was executed under (session info)<br>
+</li>
+<li>Information about packages versions that was utilized</li>
+<li>Environmental variables</li>
+</ul>
+<p>And all this is wrapped into a nicely formatted html document that is easy to navigate.</p>
+</div>
+<div class="section level2">
+<h2 id="how-to">How to<a class="anchor" aria-label="anchor" href="#how-to"></a>
+</h2>
+<p>The <code>path</code> argument in <code><a href="reference/run.html">run()</a></code> currently supports single scripts, multiple scripts, folders, and/or config files (more about that further down).</p>
+</div>
+<div class="section level2">
+<h2 id="config-files">Config files<a class="anchor" aria-label="anchor" href="#config-files"></a>
+</h2>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
@@ -74,6 +101,7 @@
 <li>Aksel Thomsen <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Lovemore Gakava <br><small class="roles"> Author </small>  </li>
 <li>Cervan Girard <br><small class="roles"> Author </small>  </li>
+<li>Kristian Troejelsgaard <br><small class="roles"> Author </small>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -90,7 +118,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard.</p>
+  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard, Kristian Troejelsgaard.</p>
 </div>
 
 <div class="pkgdown-footer-right">

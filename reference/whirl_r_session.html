@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +53,8 @@
 <li><p><a href="#method-whirl_r_session-poll"><code>whirl_r_session$poll()</code></a></p></li>
 <li><p><a href="#method-whirl_r_session-wait"><code>whirl_r_session$wait()</code></a></p></li>
 <li><p><a href="#method-whirl_r_session-check_status"><code>whirl_r_session$check_status()</code></a></p></li>
-<li><p><a href="#method-whirl_r_session-spin"><code>whirl_r_session$spin()</code></a></p></li>
+<li><p><a href="#method-whirl_r_session-pb_update"><code>whirl_r_session$pb_update()</code></a></p></li>
+<li><p><a href="#method-whirl_r_session-pb_done"><code>whirl_r_session$pb_done()</code></a></p></li>
 <li><p><a href="#method-whirl_r_session-log_script"><code>whirl_r_session$log_script()</code></a></p></li>
 <li><p><a href="#method-whirl_r_session-create_log"><code>whirl_r_session$create_log()</code></a></p></li>
 <li><p><a href="#method-whirl_r_session-log_finish"><code>whirl_r_session$log_finish()</code></a></p></li>
@@ -240,17 +241,17 @@
 <p><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a> status</p>
 </div>
 
-</div><p></p><hr><a id="method-whirl_r_session-spin"></a><div class="section">
-<h3 id="method-spin-">Method <code>spin()</code><a class="anchor" aria-label="anchor" href="#method-spin-"></a></h3>
-<p>Spin the spinner</p><div class="section">
+</div><p></p><hr><a id="method-whirl_r_session-pb_update"></a><div class="section">
+<h3 id="method-pb-update-">Method <code>pb_update()</code><a class="anchor" aria-label="anchor" href="#method-pb-update-"></a></h3>
+<p>Update the progress bar</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">spin</span><span class="op">(</span>template <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">pb_update</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>template</code></dt>
-<dd><p>The template to display</p></dd>
+<p></p><div class="arguments"><dl><dt><code>...</code></dt>
+<dd><p>parsed to <code><a href="https://cli.r-lib.org/reference/cli_progress_bar.html" class="external-link">cli::cli_progress_update()</a></code></p></dd>
 
 
 </dl><p></p></div>
@@ -260,17 +261,17 @@
 <p><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a> self</p>
 </div>
 
-</div><p></p><hr><a id="method-whirl_r_session-log_script"></a><div class="section">
-<h3 id="method-log-script-">Method <code>log_script()</code><a class="anchor" aria-label="anchor" href="#method-log-script-"></a></h3>
-<p>Log the script</p><div class="section">
+</div><p></p><hr><a id="method-whirl_r_session-pb_done"></a><div class="section">
+<h3 id="method-pb-done-">Method <code>pb_done()</code><a class="anchor" aria-label="anchor" href="#method-pb-done-"></a></h3>
+<p>Finalise the progress bar</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">log_script</span><span class="op">(</span><span class="va">script</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">pb_done</span><span class="op">(</span><span class="va">status</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>script</code></dt>
-<dd><p>The script to log</p></dd>
+<p></p><div class="arguments"><dl><dt><code>status</code></dt>
+<dd><p>Status of the script. success, warning, or error</p></dd>
 
 
 </dl><p></p></div>
@@ -280,23 +281,31 @@
 <p><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a> self</p>
 </div>
 
-</div><p></p><hr><a id="method-whirl_r_session-create_log"></a><div class="section">
-<h3 id="method-create-log-">Method <code>create_log()</code><a class="anchor" aria-label="anchor" href="#method-create-log-"></a></h3>
-<p>Create the html log</p><div class="section">
+</div><p></p><hr><a id="method-whirl_r_session-log_script"></a><div class="section">
+<h3 id="method-log-script-">Method <code>log_script()</code><a class="anchor" aria-label="anchor" href="#method-log-script-"></a></h3>
+<p>Log the script</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">create_log</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">log_script</span><span class="op">(</span><span class="va">script</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>script</code></dt>
+<dd><p>The script to log</p></dd>
+
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a> self</p>
 </div>
 
-</div><p></p><hr><a id="method-whirl_r_session-log_finish"></a><div class="section">
-<h3 id="method-log-finish-">Method <code>log_finish()</code><a class="anchor" aria-label="anchor" href="#method-log-finish-"></a></h3>
-<p>Finish the log</p><div class="section">
+</div><p></p><hr><a id="method-whirl_r_session-create_log"></a><div class="section">
+<h3 id="method-create-log-">Method <code>create_log()</code><a class="anchor" aria-label="anchor" href="#method-create-log-"></a></h3>
+<p>Create the html log</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">log_finish</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">create_log</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -304,15 +313,27 @@
 <p><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a> self</p>
 </div>
 
+</div><p></p><hr><a id="method-whirl_r_session-log_finish"></a><div class="section">
+<h3 id="method-log-finish-">Method <code>log_finish()</code><a class="anchor" aria-label="anchor" href="#method-log-finish-"></a></h3>
+<p>Finish the log</p><div class="section">
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">log_finish</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<p><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a> self</p>
+</div>
+
 </div><p></p><hr><a id="method-whirl_r_session-create_outputs"></a><div class="section">
 <h3 id="method-create-outputs-">Method <code>create_outputs()</code><a class="anchor" aria-label="anchor" href="#method-create-outputs-"></a></h3>
 <p>Create all log outputs</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">create_outputs</span><span class="op">(</span><span class="va">out_dir</span>, <span class="va">format</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>out_dir</code></dt>
 <dd><p><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> Output directory for the log</p></dd>
 
@@ -324,19 +345,19 @@
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a>,<a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> of logging information</p>
 </div>
 
 </div><p></p><hr><a id="method-whirl_r_session-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">whirl_r_session</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -353,7 +374,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard.</p>
+  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard, Kristian Troejelsgaard.</p>
 </div>
 
 <div class="pkgdown-footer-right">

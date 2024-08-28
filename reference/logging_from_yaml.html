@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,14 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">logging_from_yaml</span><span class="op">(</span><span class="va">file</span>, <span class="va">summary_dir</span>, <span class="va">root_dir</span>, cli_level <span class="op">=</span> <span class="fu">cli</span><span class="fu">::</span><span class="va"><a href="https://cli.r-lib.org/reference/cli_h1.html" class="external-link">cli_h2</a></span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">logging_from_yaml</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">summary_dir</span>,</span>
+<span>  <span class="va">root_dir</span>,</span>
+<span>  <span class="va">summary</span>,</span>
+<span>  steps <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cli_level <span class="op">=</span> <span class="fu">cli</span><span class="fu">::</span><span class="va"><a href="https://cli.r-lib.org/reference/cli_h1.html" class="external-link">cli_h2</a></span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -58,6 +65,16 @@ where the summary log will be stored.</p></dd>
 <dd><p>the root dir of the yaml file</p></dd>
 
 
+<dt id="arg-summary">summary<a class="anchor" aria-label="anchor" href="#arg-summary"></a></dt>
+<dd><p><code>logical</code> If <code>TRUE</code> (default) then a summary.html is
+generated. If <code>FALSE</code> then the summary generation will be skipped.</p></dd>
+
+
+<dt id="arg-steps">steps<a class="anchor" aria-label="anchor" href="#arg-steps"></a></dt>
+<dd><p>An optional argument that can be used if only certain steps
+within a config files is to be executed.</p></dd>
+
+
 <dt id="arg-cli-level">cli_level<a class="anchor" aria-label="anchor" href="#arg-cli-level"></a></dt>
 <dd><p>Have to be a function from cli</p></dd>
 
@@ -68,7 +85,7 @@ where the summary log will be stored.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard.</p>
+  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard, Kristian Troejelsgaard.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -11,7 +11,7 @@ supported files in a specified folder, with options for parallel execution."></h
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,7 @@ supported files in a specified folder, with options for parallel execution.</p>
 <span>  parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  num_cores <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  summary_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  summary <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -78,8 +79,13 @@ available cores.</p></dd>
 where the summary log will be stored.</p></dd>
 
 
+<dt id="arg-summary">summary<a class="anchor" aria-label="anchor" href="#arg-summary"></a></dt>
+<dd><p><code>logical</code> If <code>TRUE</code> (default) then a summary.html is
+generated. If <code>FALSE</code> then the summary generation will be skipped.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Other arguments passed on to the <a href="run_script.html">run_script</a> function,</p></dd>
+<dd><p>Additional arguments</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -94,7 +100,7 @@ script execution.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard.</p>
+  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard, Kristian Troejelsgaard.</p>
 </div>
 
 <div class="pkgdown-footer-right">
