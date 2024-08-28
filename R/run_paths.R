@@ -11,9 +11,11 @@
 #' @param num_cores Integer specifying the number of cores to use for parallel
 #'   execution. If NULL (default), it will use one less than the total number of
 #'   available cores.
-#' @param ... Other arguments passed on to the [run_script] function,
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
+#' @param summary \code{logical} If \code{TRUE} (default) then a summary.html is
+#'   generated. If \code{FALSE} then the summary generation will be skipped.
+#' @param ... Additional arguments
 #'
 #' @return A list containing the execution results for each script. Each element
 #'   of the list is a character string indicating the success or failure of the
@@ -25,10 +27,12 @@
 #'   clusterEvalQ
 #' @export
 run_paths <- function(paths = ".",
-                        parallel = FALSE,
-                        num_cores = NULL,
-                        summary_dir = getwd(),
-                        ...) {
+                      parallel = FALSE,
+                      num_cores = NULL,
+                      summary_dir = getwd(),
+                      summary = TRUE,
+                      ...) {
+
   if (!is.character(paths)) {
     stop("Missing valid path input. Path must be a character.")
   }
@@ -67,23 +71,30 @@ run_paths <- function(paths = ".",
 
   script_files <- unique(script_files)
 
-
-  if (parallel) {
+  # Only initiate parallel if there are more than one script to execute
+  if (parallel & length(script_files) > 1) {
     # Parallel execution with progress display
     if (is.null(num_cores)) {
       # Use one less than the total number of cores
-      num_cores <- min(detectCores() - 1, 8)
+      num_cores <- min(c(detectCores() - 1, 8, length(script_files)))
     }
 
-    cli::cli_inform("Executing scripts in parallel using {num_cores} cores\n")
+    cli::cli_inform("Executing {length(script_files)} scripts in parallel using {num_cores} cores\n")
 
-    cl <- parallel::makeCluster(num_cores)
+    #Future
+    oplan <- future::plan(future::multisession,
+                          workers = num_cores,
+                          earlySignal = FALSE)
 
-    results <- parallel::parLapply(cl, script_files, execute_single_script, ...)
-    parallel::stopCluster(cl)
+    on.exit(future::plan(oplan), add = TRUE)
+
+    results <- future.apply::future_lapply(X = script_files,
+                                FUN = execute_single_script,
+                                future.seed = 1)
+
   } else {
     # Sequential execution
-    results <- lapply(script_files, execute_single_script, ...)
+    results <- lapply(script_files, execute_single_script,  verbose = FALSE, ...)
   }
 
   # After obtaining the results, create a summary data frame
@@ -97,43 +108,23 @@ run_paths <- function(paths = ".",
     )) |>
     dplyr::arrange(factor(.data[["Status"]]))
 
-  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
-
-  summary_log_html <- withr::local_tempfile(fileext = ".html")
-
-  if (summary_dir == getwd()) {
-    summary_dir_f <- here::here()
-  } else {
-    summary_dir_f <- normalizePath(summary_dir, winslash = "/")
+  #Render the summary.html
+  if (summary) {
+    render_summary(input = summary_df, summary_dir = summary_dir)
   }
-
-  withr::with_dir(
-    tempdir(),
-    rmarkdown::render(
-      input = summary_qmd,
-      output_format = "html_document",
-      output_file = summary_log_html,
-      params = list(summary_df = summary_df, summary_dir = summary_dir_f),
-      quiet = TRUE
-    )
-  )
-
-  # Create requested outputs
-
-  file_copy <- tryCatch(
-    file.copy(
-      from = summary_log_html,
-      to = file.path(summary_dir, "summary.html"),
-      overwrite = TRUE
-    )
-  )
 
   return(invisible(summary_df))
 }
 
 # Function to execute a single script
 #' @noRd
-execute_single_script <- function(script, ...) {
+execute_single_script <- function(script, verbose = TRUE, ...) {
+
+  # Force cli to use ANSI colors
+  old_ops <- options(cli.num_colors = 256)
+  on.exit(options(old_ops))
+
+
   not_null <- function(x) {
     if (length(x) == 0 | is.null(x)) {
       return("")
@@ -146,7 +137,7 @@ execute_single_script <- function(script, ...) {
       msg_ <- paste(
         msg_,
         "<br>",
-        "... See HTLM logs for more details",
+        "... See HTML logs for more details",
         collapse = ""
       )
     }
@@ -155,7 +146,7 @@ execute_single_script <- function(script, ...) {
 
   result <- tryCatch(
     {
-      cli::cli_alert_info(script)
+      #cli::cli_alert_info(script)
 
       if (!whirl_file_exits()) {
         output <- run_script(script, ...)
@@ -201,6 +192,19 @@ execute_single_script <- function(script, ...) {
     }
   )
 
+  if (verbose) {
+  # Get the width of the screen
+    width <- getOption("width")
+
+    file_mes <- align_left(paste0(result$Directory, "/", result$Filename),
+                           max(nchar(result$Filename) + 10, width - 20),
+                           sep = ".")
+
+    if (result$Status == "error") {cli::cli_alert_danger(paste0(cli::col_white(file_mes), cli::col_red("error")))
+    } else if (result$Status == "warning") {cli::cli_alert_warning(paste0(cli::col_white(file_mes), cli::col_br_yellow("warning")))
+    } else if (result$Status == "skip") {cli::cli_alert_warning(paste0(cli::col_white(file_mes), cli::col_br_blue("skip")))
+    } else {cli::cli_alert_success(paste0(cli::col_white(file_mes), cli::col_green("done")))}
+  }
   return(result)
 }
 

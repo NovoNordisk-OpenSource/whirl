@@ -19,7 +19,8 @@ Extension of \link[callr:r_session]{callr::r_session} with additional methods fo
 \item \href{#method-whirl_r_session-poll}{\code{whirl_r_session$poll()}}
 \item \href{#method-whirl_r_session-wait}{\code{whirl_r_session$wait()}}
 \item \href{#method-whirl_r_session-check_status}{\code{whirl_r_session$check_status()}}
-\item \href{#method-whirl_r_session-spin}{\code{whirl_r_session$spin()}}
+\item \href{#method-whirl_r_session-pb_update}{\code{whirl_r_session$pb_update()}}
+\item \href{#method-whirl_r_session-pb_done}{\code{whirl_r_session$pb_done()}}
 \item \href{#method-whirl_r_session-log_script}{\code{whirl_r_session$log_script()}}
 \item \href{#method-whirl_r_session-create_log}{\code{whirl_r_session$create_log()}}
 \item \href{#method-whirl_r_session-log_finish}{\code{whirl_r_session$log_finish()}}
@@ -207,18 +208,38 @@ Check the status of the callr process
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-whirl_r_session-spin"></a>}}
-\if{latex}{\out{\hypertarget{method-whirl_r_session-spin}{}}}
-\subsection{Method \code{spin()}}{
-Spin the spinner
+\if{html}{\out{<a id="method-whirl_r_session-pb_update"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-pb_update}{}}}
+\subsection{Method \code{pb_update()}}{
+Update the progress bar
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$spin(template = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$pb_update(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{template}}{The template to display}
+\item{\code{...}}{parsed to \code{\link[cli:cli_progress_bar]{cli::cli_progress_update()}}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{invisible} self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-whirl_r_session-pb_done"></a>}}
+\if{latex}{\out{\hypertarget{method-whirl_r_session-pb_done}{}}}
+\subsection{Method \code{pb_done()}}{
+Finalise the progress bar
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{whirl_r_session$pb_done(status)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{status}}{Status of the script. success, warning, or error}
 }
 \if{html}{\out{</div>}}
 }

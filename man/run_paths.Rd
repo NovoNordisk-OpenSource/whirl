@@ -9,6 +9,7 @@ run_paths(
   parallel = FALSE,
   num_cores = NULL,
   summary_dir = getwd(),
+  summary = TRUE,
   ...
 )
 }
@@ -26,7 +27,10 @@ available cores.}
 \item{summary_dir}{A character string of file path specifying the directory
 where the summary log will be stored.}
 
-\item{...}{Other arguments passed on to the \link{run_script} function,}
+\item{summary}{\code{logical} If \code{TRUE} (default) then a summary.html is
+generated. If \code{FALSE} then the summary generation will be skipped.}
+
+\item{...}{Additional arguments}
 }
 \value{
 A list containing the execution results for each script. Each element

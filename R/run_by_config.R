@@ -108,18 +108,6 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1) {
 
   all_contents <- c(dirs_, files_)
 
-  ## Message for users
-  message_ <- c(
-    "i" = "Processing...",
-    all_contents |> rlang::set_names("*")
-  )
-
-  zephyr::msg(
-    message_,
-    msg_fun = cli::cli_inform,
-    levels_to_write = "verbose"
-  )
-
   return(all_contents)
 }
 
@@ -127,10 +115,12 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1) {
 #' Logging one step from yaml
 #'
 #' @inheritParams define_paths
+#' @param summary \code{logical} If \code{TRUE} (default) then a summary.html is
+#'   generated. If \code{FALSE} then the summary generation will be skipped.
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
 #'
-one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h1) {
+one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = cli::cli_h1) {
   # check params
   checkmate::assert_directory(summary_dir, access = "rw")
   ## Find paths for files or folders
@@ -153,8 +143,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 
     ## If _whirl.yaml call the function again, create a loop
     if (length(with_whirl) > 0) {
-      cli::cat_line("")
-      cli::cli_alert_info("'Additional config file(s) detected', read and execute the individual steps.\n")
+      cli::cli_alert_info("Additional config file(s) detected, read and execute the individual steps.\n")
 
       ### What happens if it is not named "_whirl.yaml"
       config_file <- file.path(with_whirl, "_whirl.yaml")
@@ -163,26 +152,29 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
         logging_from_yaml,
         root_dir = dirname(config_file),
         summary_dir = summary_dir,
+        summary = summary,
         cli_level = cli::cli_h3
       ) |>
         purrr::map(purrr::list_rbind) |>
         purrr::list_rbind()
 
-      cli::cli_alert_success("Logs created for this config, {config_file}\n")
+      cat("\n") #Ensure that the next message appear on a new line
+
     }
   }
 
-  ## continue with files and folders whitout whirl yaml config
+  ## continue with files and folders without whirl yaml config
   to_compute <- c(files, without_whirl)
   scripts_ <- NULL
 
   if (length(to_compute) > 0) {
     if (exists("with_whirl") && length(with_whirl) > 0) {
-      cli::cli_inform("Continue current step")
+      cli::cli_inform("Continue with the following step: {.val {step$name}}")
     }
 
     scripts_ <- run_paths(to_compute,
       parallel = TRUE,
+      summary = summary,
       summary_dir = summary_dir)
 
     if (any(scripts_$Status == "error")) {
@@ -190,7 +182,7 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
     }
 
     scripts_ <- scripts_ |>
-      dplyr::mutate(.before = "Status", Name = step[["name"]])
+      dplyr::mutate(.before = "Status", Step = step[["name"]])
   }
 
   results <- rbind(list_of_result, scripts_)
@@ -202,13 +194,16 @@ one_step_logging <- function(step, summary_dir, root_dir, cli_level = cli::cli_h
 #' Read and create summary data frame
 #'
 #' @param file configuration to define steps, have to be a yaml
+#' @param steps An optional argument that can be used if only certain steps
+#'   within a config files is to be executed.
 #' @inheritParams one_step_logging
 #'
 #' @importFrom purrr map
-
 logging_from_yaml <- function(file,
                               summary_dir,
                               root_dir,
+                              summary,
+                              steps = NULL,
                               cli_level = cli::cli_h2) {
   ## check params
   checkmate::assert_file(file, extension = c("yaml", "yml"))
@@ -216,13 +211,24 @@ logging_from_yaml <- function(file,
   ## create logs
   config_whirl <- yaml::yaml.load_file(file)
 
-  steps <- config_whirl$steps
+  steps_list <- config_whirl$steps
 
-  ## Get the step names and output them as messages
-  step_names <- unlist(steps)[grepl("name", names(unlist(steps)))]
+  ## Get the step names
+  step_names <- unlist(steps_list)[grepl("name", names(unlist(steps_list)))]
 
+  # Prune the list when steps have been selected
+  if (!is.null(steps)) {
+    id <- which(step_names %in% steps)
+    #Update the vector of names
+    step_names <- step_names[id]
+    #Update the list
+    steps_list <- steps_list[id]
+
+  }
+
+  #Output the steps that will be executed
   message_ <- c(
-    "The following steps have been identified in the config file",
+    "The following steps in the config file will be executed",
     step_names |> rlang::set_names("*")
   )
 
@@ -233,8 +239,8 @@ logging_from_yaml <- function(file,
   )
 
   summary <- purrr::map(
-    steps, one_step_logging,
-    summary_dir, root_dir, cli_level
+    steps_list, one_step_logging,
+    summary_dir, summary, root_dir, cli_level
   )
 
   return(summary)
@@ -245,9 +251,13 @@ logging_from_yaml <- function(file,
 #' Create logs for files from a yaml configuration
 #'
 #' @param file yaml configuration file
+#' @param steps An optional argument that can be used if only certain steps
+#'   within a config files is to be executed.
 #' @param summary_dir A character string of file path specifying the directory
 #'   where the summary log will be stored.
 #' @param root_dir By default, the root dir of the yaml file.
+#' @param summary \code{logical} If \code{TRUE} (default) then a summary.html is
+#'   generated. If \code{FALSE} then the summary generation will be skipped.
 #'
 #' @return A list containing the execution results for each script. Each element
 #'   of the list is a character string indicating the success or failure of the
@@ -264,20 +274,19 @@ logging_from_yaml <- function(file,
 #' )
 #' run_by_config(file_, tempdir())
 run_by_config <- function(file,
+                          steps = NULL,
                           summary_dir = ".",
+                          summary = TRUE,
                           root_dir = dirname(file)) {
   # Get the summary df
   ## Setup error as FALSE before
   unlink_whirl_error_file()
 
-  ## Clean up when it ends
-  on.exit(unlink_whirl_error_file())
-  on.exit(cli::cli_h1("End of log process"))
 
-  cli::cli_h1("Start process for logs")
   # On error clean up as well
   summary_df <- try(
-    logging_from_yaml(file, summary_dir, root_dir = root_dir),
+    logging_from_yaml(file, steps = steps, summary_dir,
+                      summary = summary, root_dir = root_dir),
     silent = TRUE
   )
 
@@ -294,28 +303,17 @@ run_by_config <- function(file,
     summary_dir_f <- normalizePath(summary_dir, winslash = "/")
   }
 
-  ######## Finalize it
-  summary_qmd <- withr::local_tempfile(lines = readLines(system.file("documents/summary.qmd", package = "whirl")), fileext = ".qmd")
-  summary_log_html <- withr::local_tempfile(fileext = ".html")
+  #Compile the list into a singel dataframe
+  summary_df <- summary_df |>
+    purrr::list_rbind()
 
-  rmarkdown::render(
-    input = summary_qmd,
-    output_format = "html_document",
-    output_file = summary_log_html,
-    params = list(
-      summary_df = summary_df |> purrr::list_rbind(),
-      summary_dir = summary_dir_f
-    ),
-    quiet = TRUE
-  )
+  #Render the summary.html
+  if (summary) {
+  render_summary(input = summary_df, summary_dir = summary_dir)
+  }
 
 
+  return(invisible(summary_df))
 
-  file_copy <- tryCatch(
-    file.copy(
-      from = summary_log_html,
-      to = file.path(summary_dir, "summary.html"),
-      overwrite = TRUE
-    )
-  )
+
 }

@@ -15,6 +15,7 @@ Authors:
 \itemize{
   \item Lovemore Gakava \email{lvgk@novonordisk.com}
   \item Cervan Girard \email{cgid@novonordisk.com}
+  \item Kristian Troejelsgaard \email{ktqn@novonordisk.com}
 }
 
 Other contributors:
