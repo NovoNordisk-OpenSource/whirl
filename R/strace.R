@@ -22,7 +22,7 @@ start_strace <- function(pid, file) {
 #' @return [list] of `data.frame`(s) of the relevant files for each type of info
 #' @noRd
 
-read_strace_info <- function(path, p_wd, strace_discards = character(), strace_keep = character(), types = c("read", "write", "delete")) {
+read_strace_info <- function(path, p_wd = dirname(path), strace_discards = character(), strace_keep = character(), types = c("read", "write", "delete")) {
   strace <- path |>
     read_strace(p_wd = p_wd) |>
     refine_strace(strace_discards = strace_discards, strace_keep = strace_keep)
