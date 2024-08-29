@@ -158,12 +158,12 @@ wrs_print <- function(self, private, super) {
 }
 
 wrs_pb_update <- function(..., self, private, super) {
-  if (!is.null(private$verbose)) private$pb$update(...)
+  if (!is.null(private$pb)) private$pb$update(...)
   return(invisible(self))
 }
 
 wrs_pb_done <- function(status, self, private, super) {
-  if (!is.null(private$verbose)) private$pb$done(status)
+  if (!is.null(private$pb)) private$pb$done(status)
   return(invisible(self))
 }
 
@@ -255,7 +255,7 @@ wrs_create_log <- function(self, private, super) {
 }
 
 wrs_log_finish <- function(self, private, super) {
-  if (private$verbose) {
+  if (!is.null(private$pb)) {
     status <- self$get_wd() |>
       file.path("doc.md") |>
       get_status()
