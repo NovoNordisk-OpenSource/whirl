@@ -7,6 +7,12 @@
 #'
 render_summary <- function(input, summary_dir) {
 
+  if (tibble::is_tibble(input)) {
+    input <- input |>
+    dplyr::arrange(Directory, Filename)
+  } else {
+    input <- input
+  }
 
   summary_qmd <- withr::local_tempfile(
     lines = readLines(system.file("documents/summary.qmd", package = "whirl")),

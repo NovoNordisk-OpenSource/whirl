@@ -25,7 +25,7 @@
 #'
 #' @export
 run <- function(path,
-                log_dir,
+                log_dir = NULL,
                 steps = NULL,
                 parallel = TRUE,
                 num_cores = NULL,
@@ -86,17 +86,9 @@ run <- function(path,
               summary_dir = summary_dir,
               summary = FALSE)
 
-    if (length(list_from_config) > 1) {
-      from_config <- dplyr::bind_rows(list_from_config)
-    } else {
-      from_config <- list_from_config
-    }
+    from_config <- dplyr::bind_rows(list_from_config)
 
     render_summary(from_config, summary_dir = summary_dir)
-
-  # from_config <- run_by_config(file = config_file,
-  #               steps = steps,
-  #               summary_dir = summary_dir)
   }
 
   # When path do not point to any config file ----------------------------------
@@ -116,12 +108,8 @@ run <- function(path,
                                    summary_dir = summary_dir,
                                    summary = FALSE)
 
-    if (length(list_from_config) > 1) {
-      from_config <- dplyr::bind_rows(list_from_config)
 
-    } else {
-      from_config <- list_from_config
-    }
+    from_config <- dplyr::bind_rows(list_from_config)
 
     cat("\n") #Ensure that the next message appear on a new line
 
