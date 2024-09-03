@@ -1,37 +1,64 @@
 
-q <- whirl_queue$new(n_workers = 5)
+q <- whirl_queue$new(n_workers = 2)
 
 q
 q$workers
 
 q$push("inst/examples/simple/prg1.R")
 
+q
+
 q$next_ids
 q$available_workers
 q$next_workers
 
-q$poll()
+q$poll(50)
+q$wait()
+q$workers
+q$queue$result[[1]]$status
 
 
+file.path("inst/examples/simple", c("success.R", "warning.R", "error.R")) |>
+  q$push()
 
+q
+q$workers
+q$poll(50)
+q$wait()
+q
 
-q$poll()
+start <- Sys.time()
+
+list.files("inst/examples/simple", pattern = "^sleep_", full.names = TRUE) |>
+  q$push()
 
 q$wait()
 
-p <- whirl_r_session$new(verbose = TRUE)
-p$
-  log_script("inst/examples/simple/prg1.R")$
-  wait()$
-  check_status()
-p$
-  create_log()$
-  wait()$
-  check_status()
+end <- Sys.time()
 
-p$
-  log_finish()$
-  create_outputs(out_dir = "inst/examples", format = "html")
+q
+q$workers
 
-rm(p)
-gc()
+q$run("inst/examples/simple/prg1.R")
+
+file.path("inst/examples/simple", c("success.R", "warning.R", "error.R")) |>
+  q$run()
+
+file.path("inst/examples/simple", c("success.R", "warning.R", "error.R")) |>
+  as.list() |>
+  q$run()
+
+plan <- list(
+  "inst/examples/simple/prg1.R",
+  file.path("inst/examples/simple", c("success.R", "warning.R")),
+  list(
+    file.path("inst/examples/simple", "error.R"),
+    list.files("inst/examples/simple", pattern = "^sleep_", full.names = TRUE) |>
+      head(2)
+    ),
+  "inst/examples/sequence_exuction/error.R"
+  )
+
+str(plan)
+
+q$run(plan)
