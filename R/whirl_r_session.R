@@ -1,9 +1,7 @@
 #' Whirl R session
 #' @description
 #' Extension of [callr::r_session] with additional methods for easier creating logs.
-#' @importFrom callr r_session
-#' @importFrom R6 R6Class
-#' @keywords internal
+#' @noRd
 
 whirl_r_session <- R6::R6Class(
   classname = "whirl_r_session",

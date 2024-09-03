@@ -1,24 +1,64 @@
-#' queue for logging several scripts
+#' Queue for continuous execution and logging of scripts
+#' @description
+#' Implementation of a queue for supporting the continuous execution and logging
+#' of several the scripts.
+#' The queue can be used interactively, but is mainly designed to be the internal
+#' backbone of the `run()` function.
+#' When a queue has several workers, pushed scripts will be run in parallel.
 #' @noRd
 
 whirl_queue <- R6::R6Class(
   classname = "whirl_queue",
   public = list(
+
+    #' @description Initialize the new whirl_queue
+    #' @param n_workers [numeric] Maximum number of workers to be used simultaneously
+    #' @return A [whirl_queue] object
     initialize = \(n_workers = 1) {
       wq_initialise(self, private, n_workers)
     },
-    push = \(scripts) {
-      wq_push(self, private, scripts)
+
+    #' @description Push scripts to the queue
+    #' @param scripts [character] Full paths for the scripts to be executed
+    #' @param tag (optional) [character] Tag for the scripts to include in the queue
+    #' @return [invisible] self
+    push = \(scripts, tag = NA_character_) {
+      wq_push(self, private, scripts, tag)
     },
+
+    #' @description Push scripts in the queue withput executing them. Utility to include skipped scripts in the final queue.
+    #' @param scripts [character] Full paths for the scripts to be executed
+    #' @param tag (optional) [character] Tag for the scripts to include in the queue
+    #' @return [invisible] self
+    skip = \(scripts, tag = NA_character_) {
+      wq_skip(self, private, scripts, tag)
+    },
+
+    #' @description Poll the queue and start next steps if needed
+    #' @param timeout [numeric] The timeout in milliseconds. Note it is only implemented approximately if more than one script is running simultanously.
+    #' @return [character] Status of all scripts queue
     poll = \(timeout) {
       wq_poll(self, private, timeout)
     },
+
+    #' @description Wait for the queue to complete
+    #' @param timeout [numeric] The timeout in milliseconds
+    #' @return [invisible] self
     wait = \(timeout = -1) {
       wq_wait(self, private, timeout)
     },
+
+    #' @description Run scripts using the queue. This is a wrapper around calling both push() and wait().
+    #' @param scripts [list], [character] with full paths for the scripts to be executed.
+    #' If a [list] is provided, each element will be executed in sequence.
+    #' If a [character] vector is provided, the scrips will be executed without waiting for the previous to finish.
+    #' @return [invisible] self
     run = \(scripts) {
       wq_run(scripts, self)
     },
+
+    #' @description Print method displaying the current status of the queue
+    #' @return [invisible] self
     print = \() {
       print(self$queue)
       return(invisible(self))
@@ -26,19 +66,28 @@ whirl_queue <- R6::R6Class(
   ),
 
   active = list(
+    #' @field queue [tibble] Current status of the queue
     queue = \() {
       private$.queue
     },
+
+    #' @field workers [tibble] Current status of the workers
     workers = \() {
       private$.workers
     },
+
+    #' @field available_workers [integer] Which workers are available
     available_workers = \() {
       which(!self$workers$active)
     },
+
+    #' @field next_ids [integer] Which scripts are next in the queue
     next_ids = \() {
       self$queue$id[self$queue$status == "waiting"] |>
         head(length(self$available_workers))
     },
+
+    #' @field next_workers [integer] Which workers are next to be started
     next_workers = \() {
       self$available_workers |>
         head(length(self$next_ids))
@@ -55,6 +104,7 @@ whirl_queue <- R6::R6Class(
 wq_initialise <- function(self, private, n_workers) {
   private$.queue <- tibble::tibble(
     id = numeric(),
+    tag = character(),
     script = character(),
     status = character(),
     result = list()
@@ -69,14 +119,23 @@ wq_initialise <- function(self, private, n_workers) {
   )
 }
 
-wq_push <- function(self, private, scripts) {
+wq_add_queue <- function(self, private, scripts, tag, status) {
   private$.queue <- self$queue |>
     tibble::add_row(
       id = nrow(self$queue) + seq_along(scripts),
+      tag = tag,
       script = scripts,
-      status = "waiting"
+      status = status
     )
   return(invisible(self))
+}
+
+wq_push <- function(self, private, scripts, tag) {
+  wq_add_queue(self, private, scripts, tag, status = "waiting")
+}
+
+wq_skip <- function(self, private, scripts, tag) {
+  wq_add_queue(self, private, scripts, tag, status = "skipped")
 }
 
 wq_poll <- function(self, private, timeout) {
@@ -162,15 +221,21 @@ wq_run <- function(scripts, self) {
   UseMethod("wq_run")
 }
 
+#' @export
+
 wq_run.default <- function(scripts, self) {
   stop("Scripts can only be character or numeric")
 }
+
+#' @export
 
 wq_run.character <- function(scripts, queue) {
   queue$
     push(scripts)$
     wait()
 }
+
+#' @export
 
 wq_run.list <- function(scripts, queue) {
   for (i in seq_along(scripts)) {

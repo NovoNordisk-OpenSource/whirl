@@ -18,6 +18,8 @@ q$workers
 q$queue$result[[1]]$status
 
 
+################
+
 file.path("inst/examples/simple", c("success.R", "warning.R", "error.R")) |>
   q$push()
 
@@ -30,6 +32,7 @@ q
 start <- Sys.time()
 
 list.files("inst/examples/simple", pattern = "^sleep_", full.names = TRUE) |>
+  head(2) |>
   q$push()
 
 q$wait()
@@ -39,6 +42,8 @@ end <- Sys.time()
 q
 q$workers
 
+###########################
+
 q$run("inst/examples/simple/prg1.R")
 
 file.path("inst/examples/simple", c("success.R", "warning.R", "error.R")) |>
@@ -47,6 +52,8 @@ file.path("inst/examples/simple", c("success.R", "warning.R", "error.R")) |>
 file.path("inst/examples/simple", c("success.R", "warning.R", "error.R")) |>
   as.list() |>
   q$run()
+
+##############################
 
 plan <- list(
   "inst/examples/simple/prg1.R",
