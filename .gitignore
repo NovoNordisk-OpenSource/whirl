@@ -52,3 +52,10 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# remove files for examples
+inst/examples/*_files
+inst/examples/*.html
+plot1.png
+from_python.txt
+summary.html

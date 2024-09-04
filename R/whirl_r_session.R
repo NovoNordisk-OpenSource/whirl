@@ -2,6 +2,7 @@
 #' @description
 #' Extension of [callr::r_session] with additional methods for easier creating logs.
 #' @importFrom callr r_session
+#' @importFrom R6 R6Class
 #' @keywords internal
 
 whirl_r_session <- R6::R6Class(
@@ -52,11 +53,18 @@ whirl_r_session <- R6::R6Class(
       wrs_check_status(self, private, super)
     },
 
-    #' @description Spin the spinner
-    #' @param template The template to display
+    #' @description Update the progress bar
+    #' @param ... parsed to [cli::cli_progress_update()]
     #' @return [invisible] self
-    spin = \(template = NULL) {
-      wrs_spin(template, self, private, super)
+    pb_update = \(...) {
+      wrs_pb_update(..., self = self, private = private, super = super)
+    },
+
+    #' @description Finalise the progress bar
+    #' @param status Status of the script. success, warning, or error
+    #' @return [invisible] self
+    pb_done = \(status) {
+      wrs_pb_done(status, self, private, super)
     },
 
     #' @description Log the script
@@ -86,7 +94,6 @@ whirl_r_session <- R6::R6Class(
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
-
   private = list(
     verbose = NULL,
     wd = NULL,
@@ -96,15 +103,14 @@ whirl_r_session <- R6::R6Class(
     approved_pkgs_folder = NULL,
     approved_pkgs_url = NULL,
     check_renv = NULL,
-    spinner = NULL,
+    pb = NULL,
     current_script = NULL
   ),
-
   inherit = callr::r_session
 )
 
 wrs_initialize <- function(verbose, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url,
-                     self, private, super) {
+                           self, private, super) {
   super$initialize() # uses callr::r_session$initialize()
 
   # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
@@ -119,10 +125,6 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
 
   super$run(func = setwd, args = list(dir = private$wd))
   super$run(func = options, args = list(whirl.log_msgs = data.frame(time = Sys.time()[0], op = character(), msg = character())))
-
-  if (private$verbose) {
-    private$spinner <- cli::make_spinner(template = "{spin} Running ...")
-  }
 
   system.file("documents", package = "whirl") |>
     list.files(full.names = TRUE) |>
@@ -162,14 +164,19 @@ wrs_print <- function(self, private, super) {
   return(invisible(self))
 }
 
-wrs_spin <- function(template = NULL, self, private, super) {
-  if (private$verbose) private$spinner$spin(template)
+wrs_pb_update <- function(..., self, private, super) {
+  if (!is.null(private$verbose)) private$pb$update(...)
+  return(invisible(self))
+}
+
+wrs_pb_done <- function(status, self, private, super) {
+  if (!is.null(private$verbose)) private$pb$done(status)
   return(invisible(self))
 }
 
 wrs_poll <- function(timeout, self, private, super) {
   status <- super$poll_process(timeout)
-  if (status == "timeout") self$spin()
+  if (status == "timeout") self$pb_update()
   return(status)
 }
 
@@ -195,13 +202,15 @@ wrs_check_status <- function(self, private, super) {
 }
 
 wrs_log_script <- function(script, self, private, super) {
-
   private$current_script <- script
 
-  paste("{spin}", cli::format_message("{.file {private$current_script}}: Running script...")) |>
-    self$spin()
+  if (private$verbose) {
+    private$pb <- pb_script$new(script = private$current_script)
+  }
 
-  quarto_execute_dir <- switch (tools::file_ext(script),
+  self$pb_update(status = "Running script")
+
+  quarto_execute_dir <- switch(tools::file_ext(script),
     "R" = getwd(),
     normalizePath(dirname(script)) # TODO: Should this default be changed?
   )
@@ -224,9 +233,7 @@ wrs_log_script <- function(script, self, private, super) {
 }
 
 wrs_create_log <- function(self, private, super) {
-
-  paste("{spin}", cli::format_message("{.file {private$current_script}}: Creating log...")) |>
-    self$spin()
+  self$pb_update(status = "Creating log")
 
   self$call(
     func = \(...) quarto::quarto_render(...),
@@ -256,18 +263,11 @@ wrs_create_log <- function(self, private, super) {
 
 wrs_log_finish <- function(self, private, super) {
   if (private$verbose) {
-
     status <- self$get_wd() |>
       file.path("doc.md") |>
       get_status()
 
-    switch (status[["status"]],
-      "error" = c("x" = "{.file {private$current_script}}: Completed with errors"),
-      "warning" = c("!" = "{.file {private$current_script}}: Completed with warnings"),
-      c("v" = "{.file {private$current_script}}: Completed succesfully")
-      ) |>
-      cli::format_message() |>
-      self$spin()
+    self$pb_done(status = status[["status"]])
   }
 
   return(invisible(self))
@@ -286,7 +286,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       out_dir,
       gsub(
         pattern = "\\.[^\\.]*$",
-        replacement = ".html",
+        replacement = "_log.html",
         x = basename(private$current_script)
       )
     ))
@@ -301,7 +301,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
         out_dir,
         gsub(
           pattern = "\\.[^\\.]*$",
-          replacement = ".html",
+          replacement = "_log.html",
           x = basename(private$current_script)
         )
       ),

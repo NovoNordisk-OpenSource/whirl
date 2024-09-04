@@ -3,36 +3,40 @@ test_that("Execute multiple Scripts", {
 
   withr::with_tempdir({
     # Setup: Copy example scripts to temp directory
-    file.copy(from = system.file("examples", scripts_list, package = "whirl"),
-              to = getwd(), overwrite = TRUE)
+    file.copy(
+      from = system.file("examples", "simple", scripts_list, package = "whirl"),
+      to = getwd(), overwrite = TRUE
+    )
 
     # Setup: Copy example folder to temp directory
-    dest_folder <- file.path(tempdir())
 
-    file.copy(from = system.file("examples", package = "whirl"),
-              to = dest_folder, recursive = TRUE)
-    scripts_folder <- file.path(tempdir(), "examples")
+    dir.create("simple")
+    file.copy(
+      from = system.file("examples", "simple", package = "whirl"),
+      to = "./simple", recursive = TRUE
+    )
+    scripts_folder <- file.path(".", "simple")
 
     # Test for valid input with folder path
     expect_s3_class(
-      log_scripts(paths = scripts_folder),
+      run_paths(paths = scripts_folder),
       "data.frame"
     )
 
     # Test for valid input with script paths
     expect_s3_class(
-      log_scripts(paths = scripts_list),
+      run_paths(paths = scripts_list),
       "data.frame"
     )
 
     # Test for invalid input
     expect_error(
-      log_scripts(paths = 123)
+      run_paths(paths = 123)
     )
 
     # Test parallel execution
     expect_s3_class(
-      log_scripts(
+      run_paths(
         paths = scripts_list,
         parallel = TRUE,
         num_cores = 2
@@ -42,7 +46,7 @@ test_that("Execute multiple Scripts", {
 
     # Test sequential execution
     expect_s3_class(
-      log_scripts(
+      run_paths(
         paths = scripts_list,
         parallel = FALSE
       ),

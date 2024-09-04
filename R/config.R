@@ -6,13 +6,13 @@ read_yaml_config <- function(yaml_file, eval.expr = FALSE) {
   return(config$params)
 }
 
-#' Function to call log_scripts with parameters from YAML file
+#' Function to call run_paths with parameters from YAML file
 #' @noRd
 execute_with_yaml <- function(yaml_file, eval.expr) {
   params <- read_yaml_config(yaml_file, eval.expr)
 
-  # Call log_scripts with the parameters from the YAML file
-  log_scripts(
+  # Call run_paths with the parameters from the YAML file
+  run_paths(
     paths = trimws(params$paths),
     parallel = params$parallel,
     num_cores = params$num_cores,
