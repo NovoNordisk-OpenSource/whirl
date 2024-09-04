@@ -40,64 +40,98 @@ run <- function(path,
   # Ensure that any whirl_error file is removed before execution
   unlink_whirl_error_file()
 
+
+  # # Check input
+  # if (all(unlist(lapply(path, tools::file_ext)))) {
+  #
+  # } else if (all(unlist(lapply(path, dir.exists)))) {
+  #   zephyr::msg("All paths are directories", verbosity_level = "verbose")
+  #
+  #
+  #   files <- list.files(path, recursive = TRUE, full.names = TRUE, pattern = "\\.(R|Rmd|qmd)$")
+  # }
+
+
   # Separating config and non-config files
   config_file <- path[grepl("yaml|yml|json", tools::file_ext(path))]
   non_config_files <- path[!grepl("yaml|yml|json", tools::file_ext(path))]
 
 
-  #Any directories supplied in the path argument -------------------------------
-  dirs_exists <- any(unlist(lapply(path, dir.exists)))
+  # #Any directories supplied in the path argument -------------------------------
+  # dirs_exists <- any(unlist(lapply(path, dir.exists)))
+  #
+  # #Check if folder contains config file
+  # if (dirs_exists) {
+  #
+  #   dirs <- path[unlist(lapply(path, dir.exists))]
+  #
+  #   #If a config file exists in the directories then only run that one and skip
+  #   #the individual scripts in the folder
+  #   config_in_dirs <- dirs[unlist(lapply(dirs, detect_whirl_file))]
+  #
+  #   if (length(config_in_dirs) > 0) {
+  #     temp <- unlist(lapply(dirs, detect_whirl_file))
+  #     config_in_dirs <- names(temp[temp == TRUE])
+  #
+  #     if (length(config_file) > 0) {
+  #       config_file <- c(config_file, config_in_dirs)
+  #     } else {
+  #       config_file <- config_in_dirs
+  #     }
+  #
+  #     #Remove all folder(s) containing config files from the non_config_files
+  #     #object
+  #     to_remove <- dirname(config_in_dirs)
+  #     got <- normalizePath(non_config_files)
+  #
+  #     non_config_files <- setdiff(got, to_remove)
+  #
+  #   }
+  # }
 
-  #Check if folder contains config file
-  if (dirs_exists) {
 
-    dirs <- path[unlist(lapply(path, dir.exists))]
 
-    #If a config file exists in the directories then only run that one and skip
-    #the individual scripts in the folder
-    config_in_dirs <- dirs[unlist(lapply(dirs, detect_whirl_file))]
+  #If input is character then convert to list ----------------------------------
+  if (length(non_config_files) > 0) {
 
-    if (length(config_in_dirs) > 0) {
-      temp <- unlist(lapply(dirs, detect_whirl_file))
-      config_in_dirs <- names(temp[temp == TRUE])
+    custom_list <- list(list(name = "new step", paths = non_config_files))
 
-      if (length(config_file) > 0) {
-        config_file <- c(config_file, config_in_dirs)
-      } else {
-        config_file <- config_in_dirs
-      }
-
-      #Remove all folder(s) containing config files from the non_config_files
-      #object
-      to_remove <- dirname(config_in_dirs)
-      got <- normalizePath(non_config_files)
-
-      non_config_files <- setdiff(got, to_remove)
-
-    }
+    # custom_list <- mapply(list,
+    #                       name = lapply(non_config_files, basename),
+    #                       paths = as.list(non_config_files),
+    #                       SIMPLIFY = FALSE)
   }
 
+  if (rlang::is_empty(config_file) & length(non_config_files) > 0) {
+    run_by_config(custom_list,
+                  steps = steps,
+                  root_dir = NULL,
+                  summary_dir = summary_dir,
+                  summary = TRUE)
+  }
+
+browser()
 
   # When only pointing to a whirl config file ----------------------------------
   if (length(config_file) > 0 & rlang::is_empty(non_config_files)) {
 
     list_from_config <- purrr::map(config_file, run_by_config,
-              steps = steps,
-              summary_dir = summary_dir,
-              summary = FALSE)
+                                   steps = steps,
+                                   summary_dir = summary_dir,
+                                   summary = FALSE)
 
     from_config <- dplyr::bind_rows(list_from_config)
 
     render_summary(from_config, summary_dir = summary_dir)
   }
 
-  # When path do not point to any config file ----------------------------------
-  if (rlang::is_empty(config_file) & length(non_config_files) > 0) {
-    run_paths(paths = non_config_files,
-              parallel = parallel,
-              num_cores = num_cores,
-              summary_dir = summary_dir)
-  }
+  # # When path do not point to any config file ----------------------------------
+  # if (rlang::is_empty(config_file) & length(non_config_files) > 0) {
+  #   run_paths(paths = non_config_files,
+  #             parallel = parallel,
+  #             num_cores = num_cores,
+  #             summary_dir = summary_dir)
+  # }
 
 
   # When pointing to a whirl config file plus additional files -----------------
@@ -114,10 +148,10 @@ run <- function(path,
     cat("\n") #Ensure that the next message appear on a new line
 
     from_non_config <- run_paths(paths = non_config_files,
-      parallel = parallel,
-      num_cores = num_cores,
-      summary_dir = summary_dir,
-      summary = FALSE)
+                                 parallel = parallel,
+                                 num_cores = num_cores,
+                                 summary_dir = summary_dir,
+                                 summary = FALSE)
 
     got <- from_config |>
       dplyr::bind_rows(from_non_config)

@@ -43,7 +43,8 @@ detect_whirl_file <- function(folder, file = "_whirl.yaml") {
   checkmate::assert_directory(folder)
 
   # name
-  file_name <- file.path(folder, file)
+  name <- list.files(folder)[grepl(file, list.files(folder))]
+  file_name <- file.path(folder, name)
 
   fs::file_exists(file_name)
 }
@@ -121,15 +122,23 @@ define_paths <- function(step, root_dir, cli_level = cli::cli_h1) {
 #'   where the summary log will be stored.
 #'
 one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = cli::cli_h1) {
+
+
+  if (is.null(root_dir)) {
+    files_with_folder <- step$paths
+    root_dir <- dirname(step$paths)
+    step$paths <- basename(step$paths)
+  } else {
+    ## Find paths for files or folders
+    files_with_folder <- define_paths(step, root_dir, cli_level)
+  }
+
   # check params
   checkmate::assert_directory(summary_dir, access = "rw")
-  ## Find paths for files or folders
-  files_with_folder <- define_paths(step, root_dir, cli_level)
 
   folder_or_not <- fs::is_dir(files_with_folder)
   folders <- names(folder_or_not[folder_or_not])
   files <- names(folder_or_not[!folder_or_not])
-
   ### init vars
   without_whirl <- character(0)
   list_of_result <- data.frame()
@@ -146,14 +155,14 @@ one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = c
       cli::cli_alert_info("Additional config file(s) detected, read and execute the individual steps.\n")
 
       ### What happens if it is not named "_whirl.yaml"
-      config_file <- file.path(with_whirl, "_whirl.yaml")
+      config_file <- names(test_whirl)[test_whirl]
       ### Call logging_from_yaml to create a loop through nested folders
       list_of_result <- purrr::map(config_file,
-        logging_from_yaml,
-        root_dir = dirname(config_file),
-        summary_dir = summary_dir,
-        summary = summary,
-        cli_level = cli::cli_h3
+                                   logging_from_yaml,
+                                   root_dir = dirname(config_file),
+                                   summary_dir = summary_dir,
+                                   summary = summary,
+                                   cli_level = cli::cli_h3
       ) |>
         purrr::map(purrr::list_rbind) |>
         purrr::list_rbind()
@@ -162,7 +171,7 @@ one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = c
 
     }
   }
-
+browser()
   ## continue with files and folders without whirl yaml config
   to_compute <- c(files, without_whirl)
   scripts_ <- NULL
@@ -173,9 +182,9 @@ one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = c
     }
 
     scripts_ <- run_paths(to_compute,
-      parallel = TRUE,
-      summary = summary,
-      summary_dir = summary_dir)
+                          parallel = TRUE,
+                          summary = summary,
+                          summary_dir = summary_dir)
 
     if (any(scripts_$Status == "error")) {
       create_whirl_error_file()
@@ -205,13 +214,16 @@ logging_from_yaml <- function(file,
                               summary,
                               steps = NULL,
                               cli_level = cli::cli_h2) {
-  ## check params
-  checkmate::assert_file(file, extension = c("yaml", "yml"))
 
-  ## create logs
-  config_whirl <- yaml::yaml.load_file(file)
-
-  steps_list <- config_whirl$steps
+  if (!is.list(file)) {
+    ## Convert config file to list
+    checkmate::assert_file(file, extension = c("yaml", "yml"))
+    ## create logs
+    config_whirl <- yaml::yaml.load_file(file)
+    steps_list <- config_whirl$steps
+  } else {
+    steps_list <- file
+  }
 
   ## Get the step names
   step_names <- unlist(steps_list)[grepl("name", names(unlist(steps_list)))]
@@ -228,7 +240,7 @@ logging_from_yaml <- function(file,
 
   #Output the steps that will be executed
   message_ <- c(
-    "The following steps in the config file will be executed",
+    "The following steps will be executed",
     step_names |> rlang::set_names("*")
   )
 
@@ -282,7 +294,6 @@ run_by_config <- function(file,
   ## Setup error as FALSE before
   unlink_whirl_error_file()
 
-
   # On error clean up as well
   summary_df <- try(
     logging_from_yaml(file, steps = steps, summary_dir,
@@ -309,7 +320,7 @@ run_by_config <- function(file,
 
   #Render the summary.html
   if (summary) {
-  render_summary(input = summary_df, summary_dir = summary_dir)
+    render_summary(input = summary_df, summary_dir = summary_dir)
   }
 
 

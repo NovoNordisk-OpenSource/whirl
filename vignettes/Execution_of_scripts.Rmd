@@ -1,0 +1,79 @@
+---
+title: "Execution_of_scripts"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Execution_of_scripts}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Introduction
+The whirl package provides functionalities for executing scripts in batch and simultaneously getting a log from the individual executions. In the following sections, we will go through how to use the package.
+
+## Ways to call the `run()` function
+### Pointing direcetly to files or folders 
+The `path` argument in the `run()` function can in the most simple case point to a single file for which an execution and a log-generation is required. 
+
+```{r, eval = FALSE}
+library(whirl)
+run(path = "path/to/script.R")
+```
+
+The `path` argument can also point to a directory containing scripts. In this case, all scripts in the directory will be executed in parallel (unless `parallel = FALSE`) and a log will be generated for each script. A summary overview file will also be provided as fast way to get an overview of the execution. The location of the summary file can be controlled with the `summary_dir` argument.
+
+```{r, eval = FALSE}
+run(path = "path/to/directory", summary_dir = "path/to/summary")
+```
+
+Whenever the `path` arugment in `run()` is supplied with a vector (e.g. `c("path/to/script1.R", "path/to/script2.R")`) it assumes that these can be executed independently and in parallel.
+
+### Using `list()` arguments
+If the scripts have to executed in a specific order, the `path` argument can be supplied with a list of scripts. The scripts will then be executed in the order they are listed in the list. Scripts listed in the same element of the list will be executed in parallel (unless `parallel = FALSE`). 
+
+```{r, eval = FALSE}
+# In the below example, script1.R and script2.R will be executed in parallel
+run(path = list("path/to/script1.R", 
+                "path/to/script2.R"))
+
+# In the below example, script1.R and script2.R will be executed in parallel, and script3.R 
+# will be executed after script1.R and script2.R
+run(path = list(c("path/to/script1.R", "path/to/script2.R"), 
+                "path/to/script3.R"))
+
+# In the below example, script1.R and script2.R will be executed in parallel, and subsequently 
+# script3.R and script4.R will be executed in parallel
+run(path = list(c("path/to/script1.R", "path/to/script2.R"), 
+                c("path/to/script3.R", "path/to/script4.R")))
+
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
+```
+
+
+
+
+
+
+
+
+### Pointing to a config file
+`run()`can also be supplied with a config file. The config file is a yaml file that contains information about which scripts to execute and in which order. 
+
+The yaml config file should have the following structure (example):
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+steps:
+  - name: "Config file inside metadata"
+    paths:
+      - "mdcol.R"
+
+

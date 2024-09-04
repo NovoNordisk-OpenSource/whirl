@@ -1,6 +1,8 @@
 steps:
   - name: "Run ADaM mk400 programs"
     paths:
+      - "metadata/mdcol.R"
+      - "metadata"
       - "adam/mk400.*\\.R"
   - name: "Run TFL programs"
     paths:
