@@ -110,7 +110,6 @@ run <- function(path,
                   summary = TRUE)
   }
 
-browser()
 
   # When only pointing to a whirl config file ----------------------------------
   if (length(config_file) > 0 & rlang::is_empty(non_config_files)) {

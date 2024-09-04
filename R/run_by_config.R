@@ -171,7 +171,7 @@ one_step_logging <- function(step, summary_dir, summary, root_dir, cli_level = c
 
     }
   }
-browser()
+
   ## continue with files and folders without whirl yaml config
   to_compute <- c(files, without_whirl)
   scripts_ <- NULL
