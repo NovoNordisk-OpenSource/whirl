@@ -55,10 +55,13 @@ if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) 
 }
 ```
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 use_strace <- (is.character(params$strace) && params$strace == "yes" | is.logical(params$strace) && params$strace)
 
 if (use_strace) {
+  file.size(params$strace_path) |> cat("\n")
+  # strace_info <- whirl:::log_df() |> 
+  #   whirl:::split_log()
   strace_info <- whirl:::read_strace_info(
     path = params$strace_path,
     p_wd = params$p_wd,
@@ -68,11 +71,9 @@ if (use_strace) {
 }
 ```
 
-```{r, echo=TRUE, eval=FALSE}
-log_info <- read_log_info()
-log_info$read
-log_infor$write
-log_info$delete
+```{r, echo=TRUE}
+log_info <- whirl:::read_from_log() |> 
+  whirl:::split_log()
 ```
 
 

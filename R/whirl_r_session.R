@@ -124,11 +124,13 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
   private$approved_pkgs_url <- approved_pkgs_url
 
   super$run(func = setwd, args = list(dir = private$wd))
-  super$run(func = options, args = list(whirl.log_msgs = data.frame(time = Sys.time()[0], op = character(), msg = character())))
 
   system.file("documents", package = "whirl") |>
     list.files(full.names = TRUE) |>
     file.copy(to = private$wd)
+
+  super$run(func = Sys.setenv,
+            args = list(WHIRL_LOG_MSG = file.path(private$wd,'log_msg.json')))
 
   environment_file <- file.path(private$wd, "_environment")
   environment_file |>

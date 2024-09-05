@@ -1,16 +1,18 @@
 
+library(whirl)
+
 #' This is a test script for user log messages
 
-whirl::log_msg("adam.adsl", "read")
-whirl::log_msg("sdtm.vs", "read")
+log_read("adam.adsl")
+log_read("sdtm.vs")
 
-whirl::log_read("adam.adds")
+log_delete("adam.adds")
 
 Sys.sleep(4)
 
-whirl::log_msg("adam.advs", "write")
+log_write("adam.advs")
 
-whirl::log_write("output.table.ext")
+log_write("output.table.ext")
 
 #' Is this interface nice for the user or would it better with:
 
