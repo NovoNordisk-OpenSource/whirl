@@ -1,7 +1,7 @@
 #' Queue for continuous execution and logging of scripts
 #' @description
 #' Implementation of a queue for supporting the continuous execution and logging
-#' of several the scripts.
+#' of several scripts.
 #' The queue can be used interactively, but is mainly designed to be the internal
 #' backbone of the `run()` function.
 #' When a queue has several workers, pushed scripts will be run in parallel.
@@ -26,7 +26,7 @@ whirl_queue <- R6::R6Class(
       wq_push(self, private, scripts, tag)
     },
 
-    #' @description Push scripts in the queue withput executing them. Utility to include skipped scripts in the final queue.
+    #' @description Push scripts in the queue without executing them. Utility to include skipped scripts in the final queue.
     #' @param scripts [character] Full paths for the scripts to be executed
     #' @param tag (optional) [character] Tag for the scripts to include in the queue
     #' @return [invisible] self
@@ -35,7 +35,7 @@ whirl_queue <- R6::R6Class(
     },
 
     #' @description Poll the queue and start next steps if needed
-    #' @param timeout [numeric] The timeout in milliseconds. Note it is only implemented approximately if more than one script is running simultanously.
+    #' @param timeout [numeric] The timeout in milliseconds. Note it is only implemented approximately if more than one script is running simultaneously.
     #' @return [character] Status of all scripts queue
     poll = \(timeout) {
       wq_poll(self, private, timeout)
@@ -180,12 +180,11 @@ wq_wait <- function(self, private, timeout) {
 }
 
 wq_next_step <- function(self, private, wid) {
-
   purrr::pluck(private$.workers, "step", wid) <- purrr::pluck(private$.workers, "step", wid) + 1
   id_script <- purrr::pluck(private$.workers, "id_script", wid)
   session <- purrr::pluck(private$.workers, "session", wid)
 
-  switch (EXPR = purrr::pluck(private$.workers, "step", wid),
+  switch(EXPR = purrr::pluck(private$.workers, "step", wid),
 
           # Step 1: Log script
           "1" = {
