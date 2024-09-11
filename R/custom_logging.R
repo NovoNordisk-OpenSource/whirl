@@ -100,6 +100,8 @@ split_log <- function(log_df, types = c("read", "write", "delete")) {
 #' @noRd
 knit_print.whirl_log_info <- function(x, ...) {
   x |>
-    knitr::kable() |>
+    knitr::kable(
+      row.names = FALSE
+    ) |>
     knitr::knit_print()
 }
