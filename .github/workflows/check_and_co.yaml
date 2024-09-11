@@ -53,10 +53,7 @@ jobs:
     secrets: inherit
 
 #### For coverage (post in comments)
-  coverage:
-    name: Coverage report
-    uses: nn-opensource/actions/.github/workflows/coverage.yaml@main
-    secrets: inherit
+# see the extra step because of strace
 
 #### For megalinter (post in comments)
   megalinter:
