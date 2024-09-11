@@ -52,11 +52,11 @@ jobs:
     uses: nn-opensource/actions/.github/workflows/pkgdown.yaml@main
     secrets: inherit
 
-#### For coverage (post in comments)
-  coverage:
-    name: Coverage report
-    uses: nn-opensource/actions/.github/workflows/coverage.yaml@main
-    secrets: inherit
+# #### For coverage (post in comments)
+#   coverage:
+#     name: Coverage report
+#     uses: nn-opensource/actions/.github/workflows/coverage.yaml@main
+#     secrets: inherit
 
 #### For megalinter (post in comments)
   megalinter:
