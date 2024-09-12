@@ -225,7 +225,11 @@ wrs_log_script <- function(script, self, private, super) {
       output_file = "doc.md",
       execute_params = list(
         script = normalizePath(script),
-        with_library_paths = .libPaths()
+        with_library_paths = .libPaths(),
+        check_approved_folder_pkgs = private$check_approved_folder_pkgs,
+        check_approved_url_pkgs = private$check_approved_url_pkgs,
+        renv = private$check_renv,
+        tmpdir = private$wd
       ),
       execute_dir = quarto_execute_dir
     )
@@ -244,17 +248,10 @@ wrs_create_log <- function(self, private, super) {
       output_file = "log.html",
       execute_params = list(
         title = private$current_script,
-        script_md = file.path(self$get_wd(), "doc.md"),
-        p_wd = self$get_wd(),
-        strace = private$track_files,
-        strace_path = file.path(self$get_wd(), "strace.log"),
-        strace_discards = private$track_files_discards,
-        strace_keep = private$track_files_keep,
-        objects_path = file.path(self$get_wd(), "objects.rds"),
         check_approved_folder_pkgs = private$approved_pkgs_folder,
         check_approved_url_pkgs = private$approved_pkgs_url,
-        renv = private$check_renv,
-        with_library_paths = .libPaths()
+        with_library_paths = .libPaths(),
+        tmpdir = private$wd
       ),
       execute_dir = getwd()
     )
