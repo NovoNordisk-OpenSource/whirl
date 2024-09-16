@@ -58,7 +58,7 @@ read_strace_info <- function(path, p_wd = dirname(path), strace_discards = chara
 #' @noRd
 
 read_strace <- function(path, p_wd) {
-  strace <- readLines(path) |>
+  strace <- readLines(con = path, warn = FALSE) |>
     stringr::str_squish() |>
     stringr::str_subset("openat|unlink|chdir") |>
     stringr::str_subset(
@@ -72,7 +72,6 @@ read_strace <- function(path, p_wd) {
   if (length(strace) == 0) {
     return(
       tibble::tibble(
-        seq = integer(),
         time = as.POSIXct(character()),
         file = character(),
         type = character()

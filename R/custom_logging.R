@@ -57,7 +57,10 @@ read_from_log <- function(log = Sys.getenv("WHIRL_LOG_MSG")) {
   }
 
   con <- file(description = log, open = "r")
-  log_info <- jsonlite::stream_in(con, verbose = FALSE)
+  log_info <- jsonlite::stream_in(con, verbose = FALSE) |>
+    dplyr::mutate(
+      time = as.POSIXct(time)
+    )
   close(con)
   return(log_info)
 }

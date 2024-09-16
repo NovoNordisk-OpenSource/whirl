@@ -241,6 +241,23 @@ wrs_log_script <- function(script, self, private, super) {
 wrs_create_log <- function(self, private, super) {
   self$pb_update(status = "Creating log")
 
+  if (private$track_files) {
+    strace_msg <- private$wd |>
+      file.path("strace.log") |>
+      whirl:::read_strace(p_wd = private$wd) |>
+      whirl:::refine_strace(
+        strace_keep = private$track_files_keep,
+        strace_discards = private$track_files_discards
+      )
+
+    con <- file(
+      description = self$run(Sys.getenv, list("WHIRL_LOG_MSG")),
+      open = "a"
+      )
+    jsonlite::stream_out(x = strace_msg, con = con, verbose = FALSE)
+    close(con)
+  }
+
   self$call(
     func = \(...) quarto::quarto_render(...),
     args = list(

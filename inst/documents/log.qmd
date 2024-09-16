@@ -55,22 +55,6 @@ if (file.exists(file.path(params$tmpdir, "renv_status.rds"))) {
 log_info <- whirl:::read_from_log()
 use_log_info <- nrow(log_info) > 0
 
-use_strace <- file.exists(file.path(params$tmpdir, "strace.log"))
-
-if (use_strace) {
-  strace_info <- params$tmpdir |> 
-    file.path("strace.log") |> 
-    whirl:::read_strace(p_wd = params$tmpdir) |> 
-    whirl:::refine_strace(
-      strace_keep = params$strace_keep, 
-      strace_discards = params$strace_discards
-      )
-  
-  log_info <- dplyr::bind_rows(log_info, strace_info)
-  
-  use_log_info <- TRUE
-}
-
 if (use_log_info) {
     log_info <- log_info |> 
       dplyr::arrange(time) |> 
@@ -104,7 +88,7 @@ log_info$delete
 
 # Script
 
-```{r, child = params$script_md}
+```{r, child = file.path(params$tmpdir, "doc.md")}
 ```
 
 # Session info
