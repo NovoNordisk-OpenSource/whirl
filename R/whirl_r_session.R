@@ -244,8 +244,8 @@ wrs_create_log <- function(self, private, super) {
   if (private$track_files) {
     strace_msg <- private$wd |>
       file.path("strace.log") |>
-      whirl:::read_strace(p_wd = private$wd) |>
-      whirl:::refine_strace(
+      read_strace(p_wd = private$wd) |>
+      refine_strace(
         strace_keep = private$track_files_keep,
         strace_discards = private$track_files_discards
       )

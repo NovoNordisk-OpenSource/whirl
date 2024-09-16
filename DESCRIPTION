@@ -46,7 +46,8 @@ Imports:
     zephyr (>= 0.0.0.9000),
     zoo,
     future,
-    future.apply
+    future.apply,
+    glue
 Suggests: 
     testthat (>= 3.0.0)
 Remotes: 
