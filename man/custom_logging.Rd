@@ -23,6 +23,9 @@ Useful for e.g. read and write operations on databases etc.
 that are not automatically captured.
 }
 \details{
-The default envitonment variable \code{WHIRL_LOG_MSG} is set in the session used to log scripts, and input
+The default environment variable \code{WHIRL_LOG_MSG} is set in the session used to log scripts, and input
 is automatically captured in the resulting log.
+
+If run outside of whirl, meaning when the above environment variable is unset, the aoperations
+are streamed to \code{stdout()}. By default the console.
 }
