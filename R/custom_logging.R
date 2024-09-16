@@ -2,7 +2,12 @@
 #'
 #' Useful for e.g. read and write operations on databases etc.
 #' that are not automatically captured.
+#'
+#' The default environment variable `WHIRL_LOG_MSG` is set in the session used to log scripts, and input
+#' is automatically captured in the resulting log.
 #' @name custom_logging
+#' @param file [character()] description of the file that was read, written or deleted.
+#' @param log [character()] path to the log file.
 NULL
 
 #' @rdname custom_logging
@@ -57,11 +62,9 @@ read_from_log <- function(log = Sys.getenv("WHIRL_LOG_MSG")) {
   }
 
   con <- file(description = log, open = "r")
-  log_info <- jsonlite::stream_in(con, verbose = FALSE) |>
-    dplyr::mutate(
-      time = as.POSIXct(time)
-    )
+  log_info <- jsonlite::stream_in(con, verbose = FALSE)
   close(con)
+  log_info$time <- as.POSIXct(log_info$time)
   return(log_info)
 }
 
