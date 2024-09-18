@@ -1,62 +1,33 @@
-# File to run actions
 on:
-    push:
-      branches: [main, master, ci-test-new-one]
-    pull_request:
-      branches: [main, master]
-
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
 name: All actions
-
 jobs:
-
-# Using this file, you will have to set up secrets.
-#
-# Two options:
-# 1. Set up an ACTION_PAT secret with, at least, "repo" scope. And use as `secrets: inherit`. The default method.
-#   secrets: inherit
-#
-#  2. Set up a specific secret with, at least, "repo" scope and pass it as a parameter to the action.
-#   secrets:
-#     access-token: ${{ secrets.MY_OWN_SECRET }}
-
-### Comment or uncomment the actions you want to run
-
-##### For using a postgres db. (connector package)
-#   check-db:
-#     name: Check current version with db
-#     uses: nn-opensource/actions/.github/workflows/check_current_with_db.yaml@main
-#     with:
-#       password_db: "test_new"
-
-#### For using strace. (whirl package)
-  check-strace:
-    name: Check current version with strace
-    uses: nn-opensource/actions/.github/workflows/check_current_allow_strace.yaml@main
+  check-current-version:
+    name: Check current version
+    uses: >-
+      NovoNordisk-OpenSource/r.workflows/.github/workflows/check_current_allow_strace.yaml@main
     secrets: inherit
-
-# #### For normal workflow
-#   check-current-version:
-#     name: Check current version
-#     uses: nn-opensource/actions/.github/workflows/check_current_version.yaml@main
-#     secrets: inherit
-
-#### For NN workflow
-#   check-nn-version:
-#     name: Check NN version
-#     uses: nn-opensource/actions/.github/workflows/check_nn_versions.yaml@main
-#     secrets: inherit
-
-#### For pkgdown site (with dev feature)
+  check-nn-version:
+    name: Check NN version
+    uses: >-
+      NovoNordisk-OpenSource/r.workflows/.github/workflows/check_nn_versions.yaml@main
+    secrets: inherit
   pkgdown:
     name: Pkgdown site
-    uses: nn-opensource/actions/.github/workflows/pkgdown.yaml@main
+    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/pkgdown.yaml@main
     secrets: inherit
-
-#### For coverage (post in comments)
-# see the extra step because of strace
-
-#### For megalinter (post in comments)
+  coverage:
+    name: Coverage report
+    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/coverage.yaml@main
+    secrets: inherit
   megalinter:
     name: Megalinter
-    uses: nn-opensource/actions/.github/workflows/megalinter.yaml@main
+    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/megalinter.yaml@main
     secrets: inherit
