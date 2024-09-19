@@ -199,7 +199,8 @@ wq_next_step <- function(self, private, wid) {
           "3" = {
             purrr::pluck(private$.queue, "result", id_script) <- session$
               log_finish()$
-              create_outputs(out_dir = getwd(), format = "html")
+              create_outputs(out_dir = dirname(purrr::pluck(private$.queue, "script", id_script)),
+                             format = "html")
 
             purrr::pluck(private$.queue, "status", id_script) <-
               purrr::pluck(private$.queue, "result", id_script, "status", "status")
