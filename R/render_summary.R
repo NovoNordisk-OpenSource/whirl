@@ -1,30 +1,20 @@
 #' Render dataframe into a summary.html file
 #'
 #' @param input The input data.frame that should be rendered into a summary.html file
-#' @param summary_dir The output directory
+#' @param summary_file A character string specifying the path where the summary HTML file should be saved. Defaults to `"summary.html"`.
 #'
 #' @return Takes a dataframe as input and returns a log in html format
 #'
-render_summary <- function(input, summary_dir) {
-
-  if (tibble::is_tibble(input)) {
-    input <- input |>
-    dplyr::arrange(.data$Directory, .data$Filename)
-  } else {
-    input <- input
-  }
+render_summary <- function(input, summary_file = "summary.html") {
 
   summary_qmd <- withr::local_tempfile(
     lines = readLines(system.file("documents/summary.qmd", package = "whirl")),
-    fileext = ".qmd")
+    fileext = ".qmd"
+  )
 
   summary_log_html <- withr::local_tempfile(fileext = ".html")
 
-  if (summary_dir == getwd()) {
-    summary_dir_f <- here::here()
-  } else {
-    summary_dir_f <- normalizePath(summary_dir, winslash = "/")
-  }
+  summary_dir_f <- normalizePath(dirname(summary_file), winslash = "/")
 
   withr::with_dir(
     tempdir(),
@@ -38,12 +28,15 @@ render_summary <- function(input, summary_dir) {
   )
 
   # Create requested outputs
-  file_copy <- tryCatch(
+  tryCatch(
     file.copy(
       from = summary_log_html,
-      to = file.path(summary_dir, "summary.html"),
+      to = summary_file,
       overwrite = TRUE
-    )
+    ),
+    error = function(e) {
+      warning("File copy failed: ", e$message)
+      FALSE
+    }
   )
-
 }
