@@ -21,10 +21,6 @@ read_regexp <- function(input) {
   }) |>
     unlist(use.names = FALSE)
 
-  if (length(files_) == 0) {
-    files_ <- NULL
-  }
-
   return(files_)
 }
 

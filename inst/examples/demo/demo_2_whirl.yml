@@ -10,4 +10,4 @@ steps:
       - "adam/mk300.*\\.R"
   - name: "Run TFL folder through config"
     paths:
-      - "tfl"
+      - "tfl/tfl_whirl.yaml"

@@ -43,7 +43,10 @@ internal_run <- function(input, steps, queue, level) {
     }
   }
 
-  invisible(result)
+  if (exists("result")) {
+    invisible(result)
+  }
+
 
 }
 

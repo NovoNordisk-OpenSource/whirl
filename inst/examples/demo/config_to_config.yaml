@@ -1,0 +1,4 @@
+steps:
+  - name: "Run Metadata folder through config"
+    paths:
+      - "metadata/metadata_whirl.yaml"
