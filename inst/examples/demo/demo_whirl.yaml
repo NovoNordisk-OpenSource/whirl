@@ -1,0 +1,25 @@
+steps:
+  - name: "Run ADaM mk100 programs"
+    paths:
+      - "adam/mk100adsl.R"
+      - "adam/mk200adae.R"
+      - "adam/mk300.*\\.R"
+  - name: "Run Metadata folder through config"
+    paths:
+      - "metadata/metadata_whirl.yaml"
+  - name: "Run ADaM mk300 programs"
+    paths:
+      - "adam/mk300.*\\.R"
+  - name: "Run TFL folder through config"
+    paths:
+      - "tfl/tfl_whirl.yaml"
+
+  # - name: "Run ADaM mk200 programs"
+  #   paths:
+  #     - "adam/mk200.*\\.R"
+  # - name: "Run ADaM mk300 programs"
+  #   paths:
+  #     - "adam/mk300.*\\.R"
+  # - name: "Run TFL programs"
+  #   paths:
+  #     - "tfl"
