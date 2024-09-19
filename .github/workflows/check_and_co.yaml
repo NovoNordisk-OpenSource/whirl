@@ -34,5 +34,3 @@ jobs:
   megalinter:
     name: Megalinter
     uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/megalinter.yaml@a9a67926ac2348ccd35a97b8030be242f8976207
-    with:
-      setup: true
