@@ -1,0 +1,10 @@
+name: Specific setup for whirl
+description: Enables strace, which is used in several tests
+runs:
+  using: "composite"
+  steps:
+    - name: Allow strace to attach to a process
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
