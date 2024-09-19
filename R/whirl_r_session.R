@@ -202,8 +202,8 @@ wrs_log_script <- function(script, self, private, super) {
   self$pb_update(status = "Running script")
 
   quarto_execute_dir <- switch(tools::file_ext(script),
-    "R" = getwd(),
-    normalizePath(dirname(script)) # TODO: Should this default be changed?
+                               "R" = getwd(),
+                               normalizePath(dirname(script)) # TODO: Should this default be changed?
   )
 
   self$call(
@@ -280,7 +280,8 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
         replacement = "_log.html",
         x = basename(private$current_script)
       )
-    ))
+    ),
+    script = private$current_script)
   )
 
   # Create requested outputs
