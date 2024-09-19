@@ -15,8 +15,8 @@ test_that("Summary tibble is created successfully", {
   q <- whirl_queue$new(n_workers = 3)
 
   c(
-    "inst/examples/simple/prg1.R",
-    "inst/examples/simple/success.R"
+  system.file("examples/simple/prg1.R", package = "whirl"),
+  system.file("examples/simple/success.R", package = "whirl")
   ) |>
     q$run()
 
