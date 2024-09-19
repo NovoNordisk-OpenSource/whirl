@@ -21,7 +21,9 @@
 #' @return A tibble containing the execution results for all the scripts.
 #'
 #' @export
+
 run <- function(input,
+                log_dir = NULL,
                 steps = NULL,
                 n_workers = NULL,
                 log_dir = NULL,
@@ -64,6 +66,7 @@ run <- function(input,
                          level = 1)
 
   invisible(result$queue)
+
 }
 
 # TODO
