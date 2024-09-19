@@ -12,27 +12,27 @@ jobs:
   check-current-version:
     name: Check current version
     uses: >-
-      NovoNordisk-OpenSource/r.workflows/.github/workflows/check_current_version.yaml@use-setup-action
+      NovoNordisk-OpenSource/r.workflows/.github/workflows/check_current_version.yaml@a9a67926ac2348ccd35a97b8030be242f8976207
     with:
       setup: true
   check-nn-version:
     name: Check NN version
     uses: >-
-      NovoNordisk-OpenSource/r.workflows/.github/workflows/check_nn_versions.yaml@use-setup-action
+      NovoNordisk-OpenSource/r.workflows/.github/workflows/check_nn_versions.yaml@a9a67926ac2348ccd35a97b8030be242f8976207
     with:
       setup: true
   pkgdown:
     name: Pkgdown site
-    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/pkgdown.yaml@use-setup-action
+    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/pkgdown.yaml@a9a67926ac2348ccd35a97b8030be242f8976207
     with:
       setup: true
   coverage:
     name: Coverage report
-    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/coverage.yaml@use-setup-action
+    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/coverage.yaml@a9a67926ac2348ccd35a97b8030be242f8976207
     with:
       setup: true
   megalinter:
     name: Megalinter
-    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/megalinter.yaml@use-setup-action
+    uses: NovoNordisk-OpenSource/r.workflows/.github/workflows/megalinter.yaml@a9a67926ac2348ccd35a97b8030be242f8976207
     with:
       setup: true
