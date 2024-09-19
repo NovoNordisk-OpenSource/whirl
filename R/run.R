@@ -46,7 +46,9 @@ run <- function(input,
 
   #Identify number of workers - Use one less than the total number of cores
   if (is.null(n_workers)) {
-    n_workers <- min(c(parallel::detectCores() - 1, 8))
+    n_workers <- min(parallelly::availableCores(omit = 1), 8)
+  } else {
+    n_workers <- min(parallelly::availableCores(omit = 1), n_workers)
   }
 
   zephyr::msg("Executing scripts in parallel using {n_workers} cores\n",
