@@ -1,6 +1,6 @@
 test_that("testing read_regexp()", {
   file <- system.file("examples/demo/adam/mk100adsl.R", package = "whirl")
-  regexp <- system.file("examples/demo/adam/", package = "whirl")
+  regexp <- system.file("examples/demo/adam", package = "whirl")
 
   #A config file
   withr::with_dir(tempdir(), {

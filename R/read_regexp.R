@@ -6,14 +6,13 @@
 read_regexp <- function(input) {
 
   files_ <- lapply(input, function(x) {
-    base <- basename(x)
 
     #If the file exist then return the path
     if (file_exists(x)) {
       return(x)
     } else {
       #If the file does not exist then check if it is a regexp
-      files <- fs::dir_ls(dirname(x), regexp = base, type = "file")
+      files <- fs::dir_ls(dirname(x), regexp = basename(x), type = "file", perl = TRUE)
       if (length(files) == 0) {
         cli::cli_abort("No files or folders for this path {x}")
       }
