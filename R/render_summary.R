@@ -9,7 +9,7 @@ render_summary <- function(input, summary_dir) {
 
   if (tibble::is_tibble(input)) {
     input <- input |>
-    dplyr::arrange(Directory, Filename)
+    dplyr::arrange(.data$Directory, .data$Filename)
   } else {
     input <- input
   }

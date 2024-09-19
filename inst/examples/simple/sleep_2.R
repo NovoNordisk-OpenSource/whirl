@@ -1,2 +1,2 @@
 # Dummys cript to test parrallisation of callr
-Sys.sleep(30)
+Sys.sleep(2)

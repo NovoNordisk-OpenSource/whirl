@@ -12,9 +12,7 @@
 #' @param level Depth of the recursive config calls. The initial call will have 1
 #'
 #' @return A tibble containing the execution results for all the scripts.
-#' @export
 #'
-#' @examples
 internal_run <- function(input, steps, queue, level) {
 
   # Enrich the input with "name" and "path" elements

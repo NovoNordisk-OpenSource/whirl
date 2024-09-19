@@ -2,49 +2,37 @@
 % Please edit documentation in R/run.R
 \name{run}
 \alias{run}
-\title{Execute single or multiple R, R Markdown, and Quarto scripts by pointing
-directly to the file(s) or by pointing to a whirl config file}
+\title{Execute single or multiple R, R Markdown, and Quarto scripts}
 \usage{
-run(
-  path,
-  log_dir,
-  steps = NULL,
-  parallel = TRUE,
-  num_cores = NULL,
-  summary_dir = "."
-)
+run(input, log_dir = NULL, steps = NULL, n_workers = NULL, summary_dir = ".")
 }
 \arguments{
-\item{path}{A character vector of file path(s) to R, R Markdown, Quarto
-scripts, or to folder(s), or to to a whirl config file.}
+\item{input}{A character vector of file path(s) to R, R Markdown, Quarto
+scripts, or files in a folder using regular expression, or to to a whirl
+config file. The input can also be structured in a list where each element
+will be executed in parallel.}
 
 \item{log_dir}{A character string of file path(s) specifying the directories
 where the logs from the individual script(s) will be stored. If only one
 folder is specified then all logs will be stored in the same folder. If
-multiple paths are specified this has to match the number of paths
-specified in the "paths" argument.}
+multiple paths are specified this has to match the length of the input
+argument.}
 
 \item{steps}{An optional argument that can be used if only certain steps
 within a config files is to be executed. Should be equivalent to the names
 of the steps found in the config file. If kept as NULL (default) then all
-stpes listed in the config file wil lbe executed.}
+steps listed in the config file will be executed.}
 
-\item{parallel}{Logical; if TRUE, scripts will be executed in parallel.
-Default is FALSE. where the summary log will be stored.}
-
-\item{num_cores}{Integer specifying the number of cores to use for parallel
-execution. If NULL (default), it will use one less than the total number of
-available cores.}
+\item{n_workers}{Integer specifying the number of cores to use for parallel
+execution. If NULL (default), it will use the minimum of the total number
+of available cores - 1 and 8.}
 
 \item{summary_dir}{A character string specifying the file path where the
-summary log will be stored.}
+summary log will be stored. Default is the current working directory.}
 }
 \value{
-A list containing the execution results for each script. Each element
-of the list is a character string indicating the success or failure of the
-script execution.
+A tibble containing the execution results for all the scripts.
 }
 \description{
-Execute single or multiple R, R Markdown, and Quarto scripts by pointing
-directly to the file(s) or by pointing to a whirl config file
+Execute single or multiple R, R Markdown, and Quarto scripts
 }

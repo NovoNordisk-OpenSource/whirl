@@ -26,10 +26,8 @@ run <- function(input,
                 log_dir = NULL,
                 steps = NULL,
                 n_workers = NULL,
-                log_dir = NULL,
                 summary_dir = "."
                 ) {
-
 
   # Message when initiating
   d <- cli::cli_div(theme = list(rule = list(

@@ -1,3 +1,4 @@
+#' @title Fetch files if path uses regular expression
 #' @param input A character vector with paths to files that should be executed.
 #' @return A character vector with the paths to the files. If regexp have been
 #'   used as input these will be solved to the actual files matching the

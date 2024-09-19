@@ -18,7 +18,7 @@ enrich_input <- function(input, steps = NULL) {
   if (is_config_file & length(input) == 1) {
     root_dir <- dirname(input)
     config_whirl <- yaml::yaml.load_file(input)
-    got <- config_whirl$steps
+    got <- config_whirl$"steps"
   } else {
     root_dir = "."
   }
