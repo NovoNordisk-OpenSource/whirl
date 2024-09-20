@@ -12,7 +12,10 @@ read_regexp <- function(input) {
       return(x)
     } else {
       #If the file does not exist then check if it is a regexp
-      files <- list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
+      regexp <- basename(x) |>
+        utils::glob2rx()
+
+      files <- list.files(path = dirname(x), pattern = regexp, full.names = TRUE)
       if (length(files) == 0) {
         cli::cli_abort("No files or folders for this path {x}")
       }

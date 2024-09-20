@@ -10,13 +10,13 @@ test_that("testing read_regexp()", {
 
   #Using regexp
   withr::with_dir(tempdir(), {
-    all_files <- read_regexp(input = paste0(dir, "/.*.R"))
+    all_files <- read_regexp(input = paste0(dir, "/*.R"))
     expect_true(length(all_files) > 1)
   })
 
   #Using regexp
   withr::with_dir(tempdir(), {
-    all_files2 <- read_regexp(input = paste0(dir, "/.*\\.[rR]$"))
+    all_files2 <- read_regexp(input = paste0(dir, "/*.r|R"))
     expect_true(length(all_files2) > 1)
   })
 

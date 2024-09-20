@@ -1,7 +1,7 @@
 steps:
   - name: "Run ADaM mk400 programs"
     paths:
-      - "adam/mk400.*\\.[rR]$"
+      - "adam/mk400*.r|R"
   - name: "Run TFL programs"
     paths:
       - "tfl"
