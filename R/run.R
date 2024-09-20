@@ -65,11 +65,11 @@ run <- function(input,
 
   invisible(result$queue)
 
-}
+  # Create the summary log
+  summary_tibble <- util_queue_summary(result$queue)
+  render_summary(input = summary_tibble, summary_file = "summary.html")
 
-# TODO
-# Place log in the script folder and allow user configuration
-# Create the summary log
+}
 
 
 
