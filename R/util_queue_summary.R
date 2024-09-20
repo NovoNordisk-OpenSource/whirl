@@ -34,9 +34,10 @@ util_queue_summary <- function(queue_table) {
       x$log_details$location
     }),
     Information = sapply(queue_table[["result"]], function(x) {
-      x$status$warning
+      paste(x$status$warning, collapse = "<br>")
     })
   ) |>
     tidyr::unnest(cols = c("Information"), keep_empty = TRUE) |>
     tidyr::replace_na(list(Information = ""))
+
 }
