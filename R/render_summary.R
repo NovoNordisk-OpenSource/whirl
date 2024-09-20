@@ -28,7 +28,7 @@ render_summary <- function(input, summary_file = "summary.html") {
   )
 
   # Create requested outputs
-  tryCatch(
+  file_copy <- tryCatch(
     file.copy(
       from = summary_log_html,
       to = summary_file,
