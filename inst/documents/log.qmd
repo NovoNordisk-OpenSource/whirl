@@ -142,8 +142,8 @@ cat("\n")
 ```{r collect-objects}
 whirl_objects <- vector("list")
 
-if (exists("strace_info")) {
-  whirl_objects$strace_info <- strace_info
+if (exists("log_info")) {
+  whirl_objects$log_info <- log_info
 }
 if (exists("info")) {
   whirl_objects$environment_options <- info
