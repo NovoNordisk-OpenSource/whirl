@@ -1,5 +1,5 @@
 name: Specific setup for whirl
-description: Enables strace, which is used in several tests
+description: Installs Quarto and enables strace on Linux
 runs:
   using: "composite"
   steps:
