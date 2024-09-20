@@ -2,12 +2,12 @@ steps:
   - paths:
     - "adam/mk100adsl.R"
     - "adam/mk200adae.R"
-    - "adam/mk300.*\\.R"
+    - "adam/mk300.*[.rR]$"
   - paths:
       - "metadata/metadata_whirl.yaml"
   - name: "Run ADaM mk300 programs"
     paths:
-      - "adam/mk300.*\\.R"
+      - "adam/mk300.*[.rR]$"
   - name: "Run TFL folder through config"
     paths:
       - "tfl/tfl_whirl.yaml"
