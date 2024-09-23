@@ -5,6 +5,7 @@
 #' The queue can be used interactively, but is mainly designed to be the internal
 #' backbone of the `run()` function.
 #' When a queue has several workers, pushed scripts will be run in parallel.
+#' @importFrom R6 R6Class
 #' @noRd
 
 whirl_queue <- R6::R6Class(
@@ -49,9 +50,7 @@ whirl_queue <- R6::R6Class(
     },
 
     #' @description Run scripts using the queue. This is a wrapper around calling both push() and wait().
-    #' @param scripts [list], [character] with full paths for the scripts to be executed.
-    #' If a [list] is provided, each element will be executed in sequence.
-    #' If a [character] vector is provided, the scrips will be executed without waiting for the previous to finish.
+    #' @param scripts [character] with full paths for the scripts to be executed.
     #' @return [invisible] self
     run = \(scripts) {
       wq_run(scripts, self)
@@ -120,6 +119,7 @@ wq_initialise <- function(self, private, n_workers) {
 }
 
 wq_add_queue <- function(self, private, scripts, tag, status) {
+
   private$.queue <- self$queue |>
     tibble::add_row(
       id = nrow(self$queue) + seq_along(scripts),
@@ -218,29 +218,7 @@ wq_next_step <- function(self, private, wid) {
 }
 
 wq_run <- function(scripts, self) {
-  UseMethod("wq_run")
-}
-
-#' @export
-
-wq_run.default <- function(scripts, self) {
-  stop("Scripts can only be character or numeric")
-}
-
-#' @export
-
-wq_run.character <- function(scripts, queue) {
-  queue$
+  self$
     push(scripts)$
     wait()
 }
-
-#' @export
-
-wq_run.list <- function(scripts, queue) {
-  for (i in seq_along(scripts)) {
-    queue$run(scripts[[i]])
-  }
-  return(invisible(queue))
-}
-
