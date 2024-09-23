@@ -26,6 +26,12 @@ How chatty should the log be? Possibilities are \code{quiet}, \code{verbose}, an
 \item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
 }}
 
+\item{n_workers}{\describe{
+Number of simultanous workers used in therun function\item{default: }{\preformatted{1}}
+\item{option: }{whirl.n_workers}
+\item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
+}}
+
 \item{track_files_discards}{\describe{
 List of file naming patterns not be tracked when track_files = TRUE\item{default: }{\preformatted{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", 
     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())}}

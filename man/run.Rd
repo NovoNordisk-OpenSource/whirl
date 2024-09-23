@@ -4,7 +4,13 @@
 \alias{run}
 \title{Execute single or multiple R, R Markdown, and Quarto scripts}
 \usage{
-run(input, log_dir = NULL, steps = NULL, n_workers = NULL, summary_dir = ".")
+run(
+  input,
+  log_dir = NULL,
+  steps = NULL,
+  n_workers = options::opt("n_workers", env = "whirl"),
+  summary_file = "summary.html"
+)
 }
 \arguments{
 \item{input}{A character vector of file path(s) to R, R Markdown, Quarto

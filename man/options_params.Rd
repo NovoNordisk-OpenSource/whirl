@@ -6,6 +6,8 @@
 \arguments{
 \item{verbosity_level}{How chatty should the log be? Possibilities are \code{quiet}, \code{verbose}, and \code{debug}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
 
+\item{n_workers}{Number of simultanous workers used in therun function (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
+
 \item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE (Defaults to \verb{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())}, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')}
 
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}

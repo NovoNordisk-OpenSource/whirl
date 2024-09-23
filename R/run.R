@@ -19,14 +19,14 @@
 #'   multiple paths are specified this has to match the length of the input
 #'   argument.
 #' @return A tibble containing the execution results for all the scripts.
-#'
+#' @inheritParams options_params
 #' @export
 
 run <- function(input,
                 log_dir = NULL,
                 steps = NULL,
-                n_workers = NULL,
-                summary_dir = "."
+                n_workers = options::opt("n_workers", env = "whirl"),
+                summary_file = "summary.html"
                 ) {
 
   # Message when initiating
@@ -44,12 +44,8 @@ run <- function(input,
                       msg_fun = cli::cli_rule))
   on.exit(cli::cli_end(d), add = TRUE)
 
-  #Identify number of workers - Use one less than the total number of cores
-  if (is.null(n_workers)) {
-    n_workers <- min(parallelly::availableCores(omit = 1), 8)
-  } else {
-    n_workers <- min(parallelly::availableCores(omit = 1), n_workers)
-  }
+  # Constrain the number of workers
+  n_workers <- min(parallelly::availableCores(omit = 1), n_workers)
 
   zephyr::msg("Executing scripts in parallel using {n_workers} cores\n",
               levels_to_write = "verbose",
@@ -63,12 +59,11 @@ run <- function(input,
                          queue = queue,
                          level = 1)
 
-  invisible(result$queue)
-
   # Create the summary log
   summary_tibble <- util_queue_summary(result$queue)
-  render_summary(input = summary_tibble, summary_file = "summary.html")
+  render_summary(input = summary_tibble, summary_file = summary_file)
 
+  invisible(result$queue)
 }
 
 
