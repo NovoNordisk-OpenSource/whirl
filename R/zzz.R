@@ -6,6 +6,6 @@
   vctrs::s3_register("knitr::knit_print", "whirl_approved_pkgs")
   vctrs::s3_register("knitr::knit_print", "whirl_environment_info")
   vctrs::s3_register("knitr::knit_print", "whirl_options_info")
-  vctrs::s3_register("knitr::knit_print", "whirl_strace_info")
+  vctrs::s3_register("knitr::knit_print", "whirl_log_info")
   vctrs::s3_register("knitr::knit_print", "whirl_summary_info")
 }

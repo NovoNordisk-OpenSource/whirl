@@ -5,7 +5,8 @@
 
 start_strace <- function(pid, file) {
   sprintf(
-    "strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir -o %s -p %s -y",
+    # "strace -f -q -ttt -T -e trace=openat,unlink,unlinkat,chdir,network -o %s -p %s -y",
+    "strace -f -q -ttt -T -e trace=all -s 256 -o %s -p %s -y",
     file,
     pid
   ) |>
@@ -21,12 +22,12 @@ start_strace <- function(pid, file) {
 #' @return [list] of `data.frame`(s) of the relevant files for each type of info
 #' @noRd
 
-read_strace_info <- function(path, p_wd, strace_discards = character(), strace_keep = character(), types = c("read", "write", "delete")) {
+read_strace_info <- function(path, p_wd = dirname(path), strace_discards = character(), strace_keep = character(), types = c("read", "write", "delete")) {
   strace <- path |>
     read_strace(p_wd = p_wd) |>
     refine_strace(strace_discards = strace_discards, strace_keep = strace_keep)
 
-  class(strace) <- c("whirl_strace_info", class(strace))
+  class(strace) <- c("whirl_log_info", class(strace))
 
   # Split in a tibble for each type of output
 
@@ -43,22 +44,13 @@ read_strace_info <- function(path, p_wd, strace_discards = character(), strace_k
     unlist() |>
     which()
   dummy <- tibble::tibble(file = "No files")
-  class(dummy) <- c("whirl_strace_info", class(dummy))
+  class(dummy) <- c("whirl_log_info", class(dummy))
   out[i] <- list(dummy)
 
   return(out)
 }
 
-
-#' @noRd
-
-knit_print.whirl_strace_info <- function(x, ...) {
-  x |>
-    knitr::kable() |>
-    knitr::knit_print()
-}
-
-#' Read STRACE file
+#' Read strace file
 #'
 #' @param path [character] path to the strace log
 #' @param p_wd [character] path to the working directory used for the process tracked in strace
@@ -66,7 +58,7 @@ knit_print.whirl_strace_info <- function(x, ...) {
 #' @noRd
 
 read_strace <- function(path, p_wd) {
-  strace <- readLines(path) |>
+  strace <- readLines(con = path, warn = FALSE) |>
     stringr::str_squish() |>
     stringr::str_subset("openat|unlink|chdir") |>
     stringr::str_subset(
@@ -80,7 +72,6 @@ read_strace <- function(path, p_wd) {
   if (length(strace) == 0) {
     return(
       tibble::tibble(
-        seq = integer(),
         time = as.POSIXct(character()),
         file = character(),
         type = character()
