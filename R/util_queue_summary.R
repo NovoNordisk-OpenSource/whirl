@@ -5,7 +5,7 @@
 #'
 #' @param queue_table The queue table containing the result data
 #' @return A tibble summarizing the queue table data
-#' @export
+#' @noRd
 util_queue_summary <- function(queue_table) {
   if (!"result" %in% names(queue_table) ||
         !is.list(queue_table$result)) {

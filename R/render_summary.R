@@ -40,3 +40,38 @@ render_summary <- function(input, summary_file = "summary.html") {
     }
   )
 }
+
+#' @noRd
+knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
+  hold <- x |>
+    data.frame(check.names = FALSE)
+
+  row.names(hold) <- NULL
+  ncols <- ncol(hold)
+
+  if (grepl("rstudio_cloud", Sys.getenv("R_CONFIG_ACTIVE"))) {
+    hold <- hold |> dplyr::mutate(formated = file.path("/file_show?path=", .data[["Hyperlink"]]))
+  } else {
+    hold <- hold |> dplyr::mutate(formated = file.path(fs::path_rel(.data[["Hyperlink"]], start = path_rel_start)))
+  }
+  #
+  hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', hold$formated, "HTML Log"))
+
+  hold <- hold |>
+    dplyr::select(-.data[["formated"]])
+
+  knitr::kable(hold, format = "html", escape = FALSE) |>
+    kableExtra::column_spec(1:ncols, background = ifelse(
+      hold[["Status"]] == "error",
+      "#fceeef",
+      ifelse(
+        hold[["Status"]] == "warning",
+        "#fffaea",
+        ifelse(hold[["Status"]] == "success", "#ebf5f1",
+               ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
+        )
+      )
+    )) |>
+    kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) |>
+    knitr::knit_print()
+}

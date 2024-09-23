@@ -8,18 +8,15 @@
 #'   within a config files is to be executed. Should be equivalent to the names
 #'   of the steps found in the config file. If kept as NULL (default) then all
 #'   steps listed in the config file will be executed.
-#' @param n_workers Integer specifying the number of cores to use for parallel
-#'   execution. If NULL (default), it will use the minimum of the total number
-#'   of available cores - 1 and 8.
-#' @param summary_dir A character string specifying the file path where the
-#'   summary log will be stored. Default is the current working directory.
+#' @param summary_file A character string specifying the file path where the
+#'   summary log will be stored.
 #' @param log_dir A character string of file path(s) specifying the directories
 #'   where the logs from the individual script(s) will be stored. If only one
 #'   folder is specified then all logs will be stored in the same folder. If
 #'   multiple paths are specified this has to match the length of the input
 #'   argument.
-#' @return A tibble containing the execution results for all the scripts.
 #' @inheritParams options_params
+#' @return A tibble containing the execution results for all the scripts.
 #' @export
 
 run <- function(input,

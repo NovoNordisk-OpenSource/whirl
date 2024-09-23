@@ -8,7 +8,7 @@ read_regexp <- function(input) {
   files_ <- lapply(input, function(x) {
 
     #If the file exist then return the path
-    if (file_exists(x)) {
+    if (fs::file_exists(x)) {
       return(x)
     } else {
       #If the file does not exist then check if it is a regexp

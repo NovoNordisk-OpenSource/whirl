@@ -29,12 +29,10 @@ within a config files is to be executed. Should be equivalent to the names
 of the steps found in the config file. If kept as NULL (default) then all
 steps listed in the config file will be executed.}
 
-\item{n_workers}{Integer specifying the number of cores to use for parallel
-execution. If NULL (default), it will use the minimum of the total number
-of available cores - 1 and 8.}
+\item{n_workers}{Number of simultanous workers used in the run function (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
-\item{summary_dir}{A character string specifying the file path where the
-summary log will be stored. Default is the current working directory.}
+\item{summary_file}{A character string specifying the file path where the
+summary log will be stored.}
 }
 \value{
 A tibble containing the execution results for all the scripts.
