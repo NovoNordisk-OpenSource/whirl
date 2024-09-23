@@ -2,20 +2,24 @@
 params:
   script: 'dev'
   with_library_paths: library_paths
+  check_approved_folder_pkgs: NULL
+  check_approved_url_pkgs: NULL
+  renv: TRUE
+  tmpdir: "."
 ---
 
-```{r, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   error = TRUE,
   warning = TRUE,
   message = TRUE,
   echo = TRUE
 )
+
+.libPaths(c(character(), params$with_library_paths))
 ```
 
 ```{r, echo=FALSE, eval=(grepl("\\.R$", params$script))}
-.libPaths(c(character(), params$with_library_paths))
-
 knitr::spin_child(params$script)
 ```
 
@@ -27,3 +31,19 @@ knitr::spin_child(params$script)
 
 ```{r, child = params$script, eval=(grepl("\\.py$", params$script))}
 ```
+
+```{r sessioninfo, include=FALSE}
+saveRDS(
+  object = whirl:::session_info(params$check_approved_folder_pkgs, params$check_approved_url_pkgs),
+  file = file.path(params$tmpdir, "session_info.rds")
+)
+
+if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv) {
+  saveRDS(
+    object = whirl:::renv_status(),
+    file = file.path(params$tmpdir, "renv_status.rds")
+  )
+}
+
+```
+

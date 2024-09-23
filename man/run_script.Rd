@@ -7,11 +7,11 @@ test with a single script}
 \usage{
 run_script(
   script,
-  track_files = NULL,
-  check_renv = NULL,
-  out_formats = NULL,
-  approved_pkgs_folder = NULL,
-  approved_pkgs_url = NULL,
+  track_files = options::opt("track_files", env = "whirl"),
+  check_renv = options::opt("check_renv", env = "whirl"),
+  out_formats = options::opt("out_formats", env = "whirl"),
+  approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
+  approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl"),
   out_dir = dirname(script)
 )
 }

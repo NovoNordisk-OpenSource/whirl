@@ -7,7 +7,7 @@ directly to the file(s) or by pointing to a whirl config file}
 \usage{
 run(
   path,
-  log_dir,
+  log_dir = NULL,
   steps = NULL,
   parallel = TRUE,
   num_cores = NULL,
