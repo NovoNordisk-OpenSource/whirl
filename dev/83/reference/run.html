@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,14 +74,12 @@ steps listed in the config file will be executed.</p></dd>
 
 
 <dt id="arg-n-workers">n_workers<a class="anchor" aria-label="anchor" href="#arg-n-workers"></a></dt>
-<dd><p>Integer specifying the number of cores to use for parallel
-execution. If NULL (default), it will use the minimum of the total number
-of available cores - 1 and 8.</p></dd>
+<dd><p>Number of simultanous workers used in the run function (Defaults to <code>1</code>, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')</p></dd>
 
 
-<dt id="arg-summary-dir">summary_dir<a class="anchor" aria-label="anchor" href="#arg-summary-dir"></a></dt>
+<dt id="arg-summary-file">summary_file<a class="anchor" aria-label="anchor" href="#arg-summary-file"></a></dt>
 <dd><p>A character string specifying the file path where the
-summary log will be stored. Default is the current working directory.</p></dd>
+summary log will be stored.</p></dd>
 
 </dl></div>
     <div class="section level2">

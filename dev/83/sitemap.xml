@@ -4,24 +4,16 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
-<url><loc>/reference/align_left.html</loc></url>
 <url><loc>/reference/custom_logging.html</loc></url>
-<url><loc>/reference/define_paths.html</loc></url>
 <url><loc>/reference/enrich_input.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/internal_run.html</loc></url>
-<url><loc>/reference/logging_from_yaml.html</loc></url>
 <url><loc>/reference/normalize_with_base.html</loc></url>
-<url><loc>/reference/one_step_logging.html</loc></url>
 <url><loc>/reference/options.html</loc></url>
 <url><loc>/reference/options_params.html</loc></url>
 <url><loc>/reference/read_regexp.html</loc></url>
 <url><loc>/reference/render_summary.html</loc></url>
 <url><loc>/reference/run.html</loc></url>
-<url><loc>/reference/run_by_config.html</loc></url>
-<url><loc>/reference/run_paths.html</loc></url>
-<url><loc>/reference/run_script.html</loc></url>
-<url><loc>/reference/util_queue_summary.html</loc></url>
 <url><loc>/reference/whirl-package.html</loc></url>
 </urlset>
 
