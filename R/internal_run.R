@@ -29,7 +29,7 @@ internal_run <- function(input, steps, queue, level) {
     zephyr::msg(name, msg_fun = cli_level, levels_to_write = "verbose")
 
     # If the step points to a config file then re-initiate internal_run()
-    if (any(grepl("yaml|yml|json", tools::file_ext(files)))) {
+    if (any(grepl("yaml|yml", tools::file_ext(files)))) {
       internal_run(input = files,
                    steps = steps,
                    queue = queue,

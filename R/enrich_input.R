@@ -11,7 +11,7 @@
 enrich_input <- function(input, steps = NULL) {
 
   # Characterize the input
-  is_config_file <- any(grepl("yaml|yml|json", tools::file_ext(input)))
+  is_config_file <- any(grepl("yaml|yml", tools::file_ext(input)))
   is_character <- is.character(input)
 
   # Read yaml and extract list
