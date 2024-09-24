@@ -104,15 +104,3 @@ run(input = "path/to/config.yaml", n_workers = 4)
 ```
 
 Each steps in the config file will be executed independently while scrips within each step will be executed in parallel using the number of workers specified with the `n_workers` argument.
-
-  
-
-
-
-
-
-
-
-
-
-

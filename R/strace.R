@@ -64,6 +64,7 @@ read_strace <- function(path, p_wd) {
   if (!file.exists(path)) {
     return(
       tibble::tibble(
+        seq = integer(),
         time = as.POSIXct(character()),
         file = character(),
         type = character()
@@ -87,6 +88,7 @@ read_strace <- function(path, p_wd) {
   if (length(strace) == 0) {
     return(
       tibble::tibble(
+        seq = integer(),
         time = as.POSIXct(character()),
         file = character(),
         type = character()
