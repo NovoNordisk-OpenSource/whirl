@@ -3,6 +3,7 @@
 #' @return A character vector with the paths to the files. If regexp have been
 #'   used as input these will be solved to the actual files matching the
 #'   criteria.
+#' @noRd
 read_regexp <- function(input) {
 
   files_ <- lapply(input, function(x) {

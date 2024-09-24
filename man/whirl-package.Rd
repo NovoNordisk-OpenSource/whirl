@@ -8,6 +8,14 @@
 \description{
 Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://nn-opensource.github.io/whirl}
+  \item \url{https://github.com/NN-OpenSource/whirl}
+}
+
+}
 \author{
 \strong{Maintainer}: Aksel Thomsen \email{oath@novonordisk.com}
 

@@ -31,7 +31,7 @@
 #' normalized_path <- normalize_with_base(home_path)
 #' print(normalized_path)
 #' }
-#' @keywords internal
+#' @noRd
 normalize_with_base <- function(path, base = ".") {
   # Expand any ~ in the path to the full home directory path
   path <- path.expand(path)
