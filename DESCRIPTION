@@ -10,6 +10,7 @@ Authors@R: c(
   )
 Description: Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
 License: Apache License (>= 2)
+URL: https://nn-opensource.github.io/whirl, https://github.com/NN-OpenSource/whirl
 Depends: 
     R (>= 4.1)
 Imports: 

@@ -2,7 +2,7 @@
 title: "Execute scripts"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Execution_of_scripts}
+  %\VignetteIndexEntry{Execute scripts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
