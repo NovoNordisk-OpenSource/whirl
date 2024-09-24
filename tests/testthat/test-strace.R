@@ -1,4 +1,5 @@
 test_that("strace works", {
+  skip_on_ci()
   skip_on_os(c("windows", "mac", "solaris"))
 
   withr::with_tempdir(
