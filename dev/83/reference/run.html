@@ -55,7 +55,8 @@
 <dd><p>A character vector of file path(s) to R, R Markdown, Quarto
 scripts, or files in a folder using regular expression, or to to a whirl
 config file. The input can also be structured in a list where each element
-will be executed in parallel.</p></dd>
+will be executed sequentially, while scripts within each element can be
+executed in parallel.</p></dd>
 
 
 <dt id="arg-log-dir">log_dir<a class="anchor" aria-label="anchor" href="#arg-log-dir"></a></dt>
@@ -68,9 +69,9 @@ argument.</p></dd>
 
 <dt id="arg-steps">steps<a class="anchor" aria-label="anchor" href="#arg-steps"></a></dt>
 <dd><p>An optional argument that can be used if only certain steps
-within a config files is to be executed. Should be equivalent to the names
-of the steps found in the config file. If kept as NULL (default) then all
-steps listed in the config file will be executed.</p></dd>
+within a config files (or list) is to be executed. Should be equivalent to
+the names of the steps found in the config file. If kept as NULL (default)
+then all steps listed in the config file will be executed.</p></dd>
 
 
 <dt id="arg-n-workers">n_workers<a class="anchor" aria-label="anchor" href="#arg-n-workers"></a></dt>
