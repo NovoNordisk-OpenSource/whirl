@@ -3,11 +3,12 @@
 #' @param input  A character vector of file path(s) to R, R Markdown, Quarto
 #'   scripts, or files in a folder using regular expression, or to to a whirl
 #'   config file. The input can also be structured in a list where each element
-#'   will be executed in parallel.
+#'   will be executed sequentially, while scripts within each element can be
+#'   executed in parallel.
 #' @param steps An optional argument that can be used if only certain steps
-#'   within a config files is to be executed. Should be equivalent to the names
-#'   of the steps found in the config file. If kept as NULL (default) then all
-#'   steps listed in the config file will be executed.
+#'   within a config files (or list) is to be executed. Should be equivalent to
+#'   the names of the steps found in the config file. If kept as NULL (default)
+#'   then all steps listed in the config file will be executed.
 #' @param summary_file A character string specifying the file path where the
 #'   summary log will be stored.
 #' @param log_dir A character string of file path(s) specifying the directories

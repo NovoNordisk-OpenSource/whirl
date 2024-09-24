@@ -16,7 +16,8 @@ run(
 \item{input}{A character vector of file path(s) to R, R Markdown, Quarto
 scripts, or files in a folder using regular expression, or to to a whirl
 config file. The input can also be structured in a list where each element
-will be executed in parallel.}
+will be executed sequentially, while scripts within each element can be
+executed in parallel.}
 
 \item{log_dir}{A character string of file path(s) specifying the directories
 where the logs from the individual script(s) will be stored. If only one
@@ -25,9 +26,9 @@ multiple paths are specified this has to match the length of the input
 argument.}
 
 \item{steps}{An optional argument that can be used if only certain steps
-within a config files is to be executed. Should be equivalent to the names
-of the steps found in the config file. If kept as NULL (default) then all
-steps listed in the config file will be executed.}
+within a config files (or list) is to be executed. Should be equivalent to
+the names of the steps found in the config file. If kept as NULL (default)
+then all steps listed in the config file will be executed.}
 
 \item{n_workers}{Number of simultanous workers used in the run function (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
