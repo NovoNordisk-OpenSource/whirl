@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,10 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Execute_scripts.html">Execute scripts</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -43,40 +47,34 @@
 
       <dl><dt>
 
-          <code><a href="align_left.html">align_left()</a></code>
-
-        </dt>
-        <dd>Left-align text and pad to same length.</dd>
-      </dl><dl><dt>
-
           <code><a href="custom_logging.html">log_read()</a></code> <code><a href="custom_logging.html">log_write()</a></code> <code><a href="custom_logging.html">log_delete()</a></code>
 
         </dt>
         <dd>Helper function to log custom messages</dd>
       </dl><dl><dt>
 
-          <code><a href="define_paths.html">define_paths()</a></code>
+          <code><a href="enrich_input.html">enrich_input()</a></code>
 
         </dt>
-        <dd>Find path for files to log</dd>
+        <dd>Converting input to a standardized list with that contain step names and files paths</dd>
       </dl><dl><dt>
 
-          <code><a href="logging_from_yaml.html">logging_from_yaml()</a></code>
+          <code><a href="internal_run.html">internal_run()</a></code>
 
         </dt>
-        <dd>Read and create summary data frame</dd>
-      </dl><dl><dt>
-
-          <code><a href="one_step_logging.html">one_step_logging()</a></code>
-
-        </dt>
-        <dd>Logging one step from yaml</dd>
+        <dd>Sending the scripts to the whirl_r_queue for execution</dd>
       </dl><dl><dt>
 
           <code><a href="options.html">options</a></code>
 
         </dt>
         <dd>whirl Options</dd>
+      </dl><dl><dt>
+
+          <code><a href="read_regexp.html">read_regexp()</a></code>
+
+        </dt>
+        <dd>Fetch files if path uses regular expression</dd>
       </dl><dl><dt>
 
           <code><a href="render_summary.html">render_summary()</a></code>
@@ -88,25 +86,7 @@
           <code><a href="run.html">run()</a></code>
 
         </dt>
-        <dd>Execute single or multiple R, R Markdown, and Quarto scripts by pointing directly to the file(s) or by pointing to a whirl config file</dd>
-      </dl><dl><dt>
-
-          <code><a href="run_by_config.html">run_by_config()</a></code>
-
-        </dt>
-        <dd>Create logs for files from a yaml configuration</dd>
-      </dl><dl><dt>
-
-          <code><a href="run_paths.html">run_paths()</a></code>
-
-        </dt>
-        <dd>Execute multiple R, R Markdown, and Quarto scripts</dd>
-      </dl><dl><dt>
-
-          <code><a href="run_script.html">run_script()</a></code>
-
-        </dt>
-        <dd>Run script test with a single script</dd>
+        <dd>Execute single or multiple R, R Markdown, and Quarto scripts</dd>
       </dl></div>
   </main></div>
 
