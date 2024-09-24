@@ -1,7 +1,8 @@
 #' Execute single or multiple R, R Markdown, and Quarto scripts
 #'
 #' @description
-#' Executes and logs the scripts. Logs for each script are stored in the same folder as the script.
+#' Executes and logs the execution of the scripts. 
+#' Logs for each script are stored in the same folder as the script.
 #'
 #' @param input  A character vector of file path(s) to R, R Markdown, Quarto
 #'   scripts, or files in a folder using regular expression, or to to a whirl
