@@ -1,136 +1,76 @@
-#' Execute single or multiple R, R Markdown, and Quarto scripts by pointing
-#' directly to the file(s) or by pointing to a whirl config file
+#' Execute single or multiple R, R Markdown, and Quarto scripts
 #'
-#' @param path  A character vector of file path(s) to R, R Markdown, Quarto
-#'   scripts, or to folder(s), or to to a whirl config file.
+#' @description
+#' Executes and logs the execution of the scripts. 
+#' Logs for each script are stored in the same folder as the script.
+#'
+#' @param input  A character vector of file path(s) to R, R Markdown, Quarto
+#'   scripts, or files in a folder using regular expression, or to to a whirl
+#'   config file. The input can also be structured in a list where each element
+#'   will be executed sequentially, while scripts within each element can be
+#'   executed in parallel.
 #' @param steps An optional argument that can be used if only certain steps
-#'   within a config files is to be executed. Should be equivalent to the names
-#'   of the steps found in the config file. If kept as NULL (default) then all
-#'   stpes listed in the config file wil lbe executed.
-#' @param parallel Logical; if TRUE, scripts will be executed in parallel.
-#'   Default is FALSE. where the summary log will be stored.
-#' @param num_cores Integer specifying the number of cores to use for parallel
-#'   execution. If NULL (default), it will use one less than the total number of
-#'   available cores.
-#' @param summary_dir A character string specifying the file path where the
+#'   within a config files (or list) is to be executed. Should be equivalent to
+#'   the names of the steps found in the config file. If kept as NULL (default)
+#'   then all steps listed in the config file will be executed.
+#' @param summary_file A character string specifying the file path where the
 #'   summary log will be stored.
-#' @param log_dir A character string of file path(s) specifying the directories
-#'   where the logs from the individual script(s) will be stored. If only one
-#'   folder is specified then all logs will be stored in the same folder. If
-#'   multiple paths are specified this has to match the number of paths
-#'   specified in the "paths" argument.
-#' @return A list containing the execution results for each script. Each element
-#'   of the list is a character string indicating the success or failure of the
-#'   script execution.
-#'
+#' @inheritParams options_params
+#' @return A tibble containing the execution results for all the scripts.
 #' @export
-run <- function(path,
-                log_dir = NULL,
+
+run <- function(input,
                 steps = NULL,
-                parallel = TRUE,
-                num_cores = NULL,
-                summary_dir = ".") {
+                n_workers = options::opt("n_workers", env = "whirl"),
+                summary_file = "summary.html"
+                ) {
 
   # Message when initiating
-  cli::cli_h1("Executing scripts and generating logs")
+  d <- cli::cli_div(theme = list(rule = list(
+    color = "skyblue3", "line-type" = "double"
+  )))
+
+  zephyr::msg("Executing scripts and generating logs",
+              levels_to_write = "verbose",
+              msg_fun = cli::cli_rule)
 
   # Message when ending
-  on.exit(cli::cli_h1("End of process"))
+  on.exit(zephyr::msg("End of process",
+                      levels_to_write = "verbose",
+                      msg_fun = cli::cli_rule))
+  on.exit(cli::cli_end(d), add = TRUE)
 
-  # Ensure that any whirl_error file is removed before execution
-  unlink_whirl_error_file()
+  # Constrain the number of workers
+  n_workers <- min(parallelly::availableCores(omit = 1), n_workers)
 
-  # Separating config and non-config files
-  config_file <- path[grepl("yaml|yml|json", tools::file_ext(path))]
-  non_config_files <- path[!grepl("yaml|yml|json", tools::file_ext(path))]
+  zephyr::msg("Executing scripts in parallel using {n_workers} cores\n",
+              levels_to_write = "verbose",
+              msg_fun = cli::cli_inform)
 
+  # Initiating the queue
+  queue <- whirl_queue$new(n_workers = n_workers)
 
-  #Any directories supplied in the path argument -------------------------------
-  dirs_exists <- any(unlist(lapply(path, dir.exists)))
+  result <- internal_run(input = input,
+                         steps = steps,
+                         queue = queue,
+                         level = 1)
 
-  #Check if folder contains config file
-  if (dirs_exists) {
+  # Create the summary log
+  summary_tibble <- util_queue_summary(result$queue)
+  render_summary(input = summary_tibble, summary_file = summary_file)
 
-    dirs <- path[unlist(lapply(path, dir.exists))]
-
-    #If a config file exists in the directories then only run that one and skip
-    #the individual scripts in the folder
-    config_in_dirs <- dirs[unlist(lapply(dirs, detect_whirl_file))]
-
-    if (length(config_in_dirs) > 0) {
-      temp <- unlist(lapply(dirs, detect_whirl_file))
-      config_in_dirs <- names(temp[temp == TRUE])
-
-      if (length(config_file) > 0) {
-        config_file <- c(config_file, config_in_dirs)
-      } else {
-        config_file <- config_in_dirs
-      }
-
-      #Remove all folder(s) containing config files from the non_config_files
-      #object
-      to_remove <- dirname(config_in_dirs)
-      got <- normalizePath(non_config_files)
-
-      non_config_files <- setdiff(got, to_remove)
-
-    }
-  }
-
-
-  # When only pointing to a whirl config file ----------------------------------
-  if (length(config_file) > 0 & rlang::is_empty(non_config_files)) {
-
-    list_from_config <- purrr::map(config_file, run_by_config,
-              steps = steps,
-              summary_dir = summary_dir,
-              summary = FALSE)
-
-    from_config <- dplyr::bind_rows(list_from_config)
-
-    render_summary(from_config, summary_dir = summary_dir)
-  }
-
-  # When path do not point to any config file ----------------------------------
-  if (rlang::is_empty(config_file) & length(non_config_files) > 0) {
-    run_paths(paths = non_config_files,
-              parallel = parallel,
-              num_cores = num_cores,
-              summary_dir = summary_dir)
-  }
-
-
-  # When pointing to a whirl config file plus additional files -----------------
-  if (length(config_file) > 0 & length(non_config_files) > 0) {
-
-    list_from_config <- purrr::map(config_file, run_by_config,
-                                   steps = steps,
-                                   summary_dir = summary_dir,
-                                   summary = FALSE)
-
-
-    from_config <- dplyr::bind_rows(list_from_config)
-
-    cat("\n") #Ensure that the next message appear on a new line
-
-    from_non_config <- run_paths(paths = non_config_files,
-      parallel = parallel,
-      num_cores = num_cores,
-      summary_dir = summary_dir,
-      summary = FALSE)
-
-    got <- from_config |>
-      dplyr::bind_rows(from_non_config)
-
-    render_summary(got, summary_dir = summary_dir)
-
-
-  }
-
-  # Clean up when it ends
-  unlink_whirl_error_file()
-
+  invisible(result$queue)
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,4 @@
+steps:
+  - name: "Run metadata programs"
+    paths:
+      - "*.r|R"

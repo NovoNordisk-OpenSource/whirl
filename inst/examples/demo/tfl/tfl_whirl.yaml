@@ -1,0 +1,4 @@
+steps:
+  - name: "Run TFL programs"
+    paths:
+      - "tfl_1.R"

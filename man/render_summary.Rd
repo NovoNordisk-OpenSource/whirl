@@ -4,12 +4,12 @@
 \alias{render_summary}
 \title{Render dataframe into a summary.html file}
 \usage{
-render_summary(input, summary_dir)
+render_summary(input, summary_file = "summary.html")
 }
 \arguments{
 \item{input}{The input data.frame that should be rendered into a summary.html file}
 
-\item{summary_dir}{The output directory}
+\item{summary_file}{A character string specifying the path where the summary HTML file should be saved. Defaults to \code{"summary.html"}.}
 }
 \value{
 Takes a dataframe as input and returns a log in html format

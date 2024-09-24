@@ -76,3 +76,9 @@ options::define_option(
   desc = "Approved URL library packages",
   envvar_fn = options::envvar_str_split(delim = ";")
 )
+
+options::define_option(
+  option = "n_workers",
+  default = 1,
+  desc = "Number of simultanous workers used in the run function"
+)

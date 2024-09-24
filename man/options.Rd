@@ -69,6 +69,12 @@ Approved URL library packages\item{default: }{\preformatted{NULL}}
 \item{envvar: }{R_WHIRL_APPROVED_PKGS_URL (as character vector, split on ';' delimiter)}
 }}
 
+\item{n_workers}{\describe{
+Number of simultanous workers used in the run function\item{default: }{\preformatted{1}}
+\item{option: }{whirl.n_workers}
+\item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
+}}
+
 }
 }
 

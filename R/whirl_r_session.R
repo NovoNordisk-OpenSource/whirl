@@ -1,9 +1,9 @@
 #' Whirl R session
 #' @description
 #' Extension of [callr::r_session] with additional methods for easier creating logs.
-#' @importFrom callr r_session
 #' @importFrom R6 R6Class
-#' @keywords internal
+#' @importFrom callr r_session
+#' @noRd
 
 whirl_r_session <- R6::R6Class(
   classname = "whirl_r_session",
@@ -167,12 +167,12 @@ wrs_print <- function(self, private, super) {
 }
 
 wrs_pb_update <- function(..., self, private, super) {
-  if (!is.null(private$verbose)) private$pb$update(...)
+  if (!is.null(private$pb)) private$pb$update(...)
   return(invisible(self))
 }
 
 wrs_pb_done <- function(status, self, private, super) {
-  if (!is.null(private$verbose)) private$pb$done(status)
+  if (!is.null(private$pb)) private$pb$done(status)
   return(invisible(self))
 }
 
@@ -213,8 +213,8 @@ wrs_log_script <- function(script, self, private, super) {
   self$pb_update(status = "Running script")
 
   quarto_execute_dir <- switch(tools::file_ext(script),
-    "R" = getwd(),
-    normalizePath(dirname(script)) # TODO: Should this default be changed?
+                               "R" = getwd(),
+                               normalizePath(dirname(script)) # TODO: Should this default be changed?
   )
 
   self$call(
@@ -278,7 +278,7 @@ wrs_create_log <- function(self, private, super) {
 }
 
 wrs_log_finish <- function(self, private, super) {
-  if (private$verbose) {
+  if (!is.null(private$pb)) {
     status <- self$get_wd() |>
       file.path("doc.md") |>
       get_status()
@@ -305,7 +305,8 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
         replacement = "_log.html",
         x = basename(private$current_script)
       )
-    ))
+    ),
+    script = private$current_script)
   )
 
   # Create requested outputs

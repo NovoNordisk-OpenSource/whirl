@@ -2,7 +2,7 @@ steps:
   - name: "Run scripts for dataflow"
     paths:
       - "without_whirl/prg1.R"
-      - "with_whirl_file"
+      - "with_whirl_file/prg2.R"
   - name: "Prepare adam datasets"
     paths:
       - "prgQmd.qmd"

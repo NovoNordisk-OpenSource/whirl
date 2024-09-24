@@ -1,4 +1,5 @@
 test_that("strace works", {
+  skip_on_ci()
   skip_on_os(c("windows", "mac", "solaris"))
 
   withr::with_tempdir(
@@ -7,16 +8,20 @@ test_that("strace works", {
 
       p <- callr::r_session$new()
 
-      start_strace(pid = p$get_pid(), file = "strace")
+      start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
 
-      cat(list.files(), "\n")
+      cat("============= Initial: =============", "\n")
+      cat(c("wd:", getwd()), "\n")
+      cat(c("files:", list.files()), "\n")
+      cat(c("environment:", ls()), "\n")
+      cat("====================================", "\n")
 
       # No output yet
 
       p$run(\() 1 + 1)
 
       strace_info <- read_strace_info(
-        path = "strace",
+        path = "strace.log",
         p_wd = getwd(),
         strace_discards = options::opt("track_files_discards"),
         strace_keep = getwd()
@@ -36,7 +41,7 @@ test_that("strace works", {
       p$run(\() saveRDS(object = mtcars, file = "mtcars.rds"))
 
       strace_info <- read_strace_info(
-        path = "strace",
+        path = "strace.log",
         p_wd = getwd(),
         strace_discards = options::opt("track_files_discards"),
         strace_keep = getwd()
@@ -56,7 +61,7 @@ test_that("strace works", {
       p$run(\() readLines("dummy.txt"))
 
       strace_info <- read_strace_info(
-        path = "strace",
+        path = "strace.log",
         p_wd = getwd(),
         strace_discards = options::opt("track_files_discards"),
         strace_keep = getwd()
@@ -76,7 +81,7 @@ test_that("strace works", {
       p$run(\() file.remove("dummy.txt"))
 
       strace_info <- read_strace_info(
-        path = "strace",
+        path = "strace.log",
         p_wd = getwd(),
         strace_discards = options::opt("track_files_discards"),
         strace_keep = getwd()
@@ -91,7 +96,14 @@ test_that("strace works", {
       strace_info$write$file |>
         expect_match("/mtcars.rds$")
 
-      p$close()
+      p$kill()
+      p$finalize()
+
+      cat("============= final: =============", "\n")
+      cat(c("wd:", getwd()), "\n")
+      cat(c("files:", list.files()), "\n")
+      cat(c("environment:", ls()), "\n")
+      cat("==================================", "\n")
     },
     tmpdir = getwd()
   )
