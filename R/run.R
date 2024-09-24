@@ -1,5 +1,8 @@
 #' Execute single or multiple R, R Markdown, and Quarto scripts
 #'
+#' @description
+#' Executes and logs the scripts. Logs for each script are stored in the same folder as the script.
+#'
 #' @param input  A character vector of file path(s) to R, R Markdown, Quarto
 #'   scripts, or files in a folder using regular expression, or to to a whirl
 #'   config file. The input can also be structured in a list where each element
@@ -11,17 +14,11 @@
 #'   then all steps listed in the config file will be executed.
 #' @param summary_file A character string specifying the file path where the
 #'   summary log will be stored.
-#' @param log_dir A character string of file path(s) specifying the directories
-#'   where the logs from the individual script(s) will be stored. If only one
-#'   folder is specified then all logs will be stored in the same folder. If
-#'   multiple paths are specified this has to match the length of the input
-#'   argument.
 #' @inheritParams options_params
 #' @return A tibble containing the execution results for all the scripts.
 #' @export
 
 run <- function(input,
-                log_dir = NULL,
                 steps = NULL,
                 n_workers = options::opt("n_workers", env = "whirl"),
                 summary_file = "summary.html"
