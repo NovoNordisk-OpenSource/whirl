@@ -103,6 +103,7 @@ test_that("strace works", {
       cat(c("files:", list.files()), "\n")
       cat(c("environment:", ls()), "\n")
       cat("==================================", "\n")
-    }
+    },
+    tmpdir = getwd()
   )
 })
