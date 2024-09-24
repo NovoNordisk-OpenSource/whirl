@@ -6,7 +6,6 @@
 \usage{
 run(
   input,
-  log_dir = NULL,
   steps = NULL,
   n_workers = options::opt("n_workers", env = "whirl"),
   summary_file = "summary.html"
@@ -18,12 +17,6 @@ scripts, or files in a folder using regular expression, or to to a whirl
 config file. The input can also be structured in a list where each element
 will be executed sequentially, while scripts within each element can be
 executed in parallel.}
-
-\item{log_dir}{A character string of file path(s) specifying the directories
-where the logs from the individual script(s) will be stored. If only one
-folder is specified then all logs will be stored in the same folder. If
-multiple paths are specified this has to match the length of the input
-argument.}
 
 \item{steps}{An optional argument that can be used if only certain steps
 within a config files (or list) is to be executed. Should be equivalent to
@@ -39,5 +32,6 @@ summary log will be stored.}
 A tibble containing the execution results for all the scripts.
 }
 \description{
-Execute single or multiple R, R Markdown, and Quarto scripts
+Executes and logs the execution of the scripts.
+Logs for each script are stored in the same folder as the script.
 }
