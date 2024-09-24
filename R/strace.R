@@ -58,6 +58,21 @@ read_strace_info <- function(path, p_wd = dirname(path), strace_discards = chara
 #' @noRd
 
 read_strace <- function(path, p_wd) {
+
+  # Early return if file does not exist
+
+  if (!file.exists(path)) {
+    return(
+      tibble::tibble(
+        time = as.POSIXct(character()),
+        file = character(),
+        type = character()
+      )
+    )
+  }
+
+  # Read strace log
+
   strace <- readLines(con = path, warn = FALSE) |>
     stringr::str_squish() |>
     stringr::str_subset("openat|unlink|chdir") |>
