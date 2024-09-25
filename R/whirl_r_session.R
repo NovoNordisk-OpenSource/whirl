@@ -133,6 +133,11 @@ wrs_initialize <- function(verbose, check_renv, track_files, track_files_discard
   private$approved_pkgs_folder <- approved_pkgs_folder
   private$approved_pkgs_url <- approved_pkgs_url
 
+  # If the stream does not support dynamic tty, which is needed for progress bars to update in place, the verbosity is downgraded.
+  if (private$verbose == "verbose" && !cli::is_dynamic_tty()) {
+    private$verbose <- "minimal"
+  }
+
   super$run(func = setwd, args = list(dir = private$wd))
 
   system.file("documents", package = "whirl") |>
@@ -216,8 +221,11 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
-  if (private$verbose == "verbose") {
-    private$pb <- pb_script$new(script = private$current_script)
+  if (private$verbose != "quiet") {
+    private$pb <- pb_script$new(
+      script = private$current_script,
+      use_progress = private$verbose == "verbose"
+      )
   }
 
   self$pb_update(status = "Running script")
