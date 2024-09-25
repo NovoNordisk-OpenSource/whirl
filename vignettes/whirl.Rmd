@@ -14,6 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r setup, include=FALSE}
+library(whirl)
+options(whirl.verbosity_level = "quiet")
+```
+
 
 # Introduction
 The whirl package provides functionalities for executing scripts in batch while simultaneously getting logs from the individual executions. In the following sections, we will go through how to use the package.
@@ -23,21 +28,26 @@ The whirl package provides functionalities for executing scripts in batch while 
 The `input` argument in the `run()` function can in the most simple case point to a single file for which an execution and log-generation is required. 
 
 ```{r, eval = FALSE}
-library(whirl)
 run(input = "path/to/script.R")
 ```
+
+```{r}
+system.file("examples/simple/success.R", package = "whirl") |> 
+  run()
+```
+
 
 The `input` argument can also point to multiple files in a directory using regular expression. In this case, all scripts in the directory will be executed in parallel (and the number of workers can be specified through the `n_workers` argument. Note that the default number of workers is set to one) and a log will be generated for each script. A summary log file will also be provided as a fast way to get an overview of the execution. The location of the summary file can be controlled with the `summary_file` argument.
 
 ```{r, eval = FALSE}
 # Execution of all R files in a specific directory
-run(input = "path/to/directory/*.r|R", 
+run(input = "path/to/directory/*.(r|R)", 
     n_workers = 4, 
     summary_file = "path/to/summary")
 
 
 # Execution of all R files starting with "mk200" in a specific directory
-run(input = "path/to/directory/mk200*.r|R", 
+run(input = "path/to/directory/mk200*.(r|R)", 
     n_workers = 8, 
     summary_file = "path/to/summary")
 ```
@@ -104,3 +114,4 @@ run(input = "path/to/config.yaml", n_workers = 4)
 ```
 
 Each steps in the config file will be executed independently while scrips within each step will be executed in parallel using the number of workers specified with the `n_workers` argument.
+
