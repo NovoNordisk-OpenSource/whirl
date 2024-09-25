@@ -4,7 +4,7 @@
 \alias{options_params}
 \title{Internal reuse of options description}
 \arguments{
-\item{verbosity_level}{How chatty should the log be? Possibilities are \code{quiet}, \code{verbose}, and \code{debug}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
+\item{verbosity_level}{How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
 
 \item{n_workers}{Number of simultanous workers used in the run function (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
@@ -12,7 +12,7 @@
 
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
-\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
+\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
 \item{approved_pkgs_folder}{Approved folder library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkgs_folder' or environment variable 'R_WHIRL_APPROVED_PKGS_FOLDER')}
 

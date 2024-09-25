@@ -18,9 +18,19 @@ whirl_r_session <- R6::R6Class(
     #' @param approved_pkgs_folder [character] Folder with approved packages
     #' @param approved_pkgs_url [character] URL with approved packages
     #' @return A [whirl_r_session] object
-    initialize = \(verbose = TRUE, check_renv = FALSE, track_files = FALSE, track_files_discards = c(), track_files_keep = c(), approved_pkgs_folder = c(), approved_pkgs_url = c()) {
-      wrs_initialize(verbose, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url, self, private, super)
-    },
+    initialize = \(
+      verbose = options::opt("verbosity_level", env = "whirl"),
+      check_renv = options::opt("check_renv", env = "whirl"),
+      track_files = options::opt("track_files", env = "whirl"),
+      track_files_discards = options::opt("track_files_discards", env = "whirl"),
+      track_files_keep = options::opt("track_files_keep", env = "whirl"),
+      approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
+      approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+      ) {
+
+        wrs_initialize(verbose, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url, self, private, super)
+      }
+    ,
 
     #' @description Finalize the whirl R session
     finalize = \() {
@@ -90,7 +100,7 @@ whirl_r_session <- R6::R6Class(
     #' @param out_dir [character] Output directory for the log
     #' @param format [character] Output formats to create
     #' @return [invisible],[list] of logging information
-    create_outputs = \(out_dir, format) {
+    create_outputs = \(out_dir, format = options::opt("out_formats", env = "whirl")) {
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
@@ -206,7 +216,7 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
-  if (private$verbose) {
+  if (private$verbose == "verbose") {
     private$pb <- pb_script$new(script = private$current_script)
   }
 

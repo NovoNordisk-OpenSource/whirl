@@ -21,7 +21,7 @@ options::opt(x, default, env = "whirl")
 
 \describe{
 \item{out_formats}{\describe{
-Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. See also details.\item{default: }{\preformatted{"html"}}
+Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}.\item{default: }{\preformatted{"html"}}
 \item{option: }{whirl.out_formats}
 \item{envvar: }{R_WHIRL_OUT_FORMATS (evaluated if possible, raw string otherwise)}
 }}
@@ -52,7 +52,7 @@ List of file naming patterns alway to be tracked when track_files = TRUE\item{de
 }}
 
 \item{verbosity_level}{\describe{
-How chatty should the log be? Possibilities are \code{quiet}, \code{verbose}, and \code{debug}.\item{default: }{\preformatted{"verbose"}}
+How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.\item{default: }{\preformatted{"verbose"}}
 \item{option: }{whirl.verbosity_level}
 \item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
 }}
