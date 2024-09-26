@@ -1,8 +1,11 @@
 #' Execute single or multiple R, R Markdown, and Quarto scripts
 #'
 #' @description
-#' Executes and logs the execution of the scripts. 
+#' Executes and logs the execution of the scripts.
 #' Logs for each script are stored in the same folder as the script.
+#'
+#' The way the execution is logged is configurable through several options for
+#' e.g. the verbosity of the logs. See [options] on how to configure these.
 #'
 #' @param input  A character vector of file path(s) to R, R Markdown, Quarto
 #'   scripts, or files in a folder using regular expression, or to to a whirl
@@ -16,7 +19,20 @@
 #' @param summary_file A character string specifying the file path where the
 #'   summary log will be stored.
 #' @inheritParams options_params
+#'
 #' @return A tibble containing the execution results for all the scripts.
+#'
+#' @examples
+#' # Run a single script
+#' script <- system.file("examples/simple/success.R", package = "whirl")
+#' result <- run(script)
+#' print(result)
+#'
+#'
+#' # Run several scripts in parallel on up to 2 workers
+#' scripts <- system.file("examples/simple", c("success.R", "warning.R", "error.R"), package = "whirl")
+#' result <- run(scripts, n_workers = 2)
+#' print(result)
 #' @export
 
 run <- function(input,

@@ -15,7 +15,7 @@ whirl_queue <- R6::R6Class(
     #' @description Initialize the new whirl_queue
     #' @param n_workers [numeric] Maximum number of workers to be used simultaneously
     #' @return A [whirl_queue] object
-    initialize = \(n_workers = 1) {
+    initialize = \(n_workers = options::opt("n_workers", env = "whirl")) {
       wq_initialise(self, private, n_workers)
     },
 
@@ -145,7 +145,7 @@ wq_poll <- function(self, private, timeout) {
   if (length(self$next_ids)) {
     nid <- self$next_ids
     wid <- self$next_workers
-    private$.workers[["session"]][wid] <- replicate(n = length(wid), expr = whirl_r_session$new(verbose = TRUE), simplify = FALSE)
+    private$.workers[["session"]][wid] <- replicate(n = length(wid), expr = whirl_r_session$new(), simplify = FALSE)
     private$.workers[wid, "id_script"] <- nid
     private$.workers[wid, "active"] <- TRUE
     private$.queue[nid, "status"] <- "running"
