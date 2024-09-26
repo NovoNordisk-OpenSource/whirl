@@ -3,40 +3,44 @@
 pb_script <- R6::R6Class(
   classname = "pb_script",
   public = list(
-    initialize = \(script) {
+    initialize = \(script, use_progress = cli::is_dynamic_tty()) {
 
       withr::local_options(
         cli.progress_show_after = 0,
         cli.progress_clear = FALSE
       )
 
-      private$id <- cli::cli_progress_bar(
-        type = "custom",
-        clear = FALSE,
-        status = "Started",
-        current = FALSE,
-        .auto_close = FALSE,
-        extra = list(
-          script = script,
-          done = "ERROR"
-        ),
-        format = paste0(
-          "{cli::pb_spin} ",
-          "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",
-          "{cli::pb_status}",
-          "[{cli::pb_elapsed}]"
-        ),
-        format_done = paste0(
-          "{cli::pb_extra$done} ",
-          "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",
-          "{cli::pb_status}",
-          "[{cli::pb_elapsed}]"
+      private$script <- script
+
+      if (use_progress) {
+        private$id <- cli::cli_progress_bar(
+          type = "custom",
+          clear = FALSE,
+          status = "Started",
+          current = FALSE,
+          .auto_close = FALSE,
+          extra = list(
+            script = script,
+            done = "ERROR"
+          ),
+          format = paste0(
+            "{cli::pb_spin} ",
+            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",
+            "{cli::pb_status}",
+            "[{cli::pb_elapsed}]"
+          ),
+          format_done = paste0(
+            "{cli::pb_extra$done} ",
+            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",
+            "{cli::pb_status}",
+            "[{cli::pb_elapsed}]"
+          )
         )
-      )
-      self$update()
+        self$update()
+      }
     },
     update = \(...){
-      cli::cli_progress_update(id = private$id, ...)
+      if (!is.null(private$id)) cli::cli_progress_update(id = private$id, ...)
     },
     done = \(status = c("success", "warning", "error")){
       status <- rlang::arg_match(status)
@@ -52,11 +56,17 @@ pb_script <- R6::R6Class(
         warning = "Completed with warnings",
         error = "Completed with errors"
       )
-      self$update(extra = list(done = done), status = done_msg)
-      cli::cli_progress_done(id = private$id)
+
+      if (!is.null(private$id)) {
+        self$update(extra = list(done = done), status = done_msg)
+        cli::cli_progress_done(id = private$id)
+      } else {
+        cli::cli_inform("{done} {.href [{basename(private$script)}](file://{private$script})}: {done_msg}")
+      }
     }
   ),
   private = list(
-    id = NULL
+    id = NULL,
+    script = NULL
   )
 )

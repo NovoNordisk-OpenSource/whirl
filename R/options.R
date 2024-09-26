@@ -11,7 +11,7 @@ NULL
 options::define_option(
   option = "out_formats",
   default = "html",
-  desc = "Which log format(s) to produce. Possiblities are `html`, `json`, and markdown formats:`gfm`, `commonmark`, and `markua`. See also details."
+  desc = "Which log format(s) to produce. Possiblities are `html`, `json`, and markdown formats:`gfm`, `commonmark`, and `markua`."
 )
 
 options::define_option(
@@ -60,7 +60,7 @@ options::define_option(
 options::define_option(
   option = "verbosity_level",
   default = "verbose",
-  desc = "How chatty should the log be? Possibilities are `quiet`, `verbose`, and `debug`."
+  desc = "How chatty should the log be? Possibilities are `quiet`, `minimal` and `verbose`."
 )
 
 options::define_option(

@@ -34,4 +34,19 @@ A tibble containing the execution results for all the scripts.
 \description{
 Executes and logs the execution of the scripts.
 Logs for each script are stored in the same folder as the script.
+
+The way the execution is logged is configurable through several options for
+e.g. the verbosity of the logs. See \link{options} on how to configure these.
+}
+\examples{
+# Run a single script
+script <- system.file("examples/simple/success.R", package = "whirl")
+result <- run(script)
+print(result)
+
+
+# Run several scripts in parallel on up to 2 workers
+scripts <- system.file("examples/simple", c("success.R", "warning.R", "error.R"), package = "whirl")
+result <- run(scripts, n_workers = 2)
+print(result)
 }
