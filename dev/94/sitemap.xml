@@ -1,0 +1,22 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/Execute_scripts.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/custom_logging.html</loc></url>
+<url><loc>/reference/enrich_input.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/internal_run.html</loc></url>
+<url><loc>/reference/normalize_with_base.html</loc></url>
+<url><loc>/reference/options.html</loc></url>
+<url><loc>/reference/options_params.html</loc></url>
+<url><loc>/reference/read_regexp.html</loc></url>
+<url><loc>/reference/render_summary.html</loc></url>
+<url><loc>/reference/run.html</loc></url>
+<url><loc>/reference/summary.html</loc></url>
+<url><loc>/reference/whirl-package.html</loc></url>
+</urlset>
+
