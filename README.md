@@ -102,8 +102,8 @@ scripts in the second steps.
 ``` r
 result <- run(config, n_workers = 2)
 #> ✔ success.R: Completed succesfully
-#> ⚠ warning.R: Completed with warnings
 #> ✖ error.R: Completed with errors
+#> ⚠ warning.R: Completed with warnings
 ```
 
 ``` r
@@ -124,4 +124,6 @@ logging for your needs see the following:
 - `run()`: For further information on how to call it.
 - `vignette("whirl")`: For a more in depth explanation, and more
   advanced usage.
+- `vignette("example")`: With a simple example, including the created
+  log.
 - `options()`: On how to change the default behavior of whirl.

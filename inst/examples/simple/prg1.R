@@ -1,19 +1,17 @@
 
 #' Setup
 
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
-#' Data data
+#' Prepare data
 
 x <- mtcars |>
   as_tibble(rownames = "car")
 
-x |>
-  print(n = 100)
+print(x)
 
-message("this is good")
-
-#' Plot
+#' Create and save plot
 
 ggplot(data = x) +
   geom_point(mapping = aes(x = mpg, y = hp, size = wt, colour = as.factor(am)))

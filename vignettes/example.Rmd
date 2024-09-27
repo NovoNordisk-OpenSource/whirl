@@ -1,0 +1,56 @@
+---
+title: "Log example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Log example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+system.file("examples/simple/prg1.R", package = "whirl") |> 
+  file.copy(to = "example.R")
+```
+
+In this example we are going to execute the following script and create a log of it's execution:
+
+```{r, echo = FALSE}
+readLines("example.R") |> 
+  cli::cli_code()
+```
+
+We are going to use the `run()` function to execute the script, and since this vignette
+is created on Linux we can use the `whirl.track_files` option to automatically track the used files: 
+
+```{r whirl-setup}
+library(whirl)
+
+options(whirl.track_files = TRUE)
+options(whirl.verbosity_level = "minimal")
+```
+
+The `verbosity_level` is set to `minimal` for nicer printing in ths vignette.
+Now we are ready to execute the script:
+
+```{r run}
+result <- run("example.R")
+
+print(result)
+```
+
+The script is now executed and you can access the logs below:
+
+```{r copy, include=FALSE}
+file.copy(from = "summary.html", to = "../docs/articles")
+file.copy(from = "example_log.html", to = "../docs/articles")
+```
+
+* [View summary log](summary.html)
+* [View log for example.R](example_log.html)
+* [The saved plot1.png](plot1.png)
+
