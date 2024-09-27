@@ -61,7 +61,7 @@ pb_script <- R6::R6Class(
         self$update(extra = list(done = done), status = done_msg)
         cli::cli_progress_done(id = private$id)
       } else {
-        cli::cli_inform("{done} {.href [{basename(private$script)}](file://{private$script})}: {done_msg}")
+        cli::cli_inform("{done} {basename(private$script)}: {done_msg}")
       }
     }
   ),
