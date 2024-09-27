@@ -30,7 +30,7 @@ library(whirl)
 run(input = "path/to/script.R")
 ```
 
-The `input` argument can also point to multiple files in a directory using wildcard (or globbing patters). 
+The `input` argument can also point to multiple files in a directory using wildcard (or globbing) patterns. 
 In this case, all scripts in the directory will be executed in parallel and a log will be generated for each script.
 The number of workers can be specified through the `n_workers` argument (default is set to one).
 A summary log file will also be provided as a fast way to get an overview of the execution. 
@@ -117,12 +117,12 @@ The config file could have the following structure.
 steps:
   - name: "Step 1"    
     paths:    
-    - "path/to/script1.R"
-    - "path/to/script2.R"
+      - "path/to/script1.R"
+      - "path/to/script2.R"
   - name: "Step 2"  
     paths:    
-    - "path/to/script3.R"
-    - "path/to/script4.R"
+      - "path/to/script3.R"
+      - "path/to/script4.R"
 ```
 
 In this case, the `input` argument in the `run()` function should point to the config file. 

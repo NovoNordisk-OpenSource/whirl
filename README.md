@@ -57,9 +57,13 @@ parallel.
 When using `run()` the following files are created:
 
 1.  Creates a log in the same directory as the script with the names
-    `{script_name}_log.html`.
+    `{script_name}_log.html`. See
+    [example_log.html](articles/example_log.html) for an example of a
+    simple log.
 2.  Creates a summary log with the overall status of each script.
-    Default path is `summary.html`.
+    Default path is `summary.html`. See
+    [summary.html](articles/summary.html) for an example of a summary of
+    the same log as above.
 
 Apart from this the function also returns a `tibble` with the status of
 the script execution similar to the content of the summary above:
@@ -69,8 +73,8 @@ print(result)
 #> # A tibble: 2 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… succe… <named list>
-#> 2     2 <NA>  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… warni… <named list>
+#> 1     1 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… succe… <named list>
+#> 2     2 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… warni… <named list>
 ```
 
 ## Config files
@@ -111,9 +115,9 @@ print(result)
 #> # A tibble: 3 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… succe… <named list>
-#> 2     2 <NA>  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… warni… <named list>
-#> 3     3 <NA>  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… error  <named list>
+#> 1     1 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… succe… <named list>
+#> 2     2 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… warni… <named list>
+#> 3     3 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… error  <named list>
 ```
 
 ## Customize run()
