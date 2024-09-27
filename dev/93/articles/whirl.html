@@ -87,7 +87,7 @@ execution and log-generation is required.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nn-opensource.github.io/whirl">whirl</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span>input <span class="op">=</span> <span class="st">"path/to/script.R"</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>input</code> argument can also point to multiple files in a
-directory using wildcard (or globbing patters). In this case, all
+directory using wildcard (or globbing) patterns. In this case, all
 scripts in the directory will be executed in parallel and a log will be
 generated for each script. The number of workers can be specified
 through the <code>n_workers</code> argument (default is set to one). A
@@ -181,12 +181,12 @@ structure.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">steps</span><span class="kw">:</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">"Step 1"</span><span class="at">    </span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="at">    </span><span class="fu">paths</span><span class="kw">:</span><span class="at">    </span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script1.R"</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script2.R"</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script1.R"</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script2.R"</span></span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">"Step 2"</span><span class="at">  </span></span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="at">    </span><span class="fu">paths</span><span class="kw">:</span><span class="at">    </span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script3.R"</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script4.R"</span></span></code></pre></div>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script3.R"</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"path/to/script4.R"</span></span></code></pre></div>
 <p>In this case, the <code>input</code> argument in the
 <code><a href="../reference/run.html">run()</a></code> function should point to the config file. Assuming
 the config file is called <code>config.yaml</code>, the execution can be

@@ -92,8 +92,8 @@
 <p>Here we are specifying that <code><a href="reference/run.html">run()</a></code> can use up to two simultaneous workers to execute the scripts, meaning that they will be executed in parallel.</p>
 <p>When using <code><a href="reference/run.html">run()</a></code> the following files are created:</p>
 <ol style="list-style-type: decimal">
-<li>Creates a log in the same directory as the script with the names <code>{script_name}_log.html</code>.</li>
-<li>Creates a summary log with the overall status of each script. Default path is <code>summary.html</code>.</li>
+<li>Creates a log in the same directory as the script with the names <code>{script_name}_log.html</code>. See <a href="articles/example_log.html">example_log.html</a> for an example of a simple log.</li>
+<li>Creates a summary log with the overall status of each script. Default path is <code>summary.html</code>. See <a href="articles/summary.html">summary.html</a> for an example of a summary of the same log as above.</li>
 </ol>
 <p>Apart from this the function also returns a <code>tibble</code> with the status of the script execution similar to the content of the summary above:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -101,8 +101,8 @@
 <span><span class="co">#&gt; # A tibble: 2 × 5</span></span>
 <span><span class="co">#&gt;      id tag   script                                         status result      </span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;                                          &lt;chr&gt;  &lt;list&gt;      </span></span>
-<span><span class="co">#&gt; 1     1 &lt;NA&gt;  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… succe… &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 2     2 &lt;NA&gt;  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… warni… &lt;named list&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     1 &lt;NA&gt;  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… succe… &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 2     2 &lt;NA&gt;  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… warni… &lt;named list&gt;</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="config-files">Config files<a class="anchor" aria-label="anchor" href="#config-files"></a>
@@ -130,9 +130,9 @@
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
 <span><span class="co">#&gt;      id tag   script                                         status result      </span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;                                          &lt;chr&gt;  &lt;list&gt;      </span></span>
-<span><span class="co">#&gt; 1     1 &lt;NA&gt;  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… succe… &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 2     2 &lt;NA&gt;  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… warni… &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 3     3 &lt;NA&gt;  /home/oath/R/x86_64-pc-linux-gnu-library/4.4/… error  &lt;named list&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     1 &lt;NA&gt;  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… succe… &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 2     2 &lt;NA&gt;  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… warni… &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 3     3 &lt;NA&gt;  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… error  &lt;named list&gt;</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="customize-run">Customize run()<a class="anchor" aria-label="anchor" href="#customize-run"></a>
