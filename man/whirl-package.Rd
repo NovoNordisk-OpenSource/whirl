@@ -6,6 +6,8 @@
 \alias{whirl-package}
 \title{whirl: Logging package}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
 }
 \author{
