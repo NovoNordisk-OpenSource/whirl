@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,12 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="articles/whirl.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/example.html">Log example</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -117,8 +123,8 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="va">config</span>, n_workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ success.R: Completed succesfully</span></span>
-<span><span class="co">#&gt; ⚠ warning.R: Completed with warnings</span></span>
-<span><span class="co">#&gt; ✖ error.R: Completed with errors</span></span></code></pre></div>
+<span><span class="co">#&gt; ✖ error.R: Completed with errors</span></span>
+<span><span class="co">#&gt; ⚠ warning.R: Completed with warnings</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 5</span></span>
@@ -137,6 +143,8 @@
 <code><a href="reference/run.html">run()</a></code>: For further information on how to call it.</li>
 <li>
 <code><a href="articles/whirl.html">vignette("whirl")</a></code>: For a more in depth explanation, and more advanced usage.</li>
+<li>
+<code><a href="articles/example.html">vignette("example")</a></code>: With a simple example, including the created log.</li>
 <li>
 <code><a href="reference/options.html">options()</a></code>: On how to change the default behavior of whirl.</li>
 </ul>
