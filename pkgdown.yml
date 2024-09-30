@@ -2,5 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  Execute_scripts: Execute_scripts.html
-last_built: 2024-09-27T12:45Z
+  example: example.html
+  whirl: whirl.html
+last_built: 2024-09-30T10:08Z
+urls:
+  reference: https://nn-opensource.github.io/whirl/reference
+  article: https://nn-opensource.github.io/whirl/articles
