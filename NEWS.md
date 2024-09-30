@@ -1,3 +1,7 @@
+# whirl 0.0.5 (2024-09-27)
+* Updated documentation
+* README and vignettes are now ready for users.
+
 # whirl 0.0.4 (2024-09-24)
 * Adjusting `run()` to unify execution of scripts, lists of scripts, and configuration files.
 * Using multiple independent `callr::r_session` when executing several scripts.

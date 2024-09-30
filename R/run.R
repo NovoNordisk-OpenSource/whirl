@@ -22,17 +22,21 @@
 #'
 #' @return A tibble containing the execution results for all the scripts.
 #'
-#' @examples
+#'@examplesIf FALSE
+#'
 #' # Run a single script
 #' script <- system.file("examples/simple/success.R", package = "whirl")
-#' result <- run(script)
-#' print(result)
-#'
+#' run(script)
 #'
 #' # Run several scripts in parallel on up to 2 workers
 #' scripts <- system.file("examples/simple", c("success.R", "warning.R", "error.R"), package = "whirl")
-#' result <- run(scripts, n_workers = 2)
-#' print(result)
+#' run(scripts, n_workers = 2)
+#'
+#' # Run scripts in several steps
+#' step_1 <- system.file("examples/simple", c("success.R", "warning.R"), package = "whirl")
+#' step_2 <- system.file("examples/simple", c("error.R"), package = "whirl")
+#' run(list(step_1, step_2), n_workers = 2)
+#'
 #' @export
 
 run <- function(input,
@@ -77,16 +81,3 @@ run <- function(input,
 
   invisible(result$queue)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

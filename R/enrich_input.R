@@ -6,8 +6,7 @@
 #'   executed
 #'
 #' @return A list
-#'
-
+#' @noRd
 enrich_input <- function(input, steps = NULL) {
 
   # Characterize the input
