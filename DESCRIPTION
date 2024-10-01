@@ -6,6 +6,8 @@ Authors@R: c(
     person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
     person("Cervan", "Girard", , "cgid@novonordisk.com", role = "aut"),
     person("Kristian", "Troejelsgaard", , "ktqn@novonordisk.com", role = "aut"),
+    person("Steffen Falgreen", family = "Larsen", email = "sffl@novonordisk.com", role = "aut"),
+    person(given = "VLOB (Vladimir Obucina)", role = "aut", email = "vlob@novonordisk.com"),
     person("Novo Nordisk A/S", role = "cph")
   )
 Description: Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
