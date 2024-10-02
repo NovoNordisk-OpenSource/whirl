@@ -13,8 +13,8 @@ Provides functionalities for running R scripts in batch, while simultanously cre
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://nn-opensource.github.io/whirl}
-  \item \url{https://github.com/NN-OpenSource/whirl}
+  \item \url{https://novonordisk-opensource.github.io/whirl/}
+  \item \url{https://github.com/novonordisk-opensource/whirl}
 }
 
 }
