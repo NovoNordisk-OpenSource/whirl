@@ -1,3 +1,6 @@
+# whirl 0.1.0 (2024-10-01)
+* First public release.
+
 # whirl 0.0.5 (2024-09-27)
 * Updated documentation
 * README and vignettes are now ready for users.

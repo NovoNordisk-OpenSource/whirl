@@ -13,3 +13,6 @@
 ^dev/
 summary.html
 plot1.png
+^whirl\.Rcheck$
+^whirl.*\.tar\.gz$
+^whirl.*\.tgz$

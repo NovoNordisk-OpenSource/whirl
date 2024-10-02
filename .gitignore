@@ -62,3 +62,6 @@ summary.html
 *_log.html
 
 inst/doc
+whirl.Rcheck/
+whirl*.tar.gz
+whirl*.tgz
