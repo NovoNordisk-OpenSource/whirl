@@ -12,11 +12,29 @@ whirl_queue <- R6::R6Class(
   classname = "whirl_queue",
   public = list(
 
+    #' @inheritParams options_params
     #' @description Initialize the new whirl_queue
-    #' @param n_workers [numeric] Maximum number of workers to be used simultaneously
     #' @return A [whirl_queue] object
-    initialize = \(n_workers = options::opt("n_workers", env = "whirl")) {
-      wq_initialise(self, private, n_workers)
+    initialize = \(n_workers = options::opt("n_workers", env = "whirl"),
+                   verbosity_level = options::opt("verbosity_level", env = "whirl"),
+                   check_renv = options::opt("check_renv", env = "whirl"),
+                   track_files = options::opt("track_files", env = "whirl"),
+                   out_formats = options::opt("out_formats", env = "whirl"),
+                   track_files_discards = options::opt("track_files_discards", env = "whirl"),
+                   track_files_keep = options::opt("track_files_keep", env = "whirl"),
+                   approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
+                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+                   ) {
+      wq_initialise(self, private,
+                    n_workers,
+                    verbosity_level,
+                    check_renv,
+                    track_files,
+                    out_formats,
+                    track_files_discards,
+                    track_files_keep,
+                    approved_pkgs_folder,
+                    approved_pkgs_url)
     },
 
     #' @description Push scripts to the queue
@@ -96,11 +114,32 @@ whirl_queue <- R6::R6Class(
   private = list(
     .queue = NULL,
     .workers = NULL,
-    .n_workers = NULL
+    .n_workers = NULL,
+    verbosity_level = NULL,
+    check_renv = NULL,
+    track_files = NULL,
+    out_formats = NULL,
+    track_files_discards = NULL,
+    track_files_keep = NULL,
+    approved_pkgs_folder = NULL,
+    approved_pkgs_url = NULL
   )
 )
 
-wq_initialise <- function(self, private, n_workers) {
+wq_initialise <- function(self, private, n_workers,
+                          verbosity_level, check_renv, track_files, out_formats,
+                          track_files_discards, track_files_keep,
+                          approved_pkgs_folder, approved_pkgs_url) {
+
+  private$check_renv <- check_renv
+  private$verbosity_level <- verbosity_level
+  private$track_files <- track_files
+  private$out_formats <- out_formats
+  private$track_files_discards <- track_files_discards
+  private$track_files_keep <- track_files_keep
+  private$approved_pkgs_folder <- approved_pkgs_folder
+  private$approved_pkgs_url <- approved_pkgs_url
+
   private$.queue <- tibble::tibble(
     id = numeric(),
     tag = character(),
@@ -138,14 +177,27 @@ wq_skip <- function(self, private, scripts, tag) {
   wq_add_queue(self, private, scripts, tag, status = "skipped")
 }
 
-wq_poll <- function(self, private, timeout) {
+wq_poll <- function(self, private, timeout,
+                    check_renv, verbosity_level, track_files, out_formats,
+                    track_files_discards, track_files_keep,
+                    approved_pkgs_folder, approved_pkgs_url) {
 
   # Start new sessions if there are available workers and waiting scripts in the queue
 
   if (length(self$next_ids)) {
     nid <- self$next_ids
     wid <- self$next_workers
-    private$.workers[["session"]][wid] <- replicate(n = length(wid), expr = whirl_r_session$new(), simplify = FALSE)
+    private$.workers[["session"]][wid] <- replicate(
+      n = length(wid),
+      expr = whirl_r_session$new(check_renv = private$check_renv,
+                                 verbosity_level = private$verbosity_level,
+                                 track_files = private$track_files,
+                                 out_formats = private$out_formats,
+                                 track_files_discards = private$track_files_discards,
+                                 track_files_keep = private$track_files_keep,
+                                 approved_pkgs_folder = private$approved_pkgs_folder,
+                                 approved_pkgs_url = private$approved_pkgs_url),
+      simplify = FALSE)
     private$.workers[wid, "id_script"] <- nid
     private$.workers[wid, "active"] <- TRUE
     private$.queue[nid, "status"] <- "running"

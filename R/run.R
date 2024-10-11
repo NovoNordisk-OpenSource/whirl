@@ -19,7 +19,6 @@
 #' @param summary_file A character string specifying the file path where the
 #'   summary log will be stored.
 #' @inheritParams options_params
-#'
 #' @return A tibble containing the execution results for all the scripts.
 #'
 #'@examplesIf FALSE
@@ -41,9 +40,34 @@
 
 run <- function(input,
                 steps = NULL,
+                summary_file = "summary.html",
                 n_workers = options::opt("n_workers", env = "whirl"),
-                summary_file = "summary.html"
+                check_renv = options::opt("check_renv", env = "whirl"),
+                verbosity_level = options::opt("verbosity_level", env = "whirl"),
+                track_files = options::opt("track_files", env = "whirl"),
+                out_formats = options::opt("out_formats", env = "whirl")
                 ) {
+
+  # Additional Settings
+  track_files_discards = options::opt("track_files_discards", env = "whirl")
+  track_files_keep = options::opt("track_files_keep", env = "whirl")
+  approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl")
+  approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+
+  # Options
+  # opt_vec <- c("check_renv", "verbosity_level", "track_files", "track_files_discards",
+  #              "track_files_keep", "approved_pkgs_folder", "approved_pkgs_url")
+  #
+  # initial_opt <- options::opts(opt_vec, env = "whirl")
+  # names(initial_opt) <- paste0("whirl.", names(initial_opt))
+  #
+  # new_op <- options(whirl.check_renv = check_renv,
+  #                   whirl.verbosity_level = verbosity_level,
+  #                   whirl.track_files = track_files,
+  #                   whirl.track_files_discards = track_files_discards,
+  #                   whirl.track_files_keep = track_files_keep,
+  #                   whirl.approved_pkgs_folder = approved_pkgs_folder,
+  #                   whirl.approved_pkgs_url = approved_pkgs_url)
 
   # Message when initiating
   d <- cli::cli_div(theme = list(rule = list(
@@ -68,7 +92,15 @@ run <- function(input,
               msg_fun = cli::cli_inform)
 
   # Initiating the queue
-  queue <- whirl_queue$new(n_workers = n_workers)
+  queue <- whirl_queue$new(n_workers = n_workers,
+                           check_renv = check_renv,
+                           verbosity_level = verbosity_level,
+                           track_files = track_files,
+                           out_formats = out_formats,
+                           track_files_discards = track_files_discards,
+                           track_files_keep = track_files_keep,
+                           approved_pkgs_folder = approved_pkgs_folder,
+                           approved_pkgs_url = approved_pkgs_url)
 
   result <- internal_run(input = input,
                          steps = steps,
@@ -80,4 +112,7 @@ run <- function(input,
   render_summary(input = summary_tibble, summary_file = summary_file)
 
   invisible(result$queue)
+
+  # Ensure that the options are reset on exit
+  # on.exit(options(initial_opt))
 }
