@@ -1,0 +1,11 @@
+steps:
+  - name: "Run single script"
+    paths:
+      - "path/to/script.R"
+  - name: "Run multiple scripts in same step"
+    paths:
+      - "path/to/script_1.R"
+      - "path/to/script_2.R"
+  - name: "Run all R scripts in folder"
+    paths:
+      - "path/to/folder/*.R"
