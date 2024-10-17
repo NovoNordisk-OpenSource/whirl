@@ -1,4 +1,4 @@
-url: https://nn-opensource.github.io/whirl/
+url: https://novonordisk-opensource.github.io/whirl/
 
 template:
   bootstrap: 5
@@ -7,6 +7,7 @@ reference:
 - title: "Execute scripts"
   contents:
   - run
+  - use_whirl
   - options
 
 - title: "Log custom actions"
