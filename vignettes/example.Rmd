@@ -30,7 +30,7 @@ is created on Linux we can use the `whirl.track_files` option to automatically t
 ```{r whirl-setup}
 library(whirl)
 
-options(whirl.track_files = TRUE)
+options(whirl.track_files = FALSE)
 options(whirl.verbosity_level = "minimal")
 ```
 
