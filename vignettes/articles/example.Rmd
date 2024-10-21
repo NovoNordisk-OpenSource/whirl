@@ -1,11 +1,7 @@
 ---
 title: "Log example"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Log example}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
+
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
