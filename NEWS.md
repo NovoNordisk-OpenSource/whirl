@@ -1,3 +1,10 @@
+# whirl 0.1.1 (2024-10-11)
+* Adding additional arguments to `run()` allowing the user to: 
+  - control the verbosity level 
+  - specify whether renv should be checked
+  - specify which files to track
+  - adjust the output format of the log files. 
+
 # whirl 0.1.0 (2024-10-01)
 * First public release.
 
