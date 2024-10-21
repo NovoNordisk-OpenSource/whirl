@@ -30,14 +30,14 @@ is created on Linux we can use the `whirl.track_files` option to automatically t
 ```{r whirl-setup}
 library(whirl)
 
-options(whirl.track_files = FALSE)
+options(whirl.track_files = TRUE)
 options(whirl.verbosity_level = "minimal")
 ```
 
 The `verbosity_level` is set to `minimal` for nicer printing in ths vignette.
 Now we are ready to execute the script:
 
-```{r run, eval=FALSE}
+```{r run}
 result <- run("example.R")
 
 print(result)
@@ -45,7 +45,7 @@ print(result)
 
 The script is now executed and you can access the logs below:
 
-```{r copy, include=FALSE, eval=FALSE}
+```{r copy, include=FALSE}
 file.copy(from = "summary.html", to = "../docs/articles")
 file.copy(from = "example_log.html", to = "../docs/articles")
 ```
@@ -53,4 +53,3 @@ file.copy(from = "example_log.html", to = "../docs/articles")
 * [View summary log](summary.html)
 * [View log for example.R](example_log.html)
 * [The saved plot1.png](plot1.png)
-
