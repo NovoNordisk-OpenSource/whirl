@@ -5,6 +5,8 @@ test_that("testing enrich_input()", {
   config_to_prune <- system.file("examples/demo/demo_whirl.yaml", package = "whirl")
   directory <- system.file("examples/simple", package = "whirl")
 
+  op <- options(whirl.verbosity_level = "minimal")
+
   #A config file
   withr::with_dir(tempdir(), {
     enriched <- enrich_input(input = file_config)
@@ -53,6 +55,8 @@ test_that("testing enrich_input()", {
     enriched <- enrich_input(input = directory) |>
       expect_error()
   })
+
+  on.exit(options(op))
 
 })
 
