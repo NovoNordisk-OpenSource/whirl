@@ -16,3 +16,4 @@ plot1.png
 ^whirl\.Rcheck$
 ^whirl.*\.tar\.gz$
 ^whirl.*\.tgz$
+^vignettes/articles$

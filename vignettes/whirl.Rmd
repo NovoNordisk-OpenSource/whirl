@@ -3,7 +3,7 @@ title: "Execute Scripts"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Execute Scripts}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -60,7 +60,7 @@ It is also possible to provide a character vector of several paths (either singl
 
 If the scripts have to be executed in a specific order, the `input` argument can be supplied as a list. The scripts will then be executed in the order they are listed in the list, with scripts listed in the same element being executed in parallel (if `n_workers` > 1). 
 
-```{r, eval = FALSE}
+```{r}
 # In the below example, script1.R and script2.R will be executed in parallel
 run(
   input = c("path/to/script1.R",
@@ -93,7 +93,7 @@ The list can also be supplied with names list elements.
 This can be useful during execution as some of these 'name' will be printed to the console.
 
 E.g.
-```{r, eval = FALSE}
+```{r}
 run(input = list(
   list(
     name = "Step 1", 
@@ -128,7 +128,7 @@ steps:
 In this case, the `input` argument in the `run()` function should point to the config file. 
 Assuming the config file is called `config.yaml`, the execution can be initiated as follows:
 
-```{r, eval = FALSE}
+```{r}
 run(input = "path/to/config.yaml", n_workers = 4)
 ```
 
