@@ -20,16 +20,22 @@ options::opt(x, default, env = "whirl")
 \section{Options}{
 
 \describe{
-\item{verbosity_level}{\describe{
-How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.\item{default: }{\preformatted{"verbose"}}
-\item{option: }{whirl.verbosity_level}
-\item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
+\item{out_formats}{\describe{
+Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}.\item{default: }{\preformatted{"html"}}
+\item{option: }{whirl.out_formats}
+\item{envvar: }{R_WHIRL_OUT_FORMATS (evaluated if possible, raw string otherwise)}
 }}
 
-\item{n_workers}{\describe{
-Number of simultanous workers used in the run function\item{default: }{\preformatted{1}}
-\item{option: }{whirl.n_workers}
-\item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
+\item{track_files}{\describe{
+Should files read and written be tracked? Currently only supported on Linux.\item{default: }{\preformatted{FALSE}}
+\item{option: }{whirl.track_files}
+\item{envvar: }{R_WHIRL_TRACK_FILES (TRUE if one of 'TRUE', '1', FALSE otherwise)}
+}}
+
+\item{check_renv}{\describe{
+Should the projects renv status be checked?\item{default: }{\preformatted{FALSE}}
+\item{option: }{whirl.check_renv}
+\item{envvar: }{R_WHIRL_CHECK_RENV (TRUE if one of 'TRUE', '1', FALSE otherwise)}
 }}
 
 \item{track_files_discards}{\describe{
@@ -39,16 +45,16 @@ List of file naming patterns not be tracked when track_files = TRUE\item{default
 \item{envvar: }{R_WHIRL_TRACK_FILES_DISCARDS (as character vector, split on ';' delimiter)}
 }}
 
-\item{track_files}{\describe{
-Should files read and written be tracked? Currently only supported on Linux.\item{default: }{\preformatted{FALSE}}
-\item{option: }{whirl.track_files}
-\item{envvar: }{R_WHIRL_TRACK_FILES (TRUE if one of 'TRUE', '1', FALSE otherwise)}
+\item{track_files_keep}{\describe{
+List of file naming patterns alway to be tracked when track_files = TRUE\item{default: }{\preformatted{paste0("^", getwd())}}
+\item{option: }{whirl.track_files_keep}
+\item{envvar: }{R_WHIRL_TRACK_FILES_KEEP (as character vector, split on ';' delimiter)}
 }}
 
-\item{out_formats}{\describe{
-Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}.\item{default: }{\preformatted{"html"}}
-\item{option: }{whirl.out_formats}
-\item{envvar: }{R_WHIRL_OUT_FORMATS (evaluated if possible, raw string otherwise)}
+\item{verbosity_level}{\describe{
+How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.\item{default: }{\preformatted{"verbose"}}
+\item{option: }{whirl.verbosity_level}
+\item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
 }}
 
 \item{approved_pkgs_folder}{\describe{
@@ -57,27 +63,21 @@ Approved folder library packages\item{default: }{\preformatted{NULL}}
 \item{envvar: }{R_WHIRL_APPROVED_PKGS_FOLDER (as character vector, split on ';' delimiter)}
 }}
 
-\item{check_renv}{\describe{
-Should the projects renv status be checked?\item{default: }{\preformatted{FALSE}}
-\item{option: }{whirl.check_renv}
-\item{envvar: }{R_WHIRL_CHECK_RENV (TRUE if one of 'TRUE', '1', FALSE otherwise)}
-}}
-
-\item{track_files_keep}{\describe{
-List of file naming patterns alway to be tracked when track_files = TRUE\item{default: }{\preformatted{paste0("^", getwd())}}
-\item{option: }{whirl.track_files_keep}
-\item{envvar: }{R_WHIRL_TRACK_FILES_KEEP (as character vector, split on ';' delimiter)}
-}}
-
 \item{approved_pkgs_url}{\describe{
 Approved URL library packages\item{default: }{\preformatted{NULL}}
 \item{option: }{whirl.approved_pkgs_url}
 \item{envvar: }{R_WHIRL_APPROVED_PKGS_URL (as character vector, split on ';' delimiter)}
 }}
 
+\item{n_workers}{\describe{
+Number of simultanous workers used in the run function\item{default: }{\preformatted{1}}
+\item{option: }{whirl.n_workers}
+\item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
+}}
+
 }
 }
 
 \seealso{
-options getOption Sys.getenv Sys.getenv
+options getOption Sys.setenv Sys.getenv
 }
