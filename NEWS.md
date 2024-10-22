@@ -1,3 +1,6 @@
+# whirl 0.1.2 (2024-10-17)
+* Add `use_whirl()` utility function.
+
 # whirl 0.1.0 (2024-10-01)
 * First public release.
 
