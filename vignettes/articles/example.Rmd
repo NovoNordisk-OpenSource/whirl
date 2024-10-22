@@ -1,11 +1,7 @@
 ---
 title: "Log example"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Log example}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
+
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
@@ -53,4 +49,3 @@ file.copy(from = "example_log.html", to = "../docs/articles")
 * [View summary log](summary.html)
 * [View log for example.R](example_log.html)
 * [The saved plot1.png](plot1.png)
-

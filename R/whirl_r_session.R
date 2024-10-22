@@ -354,7 +354,8 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       script = private$current_script,
       log_html = file.path(self$get_wd(), "log.html"),
       mdfmt = format[format %in% c("gfm", "commonmark", "markua")],
-      out_dir = out_dir
+      out_dir = out_dir,
+      self = self
     )
   }
 

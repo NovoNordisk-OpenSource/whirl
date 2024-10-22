@@ -1,13 +1,13 @@
 Package: whirl
 Title: Logging package
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
     person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
     person("Cervan", "Girard", , "cgid@novonordisk.com", role = "aut"),
     person("Kristian", "Troejelsgaard", , "ktqn@novonordisk.com", role = "aut"),
-    person("Steffen Falgreen", family = "Larsen", email = "sffl@novonordisk.com", role = "aut"),
-    person(given = "VLOB (Vladimir Obucina)", role = "aut", email = "vlob@novonordisk.com"),
+    person("Steffen Falgreen", "Larsen", , "sffl@novonordisk.com", role = "aut"),
+    person("Vladimir", "Obucina", , email = "vlob@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
 Description: Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.

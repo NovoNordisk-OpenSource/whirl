@@ -1,13 +1,13 @@
 #' @noRd
-mdformats <- function(script, log_html, mdfmt, out_dir) {
+mdformats <- function(script, log_html, mdfmt, self, out_dir) {
   newname <- gsub(
     pattern = "\\.[^\\.]*$",
     replacement = "",
     x = basename(script)
   )
 
-  if (length(mdfmt) > 1) {
-    newname <- paste0(newname, "_", mdfmt)
+  if (length(mdfmt) >= 1) {
+    newname <- paste0(newname, "_log_", mdfmt)
   }
 
   newname <- paste0(newname, ".md")
@@ -20,14 +20,7 @@ mdformats <- function(script, log_html, mdfmt, out_dir) {
     )
 
     file.copy(
-      from = file.path(
-        tempdir(),
-        gsub(
-          pattern = "\\.[^\\.]*$",
-          replacement = ".md",
-          x = basename(log_html)
-        )
-      ),
+      from = file.path(self$get_wd(), "log.md"),
       to = file.path(
         out_dir,
         newname[[i]]
