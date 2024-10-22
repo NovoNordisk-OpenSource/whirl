@@ -2,9 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  example: example.html
+  articles/example: example.html
   whirl: whirl.html
-last_built: 2024-10-07T17:10Z
+last_built: 2024-10-22T06:34Z
 urls:
-  reference: https://nn-opensource.github.io/whirl/reference
-  article: https://nn-opensource.github.io/whirl/articles
+  reference: https://novonordisk-opensource.github.io/whirl/reference
+  article: https://novonordisk-opensource.github.io/whirl/articles
