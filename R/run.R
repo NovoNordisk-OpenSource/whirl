@@ -54,21 +54,6 @@ run <- function(input,
   approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl")
   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
 
-  # Options
-  # opt_vec <- c("check_renv", "verbosity_level", "track_files", "track_files_discards",
-  #              "track_files_keep", "approved_pkgs_folder", "approved_pkgs_url")
-  #
-  # initial_opt <- options::opts(opt_vec, env = "whirl")
-  # names(initial_opt) <- paste0("whirl.", names(initial_opt))
-  #
-  # new_op <- options(whirl.check_renv = check_renv,
-  #                   whirl.verbosity_level = verbosity_level,
-  #                   whirl.track_files = track_files,
-  #                   whirl.track_files_discards = track_files_discards,
-  #                   whirl.track_files_keep = track_files_keep,
-  #                   whirl.approved_pkgs_folder = approved_pkgs_folder,
-  #                   whirl.approved_pkgs_url = approved_pkgs_url)
-
   # Message when initiating
   d <- cli::cli_div(theme = list(rule = list(
     color = "skyblue3", "line-type" = "double"
@@ -113,6 +98,4 @@ run <- function(input,
 
   invisible(result$queue)
 
-  # Ensure that the options are reset on exit
-  # on.exit(options(initial_opt))
 }
