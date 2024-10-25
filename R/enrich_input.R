@@ -4,10 +4,12 @@
 #' @param input Can be a vector, a list or a whirl config file.
 #' @param steps A filter argument for selecting specific steps that should be
 #'   executed
+#' @inheritParams options_params
 #'
 #' @return A list
 #' @noRd
-enrich_input <- function(input, steps = NULL) {
+enrich_input <- function(input, steps = NULL,
+                         verbosity_level = options::opt("verbosity_level", env = "whirl")) {
 
   # Characterize the input
   is_config_file <- any(grepl("yaml|yml", tools::file_ext(input)))
@@ -93,7 +95,8 @@ enrich_input <- function(input, steps = NULL) {
 
   zephyr::msg(message_,
               msg_fun = cli::cli_inform,
-              levels_to_write = "verbose"
+              levels_to_write = "verbose",
+              verbosity_level = verbosity_level
   )
 
   invisible(out)

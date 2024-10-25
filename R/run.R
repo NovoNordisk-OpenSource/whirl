@@ -60,12 +60,14 @@ run <- function(input,
   )))
 
   zephyr::msg("Executing scripts and generating logs",
-              levels_to_write = "verbose",
+              levels_to_write = c("verbose", "minimal"),
+              verbosity_level = verbosity_level,
               msg_fun = cli::cli_rule)
 
   # Message when ending
   on.exit(zephyr::msg("End of process",
-                      levels_to_write = "verbose",
+                      levels_to_write = c("verbose", "minimal"),
+                      verbosity_level = verbosity_level,
                       msg_fun = cli::cli_rule))
   on.exit(cli::cli_end(d), add = TRUE)
 
@@ -74,6 +76,7 @@ run <- function(input,
 
   zephyr::msg("Executing scripts in parallel using {n_workers} cores\n",
               levels_to_write = "verbose",
+              verbosity_level = verbosity_level,
               msg_fun = cli::cli_inform)
 
   # Initiating the queue
@@ -90,7 +93,8 @@ run <- function(input,
   result <- internal_run(input = input,
                          steps = steps,
                          queue = queue,
-                         level = 1)
+                         level = 1,
+                         verbosity_level = verbosity_level)
 
   # Create the summary log
   summary_tibble <- util_queue_summary(result$queue)
