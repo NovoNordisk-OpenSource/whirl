@@ -368,7 +368,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
         out_dir,
         gsub(
           pattern = "\\.[^\\.]*$",
-          replacement = ".json",
+          replacement = "_log.json",
           x = basename(private$current_script)
         )
       )
