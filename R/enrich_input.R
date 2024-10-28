@@ -21,7 +21,7 @@ enrich_input <- function(input, steps = NULL,
     config_whirl <- yaml::yaml.load_file(input)
     got <- config_whirl$"steps"
   } else {
-    root_dir = "."
+    root_dir = getwd()
   }
 
   # Convert vector to list
