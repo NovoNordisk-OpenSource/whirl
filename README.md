@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/NN-OpenSource/whirl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NN-OpenSource/whirl/actions/workflows/R-CMD-check.yaml)
+[![Checks](https://github.com/NovoNordisk-OpenSource/whirl/actions/workflows/check_and_co.yaml/badge.svg)](https://github.com/NovoNordisk-OpenSource/whirl/actions/workflows/check_and_co.yaml)
 
 <!-- badges: end -->
 
@@ -38,7 +38,9 @@ The simplest way is to provide the path to a single script:
 library(whirl)
 script <- system.file("examples/simple/success.R", package = "whirl")
 run(script)
+#> ══ Executing scripts and generating logs ═══════════════════════════════════════
 #> ✔ success.R: Completed succesfully
+#> ══ End of process ══════════════════════════════════════════════════════════════
 ```
 
 It is also possible to run several scripts simultaneously:
@@ -46,8 +48,10 @@ It is also possible to run several scripts simultaneously:
 ``` r
 scripts <- system.file("examples/simple", c("success.R", "warning.R"), package = "whirl")
 result <- run(scripts, n_workers = 2)
+#> ══ Executing scripts and generating logs ═══════════════════════════════════════
 #> ✔ success.R: Completed succesfully
 #> ⚠ warning.R: Completed with warnings
+#> ══ End of process ══════════════════════════════════════════════════════════════
 ```
 
 Here we are specifying that `run()` can use up to two simultaneous
@@ -58,12 +62,12 @@ When using `run()` the following files are created:
 
 1.  Creates a log in the same directory as the script with the names
     `{script_name}_log.html`. See
-    [example_log.html](articles/example_log.html) for an example of a
-    simple log.
+    [example_log.html](https://novonordisk-opensource.github.io/whirl/articles/example_log.html)
+    for an example of a simple log.
 2.  Creates a summary log with the overall status of each script.
     Default path is `summary.html`. See
-    [summary.html](articles/summary.html) for an example of a summary of
-    the same log as above.
+    [summary.html](https://novonordisk-opensource.github.io/whirl/articles/summary.html)
+    for an example of a summary of the same log as above.
 
 Apart from this the function also returns a `tibble` with the status of
 the script execution similar to the content of the summary above:
@@ -73,8 +77,8 @@ print(result)
 #> # A tibble: 2 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… succe… <named list>
-#> 2     2 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… warni… <named list>
+#> 1     1 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… succe… <named list>
+#> 2     2 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… warni… <named list>
 ```
 
 ## Config files
@@ -105,9 +109,11 @@ scripts in the second steps.
 
 ``` r
 result <- run(config, n_workers = 2)
+#> ══ Executing scripts and generating logs ═══════════════════════════════════════
 #> ✔ success.R: Completed succesfully
-#> ✖ error.R: Completed with errors
 #> ⚠ warning.R: Completed with warnings
+#> ✖ error.R: Completed with errors
+#> ══ End of process ══════════════════════════════════════════════════════════════
 ```
 
 ``` r
@@ -115,9 +121,9 @@ print(result)
 #> # A tibble: 3 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… succe… <named list>
-#> 2     2 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… warni… <named list>
-#> 3     3 <NA>  /tmp/RtmpcWMKsm/temp_libpath464a11c9b587c/whi… error  <named list>
+#> 1     1 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… succe… <named list>
+#> 2     2 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… warni… <named list>
+#> 3     3 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… error  <named list>
 ```
 
 ## Customize run()
