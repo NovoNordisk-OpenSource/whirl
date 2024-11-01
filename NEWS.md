@@ -1,3 +1,6 @@
+# whirl 0.1.4 (2024-11-01)
+* Add `use_whirl()` utility function.
+
 # whirl 0.1.3 (2024-10-23)
 * Adding additional arguments to `run()` allowing the user to: 
   - control the verbosity level 
