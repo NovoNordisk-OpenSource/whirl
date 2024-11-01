@@ -1,5 +1,18 @@
-# whirl 0.1.2 (2024-10-17)
+# whirl 0.1.4 (2024-11-01)
 * Add `use_whirl()` utility function.
+
+# whirl 0.1.3 (2024-10-23)
+* Adding additional arguments to `run()` allowing the user to: 
+  - control the verbosity level 
+  - specify whether renv should be checked
+  - specify which files to track
+  - adjust the output format of the log files. 
+
+# whirl 0.1.2 (2024-10-21)
+* Updated package website url and example code
+
+# whirl 0.1.1 (2024-10-07)  
+* Fix enabling rendering of md log formats("gfm", "commonmark", "markua").
 
 # whirl 0.1.0 (2024-10-01)
 * First public release.

@@ -10,27 +10,27 @@ whirl_r_session <- R6::R6Class(
   public = list(
 
     #' @description Initialize the new whirl R session
-    #' @param verbose [logical] Should the progress be printed to the console?
-    #' @param check_renv [logical] Should renv be checked?
-    #' @param track_files [logical] Should the files be tracked?
-    #' @param track_files_discards [character] Files to discard from tracking
-    #' @param track_files_keep [character] Files to keep from tracking
-    #' @param approved_pkgs_folder [character] Folder with approved packages
-    #' @param approved_pkgs_url [character] URL with approved packages
+    #' @inheritParams options_params
     #' @return A [whirl_r_session] object
-    initialize = \(
-      verbose = options::opt("verbosity_level", env = "whirl"),
-      check_renv = options::opt("check_renv", env = "whirl"),
-      track_files = options::opt("track_files", env = "whirl"),
-      track_files_discards = options::opt("track_files_discards", env = "whirl"),
-      track_files_keep = options::opt("track_files_keep", env = "whirl"),
-      approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
-      approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
-      ) {
-
-        wrs_initialize(verbose, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url, self, private, super)
-      }
-    ,
+    initialize = \(verbosity_level = options::opt("verbosity_level", env = "whirl"),
+                   check_renv = options::opt("check_renv", env = "whirl"),
+                   track_files = options::opt("track_files", env = "whirl"),
+                   out_formats = options::opt("out_formats", env = "whirl"),
+                   track_files_discards = options::opt("track_files_discards", env = "whirl"),
+                   track_files_keep = options::opt("track_files_keep", env = "whirl"),
+                   approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
+                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+                   ) {
+        wrs_initialize(verbosity_level,
+                       check_renv,
+                       track_files,
+                       out_formats,
+                       track_files_discards,
+                       track_files_keep,
+                       approved_pkgs_folder,
+                       approved_pkgs_url,
+                       self, private, super)
+    },
 
     #' @description Finalize the whirl R session
     finalize = \() {
@@ -105,9 +105,10 @@ whirl_r_session <- R6::R6Class(
     }
   ),
   private = list(
-    verbose = NULL,
+    verbosity_level = NULL,
     wd = NULL,
     track_files = NULL,
+    out_formats = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
     approved_pkgs_folder = NULL,
@@ -119,23 +120,27 @@ whirl_r_session <- R6::R6Class(
   inherit = callr::r_session
 )
 
-wrs_initialize <- function(verbose, check_renv, track_files, track_files_discards, track_files_keep, approved_pkgs_folder, approved_pkgs_url,
+wrs_initialize <- function(verbosity_level, check_renv, track_files,
+                           out_formats, track_files_discards, track_files_keep,
+                           approved_pkgs_folder, approved_pkgs_url,
                            self, private, super) {
+
   super$initialize() # uses callr::r_session$initialize()
 
   # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
   private$wd <- withr::local_tempdir(clean = FALSE)
-  private$verbose <- verbose
+  private$verbosity_level <- verbosity_level
   private$check_renv <- check_renv
   private$track_files <- track_files
+  private$out_formats <- out_formats
   private$track_files_discards <- track_files_discards
   private$track_files_keep <- track_files_keep
   private$approved_pkgs_folder <- approved_pkgs_folder
   private$approved_pkgs_url <- approved_pkgs_url
 
   # If the stream does not support dynamic tty, which is needed for progress bars to update in place, the verbosity is downgraded.
-  if (private$verbose == "verbose" && !cli::is_dynamic_tty()) {
-    private$verbose <- "minimal"
+  if (private$verbosity_level == "verbose" && !cli::is_dynamic_tty()) {
+    private$verbosity_level <- "minimal"
   }
 
   super$run(func = setwd, args = list(dir = private$wd))
@@ -168,7 +173,7 @@ wrs_print <- function(self, private, super) {
   msg <- c(
     utils::capture.output(super$print()),
     "Working Directory: {private$wd}",
-    "Verbose: {private$verbose}"
+    "Verbose: {private$verbosity_level}"
   )
 
   cli::cli_bullets(
@@ -221,10 +226,10 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
-  if (private$verbose != "quiet") {
+  if (private$verbosity_level != "quiet") {
     private$pb <- pb_script$new(
       script = private$current_script,
-      use_progress = private$verbose == "verbose"
+      use_progress = private$verbosity_level == "verbose"
       )
   }
 
@@ -363,7 +368,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
         out_dir,
         gsub(
           pattern = "\\.[^\\.]*$",
-          replacement = ".json",
+          replacement = "_log.json",
           x = basename(private$current_script)
         )
       )

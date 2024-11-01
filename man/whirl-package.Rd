@@ -27,7 +27,7 @@ Authors:
   \item Cervan Girard \email{cgid@novonordisk.com}
   \item Kristian Troejelsgaard \email{ktqn@novonordisk.com}
   \item Steffen Falgreen Larsen \email{sffl@novonordisk.com}
-  \item VLOB (Vladimir Obucina) \email{vlob@novonordisk.com}
+  \item Vladimir Obucina \email{vlob@novonordisk.com}
 }
 
 Other contributors:

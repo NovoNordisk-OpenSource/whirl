@@ -7,8 +7,12 @@
 run(
   input,
   steps = NULL,
+  summary_file = "summary.html",
   n_workers = options::opt("n_workers", env = "whirl"),
-  summary_file = "summary.html"
+  check_renv = options::opt("check_renv", env = "whirl"),
+  verbosity_level = options::opt("verbosity_level", env = "whirl"),
+  track_files = options::opt("track_files", env = "whirl"),
+  out_formats = options::opt("out_formats", env = "whirl")
 )
 }
 \arguments{
@@ -23,10 +27,18 @@ within a config files (or list) is to be executed. Should be equivalent to
 the names of the steps found in the config file. If kept as NULL (default)
 then all steps listed in the config file will be executed.}
 
-\item{n_workers}{Number of simultanous workers used in the run function (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
-
 \item{summary_file}{A character string specifying the file path where the
 summary log will be stored.}
+
+\item{n_workers}{Number of simultanous workers used in the run function (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
+
+\item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
+
+\item{verbosity_level}{How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
+
+\item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
+
+\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 }
 \value{
 A tibble containing the execution results for all the scripts.
