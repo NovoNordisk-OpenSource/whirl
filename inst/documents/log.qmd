@@ -106,14 +106,39 @@ info <- params$tmpdir |>
     readRDS()
 ```
 
+```{r, results="asis", eval=(grepl("\\.py$", params$title))}
+
+quarto_python_path <- Sys.getenv("QUARTO_PYTHON")
+quarto_python_version <- gsub(".*/([0-9]+\\.[0-9]+\\.[0-9]+)/.*", "\\1", quarto_python_path)
+
+info$platform$python_version <- quarto_python_version
+```
+
 ```{r, results="asis"}
 cat("\n## Platform \n")
 info$platform
 cat("\n")
 ```
 
+```{r, results="asis", eval=(grepl("\\.py$", params$title)), fig.height = 0.5}
+library(knitr)
+cat("\n## Python Packages\n")
+
+pip_list_output <- system("pip list", intern=TRUE)
+pip_list_df <- as.data.frame(do.call(rbind, strsplit(pip_list_output, "\\s{2,}")))
+pip_list_df <- pip_list_df[-c(1, 2), ]
+colnames(pip_list_df) <- c("Package", "Version")
+
+# Display the data frame as a knitr table
+
+row.names(pip_list_df) <- NULL
+pip_list_df |>
+  knitr::kable() |>
+  knitr::knit_print()
+```
+
 ```{r, results="asis", fig.height = 0.5}
-cat("\n## Packages\n")
+cat("\n## R Packages\n")
 
 if (!is.null(params$check_approved_folder_pkgs) |
   !is.null(params$check_approved_url_pkgs)) {
