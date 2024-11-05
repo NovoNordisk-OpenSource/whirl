@@ -29,7 +29,7 @@ knitr::spin_child(params$script)
 ```{r, child = params$script, eval=(grepl("\\.Rmd$", params$script))}
 ```
 
-```{r, child = params$script, eval=(grepl("\\.py$", params$script))}
+```{python, file=params$script, eval=(grepl("\\.py$", params$script))}
 ```
 
 ```{r sessioninfo, include=FALSE}
