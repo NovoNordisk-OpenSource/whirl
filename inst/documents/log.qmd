@@ -122,8 +122,19 @@ cat("\n")
 
 ```{r, results="asis", eval=(grepl("\\.py$", params$title)), fig.height = 0.5}
 library(knitr)
+library(jsonlite)
 cat("\n## Python Packages\n")
 
+cat("\n### Imported Python Packages\n")
+json_data <- fromJSON(file.path(params$tmpdir, "python_imports.json"))
+df <- do.call(rbind, lapply(names(json_data), function(x) cbind(package = x, as.data.frame(t(json_data[[x]])))))
+colnames(df) <- c("Package", "Version", "Path")
+row.names(df) <- NULL
+df |>
+  knitr::kable() |>
+  knitr::knit_print()
+
+cat("\n### Installed Python Packages in environment\n")
 pip_list_output <- system("pip list", intern=TRUE)
 pip_list_df <- as.data.frame(do.call(rbind, strsplit(pip_list_output, "\\s{2,}")))
 pip_list_df <- pip_list_df[-c(1, 2), ]
