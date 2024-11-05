@@ -17,7 +17,14 @@ get_status <- function(md) {
     stringr::str_subset(pattern = "^ *\\{\\.cell-output \\.cell-output-error\\}") |>
     stringr::str_remove_all("\\{[^\\}]*\\}") |>
     stringr::str_squish()
-
+  
+  python_errors <- x |>
+    stringr::str_subset(pattern = "(?i).*Error.*") |>
+    stringr::str_remove_all("\\{[^\\}]*\\}") |>
+    stringr::str_squish()
+  
+  errors <- c(errors, python_errors)
+  
   # Warnings
 
   warnings <- x |>
