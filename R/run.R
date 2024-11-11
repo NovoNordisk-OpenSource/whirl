@@ -60,13 +60,13 @@ run <- function(input,
   )))
 
   zephyr::msg("Executing scripts and generating logs",
-              levels_to_write = c("verbose", "minimal"),
+              levels_to_write = c("verbose"),
               verbosity_level = verbosity_level,
               msg_fun = cli::cli_rule)
 
   # Message when ending
   on.exit(zephyr::msg("End of process",
-                      levels_to_write = c("verbose", "minimal"),
+                      levels_to_write = c("verbose"),
                       verbosity_level = verbosity_level,
                       msg_fun = cli::cli_rule))
   on.exit(cli::cli_end(d), add = TRUE)
