@@ -17,6 +17,3 @@ test_that("testing internal_run()", {
   })
 
 })
-
-withr::with_dir(tempdir(), {
-  queue <- whirl_queue$new()})
