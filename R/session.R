@@ -75,10 +75,10 @@ python_package_info <- function(json) {
   json |>
     jsonlite::fromJSON() |>
     tibble::enframe(name = "Package") |>
-    tidyr::unnest_wider(col = value) |>
+    tidyr::unnest_wider(col = "value") |>
     dplyr::rename(
-      Version = version,
-      Path = installation_path
+      Version = "version",
+      Path = "installation_path"
     )
 }
 
