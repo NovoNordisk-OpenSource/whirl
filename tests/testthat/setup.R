@@ -9,3 +9,11 @@ if (!test) {
 # Minimal prints to make it easier to read test output
 
 options(whirl.verbosity_level = "quiet")
+
+# Helper function to select test scripts
+
+test_script <- function(script) {
+  script <- system.file("examples/simple", script, package = "whirl")
+  stopifnot(all(nchar(script) > 0))
+  return(script)
+}
