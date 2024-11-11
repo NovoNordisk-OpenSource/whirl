@@ -3,17 +3,20 @@ test_that("testing internal_run()", {
   config_to_config <- system.file("examples/demo/config_to_config.yaml", package = "whirl")
 
   #A config file
-  withr::with_dir(tempdir(), {
+  withr::with_tempdir({
     queue <- whirl_queue$new()
     internal_run(input = file_config, steps = NULL, level = 1, queue = queue) |>
       expect_no_error()
   })
 
   #A config file
-  withr::with_dir(tempdir(), {
+  withr::with_tempdir({
     queue <- whirl_queue$new()
     internal_run(input = config_to_config, steps = NULL, level = 1, queue = queue) |>
       expect_no_error()
   })
 
 })
+
+withr::with_dir(tempdir(), {
+  queue <- whirl_queue$new()})

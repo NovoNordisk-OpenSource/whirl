@@ -1,10 +1,11 @@
 #' Get session info
 #'
 #' Retrieve session info and add quarto info if not already there
+#' Argument to also add python version and package info
 #'
 #' @noRd
 
-session_info <- function(approved_folder_pkgs, approved_url_pkgs) {
+session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, python_packages = NULL) {
   info <- sessioninfo::session_info()
 
   if (!is.null(approved_folder_pkgs) |
@@ -30,7 +31,7 @@ session_info <- function(approved_folder_pkgs, approved_url_pkgs) {
   info$options <- info$options[!names(info$options) %in% "rl_word_breaks"]
   class(info$options) <- c("options_info", class(info$options))
 
-  # TODO: Extend to also cover external and python below in methods.
+  # TODO: Extend to also cover external.
   info[!names(info) %in% c("platform", "packages", "environment", "options")] <- NULL
 
   if (is.null(info$platform$quarto)) {
@@ -44,6 +45,19 @@ session_info <- function(approved_folder_pkgs, approved_url_pkgs) {
     }
   }
 
+  if (!is.null(python_packages)) {
+
+    # TODO: Get the same information as for R packages (not only name and version)
+    # TODO: Only show used, and not all installed, packages if possible
+
+    info$python_packages <- python_packages
+    class(info$python_packages) <- c("packages_info", class(info$python_packages))
+
+    quarto_python_path <- Sys.getenv("QUARTO_PYTHON")
+    quarto_python_version <- gsub(".*/([0-9]+\\.[0-9]+\\.[0-9]+)/.*", "\\1", quarto_python_path)
+    info$platform$python <- quarto_python_version
+  }
+
   class(info) <- c("whirl_session_info", class(info))
   for (i in seq_along(info)) {
     class(info[[i]]) <- c(paste0("whirl_", class(info[[i]])[[1]]), class(info[[i]]))
@@ -52,6 +66,21 @@ session_info <- function(approved_folder_pkgs, approved_url_pkgs) {
   return(info)
 }
 
+#' Get Python package info from json file
+#'
+#' @noRd
+
+python_package_info <- function(json) {
+
+  json |>
+    jsonlite::fromJSON() |>
+    tibble::enframe(name = "Package") |>
+    tidyr::unnest_wider(col = value) |>
+    dplyr::rename(
+      Version = version,
+      Path = installation_path
+    )
+}
 
 #' @noRd
 
@@ -81,13 +110,18 @@ knit_print.whirl_platform_info <- function(x, ...) {
 #' @noRd
 
 knit_print.whirl_packages_info <- function(x, ...) {
-  data.frame(
-    Package = x$package,
-    Version = x$loadedversion,
-    `Date (UTC)` = x$date,
-    Source = x$source,
-    check.names = FALSE
-  ) |>
+
+  if (!is.null(x$package)){
+    x <- data.frame(
+      Package = x$package,
+      Version = x$loadedversion,
+      `Date (UTC)` = x$date,
+      Source = x$source,
+      check.names = FALSE
+    )
+  }
+
+  x |>
     knitr::kable() |>
     kableExtra::kable_styling(
       bootstrap_options = "striped",
@@ -97,7 +131,7 @@ knit_print.whirl_packages_info <- function(x, ...) {
 }
 
 #' @noRd
-#'
+
 knit_print.whirl_approved_pkgs <- function(x, ...) {
   hold <- x |>
     data.frame(

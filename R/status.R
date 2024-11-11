@@ -11,20 +11,27 @@ get_status <- function(md) {
 
   x <- x[[1]]
 
+  add_python <- x |>
+    stringr::str_detect("\\{.python .cell-code") |>
+    any()
+
   # Errors
 
   errors <- x |>
     stringr::str_subset(pattern = "^ *\\{\\.cell-output \\.cell-output-error\\}") |>
     stringr::str_remove_all("\\{[^\\}]*\\}") |>
     stringr::str_squish()
-  
-  python_errors <- x |>
-    stringr::str_subset(pattern = "(?i).*Error.*") |>
-    stringr::str_remove_all("\\{[^\\}]*\\}") |>
-    stringr::str_squish()
-  
-  errors <- c(errors, python_errors)
-  
+
+  if (add_python) {
+    python_errors <- x |>
+      stringr::str_subset(pattern = "^ *\\{\\.cell-output") |>
+      stringr::str_remove_all("\\{[^\\}]*\\}") |>
+      stringr::str_squish() |>
+      stringr::str_subset("Error:")
+
+    errors <- c(errors, python_errors)
+  }
+
   # Warnings
 
   warnings <- x |>
@@ -32,6 +39,16 @@ get_status <- function(md) {
     stringr::str_remove_all("\\{[^\\}]*\\}") |>
     stringr::str_squish() |>
     stringr::str_subset(pattern = "^(W|w)arning")
+
+  if (add_python) {
+    python_warnings <- x |>
+      stringr::str_subset(pattern = "^ *\\{\\.cell-output") |>
+      stringr::str_remove_all("\\{[^\\}]*\\}") |>
+      stringr::str_squish() |>
+      stringr::str_subset("Warning:")
+
+    warnings <- c(warnings, python_warnings)
+  }
 
   # Status
 
