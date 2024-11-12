@@ -2,7 +2,7 @@ test_that("Run single R script", {
 
   res <- test_script("success.R") |>
     run() |>
-    expect_no_error()
+    expect_no_condition()
 
   res[["status"]] |>
     expect_equal("success")
