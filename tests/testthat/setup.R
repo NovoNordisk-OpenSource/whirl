@@ -1,6 +1,5 @@
 ## whirl have to be installed for tests
 
-install.packages("devtools")
 devtools::install()
 
 # pkgs <- installed.packages() |> row.names()
