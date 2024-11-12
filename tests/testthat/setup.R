@@ -1,13 +1,7 @@
 ## whirl have to be installed for tests
 
-pak::local_install(upgrade = FALSE)
-
-# pkgs <- installed.packages() |> row.names()
-# test <- any(pkgs %in% "whirl")
-#
-# if (!test) {
-#   cli::cli_abort("The package whirl have to be installed for subprocesses")
-# }
+cat(getwd())
+pak::local_install(root = "../../00_pkg_src/whirl", upgrade = FALSE)
 
 # Minimal prints to make it easier to read test output
 
