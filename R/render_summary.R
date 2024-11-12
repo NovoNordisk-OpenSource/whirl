@@ -54,7 +54,7 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
   } else {
     hold <- hold |> dplyr::mutate(formated = file.path(path_rel(.data[["Hyperlink"]], start = path_rel_start)))
   }
-  #
+
   hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', hold$formated, "HTML Log"))
 
   hold <- hold |>

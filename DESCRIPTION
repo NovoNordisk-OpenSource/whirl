@@ -38,11 +38,9 @@ Imports:
     tidyr,
     unglue,
     utils,
-    vctrs,
     withr,
     yaml,
     zephyr (>= 0.0.0.9000),
-    parallelly,
     glue
 Suggests: 
     testthat (>= 3.0.0),
