@@ -1,7 +1,22 @@
-## whirl have to be installed for tests
+## whirl have to be installed for Quarto to use it
 
-cat(getwd())
-pak::local_install(root = "../../00_pkg_src/whirl", upgrade = FALSE)
+withr::local_envvar(
+  R_USER_CACHE_DIR = tempfile(),
+  .local_envir = teardown_env()
+)
+
+if (interactive()) { # devtools::test
+  pkg_path <- "../.."
+} else { # R CMD Check
+  pkg_path <- "../../00_pkg_src/whirl"
+}
+
+pak::local_install(
+  root = pkg_path,
+  upgrade = FALSE,
+  dependencies = FALSE,
+  ask = FALSE
+  )
 
 # Minimal prints to make it easier to read test output
 
