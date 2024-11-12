@@ -1,6 +1,6 @@
 ## whirl have to be installed for tests
 
-devtools::install()
+devtools::install(upgrade = "never")
 
 # pkgs <- installed.packages() |> row.names()
 # test <- any(pkgs %in% "whirl")
