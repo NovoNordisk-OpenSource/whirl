@@ -8,12 +8,15 @@ if (!test) {
 
 # Minimal prints to make it easier to read test output
 
-options(whirl.verbosity_level = "quiet")
+withr::local_options(
+  list(whirl.verbosity_level = "quiet"),
+  .local_envir = teardown_env()
+)
 
 # Helper function to select test scripts
 
 test_script <- function(script) {
-  script <- system.file("examples/simple", script, package = "whirl")
-  stopifnot(all(nchar(script) > 0))
+  script <- test_path("scripts", script)
+  stopifnot(file.exists(script))
   return(script)
 }
