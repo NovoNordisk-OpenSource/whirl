@@ -41,7 +41,7 @@
 
 run <- function(input,
                 steps = NULL,
-                summary_file = "summary.html",
+                summary_file = NULL,
                 n_workers = options::opt("n_workers", env = "whirl"),
                 check_renv = options::opt("check_renv", env = "whirl"),
                 verbosity_level = options::opt("verbosity_level", env = "whirl"),
@@ -107,9 +107,12 @@ run <- function(input,
                          level = 1,
                          verbosity_level = verbosity_level)
 
-  # Create the summary log
-  summary_tibble <- util_queue_summary(result$queue)
-  render_summary(input = summary_tibble, summary_file = summary_file)
+  # Create the summary log if required
+  if (!is.null(summary_file)) {
+    summary_tibble <- util_queue_summary(result$queue)
+    render_summary(input = summary_tibble, summary_file = summary_file)
+
+  }
 
   invisible(result$queue)
 
