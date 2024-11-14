@@ -43,12 +43,12 @@ knitr::spin_child(params$script)
 #| include: !expr grepl("\\.Rmd$", params$script)
 ```
 
-<!-- ```{python} -->
-<!-- #| label: Log Python -->
-<!-- #| file: !expr params$script -->
-<!-- #| eval: !expr grepl("\\.py$", params$script) -->
-<!-- #| include: !expr grepl("\\.py$", params$script) -->
-<!-- ``` -->
+```{python}
+#| label: Log Python
+#| file: !expr params$script
+#| eval: !expr grepl("\\.py$", params$script)
+#| include: !expr grepl("\\.py$", params$script)
+```
 
 <!-- ```{python} -->
 <!-- #| label: Python modules -->
