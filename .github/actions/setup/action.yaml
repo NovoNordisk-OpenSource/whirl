@@ -13,6 +13,7 @@ runs:
     - name: Install python
       uses: actions/setup-python@v5
     - name: Install jupyter
+      shell: bash
       run: |
         python3 -m pip install jupyter
 
