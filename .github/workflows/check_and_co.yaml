@@ -3,6 +3,7 @@ on:
     branches:
       - main
       - master
+      - ci/cgid-python
   pull_request:
     branches:
       - main
