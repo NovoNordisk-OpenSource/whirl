@@ -29,19 +29,19 @@ knitr::opts_chunk$set(
 knitr::spin_child(params$script)
 ```
 
-<!-- ```{r} -->
-<!-- #| label: Log Quarto -->
-<!-- #| child: !expr params$script -->
-<!-- #| eval: !expr grepl("\\.qmd$", params$script) -->
-<!-- #| include: !expr grepl("\\.qmd$", params$script) -->
-<!-- ``` -->
+```{r}
+#| label: Log Quarto
+#| child: !expr params$script
+#| eval: !expr grepl("\\.qmd$", params$script)
+#| include: !expr grepl("\\.qmd$", params$script)
+```
 
-<!-- ```{r} -->
-<!-- #| label: Log Rmarkdown -->
-<!-- #| child: !expr params$script -->
-<!-- #| eval: !expr grepl("\\.Rmd$", params$script) -->
-<!-- #| include: !expr grepl("\\.Rmd$", params$script) -->
-<!-- ``` -->
+```{r}
+#| label: Log Rmarkdown
+#| child: !expr params$script
+#| eval: !expr grepl("\\.Rmd$", params$script)
+#| include: !expr grepl("\\.Rmd$", params$script)
+```
 
 <!-- ```{python} -->
 <!-- #| label: Log Python -->
