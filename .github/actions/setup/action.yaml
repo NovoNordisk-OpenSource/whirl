@@ -12,3 +12,7 @@ runs:
       uses: quarto-dev/quarto-actions/setup@v2
     - name: Install python
       uses: actions/setup-python@v5
+    - name: Install jupyter
+      run: |
+        python3 -m pip install jupyter
+
