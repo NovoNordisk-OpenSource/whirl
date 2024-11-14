@@ -14,6 +14,7 @@ test_that("Run single R script", {
 })
 
 test_that("Run multiple R scripts", {
+  print(test_script(c("success.R", "warning.R", "error.R")))
 
   res <- test_script(c("success.R", "warning.R", "error.R")) |>
     run() |>
