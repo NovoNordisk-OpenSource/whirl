@@ -44,10 +44,7 @@ knitr::spin_child(params$script)
 ```
 
 ```{python}
-#| label: Log Python
 
-#| eval: !expr grepl("\\.py$", params$script)
-#| include: !expr grepl("\\.py$", params$script)
 ```
 
 <!-- ```{python} -->
