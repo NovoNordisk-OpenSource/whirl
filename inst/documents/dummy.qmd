@@ -29,42 +29,42 @@ knitr::opts_chunk$set(
 knitr::spin_child(params$script)
 ```
 
-```{r}
-#| label: Log Quarto
-#| child: !expr params$script
-#| eval: !expr grepl("\\.qmd$", params$script)
-#| include: !expr grepl("\\.qmd$", params$script)
-```
+<!-- ```{r} -->
+<!-- #| label: Log Quarto -->
+<!-- #| child: !expr params$script -->
+<!-- #| eval: !expr grepl("\\.qmd$", params$script) -->
+<!-- #| include: !expr grepl("\\.qmd$", params$script) -->
+<!-- ``` -->
 
-```{r}
-#| label: Log Rmarkdown
-#| child: !expr params$script
-#| eval: !expr grepl("\\.Rmd$", params$script)
-#| include: !expr grepl("\\.Rmd$", params$script)
-```
+<!-- ```{r} -->
+<!-- #| label: Log Rmarkdown -->
+<!-- #| child: !expr params$script -->
+<!-- #| eval: !expr grepl("\\.Rmd$", params$script) -->
+<!-- #| include: !expr grepl("\\.Rmd$", params$script) -->
+<!-- ``` -->
 
-```{python}
-#| label: Log Python
-#| file: !expr params$script
-#| eval: !expr grepl("\\.py$", params$script)
-#| include: !expr grepl("\\.py$", params$script)
-```
+<!-- ```{python} -->
+<!-- #| label: Log Python -->
+<!-- #| file: !expr params$script -->
+<!-- #| eval: !expr grepl("\\.py$", params$script) -->
+<!-- #| include: !expr grepl("\\.py$", params$script) -->
+<!-- ``` -->
 
-```{python}
-#| label: Python modules
-#| file: !expr file.path(params$tmpdir, "python_modules.py")
-#| eval: !expr grepl("\\.py$", params$script)
-#| echo: false
-```
+<!-- ```{python} -->
+<!-- #| label: Python modules -->
+<!-- #| file: !expr file.path(params$tmpdir, "python_modules.py") -->
+<!-- #| eval: !expr grepl("\\.py$", params$script) -->
+<!-- #| echo: false -->
+<!-- ``` -->
 
 ```{r}
 #| label: Session info
 #| include: false
 
 python_packages <- NULL
-if (file.exists(file.path(params$tmpdir, "python_imports.json"))){
-  python_packages <- whirl:::python_package_info(file.path(params$tmpdir, "python_imports.json"))
-}
+# if (file.exists(file.path(params$tmpdir, "python_imports.json"))){
+#   python_packages <- whirl:::python_package_info(file.path(params$tmpdir, "python_imports.json"))
+# }
 
 saveRDS(
   object = whirl:::session_info(
