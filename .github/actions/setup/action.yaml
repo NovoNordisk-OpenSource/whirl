@@ -10,3 +10,5 @@ runs:
         echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
     - name: Install Quarto
       uses: quarto-dev/quarto-actions/setup@v2
+    - name: Install python
+      uses: actions/setup-python@v5
