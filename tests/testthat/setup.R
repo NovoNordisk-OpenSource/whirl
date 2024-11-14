@@ -16,6 +16,9 @@ pak::local_install(
   ask = FALSE
 )
 
+pak::pak("reticulate")
+reticulate::install_python()
+
 # Minimal prints to make it easier to read test output
 
 withr::local_options(
