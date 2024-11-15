@@ -8,12 +8,21 @@ runs:
       shell: bash
       run: |
         echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
     - name: Install Quarto
       uses: quarto-dev/quarto-actions/setup@v2
-    - name: Install python
-      uses: actions/setup-python@v5
-    - name: Install jupyter
-      shell: bash
-      run: |
-        python3 -m pip install jupyter
 
+    - name: (Linux) Install jupyter
+      if: runner.os == 'Linux'
+      shell: bash
+      run: python3 -m pip install jupyter
+
+    - name: (macOS) Install jupyter
+      if: runner.os == 'macOS'
+      shell: bash
+      run: python3 -m pip install --break-system-packages jupyter
+
+    - name: (Windows) Install jupyter
+      if: runner.os == 'Windows'
+      shell: bash
+      run: py -m pip install jupyter
