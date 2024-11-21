@@ -70,7 +70,7 @@ Approved URL library packages\item{default: }{\preformatted{NULL}}
 }}
 
 \item{n_workers}{\describe{
-Number of simultanous workers used in the run function\item{default: }{\preformatted{1}}
+Number of simultanous workers used in the run function. A maximum of 128 workers is allowed.\item{default: }{\preformatted{1}}
 \item{option: }{whirl.n_workers}
 \item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
 }}

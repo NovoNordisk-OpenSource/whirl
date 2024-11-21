@@ -1,11 +1,16 @@
 # Getting file extension
 get_file_ext <- function(file_paths) {
-  sapply(file_paths, function(file_path) {
-    file_name <- basename(file_path)
-    file_parts <- strsplit(file_name, "\\.")[[1]]
-    file_extension <- tail(file_parts, n = 1)
-    return(file_extension)
-  })
+  vapply(
+    X = file_paths,
+    FUN = function(file_path) {
+      file_name <- basename(file_path)
+      file_parts <- strsplit(file_name, "\\.")[[1]]
+      file_extension <- ifelse(length(file_parts) == 1, "", tail(file_parts, 1))
+      return(file_extension)
+    },
+    FUN.VALUE = character(1),
+    USE.NAMES = FALSE
+  )
 }
 
 # Function to scale a numeric vector to percentage
@@ -37,6 +42,18 @@ path_rel <- function(path, start = ".") {
   # Split the paths into components
   path_parts <- strsplit(path, "/")[[1]]
   start_parts <- strsplit(start, "/")[[1]]
+
+  # Check if the paths are the same
+  if (identical(path_parts, start_parts)) {
+    return(".")
+  }
+
+  # Check if the start is a subdirectory of the path
+  if (all(path_parts %in% start_parts)) {
+    up_levels <- length(start_parts) - length(path_parts)
+    relative_path <- c(rep("..", up_levels))
+    return(paste(relative_path, collapse = "/"))
+  }
 
   # Find the common prefix length
   common_length <- 0
