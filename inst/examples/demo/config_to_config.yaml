@@ -1,4 +1,7 @@
 steps:
-  - name: "Run Metadata folder through config"
+  - name: "Run ADaM folder through config"
+    paths:
+      - "adam/adamprog_whirl.yaml"
+  - name: "Run tfl folder through config"
     paths:
       - "tfl/tfl_whirl.yaml"

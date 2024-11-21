@@ -40,15 +40,11 @@ internal_run <- function(input, steps, queue, level,
                    level = level + 1)
     } else {
       # Execute the scripts
-      result <- queue$run(files)
+      queue$run(files)
       cat("\n")
     }
   }
 
-  if (exists("result")) {
-    invisible(result)
-  }
-
-
+  invisible(queue)
 }
 
