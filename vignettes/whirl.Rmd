@@ -39,14 +39,14 @@ The location of the summary file can be controlled with the `summary_file` argum
 ```{r}
 # Execution of all R files in a specific directory
 run(
-  input = "path/to/directory/*.(r|R)", 
+  input = "path/to/directory/*.R", 
   n_workers = 4, 
   summary_file = "path/to/summary"
 )
 
 # Execution of all R files starting with "mk200" in a specific directory
 run(
-  input = "path/to/directory/mk200*.(r|R)", 
+  input = "path/to/directory/mk200*.R", 
   n_workers = 8, 
   summary_file = "path/to/summary"
 )
