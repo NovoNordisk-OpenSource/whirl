@@ -4,7 +4,7 @@
 #'   used as input these will be solved to the actual files matching the
 #'   criteria.
 #' @noRd
-read_regexp <- function(input) {
+read_glob <- function(input) {
 
   files_ <- lapply(input, function(x) {
 
@@ -12,13 +12,10 @@ read_regexp <- function(input) {
     if (fs::file_exists(x)) {
       return(x)
     } else {
-      #If the file does not exist then check if it is a regexp
-      regexp <- basename(x) |>
-        utils::glob2rx()
-
-      files <- list.files(path = dirname(x), pattern = regexp, full.names = TRUE)
+      #If the file does not exist then check if it is a glob
+      files <- Sys.glob(x)
       if (length(files) == 0) {
-        cli::cli_abort("No files or folders for this path {x}")
+        cli::cli_alert_warning("No files or folders for this path {x}")
       }
       return(files)
     }

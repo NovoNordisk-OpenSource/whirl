@@ -1,0 +1,6 @@
+steps:
+  - name: "Run adam mk400 programs"
+    paths:
+      - "mk400*.R"
+
+

@@ -57,7 +57,7 @@ enrich_input <- function(input, steps = NULL,
   # Normalizing the paths and read regexp
   for (j in seq_along(paths)) {
     normalized <- unlist(lapply(paths[[j]], normalize_with_base, base = root_dir))
-    paths[[j]] <- read_regexp(normalized)
+    paths[[j]] <- read_glob(normalized)
   }
 
   # If input include one or more directories
