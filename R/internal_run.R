@@ -33,7 +33,7 @@ internal_run <- function(input, steps, queue, level,
                 verbosity_level = verbosity_level)
 
     # If the step points to a config file then re-initiate internal_run()
-    if (any(grepl("yaml|yml", tools::file_ext(files)))) {
+    if (any(grepl("yaml|yml", get_file_ext(files)))) {
       internal_run(input = files,
                    steps = steps,
                    queue = queue,

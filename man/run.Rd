@@ -30,7 +30,7 @@ then all steps listed in the config file will be executed.}
 \item{summary_file}{A character string specifying the file path where the
 summary log will be stored.}
 
-\item{n_workers}{Number of simultanous workers used in the run function (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
+\item{n_workers}{Number of simultanous workers used in the run function. A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 
