@@ -44,15 +44,18 @@ knitr::spin_child(params$script)
 ```
 
 ```{python}
-1+1
+#| label: Log Python
+#| file: !expr params$script
+#| eval: !expr grepl("\\.py$", params$script)
+#| include: !expr grepl("\\.py$", params$script)
 ```
 
-<!-- ```{python} -->
-<!-- #| label: Python modules -->
-<!-- #| file: !expr file.path(params$tmpdir, "python_modules.py") -->
-<!-- #| eval: !expr grepl("\\.py$", params$script) -->
-<!-- #| echo: false -->
-<!-- ``` -->
+```{python}
+#| label: Python modules
+#| file: !expr file.path(params$tmpdir, "python_modules.py")
+#| eval: !expr grepl("\\.py$", params$script)
+#| echo: false
+```
 
 ```{r}
 #| label: Session info

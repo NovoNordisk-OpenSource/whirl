@@ -48,10 +48,10 @@ Imports:
     zephyr (>= 0.0.0.9000),
     zoo,
     parallelly,
-    glue
+    glue,
+    reticulate
 Suggests: 
     pak,
-    reticulate,
     testthat (>= 3.0.0),
     usethis
 Remotes: 
