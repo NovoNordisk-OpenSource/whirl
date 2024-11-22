@@ -51,6 +51,7 @@ Imports:
     glue
 Suggests: 
     pak,
+    reticulate,
     testthat (>= 3.0.0),
     usethis
 Remotes: 
