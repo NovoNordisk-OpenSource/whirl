@@ -110,7 +110,7 @@ create_approval_plot <- function(data) {
     dplyr::mutate(
       pct = prop.table(.data[["n"]]),
       status = "grpvar",
-      lbl = paste0(.data[["grpvar"]], ": ", .data[["n"]], "/", sum(.data[["n"]]), " (", scales::percent(.data[["pct"]]), ")")
+      lbl = paste0(.data[["grpvar"]], ": ", .data[["n"]], "/", sum(.data[["n"]]), " (", scale_to_percent(.data[["pct"]]), ")")
     ) |>
     ggplot2::ggplot(ggplot2::aes(x = .data[["pct"]], y = .data[["status"]], fill = .data[["grpvar"]], label = .data[["lbl"]])) +
     ggplot2::geom_bar(position = "fill", stat = "identity") +

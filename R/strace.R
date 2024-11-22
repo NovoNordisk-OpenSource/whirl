@@ -125,7 +125,7 @@ read_strace <- function(path, p_wd) {
         .data$type == "chdir" & .data$path == "." ~ p_wd,
         .data$type == "chdir" ~ .data$path
       ) |>
-        zoo::na.locf(na.rm = FALSE) |>
+        replace_na_with_last() |>
         dplyr::coalesce(p_wd),
       dir = dplyr::coalesce(.data$dir, .data$wd)
     )

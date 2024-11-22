@@ -80,5 +80,5 @@ options::define_option(
 options::define_option(
   option = "n_workers",
   default = 1,
-  desc = "Number of simultanous workers used in the run function"
+  desc = "Number of simultanous workers used in the run function. A maximum of 128 workers is allowed."
 )
