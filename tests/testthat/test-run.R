@@ -13,6 +13,21 @@ test_that("Run single R script", {
 
 })
 
+test_that("Run single python script", {
+
+  res <- test_script("py_success.py") |>
+    run() |>
+    expect_no_condition()
+
+  res[["status"]] |>
+    expect_equal("success")
+
+  res[["result"]][[1]] |>
+    names() |>
+    expect_equal(c("status", "session_info_rlist", "log_details"))
+
+})
+
 test_that("Run multiple R scripts", {
 
   res <- test_script(c("success.R", "warning.R", "error.R")) |>
