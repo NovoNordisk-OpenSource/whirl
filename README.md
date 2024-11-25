@@ -36,22 +36,18 @@ The simplest way is to provide the path to a single script:
 
 ``` r
 library(whirl)
-script <- system.file("examples/simple/success.R", package = "whirl")
+script <- system.file("examples/success.R", package = "whirl")
 run(script)
-#> ══ Executing scripts and generating logs ═══════════════════════════════════════
 #> ✔ success.R: Completed succesfully
-#> ══ End of process ══════════════════════════════════════════════════════════════
 ```
 
 It is also possible to run several scripts simultaneously:
 
 ``` r
-scripts <- system.file("examples/simple", c("success.R", "warning.R"), package = "whirl")
+scripts <- system.file("examples", c("success.R", "warning.R"), package = "whirl")
 result <- run(scripts, n_workers = 2)
-#> ══ Executing scripts and generating logs ═══════════════════════════════════════
-#> ✔ success.R: Completed succesfully
 #> ⚠ warning.R: Completed with warnings
-#> ══ End of process ══════════════════════════════════════════════════════════════
+#> ✔ success.R: Completed succesfully
 ```
 
 Here we are specifying that `run()` can use up to two simultaneous
@@ -77,8 +73,8 @@ print(result)
 #> # A tibble: 2 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… succe… <named list>
-#> 2     2 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… warni… <named list>
+#> 1     1 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… succe… <named list>
+#> 2     2 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… warni… <named list>
 ```
 
 ## Config files
@@ -91,7 +87,7 @@ configuration file for whirl. The configuration file is a `yaml` file
 that specifies each steps:
 
 ``` r
-config <- system.file("examples/simple/_whirl.yaml", package = "whirl") 
+config <- system.file("examples/_whirl.yaml", package = "whirl") 
 cat(readLines(config), sep = "\n")
 #> steps:
 #>   - name: "First step"
@@ -109,11 +105,9 @@ scripts in the second steps.
 
 ``` r
 result <- run(config, n_workers = 2)
-#> ══ Executing scripts and generating logs ═══════════════════════════════════════
 #> ✔ success.R: Completed succesfully
 #> ⚠ warning.R: Completed with warnings
 #> ✖ error.R: Completed with errors
-#> ══ End of process ══════════════════════════════════════════════════════════════
 ```
 
 ``` r
@@ -121,9 +115,9 @@ print(result)
 #> # A tibble: 3 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… succe… <named list>
-#> 2     2 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… warni… <named list>
-#> 3     3 <NA>  /scer/homedirs/oath/R/x86_64-pc-linux-gnu-lib… error  <named list>
+#> 1     1 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… succe… <named list>
+#> 2     2 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… warni… <named list>
+#> 3     3 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… error  <named list>
 ```
 
 ## Customize run()

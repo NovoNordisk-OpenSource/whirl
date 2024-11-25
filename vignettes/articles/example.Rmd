@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-system.file("examples/simple/prg1.R", package = "whirl") |> 
+system.file("examples/prg1.R", package = "whirl") |> 
   file.copy(to = "example.R")
 ```
 

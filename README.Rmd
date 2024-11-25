@@ -46,13 +46,14 @@ The simplest way is to provide the path to a single script:
 
 ```{r ex-script}
 library(whirl)
-script <- system.file("examples/simple/success.R", package = "whirl")
+script <- system.file("examples/success.R", package = "whirl")
 run(script)
 ```
+
 It is also possible to run several scripts simultaneously:
 
 ```{r ex-scripts}
-scripts <- system.file("examples/simple", c("success.R", "warning.R"), package = "whirl")
+scripts <- system.file("examples", c("success.R", "warning.R"), package = "whirl")
 result <- run(scripts, n_workers = 2)
 ```
 
@@ -78,7 +79,7 @@ The best way to implement this in your project is use a configuration file for w
 The configuration file is a `yaml` file that specifies each steps:
 
 ```{r ex-config}
-config <- system.file("examples/simple/_whirl.yaml", package = "whirl") 
+config <- system.file("examples/_whirl.yaml", package = "whirl") 
 cat(readLines(config), sep = "\n")
 ```
 

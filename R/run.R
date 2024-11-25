@@ -25,16 +25,16 @@
 #'@examplesIf FALSE
 #'
 #' # Run a single script
-#' script <- system.file("examples/simple/success.R", package = "whirl")
+#' script <- system.file("examples/success.R", package = "whirl")
 #' run(script)
 #'
 #' # Run several scripts in parallel on up to 2 workers
-#' scripts <- system.file("examples/simple", c("success.R", "warning.R", "error.R"), package = "whirl")
+#' scripts <- system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl")
 #' run(scripts, n_workers = 2)
 #'
 #' # Run scripts in several steps
-#' step_1 <- system.file("examples/simple", c("success.R", "warning.R"), package = "whirl")
-#' step_2 <- system.file("examples/simple", c("error.R"), package = "whirl")
+#' step_1 <- system.file("examples", c("success.R", "warning.R"), package = "whirl")
+#' step_2 <- system.file("examples", c("error.R"), package = "whirl")
 #' run(list(step_1, step_2), n_workers = 2)
 #'
 #' @export
