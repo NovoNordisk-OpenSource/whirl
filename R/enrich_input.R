@@ -12,7 +12,7 @@ enrich_input <- function(input, steps = NULL,
                          verbosity_level = options::opt("verbosity_level", env = "whirl")) {
 
   # Characterize the input
-  is_config_file <- any(grepl("yaml|yml", tools::file_ext(input)))
+  is_config_file <- any(grepl("yaml|yml", get_file_ext(input)))
   is_character <- is.character(input)
 
   # Read yaml and extract list

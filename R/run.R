@@ -72,7 +72,7 @@ run <- function(input,
   on.exit(cli::cli_end(d), add = TRUE)
 
   # Constrain the number of workers
-  n_workers <- min(parallelly::availableCores(omit = 1), n_workers)
+  n_workers <- min(128, n_workers)
 
   zephyr::msg("Executing scripts in parallel using {n_workers} cores\n",
               levels_to_write = "verbose",

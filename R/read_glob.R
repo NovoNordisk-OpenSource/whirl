@@ -4,12 +4,11 @@
 #'   used as input these will be solved to the actual files matching the
 #'   criteria.
 #' @noRd
+
 read_glob <- function(input) {
-
   files_ <- lapply(input, function(x) {
-
     #If the file exist then return the path
-    if (fs::file_exists(x)) {
+    if (file.exists(x)) {
       return(x)
     } else {
       #If the file does not exist then check if it is a glob
