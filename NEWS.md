@@ -1,3 +1,10 @@
+# whirl dev (2024-11-25)
+* Fixing a bug where the queue was not returned correctly in some instances.
+* Switch to using of `Sys.glob()` instead of `utils::glob2rx()`.
+
+# whirl 0.1.5 (2024-11-21)
+* Reducing the number of dependencies.
+
 # whirl 0.1.4 (2024-11-01)
 * Add `use_whirl()` utility function.
 
