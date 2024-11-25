@@ -1,4 +1,4 @@
-# whirl 0.1.5 (2024-11-12)
+# whirl 0.1.6 (2024-11-25)
 * Added support for logging of Python scripts with `run()`.
 
 # whirl 0.1.4 (2024-11-01)
