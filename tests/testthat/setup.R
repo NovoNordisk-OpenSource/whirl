@@ -16,7 +16,6 @@ withr::local_options(
 
 test_script <- function(script) {
   script <- test_path("scripts", script) |>
-    normalizePath()
-  stopifnot(file.exists(script))
+    normalizePath(winslash = "/", mustWork = TRUE)
   return(script)
 }
