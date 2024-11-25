@@ -1,17 +1,19 @@
 test_that("testing internal_run()", {
-  file_config <- system.file("examples/demo/tfl/tfl_whirl.yaml", package = "whirl")
-  config_to_config <- system.file("examples/demo/config_to_config.yaml", package = "whirl")
 
   # A config file
 
-  queue <- whirl_queue$new()
-  internal_run(input = file_config, steps = NULL, level = 1, queue = queue) |>
+  q <- whirl_queue$new()
+
+  test_script("_whirl.yaml") |>
+    internal_run(steps = NULL, level = 1, queue = q) |>
     expect_no_error()
 
   # A config file calling another config file
 
-  queue <- whirl_queue$new()
-  internal_run(input = config_to_config, steps = NULL, level = 1, queue = queue) |>
+  q <- whirl_queue$new()
+
+  test_script("_whirl_to_config.yaml") |>
+    internal_run(steps = NULL, level = 1, queue = q) |>
     expect_no_error()
 
 })

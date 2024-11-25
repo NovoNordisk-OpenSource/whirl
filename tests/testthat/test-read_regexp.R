@@ -1,30 +1,25 @@
-test_that("testing read_regexp()", {
-  file <- system.file("examples/demo/adam/mk100adsl.R", package = "whirl")
-  dir <- system.file("examples/demo/adam", package = "whirl")
+test_that("read_regexp() finds the right files", {
 
-  #A config file
-  withr::with_dir(tempdir(), {
-    got <- read_regexp(input = file)
-    expect_identical(got, file)
-  })
+  # A single file
 
-  #Using regexp
-  withr::with_dir(tempdir(), {
-    all_files <- read_regexp(input = paste0(dir, "/*.R"))
-    expect_true(length(all_files) > 1)
-  })
+  test_script("success.R") |>
+    read_regexp() |>
+    expect_equal(test_script("success.R"))
 
-  #Using regexp
-  withr::with_dir(tempdir(), {
-    all_files2 <- read_regexp(input = paste0(dir, "/*.r|R"))
-    expect_true(length(all_files2) > 1)
-  })
+  # All R files in a directory
 
+  test_script("") |>
+    file.path("*.R") |>
+    read_regexp() |>
+    expect_match("\\.R$") |>
+    length() |>
+    expect_gt(1)
 
-  # A non-existing file
-  withr::with_dir(tempdir(), {
-    read_regexp(input = paste0(regexp, "/donotexsist.R")) |>
+  # Error when file does not exist
+
+  test_script("") |>
+    file.path("fake_program.R") |>
+    read_regexp() |>
     expect_error()
-  })
 
 })
