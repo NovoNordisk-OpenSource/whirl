@@ -85,7 +85,7 @@ order. The best way to implement this in your project is use a
 configuration file for whirl. The configuration file is a `yaml` file
 that specifies each steps:
 
-`_whirl.yaml`
+`_whirl.yaml:`
 
 ``` yaml
 steps:
@@ -105,8 +105,8 @@ scripts in the second steps.
 ``` r
 result <- run("_whirl.yaml", n_workers = 2)
 #> ✔ success.R: Completed succesfully
-#> ✖ error.R: Completed with errors
 #> ⚠ warning.R: Completed with warnings
+#> ✖ error.R: Completed with errors
 ```
 
 ``` r
@@ -127,6 +127,6 @@ logging for your needs see the following:
 - `run()`: For further information on how to call it.
 - `vignette("whirl")`: For a more in depth explanation, and more
   advanced usage.
-- `vignette("example")`: With a simple example, including the created
-  log.
+- `vignette("articles/example")`: With a simple example, including the
+  created log.
 - `options()`: On how to change the default behavior of whirl.

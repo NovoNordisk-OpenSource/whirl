@@ -109,5 +109,5 @@ For more information about how to customize the the execution and the logging fo
 
 * `run()`: For further information on how to call it.
 * `vignette("whirl")`: For a more in depth explanation, and more advanced usage.
-* `vignette("example")`: With a simple example, including the created log.
+* `vignette("articles/example")`: With a simple example, including the created log.
 * `options()`: On how to change the default behavior of whirl.
