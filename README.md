@@ -36,18 +36,17 @@ The simplest way is to provide the path to a single script:
 
 ``` r
 library(whirl)
-script <- system.file("examples/success.R", package = "whirl")
-run(script)
+
+run("success.R")
 #> ✔ success.R: Completed succesfully
 ```
 
 It is also possible to run several scripts simultaneously:
 
 ``` r
-scripts <- system.file("examples", c("success.R", "warning.R"), package = "whirl")
-result <- run(scripts, n_workers = 2)
-#> ⚠ warning.R: Completed with warnings
+result <- run(c("success.R", "warning.R"), n_workers = 2)
 #> ✔ success.R: Completed succesfully
+#> ⚠ warning.R: Completed with warnings
 ```
 
 Here we are specifying that `run()` can use up to two simultaneous
@@ -73,8 +72,8 @@ print(result)
 #> # A tibble: 2 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… succe… <named list>
-#> 2     2 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… warni… <named list>
+#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… succe… <named list>
+#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… warni… <named list>
 ```
 
 ## Config files
@@ -86,17 +85,17 @@ order. The best way to implement this in your project is use a
 configuration file for whirl. The configuration file is a `yaml` file
 that specifies each steps:
 
-``` r
-config <- system.file("examples/_whirl.yaml", package = "whirl") 
-cat(readLines(config), sep = "\n")
-#> steps:
-#>   - name: "First step"
-#>     paths:
-#>       - "success.R"
-#>   - name: "Second step"
-#>     paths:
-#>       - "warning.R"
-#>       - "error.R"
+`_whirl.yaml`
+
+``` yaml
+steps:
+  - name: "First step"
+    paths:
+      - "success.R"
+  - name: "Second step"
+    paths:
+      - "warning.R"
+      - "error.R"``
 ```
 
 Here we are specifying that in the first step we run `succes.R`. And
@@ -104,10 +103,10 @@ then when this step has been completed we continue to running the
 scripts in the second steps.
 
 ``` r
-result <- run(config, n_workers = 2)
+result <- run("_whirl.yaml", n_workers = 2)
 #> ✔ success.R: Completed succesfully
-#> ⚠ warning.R: Completed with warnings
 #> ✖ error.R: Completed with errors
+#> ⚠ warning.R: Completed with warnings
 ```
 
 ``` r
@@ -115,9 +114,9 @@ print(result)
 #> # A tibble: 3 × 5
 #>      id tag   script                                         status result      
 #>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… succe… <named list>
-#> 2     2 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… warni… <named list>
-#> 3     3 <NA>  /Library/Frameworks/R.framework/Versions/4.4-… error  <named list>
+#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… succe… <named list>
+#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… warni… <named list>
+#> 3     3 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… error  <named list>
 ```
 
 ## Customize run()
