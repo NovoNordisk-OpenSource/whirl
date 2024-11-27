@@ -51,19 +51,24 @@ The way the execution is logged is configurable through several options for
 e.g. the verbosity of the logs. See \link{options} on how to configure these.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# Start by copying the following three example scripts:
+file.copy(
+  from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+  to = "."
+  )
 
 # Run a single script
-script <- system.file("examples/success.R", package = "whirl")
-run(script)
+run("success.R")
 
 # Run several scripts in parallel on up to 2 workers
-scripts <- system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl")
-run(scripts, n_workers = 2)
+run(c("success.R", "warning.R", "error.R"), n_workers = 2)
 
-# Run scripts in several steps
-step_1 <- system.file("examples", c("success.R", "warning.R"), package = "whirl")
-step_2 <- system.file("examples", c("error.R"), package = "whirl")
-run(list(step_1, step_2), n_workers = 2)
-\dontshow{\}) # examplesIf}
+# Run scripts in two steps by providing them as list elements
+run(
+  list(
+    c("success.R", "warning.R"),
+    "error.R"
+    ),
+   n_workers = 2)
+
 }
