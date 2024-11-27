@@ -50,15 +50,12 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
   ncols <- ncol(hold)
 
   if (grepl("rstudio_cloud", Sys.getenv("R_CONFIG_ACTIVE"))) {
-    hold <- hold |> dplyr::mutate(formated = file.path("/file_show?path=", .data[["Hyperlink"]]))
+    formatted <- file.path("/file_show?path=", hold[["Hyperlink"]])
   } else {
-    hold <- hold |> dplyr::mutate(formated = file.path(path_rel(.data[["Hyperlink"]], start = path_rel_start)))
+    formatted <- file.path(path_rel(hold[["Hyperlink"]], start = path_rel_start))
   }
 
-  hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', hold$formated, "HTML Log"))
-
-  hold <- hold |>
-    dplyr::select(-.data[["formated"]])
+  hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', formatted, "HTML Log"))
 
   knitr::kable(hold, format = "html", escape = FALSE) |>
     kableExtra::column_spec(1:ncols, background = ifelse(
