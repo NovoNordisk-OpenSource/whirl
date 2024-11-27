@@ -1,5 +1,6 @@
-# whirl 0.1.6 (2024-11-25)
+# whirl dev
 * Added support for logging of Python scripts with `run()`.
+* Improved unit tests for `run()`
 
 # whirl 0.1.4 (2024-11-01)
 * Add `use_whirl()` utility function.
