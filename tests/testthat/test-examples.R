@@ -20,7 +20,7 @@ test_that("All example scripts run with consistent output", {
     # the full path to the script
 
     res$script <- basename(res$script)
-    res$result <- lapply(res$result, \(x) x$status)
+    res <- res[c("id", "tag", "script", "status")]
 
     # Check that the results now are consistent
     expect_snapshot_value(res, style = "json2")

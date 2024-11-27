@@ -7,7 +7,7 @@
 run(
   input,
   steps = NULL,
-  summary_file = NULL,
+  summary_file = "summary.html",
   n_workers = options::opt("n_workers", env = "whirl"),
   check_renv = options::opt("check_renv", env = "whirl"),
   verbosity_level = options::opt("verbosity_level", env = "whirl"),
