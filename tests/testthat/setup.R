@@ -1,7 +1,13 @@
-## whirl have to be installed for tests
-pkgs <- installed.packages() |> row.names()
-test <- any(pkgs %in% "whirl")
+## whirl have to be installed for Quarto to use it
 
-if (!test) {
-  cli::cli_abort("The package whirl have to be installed for subprocesses")
-}
+withr::local_envvar(
+  R_USER_CACHE_DIR = tempfile(),
+  .local_envir = teardown_env()
+)
+
+# Minimal prints to make it easier to read test output
+
+withr::local_options(
+  list(whirl.verbosity_level = "quiet"),
+  .local_envir = teardown_env()
+)

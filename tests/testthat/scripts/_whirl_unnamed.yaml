@@ -1,0 +1,8 @@
+steps:
+  - name: "Named step"
+    paths:
+      - "success.R"
+  - paths:
+      - "warning.R"
+  - paths:
+      - "error.R"

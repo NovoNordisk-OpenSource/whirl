@@ -1,62 +1,68 @@
-test_that("testing enrich_input()", {
-  file_config <- system.file("examples/demo/metadata/metadata_whirl.yaml", package = "whirl")
-  incomplete_config <- system.file("examples/demo/demo_2_whirl.yml", package = "whirl")
-  file <- system.file("examples/demo/adam/mk100adsl.R", package = "whirl")
-  config_to_prune <- system.file("examples/demo/demo_whirl.yaml", package = "whirl")
-  directory <- system.file("examples/simple", package = "whirl")
+test_that("Enrich input works as expected", {
 
-  op <- options(whirl.verbosity_level = "minimal")
+  # Find all R programs
 
-  #A config file
-  withr::with_dir(tempdir(), {
-    enriched <- enrich_input(input = file_config)
-    expect_type(enriched, "list")
-    names(enriched[[1]]) |> expect_equal(c("name", "paths"))
-  })
+  enriched <- test_script("_whirl_r_programs.yaml") |>
+    enrich_input() |>
+    expect_type("list") |>
+    expect_length(1)
 
-  #Incomplete config
-  withr::with_dir(tempdir(), {
-    enriched <- enrich_input(input = incomplete_config)
-    expect_type(enriched, "list")
-    names(enriched[[1]]) |> expect_equal(c("name", "paths"))
-    enriched[[1]]$name |> expect_equal("Step 1: Unnamed chunk")
-    enriched[[2]]$name |> expect_equal("Step 2: Unnamed chunk")
-  })
+  enriched[[1]] |>
+    expect_type("list") |>
+    expect_length(2) |>
+    expect_named(c("name", "paths")) |>
+    lapply(expect_type, "character") |>
+    invisible()
 
-  #A file
-  withr::with_dir(tempdir(), {
-    enriched <- enrich_input(input = file)
-    expect_type(enriched, "list")
-    names(enriched[[1]]) |> expect_equal(c("name", "paths"))
-    enriched[[1]]$name |> expect_equal("Step 1: Unnamed chunk")
-    enriched[[1]]$paths |> expect_equal(file)
-  })
+  # Unnamed steps
 
-  #Pruning a config file
-  withr::with_dir(tempdir(), {
-    enriched <- enrich_input(input = config_to_prune, steps = "Run ADaM mk100 programs")
-    expect_type(enriched, "list")
-    names(enriched[[1]]) |> expect_equal(c("name", "paths"))
-    length(enriched) |> expect_equal(1)
-  })
+  test_script("_whirl_unnamed.yaml") |>
+    enrich_input() |>
+    expect_type("list") |>
+    expect_length(3) |>
+    vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
+    expect_equal(c("Named step", "Step 2: Unnamed chunk", "Step 3: Unnamed chunk"))
 
-  #Pruning a config file
-  withr::with_dir(tempdir(), {
-    enriched <- enrich_input(input = config_to_prune,
-                             steps = c("Run ADaM mk100 programs",
-                                       "Run ADaM mk300 programs"))
-    expect_type(enriched, "list")
-    names(enriched[[1]]) |> expect_equal(c("name", "paths"))
-    length(enriched) |> expect_equal(2)
-  })
+  # File input
 
-  #Expect error as directory is given as input
-  withr::with_dir(tempdir(), {
-    enriched <- enrich_input(input = directory) |>
-      expect_error()
-  })
+  enriched <- test_script("success.R") |>
+    enrich_input() |>
+    expect_type("list") |>
+    expect_length(1)
 
-  on.exit(options(op))
+  enriched[[1]] |>
+    expect_type("list") |>
+    expect_length(2) |>
+    expect_named(c("name", "paths")) |>
+    unlist() |>
+    expect_equal(
+      c(
+        name = "Step 1: Unnamed chunk",
+        paths = test_script("success.R")
+        )
+      )
+
+  # Pruning a config file
+
+  test_script("_whirl.yaml") |>
+    enrich_input(steps = "Second step") |>
+    expect_type("list") |>
+    expect_length(1) |>
+    vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
+    expect_equal("Second step")
+
+  test_script("_whirl.yaml") |>
+    enrich_input(steps = c("First step", "Second step")) |>
+    expect_type("list") |>
+    expect_length(2) |>
+    vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
+    expect_equal(c("First step", "Second step"))
+
+  # Expected error when input is a directory
+
+  test_script("") |>
+    enrich_input() |>
+    expect_error()
 
 })
 

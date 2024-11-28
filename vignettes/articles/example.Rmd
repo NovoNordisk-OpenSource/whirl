@@ -2,22 +2,27 @@
 title: "Log example"
 ---
 
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-system.file("examples/simple/prg1.R", package = "whirl") |> 
-  file.copy(to = "example.R")
+# Use a temporary directory as working directory with the example program available
+
+wd <- getwd()
+tmp <- withr::local_tempdir()
+
+system.file("examples/prg1.R", package = "whirl") |>  
+  file.copy(to = file.path(tmp, "example.R"))
+
+knitr::opts_knit$set(root.dir = tmp)
 ```
 
 In this example we are going to execute the following script and create a log of it's execution:
 
-```{r, echo = FALSE}
-readLines("example.R") |> 
-  cli::cli_code()
+`example.R:`
+```{r, file = "example.R", eval = FALSE}
 ```
 
 We are going to use the `run()` function to execute the script, and since this vignette
@@ -30,7 +35,7 @@ options(whirl.track_files = TRUE)
 options(whirl.verbosity_level = "minimal")
 ```
 
-The `verbosity_level` is set to `minimal` for nicer printing in ths vignette.
+The `verbosity_level` is set to `minimal` for nicer printing in this vignette.
 Now we are ready to execute the script:
 
 ```{r run}
@@ -42,8 +47,19 @@ print(result)
 The script is now executed and you can access the logs below:
 
 ```{r copy, include=FALSE}
-file.copy(from = "summary.html", to = "../docs/articles")
-file.copy(from = "example_log.html", to = "../docs/articles")
+# Also check if all outputs were created as expected
+
+articles_folder <- file.path(wd, "../../docs/articles")
+
+articles_folder |> 
+  dir.exists() |> 
+  stopifnot()
+
+c("summary.html", "example_log.html", "plot1.png") |> 
+  lapply(file.copy, to = articles_folder, overwrite = TRUE) |> 
+  unlist() |> 
+  all() |> 
+  stopifnot()
 ```
 
 * [View summary log](summary.html)

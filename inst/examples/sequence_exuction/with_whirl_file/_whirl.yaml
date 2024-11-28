@@ -1,4 +1,0 @@
-steps:
-  - name: "Subfolder with config file"
-    paths:
-      - "prg1.R"

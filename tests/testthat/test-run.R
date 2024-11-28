@@ -1,33 +1,87 @@
-test_that("testing run()", {
-  file_config <- system.file("examples/demo/tfl/tfl_whirl.yaml", package = "whirl")
-  directory <- system.file("examples/simple", package = "whirl")
-  file <- system.file("examples/demo/adam/mk100adsl.R", package = "whirl")
+test_that("Run single R script", {
 
-  #A config file
-  withr::with_dir(tempdir(), {
-    run(input = file_config) |>
-      expect_no_error()
-  })
+  res <- test_script("success.R") |>
+    run() |>
+    expect_no_condition()
 
-  #Pointing to a directory
-  withr::with_dir(tempdir(), {
-    run(input = directory) |>
-      expect_error()
-  })
+  res[["status"]] |>
+    expect_equal("success")
 
-  # A file
-  withr::with_dir(tempdir(), {
-    run(input = file, n_workers = 1) |>
-      expect_no_error()
-  })
-
-  # A list
-  withr::with_dir(tempdir(), {
-    run(input = list(file)) |>
-      expect_no_error()
-  })
+  res[["result"]][[1]] |>
+    names() |>
+    expect_equal(c("status", "session_info_rlist", "log_details"))
 
 })
 
+test_that("Run single python script", {
 
+  res <- test_script("py_success.py") |>
+    run() |>
+    expect_no_condition()
 
+  res[["status"]] |>
+    expect_equal("success")
+
+  res[["result"]][[1]] |>
+    names() |>
+    expect_equal(c("status", "session_info_rlist", "log_details"))
+
+})
+
+test_that("Run multiple R scripts", {
+
+  res <- test_script(c("success.R", "warning.R", "error.R")) |>
+    run() |>
+    expect_no_error()
+
+  res[["status"]] |>
+    expect_equal(c("success", "warning", "error"))
+
+  res[["result"]][[1]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
+
+  res[["result"]][[2]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
+
+  res[["result"]][[3]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
+})
+
+test_that("Run multiple python scripts", {
+
+  res <- test_script(c("py_success.py", "py_warning.py", "py_error.py")) |>
+    run() |>
+    expect_no_error()
+
+  res[["status"]] |>
+    expect_equal(c("success", "warning", "error"))
+
+  res[["result"]][[1]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
+
+  res[["result"]][[2]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
+
+  res[["result"]][[3]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
+})
+
+test_that("Run yaml config file", {
+
+  res <- test_script("_whirl.yaml") |>
+    run() |>
+    expect_no_error()
+
+})

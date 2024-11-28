@@ -27,7 +27,9 @@ format:
     smooth-scroll: true
 ---
 
-```{r, include=FALSE}
+```{r}
+#| label: Setup
+#| include: false
 knitr::opts_chunk$set(
   error = TRUE,
   warning = TRUE,
@@ -36,7 +38,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, echo = FALSE}
+```{r}
+#| label: Summary
+#| echo: false
 hold <- params$summary_df |> tibble::tibble()
 class(hold) <- c("whirl_summary_info", "summary_info", "list")
 

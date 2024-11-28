@@ -37,11 +37,11 @@ internal_run <- function(input, steps, queue, level,
       internal_run(input = files,
                    steps = steps,
                    queue = queue,
-                   level = level + 1)
+                   level = level + 1,
+                   verbosity_level = verbosity_level)
     } else {
       # Execute the scripts
       result <- queue$run(files)
-      cat("\n")
     }
   }
 

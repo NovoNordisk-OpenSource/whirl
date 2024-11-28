@@ -21,20 +21,27 @@
 #' @inheritParams options_params
 #' @return A tibble containing the execution results for all the scripts.
 #'
-#'@examplesIf FALSE
+
+#'@examples
+#' # Start by copying the following three example scripts:
+#' file.copy(
+#'   from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+#'   to = "."
+#'   )
 #'
 #' # Run a single script
-#' script <- system.file("examples/simple/success.R", package = "whirl")
-#' run(script)
+#' run("success.R")
 #'
 #' # Run several scripts in parallel on up to 2 workers
-#' scripts <- system.file("examples/simple", c("success.R", "warning.R", "error.R"), package = "whirl")
-#' run(scripts, n_workers = 2)
+#' run(c("success.R", "warning.R", "error.R"), n_workers = 2)
 #'
-#' # Run scripts in several steps
-#' step_1 <- system.file("examples/simple", c("success.R", "warning.R"), package = "whirl")
-#' step_2 <- system.file("examples/simple", c("error.R"), package = "whirl")
-#' run(list(step_1, step_2), n_workers = 2)
+#' # Run scripts in two steps by providing them as list elements
+#' run(
+#'   list(
+#'     c("success.R", "warning.R"),
+#'     "error.R"
+#'     ),
+#'    n_workers = 2)
 #'
 #' @export
 
@@ -55,21 +62,31 @@ run <- function(input,
   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
 
   # Message when initiating
-  d <- cli::cli_div(theme = list(rule = list(
-    color = "skyblue3", "line-type" = "double"
-  )))
-
-  zephyr::msg("Executing scripts and generating logs",
-              levels_to_write = c("verbose", "minimal"),
+  d <- NULL
+  zephyr::msg(message = "Executing scripts and generating logs",
+              theme = list(
+                rule = list(color = "skyblue3", "line-type" = "double")
+                ),
+              levels_to_write = c("verbose"),
               verbosity_level = verbosity_level,
-              msg_fun = cli::cli_rule)
+              msg_fun = \(message, theme, .envir) {
+                d <<- cli::cli_div(theme = theme, .auto_close = FALSE)
+                cli::cli_rule(message, .envir = .envir)
+              }
+  )
 
   # Message when ending
-  on.exit(zephyr::msg("End of process",
-                      levels_to_write = c("verbose", "minimal"),
-                      verbosity_level = verbosity_level,
-                      msg_fun = cli::cli_rule))
-  on.exit(cli::cli_end(d), add = TRUE)
+  on.exit({
+    zephyr::msg(message = "End of process",
+                div = d,
+                levels_to_write = c("verbose"),
+                verbosity_level = verbosity_level,
+                msg_fun = \(message, div, .envir) {
+                  cli::cli_rule(message, .envir = .envir)
+                  cli::cli_end(div)
+                  }
+                )
+  })
 
   # Constrain the number of workers
   n_workers <- min(128, n_workers)
@@ -96,9 +113,12 @@ run <- function(input,
                          level = 1,
                          verbosity_level = verbosity_level)
 
-  # Create the summary log
-  summary_tibble <- util_queue_summary(result$queue)
-  render_summary(input = summary_tibble, summary_file = summary_file)
+  # Create the summary log if required
+  if (!is.null(summary_file)) {
+    summary_tibble <- util_queue_summary(result$queue)
+    render_summary(input = summary_tibble, summary_file = summary_file)
+
+  }
 
   invisible(result$queue)
 
