@@ -31,7 +31,7 @@ test_that("Run single python script", {
 test_that("Run multiple R scripts", {
 
   res <- test_script(c("success.R", "warning.R", "error.R")) |>
-    run() |>
+    run(n_workers = 2) |>
     expect_no_error()
 
   res[["status"]] |>
@@ -56,7 +56,7 @@ test_that("Run multiple R scripts", {
 test_that("Run multiple python scripts", {
 
   res <- test_script(c("py_success.py", "py_warning.py", "py_error.py")) |>
-    run() |>
+    run(n_workers = 2) |>
     expect_no_error()
 
   res[["status"]] |>
@@ -81,7 +81,7 @@ test_that("Run multiple python scripts", {
 test_that("Run yaml config file", {
 
   res <- test_script("_whirl.yaml") |>
-    run() |>
+    run(n_workers = 2) |>
     expect_no_error()
 
 })

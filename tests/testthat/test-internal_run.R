@@ -2,7 +2,7 @@ test_that("testing internal_run()", {
 
   # A config file
 
-  q <- whirl_queue$new()
+  q <- whirl_queue$new(n_workers = 2)
 
   test_script("_whirl.yaml") |>
     internal_run(steps = NULL, level = 1, queue = q) |>
