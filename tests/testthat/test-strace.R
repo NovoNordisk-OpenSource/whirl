@@ -10,11 +10,11 @@ test_that("strace works", {
 
       start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
 
-      cat("============= Initial: =============", "\n")
-      cat(c("wd:", getwd()), "\n")
-      cat(c("files:", list.files()), "\n")
-      cat(c("environment:", ls()), "\n")
-      cat("====================================", "\n")
+      # cat("============= Initial: =============", "\n")
+      # cat(c("wd:", getwd()), "\n")
+      # cat(c("files:", list.files()), "\n")
+      # cat(c("environment:", ls()), "\n")
+      # cat("====================================", "\n")
 
       # No output yet
 
@@ -99,11 +99,11 @@ test_that("strace works", {
       p$kill()
       p$finalize()
 
-      cat("============= final: =============", "\n")
-      cat(c("wd:", getwd()), "\n")
-      cat(c("files:", list.files()), "\n")
-      cat(c("environment:", ls()), "\n")
-      cat("==================================", "\n")
+      # cat("============= final: =============", "\n")
+      # cat(c("wd:", getwd()), "\n")
+      # cat(c("files:", list.files()), "\n")
+      # cat(c("environment:", ls()), "\n")
+      # cat("==================================", "\n")
     },
     tmpdir = getwd()
   )

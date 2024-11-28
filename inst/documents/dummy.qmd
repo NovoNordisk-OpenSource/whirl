@@ -8,7 +8,10 @@ params:
   tmpdir: "."
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
+#| label: Setup
+#| include: false
+
 knitr::opts_chunk$set(
   error = TRUE,
   warning = TRUE,
@@ -19,22 +22,56 @@ knitr::opts_chunk$set(
 .libPaths(c(character(), params$with_library_paths))
 ```
 
-```{r, echo=FALSE, eval=(grepl("\\.R$", params$script))}
+```{r}
+#| label: Log R
+#| eval: !expr grepl("\\.R$", params$script)
+#| echo: false
 knitr::spin_child(params$script)
 ```
 
-```{r, child = params$script, eval=(grepl("\\.qmd$", params$script))}
+```{r}
+#| label: Log Quarto
+#| child: !expr params$script
+#| eval: !expr grepl("\\.qmd$", params$script)
+#| include: !expr grepl("\\.qmd$", params$script)
 ```
 
-```{r, child = params$script, eval=(grepl("\\.Rmd$", params$script))}
+```{r}
+#| label: Log Rmarkdown
+#| child: !expr params$script
+#| eval: !expr grepl("\\.Rmd$", params$script)
+#| include: !expr grepl("\\.Rmd$", params$script)
 ```
 
-```{r, child = params$script, eval=(grepl("\\.py$", params$script))}
+```{python}
+#| label: Log Python
+#| file: !expr params$script
+#| eval: !expr grepl("\\.py$", params$script)
+#| include: !expr grepl("\\.py$", params$script)
 ```
 
-```{r sessioninfo, include=FALSE}
+```{python}
+#| label: Python modules
+#| file: !expr file.path(params$tmpdir, "python_modules.py")
+#| eval: !expr grepl("\\.py$", params$script)
+#| echo: false
+```
+
+```{r}
+#| label: Session info
+#| include: false
+
+python_packages <- NULL
+# if (file.exists(file.path(params$tmpdir, "python_imports.json"))){
+#   python_packages <- whirl:::python_package_info(file.path(params$tmpdir, "python_imports.json"))
+# }
+
 saveRDS(
-  object = whirl:::session_info(params$check_approved_folder_pkgs, params$check_approved_url_pkgs),
+  object = whirl:::session_info(
+    approved_folder_pkgs = params$check_approved_folder_pkgs, 
+    approved_url_pkgs = params$check_approved_url_pkgs, 
+    python_packages = python_packages
+    ),
   file = file.path(params$tmpdir, "session_info.rds")
 )
 
@@ -44,6 +81,4 @@ if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) 
     file = file.path(params$tmpdir, "renv_status.rds")
   )
 }
-
 ```
-

@@ -2,9 +2,13 @@ test_that("use_whirl", {
   withr::with_tempdir({
     rlang::local_interactive(FALSE)
 
-    usethis::create_project(path = ".")
+    usethis::create_project(path = ".") |>
+      expect_message() |>
+      suppressMessages()
 
-    use_whirl()
+    use_whirl() |>
+      expect_message() |>
+      suppressMessages()
 
     expect_true(file.exists("_whirl.yaml"))
 

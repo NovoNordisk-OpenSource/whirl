@@ -1,5 +1,0 @@
-steps:
-  - name: "Run scripts for dataflow"
-    paths:
-      - "doesnt_exits.R"
-
