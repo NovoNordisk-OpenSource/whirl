@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,17 +73,26 @@
     
 <p>In this example we are going to execute the following script and
 create a log of it’s execution:</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #8787AF;">#' Setup</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">library</span><span style="color: #D7AF00;">(</span>dplyr<span style="color: #D7AF00;">)</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">library</span><span style="color: #D7AF00;">(</span>ggplot2<span style="color: #D7AF00;">)</span></span></span>
-<span><span class="co">#&gt; <span style="color: #8787AF;">#' Prepare data</span></span></span>
-<span><span class="co">#&gt; x <span style="color: #D7AF00;">&lt;-</span> mtcars <span style="color: #D7AF00;">|&gt;</span></span></span>
-<span><span class="co">#&gt;   <span style="font-weight: bold;">as_tibble</span><span style="color: #D7AF00;">(</span>rownames = <span style="color: #00AFAF;">"car"</span><span style="color: #D7AF00;">)</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">print</span><span style="color: #D7AF00;">(</span>x<span style="color: #D7AF00;">)</span></span></span>
-<span><span class="co">#&gt; <span style="color: #8787AF;">#' Create and save plot</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">ggplot</span><span style="color: #D7AF00;">(</span>data = x<span style="color: #D7AF00;">)</span> <span style="color: #D7AF00;">+</span></span></span>
-<span><span class="co">#&gt;   <span style="font-weight: bold;">geom_point</span><span style="color: #D7AF00;">(</span>mapping = <span style="font-weight: bold;">aes</span><span style="color: #BBBB00;">(</span>x = mpg, y = hp, size = wt, colour = <span style="font-weight: bold;">as.factor</span><span style="color: #0000BB;">(</span>am<span style="color: #0000BB;">)</span><span style="color: #BBBB00;">)</span><span style="color: #D7AF00;">)</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">ggsave</span><span style="color: #D7AF00;">(</span><span style="color: #00AFAF;">"plot1.png"</span><span style="color: #D7AF00;">)</span></span></span></code></pre>
+<p><code>example.R:</code></p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Setup</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Prepare data</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"car"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Create and save plot</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span>, y <span class="op">=</span> <span class="va">hp</span>, size <span class="op">=</span> <span class="va">wt</span>, colour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">am</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"plot1.png"</span><span class="op">)</span></span></code></pre></div>
 <p>We are going to use the <code><a href="../reference/run.html">run()</a></code> function to execute the
 script, and since this vignette is created on Linux we can use the
 <code>whirl.track_files</code> option to automatically track the used
@@ -94,19 +103,17 @@ files:</p>
 <span><span class="fu"><a href="../reference/options.html">options</a></span><span class="op">(</span>whirl.track_files <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/options.html">options</a></span><span class="op">(</span>whirl.verbosity_level <span class="op">=</span> <span class="st">"minimal"</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>verbosity_level</code> is set to <code>minimal</code> for
-nicer printing in ths vignette. Now we are ready to execute the
+nicer printing in this vignette. Now we are ready to execute the
 script:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="st">"example.R"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #87AFD7;">══ Executing scripts and generating logs ═══════════════════════════════════════</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> example.R: Completed succesfully</span></span>
-<span><span class="co">#&gt; <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">#&gt;      id tag   script                                         status result      </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 <span style="color: #BB0000;">NA</span>    /home/runner/work/whirl/whirl/vignettes/artic… succe… <span style="color: #949494;">&lt;named list&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;      id tag   script                                     status  result      </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 <span style="color: #BB0000;">NA</span>    /tmp/RtmpE464pt/file1cbd6ee8b8f0/example.R success <span style="color: #949494;">&lt;named list&gt;</span></span></span></code></pre></div>
 <p>The script is now executed and you can access the logs below:</p>
 <ul>
 <li><a href="summary.html">View summary log</a></li>
