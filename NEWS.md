@@ -1,6 +1,11 @@
-# whirl dev
+# whirl 0.1.6 (2024-11-25)
 * Added support for logging of Python scripts with `run()`.
 * Improved unit tests for `run()`
+* Fixing a bug where the queue was not returned correctly in some instances.
+* Switched to using `Sys.glob()` instead of `utils::glob2rx()`.
+
+# whirl 0.1.5 (2024-11-21)
+* Reducing the number of dependencies.
 
 # whirl 0.1.4 (2024-11-01)
 * Add `use_whirl()` utility function.

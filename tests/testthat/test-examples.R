@@ -10,9 +10,9 @@ test_that("All example scripts run with consistent output", {
 
     # Run all examples after in separate steps
 
-    res <- list.files() |>
+    res <- list(list.files(pattern = "*.yaml"), list.files(pattern = "*.R$")) |>
       as.list() |>
-      run() |>
+      run(n_workers = 2) |>
       expect_no_error() |>
       expect_no_warning()
 

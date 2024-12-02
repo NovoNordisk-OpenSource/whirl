@@ -41,14 +41,10 @@ internal_run <- function(input, steps, queue, level,
                    verbosity_level = verbosity_level)
     } else {
       # Execute the scripts
-      result <- queue$run(files)
+      queue$run(files)
     }
   }
 
-  if (exists("result")) {
-    invisible(result)
-  }
-
-
+  invisible(queue)
 }
 

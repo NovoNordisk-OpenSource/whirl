@@ -1,4 +1,4 @@
 steps:
   - name: "Run all R programs"
     paths:
-      - "*.r|R"
+      - "*.R"
