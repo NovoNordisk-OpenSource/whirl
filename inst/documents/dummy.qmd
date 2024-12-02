@@ -61,9 +61,11 @@ knitr::spin_child(params$script)
 #| label: Session info
 #| include: false
 
+python_packages <- NULL
+
 if (file.exists(file.path(params$tmpdir, "python_imports.json"))){
-   python_packages <- whirl:::python_package_info(file.path(params$tmpdir, "python_imports.json"))
- }
+  python_packages <- whirl:::python_package_info(file.path(params$tmpdir, "python_imports.json"))
+}
 
 saveRDS(
   object = whirl:::session_info(
