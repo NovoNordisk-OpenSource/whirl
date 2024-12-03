@@ -4,23 +4,45 @@
 \alias{options_params}
 \title{Internal reuse of options description}
 \arguments{
-\item{verbosity_level}{How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
-
-\item{n_workers}{Number of simultanous workers used in the run function. A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
-
-\item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE (Defaults to \verb{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())}, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')}
-
-\item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
-
-\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
-
-\item{approved_pkgs_folder}{Approved folder library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkgs_folder' or environment variable 'R_WHIRL_APPROVED_PKGS_FOLDER')}
-
-\item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
-
-\item{track_files_keep}{List of file naming patterns alway to be tracked when track_files = TRUE (Defaults to \code{paste0("^", getwd())}, overwritable using option 'whirl.track_files_keep' or environment variable 'R_WHIRL_TRACK_FILES_KEEP')}
-
-\item{approved_pkgs_url}{Approved URL library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkgs_url' or environment variable 'R_WHIRL_APPROVED_PKGS_URL')}
+\item{approved_pkgs_folder}{Approved folder library packages
+Default: NULL
+Option: approved_pkgs_folder
+Environment variable: R_APPROVED_PKGS_FOLDER
+@param approved_pkgs_url Approved URL library packages
+Default: NULL
+Option: approved_pkgs_url
+Environment variable: R_APPROVED_PKGS_URL
+@param check_renv Should the projects renv status be checked?
+Default: FALSE
+Option: check_renv
+Environment variable: R_CHECK_RENV
+@param n_workers Number of simultanous workers used in the run function. A maximum of 128 workers is allowed.
+Default: 1
+Option: n_workers
+Environment variable: R_N_WORKERS
+@param out_formats Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}.
+Default: "html"
+Option: out_formats
+Environment variable: R_OUT_FORMATS
+@param track_files Should files read and written be tracked? Currently only supported on Linux.
+Default: FALSE
+Option: track_files
+Environment variable: R_TRACK_FILES
+@param track_files_discards List of file naming patterns not be tracked when track_files = TRUE
+Default: c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys",
+Default: "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", "/scer/homedirs/lvgk/R/x86_64-pc-linux-gnu-library/4.4.1",
+Default: "/opt/R/4.4.1/lib/R/site-library", "/opt/R/4.4.1/lib/R/library"
+Default: )
+Option: track_files_discards
+Environment variable: R_TRACK_FILES_DISCARDS
+@param track_files_keep List of file naming patterns alway to be tracked when track_files = TRUE
+Default: "^/scer/homedirs/lvgk/whirl"
+Option: track_files_keep
+Environment variable: R_TRACK_FILES_KEEP
+@param verbosity_level How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.
+Default: "verbose"
+Option: verbosity_level
+Environment variable: R_VERBOSITY_LEVEL}
 }
 \description{
 Internal reuse of options description

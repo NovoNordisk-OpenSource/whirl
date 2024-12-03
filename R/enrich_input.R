@@ -9,7 +9,7 @@
 #' @return A list
 #' @noRd
 enrich_input <- function(input, steps = NULL,
-                         verbosity_level = options::opt("verbosity_level", env = "whirl")) {
+                         verbosity_level = zephyr::opt_pkg("verbosity_level", envir = "whirl")) {
 
   # Characterize the input
   is_config_file <- any(grepl("yaml|yml", get_file_ext(input)))

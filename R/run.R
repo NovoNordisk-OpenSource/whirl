@@ -48,18 +48,18 @@
 run <- function(input,
                 steps = NULL,
                 summary_file = "summary.html",
-                n_workers = options::opt("n_workers", env = "whirl"),
-                check_renv = options::opt("check_renv", env = "whirl"),
-                verbosity_level = options::opt("verbosity_level", env = "whirl"),
-                track_files = options::opt("track_files", env = "whirl"),
-                out_formats = options::opt("out_formats", env = "whirl")
+                n_workers = zephyr::opt_pkg("n_workers", envir = "whirl"),
+                check_renv = zephyr::opt_pkg("check_renv", envir = "whirl"),
+                verbosity_level = zephyr::opt_pkg("verbosity_level", envir = "whirl"),
+                track_files = zephyr::opt_pkg("track_files", envir = "whirl"),
+                out_formats = zephyr::opt_pkg("out_formats", envir = "whirl")
                 ) {
 
   # Additional Settings
-  track_files_discards = options::opt("track_files_discards", env = "whirl")
-  track_files_keep = options::opt("track_files_keep", env = "whirl")
-  approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl")
-  approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+  track_files_discards = zephyr::opt_pkg("track_files_discards", envir = "whirl")
+  track_files_keep = zephyr::opt_pkg("track_files_keep", envir = "whirl")
+  approved_pkgs_folder = zephyr::opt_pkg("approved_pkgs_folder", envir = "whirl")
+  approved_pkgs_url = zephyr::opt_pkg("approved_pkgs_url", envir = "whirl")
 
   # Message when initiating
   d <- NULL

@@ -12,14 +12,14 @@ whirl_r_session <- R6::R6Class(
     #' @description Initialize the new whirl R session
     #' @inheritParams options_params
     #' @return A [whirl_r_session] object
-    initialize = \(verbosity_level = options::opt("verbosity_level", env = "whirl"),
-                   check_renv = options::opt("check_renv", env = "whirl"),
-                   track_files = options::opt("track_files", env = "whirl"),
-                   out_formats = options::opt("out_formats", env = "whirl"),
-                   track_files_discards = options::opt("track_files_discards", env = "whirl"),
-                   track_files_keep = options::opt("track_files_keep", env = "whirl"),
-                   approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
-                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+    initialize = \(verbosity_level = zephyr::opt_pkg("verbosity_level", envir = "whirl"),
+                   check_renv = zephyr::opt_pkg("check_renv", envir = "whirl"),
+                   track_files = zephyr::opt_pkg("track_files", envir = "whirl"),
+                   out_formats = zephyr::opt_pkg("out_formats", envir = "whirl"),
+                   track_files_discards = zephyr::opt_pkg("track_files_discards", envir = "whirl"),
+                   track_files_keep = zephyr::opt_pkg("track_files_keep", envir = "whirl"),
+                   approved_pkgs_folder = zephyr::opt_pkg("approved_pkgs_folder", envir = "whirl"),
+                   approved_pkgs_url = zephyr::opt_pkg("approved_pkgs_url", envir = "whirl")
                    ) {
         wrs_initialize(verbosity_level,
                        check_renv,
@@ -100,7 +100,7 @@ whirl_r_session <- R6::R6Class(
     #' @param out_dir [character] Output directory for the log
     #' @param format [character] Output formats to create
     #' @return [invisible],[list] of logging information
-    create_outputs = \(out_dir, format = options::opt("out_formats", env = "whirl")) {
+    create_outputs = \(out_dir, format = zephyr::opt_pkg("out_formats", envir = "whirl")) {
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
