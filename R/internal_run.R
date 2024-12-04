@@ -42,6 +42,7 @@ internal_run <- function(input, steps, queue, level,
     } else {
       # Execute the scripts
       queue$run(files)
+      cat("\n")
     }
   }
 
