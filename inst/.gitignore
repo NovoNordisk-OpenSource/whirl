@@ -3,3 +3,4 @@
 *.html
 *.json
 *_files/*
+!documents/title-block.html

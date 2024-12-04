@@ -1,7 +1,10 @@
 ---
-title: "`r params$title`"
+title: "`r basename(params$title)`"
 date: "`r Sys.time()`"
 date-format: "YYYY-MM-DDTHH:mm:ss zzz"
+abstract: "`r params$title`"
+template-partials:
+  - title-block.html
 params:
   title: 'dev'
   check_approved_folder_pkgs: NULL
