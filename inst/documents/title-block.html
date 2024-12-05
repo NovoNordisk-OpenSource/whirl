@@ -10,7 +10,7 @@ $endfor$
 
 $if(date)$
 <div>
-  <div class="quarto-title-meta-heading">$labels.published$</div>
+  <div class="quarto-title-meta-heading">Execution time</div>
   <div class="quarto-title-meta-contents">
     <p class="date">$date$</p>
   </div>
@@ -19,17 +19,19 @@ $endif$
 
 $if(date-modified)$
 <div>
-  <div class="quarto-title-meta-heading">$labels.modified$</div>
+  <div class="quarto-title-meta-heading">Execution time</div>
   <div class="quarto-title-meta-contents">
     <p class="date-modified">$date-modified$</p>
   </div>
 </div>
 $endif$
 
-$for(abstract)$
-  <div class="abstract">
-  <div class="block-title">Path </div>
-  $abstract$
+$if(abstract)$
+<div>
+  <div class="quarto-title-meta-heading">Path to script</div>
+  <div class="quarto-title-meta-contents">
+    <p class="abstract">$abstract$</p>
   </div>
-$endfor$
+</div>
+$endif$
 </header>
