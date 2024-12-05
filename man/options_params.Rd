@@ -30,12 +30,13 @@ Option: track_files
 Environment variable: R_TRACK_FILES
 @param track_files_discards List of file naming patterns not be tracked when track_files = TRUE
 Default: c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys",
-Default: "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", "C:/Users/lgaka/AppData/Local/R/win-library/4.4",
-Default: "C:/Program Files/R/R-4.4.2/library")
+Default: "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", "/scer/homedirs/lvgk/R/x86_64-pc-linux-gnu-library/4.4.1",
+Default: "/opt/R/4.4.1/lib/R/site-library", "/opt/R/4.4.1/lib/R/library"
+Default: )
 Option: track_files_discards
 Environment variable: R_TRACK_FILES_DISCARDS
 @param track_files_keep List of file naming patterns alway to be tracked when track_files = TRUE
-Default: "^C:/Users/lgaka/Downloads/whirl"
+Default: "^/scer/homedirs/lvgk/whirl"
 Option: track_files_keep
 Environment variable: R_TRACK_FILES_KEEP
 @param verbosity_level How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.

@@ -30,21 +30,24 @@ NULL
 zephyr::define_option_pkg(
   option = "out_formats",
   default = "html",
-  desc = "Which log format(s) to produce. Possiblities are `html`, `json`, and markdown formats:`gfm`, `commonmark`, and `markua`."
+  desc = "Which log format(s) to produce. Possiblities are `html`, `json`, and markdown formats:`gfm`, `commonmark`, and `markua`.",
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
   option = "track_files",
   default = FALSE,
   desc = "Should files read and written be tracked? Currently only supported on Linux.",
-  envvar_fn = zephyr::envvar_is_true_pkg()
+  envvar_fn = zephyr::envvar_is_true_pkg(),
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
   option = "check_renv",
   default = FALSE,
   desc = "Should the projects renv status be checked?",
-  envvar_fn = zephyr::envvar_is_true_pkg()
+  envvar_fn = zephyr::envvar_is_true_pkg(),
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
@@ -66,38 +69,44 @@ zephyr::define_option_pkg(
     .libPaths()
   ),
   desc = "List of file naming patterns not be tracked when track_files = TRUE",
-  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";")
+  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";"),
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
   option = "track_files_keep",
   default = paste0("^", getwd()),
   desc = "List of file naming patterns alway to be tracked when track_files = TRUE",
-  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";")
+  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";"),
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
   option = "verbosity_level",
   default = "verbose",
-  desc = "How chatty should the log be? Possibilities are `quiet`, `minimal` and `verbose`."
+  desc = "How chatty should the log be? Possibilities are `quiet`, `minimal` and `verbose`.",
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
   option = "approved_pkgs_folder",
   default = NULL,
   desc = "Approved folder library packages",
-  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";")
+  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";"),
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
   option = "approved_pkgs_url",
   default = NULL,
   desc = "Approved URL library packages",
-  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";")
+  envvar_fn = zephyr::envvar_str_split_pkg(delim = ";"),
+  print_spec = FALSE
 )
 
 zephyr::define_option_pkg(
   option = "n_workers",
   default = 1,
-  desc = "Number of simultanous workers used in the run function. A maximum of 128 workers is allowed."
+  desc = "Number of simultanous workers used in the run function. A maximum of 128 workers is allowed.",
+  print_spec = FALSE
 )

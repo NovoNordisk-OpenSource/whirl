@@ -84,8 +84,8 @@ List of file naming patterns not be tracked when track_files = TRUE
 \item Default: \preformatted{
 c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys",
   "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache",
-  "C:/Users/lgaka/AppData/Local/R/win-library/4.4", "C:/Program
-  Files/R/R-4.4.2/library")
+  "/scer/homedirs/lvgk/R/x86_64-pc-linux-gnu-library/4.4.1",
+  "/opt/R/4.4.1/lib/R/site-library", "/opt/R/4.4.1/lib/R/library")
 }
 \item Option: \code{whirl.track_files_discards}
 \item Environment variable: \code{R_TRACK_FILES_DISCARDS} (evaluated if possible, raw string otherwise)
@@ -95,7 +95,7 @@ c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys",
 List of file naming patterns alway to be tracked when track_files = TRUE
 \itemize{
 \item Default: \preformatted{
-"^C:/Users/lgaka/Downloads/whirl"
+"^/scer/homedirs/lvgk/whirl"
 }
 \item Option: \code{whirl.track_files_keep}
 \item Environment variable: \code{R_TRACK_FILES_KEEP} (evaluated if possible, raw string otherwise)

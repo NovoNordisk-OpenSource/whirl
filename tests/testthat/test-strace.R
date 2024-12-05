@@ -23,7 +23,7 @@ test_that("strace works", {
       strace_info <- read_strace_info(
         path = "strace.log",
         p_wd = getwd(),
-        strace_discards = zephyr::opt_pkg("track_files_discards"),
+        strace_discards = zephyr::opt_pkg("track_files_discards", envir = "whirl"),
         strace_keep = getwd()
       )
 
@@ -43,7 +43,7 @@ test_that("strace works", {
       strace_info <- read_strace_info(
         path = "strace.log",
         p_wd = getwd(),
-        strace_discards = zephyr::opt_pkg("track_files_discards"),
+        strace_discards = zephyr::opt_pkg("track_files_discards", envir = "whirl"),
         strace_keep = getwd()
       )
 
@@ -63,7 +63,7 @@ test_that("strace works", {
       strace_info <- read_strace_info(
         path = "strace.log",
         p_wd = getwd(),
-        strace_discards = zephyr::opt_pkg("track_files_discards"),
+        strace_discards = zephyr::opt_pkg("track_files_discards", envir = "whirl"),
         strace_keep = getwd()
       )
 
@@ -83,7 +83,7 @@ test_that("strace works", {
       strace_info <- read_strace_info(
         path = "strace.log",
         p_wd = getwd(),
-        strace_discards = zephyr::opt_pkg("track_files_discards"),
+        strace_discards = zephyr::opt_pkg("track_files_discards", envir = "whirl"),
         strace_keep = getwd()
       )
 
