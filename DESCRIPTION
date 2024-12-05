@@ -25,7 +25,6 @@ Imports:
     jsonlite,
     kableExtra,
     knitr,
-    options,
     purrr,
     quarto,
     R6,
@@ -46,6 +45,7 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0),
     usethis
+StagedInstall: no 
 Remotes: 
     NovoNordisk-OpenSource/zephyr
 Config/testthat/edition: 3
