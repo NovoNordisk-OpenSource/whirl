@@ -75,6 +75,12 @@ Number of simultanous workers used in the run function. A maximum of 128 workers
 \item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
 }}
 
+\item{log_dir}{\describe{
+The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information se details.\item{default: }{\preformatted{dirname}}
+\item{option: }{whirl.log_dir}
+\item{envvar: }{R_WHIRL_LOG_DIR (evaluated if possible, raw string otherwise)}
+}}
+
 }
 }
 

@@ -86,6 +86,6 @@ options::define_option(
 options::define_option(
   option = "log_dir",
   default = dirname,
-  desc = "The output directory of the log files. Default is the folder of the excuted script."
+  desc = "The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information se details."
 )
 
