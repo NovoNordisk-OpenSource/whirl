@@ -42,6 +42,11 @@ internal_run <- function(input, steps, queue, level,
     } else {
       # Execute the scripts
       queue$run(files)
+      zephyr::msg("\n",
+                  msg_fun = cli::cli_verbatim,
+                  levels_to_write = "verbose",
+                  verbosity_level = verbosity_level)
+
     }
   }
 

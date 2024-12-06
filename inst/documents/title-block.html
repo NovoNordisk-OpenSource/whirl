@@ -1,0 +1,37 @@
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">$title$</h1>
+$if(subtitle)$
+<p class="subtitle">$subtitle$</p>
+$endif$
+$for(author)$
+<p class="author">$author$</p>
+$endfor$
+
+$if(date)$
+<div>
+  <div class="quarto-title-meta-heading">Execution end time</div>
+  <div class="quarto-title-meta-contents">
+    <p class="date">$date$</p>
+  </div>
+</div>
+$endif$
+
+$if(date-modified)$
+<div>
+  <div class="quarto-title-meta-heading">Execution time</div>
+  <div class="quarto-title-meta-contents">
+    <p class="date-modified">$date-modified$</p>
+  </div>
+</div>
+$endif$
+
+$if(abstract)$
+<div>
+  <div class="quarto-title-meta-heading">Path to script</div>
+  <div class="quarto-title-meta-contents">
+    <p class="abstract">$abstract$</p>
+  </div>
+</div>
+$endif$
+</header>
