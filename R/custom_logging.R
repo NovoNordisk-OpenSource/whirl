@@ -6,7 +6,7 @@
 #' The default environment variable `WHIRL_LOG_MSG` is set in the session used to log scripts, and input
 #' is automatically captured in the resulting log.
 #'
-#' If run outside of whirl, meaning when the above environment variable is unset, the aoperations
+#' If run outside of whirl, meaning when the above environment variable is unset, the operations
 #' are streamed to `stdout()`. By default the console.
 #'
 #' @name custom_logging
