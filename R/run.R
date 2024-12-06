@@ -52,7 +52,8 @@ run <- function(input,
                 check_renv = options::opt("check_renv", env = "whirl"),
                 verbosity_level = options::opt("verbosity_level", env = "whirl"),
                 track_files = options::opt("track_files", env = "whirl"),
-                out_formats = options::opt("out_formats", env = "whirl")
+                out_formats = options::opt("out_formats", env = "whirl"),
+                log_dir = options::opt("log_dir", env = "whirl")
                 ) {
 
   # Additional Settings
@@ -105,7 +106,8 @@ run <- function(input,
                            track_files_discards = track_files_discards,
                            track_files_keep = track_files_keep,
                            approved_pkgs_folder = approved_pkgs_folder,
-                           approved_pkgs_url = approved_pkgs_url)
+                           approved_pkgs_url = approved_pkgs_url,
+                           log_dir = log_dir)
 
   result <- internal_run(input = input,
                          steps = steps,

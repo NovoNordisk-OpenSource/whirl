@@ -82,3 +82,10 @@ options::define_option(
   default = 1,
   desc = "Number of simultanous workers used in the run function. A maximum of 128 workers is allowed."
 )
+
+options::define_option(
+  option = "log_dir",
+  default = dirname,
+  desc = "The output directory of the log files. Default is the folder of the excuted script."
+)
+
