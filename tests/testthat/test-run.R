@@ -85,3 +85,61 @@ test_that("Run yaml config file", {
     expect_no_error()
 
 })
+
+
+test_that("Change the log_dir to a path", {
+  #Custom path
+  custom_path <- test_path("scripts/logs") |>
+    normalize_with_base(base = getwd())
+
+  #Create the dir if it does not exist
+  if (!file.exists(custom_path)) {
+    dir.create(custom_path)
+  } else {
+    #If it exists then clean the folder
+    list.files(custom_path, full.names = TRUE) |>
+      file.remove()
+  }
+
+  #Execute run() with log_dir = custom path
+  res <- test_script("success.R") |>
+    run(log_dir = custom_path) |>
+    expect_no_error()
+
+  #Check if the log file is created in the custom path
+  expect_true(file.exists(test_script("logs/success_log.html")))
+
+  #Clean the folder
+  list.files(custom_path, full.names = TRUE) |>
+    file.remove()
+
+})
+
+
+test_that("Change the log_dir with a function", {
+  #Custom path
+  custom_path <- test_path("scripts/logs") |>
+    normalize_with_base(base = getwd())
+
+  #Create the dir if it does not exist
+  if (!file.exists(custom_path)) {
+    dir.create(custom_path)
+  } else {
+  #If it exists then clean the folder
+  list.files(custom_path, full.names = TRUE) |>
+    file.remove()
+  }
+
+  #Execute run() with log_dir as a function
+  res <- test_script("warning.R") |>
+    run(log_dir = function(x) {paste0(dirname(x), "/logs")}) |>
+    expect_no_error()
+
+  #Check if the log file is created in the correct folder
+  expect_true(file.exists(test_script("logs/warning_log.html")))
+
+  #Clean the folder
+  list.files(custom_path, full.names = TRUE) |>
+    file.remove()
+})
+
