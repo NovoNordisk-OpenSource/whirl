@@ -1,0 +1,76 @@
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+name: debug R-CMD-check standard
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  R-CMD-check:
+    runs-on: '${{ matrix.config.os }}'
+    name: '${{ matrix.config.os }} (${{ matrix.config.r }})'
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - os: ubuntu-latest
+            r: release
+    env:
+      R_KEEP_PKG_SOURCE: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Allow strace to attach to a process
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: (Linux) Install jupyter
+        if: runner.os == 'Linux'
+        shell: bash
+        run: python3 -m pip install jupyter
+
+      - name: (macOS) Install jupyter
+        if: runner.os == 'macOS'
+        shell: bash
+        run: python3 -m pip install --break-system-packages jupyter
+
+      - name: (Windows) Install jupyter
+        if: runner.os == 'Windows'
+        shell: bash
+        run: py -m pip install jupyter
+
+      - uses: r-lib/actions/setup-pandoc@v2
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '${{matrix.config.r}}'
+          http-user-agent: '${{matrix.config.http-user-agent}}'
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: 'any::rcmdcheck'
+          needs: check
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
