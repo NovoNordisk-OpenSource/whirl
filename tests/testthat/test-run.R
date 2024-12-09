@@ -85,3 +85,38 @@ test_that("Run yaml config file", {
     expect_no_error()
 
 })
+
+
+test_that("Change the log_dir to a path", {
+  #Custom path
+  custom_path <- withr::local_tempdir()
+
+  #Execute run() with log_dir = custom path
+  res <- test_script("success.R") |>
+    run(log_dir = custom_path) |>
+    expect_no_error()
+
+  #Check if the log file is created in the custom path
+  file.path(custom_path, "success_log.html") |>
+    file.exists() |>
+    expect_true()
+})
+
+test_that("Change the log_dir with a function", {
+  #Custom path and copy script
+  custom_path <- withr::local_tempdir()
+  dir.create(file.path(custom_path, "logs"))
+  file.copy(from = test_script("warning.R"), to = custom_path) |>
+    expect_true()
+
+  #Execute run() with log_dir as a function
+  res <- file.path(custom_path, "warning.R") |>
+    run(log_dir = function(x) {paste0(dirname(x), "/logs")}) |>
+    expect_no_error()
+
+  #Check if the log file is created in the correct folder
+  file.path(custom_path, "logs", "warning_log.html") |>
+    file.exists() |>
+    expect_true()
+})
+

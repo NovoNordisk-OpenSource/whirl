@@ -19,7 +19,8 @@ whirl_r_session <- R6::R6Class(
                    track_files_discards = options::opt("track_files_discards", env = "whirl"),
                    track_files_keep = options::opt("track_files_keep", env = "whirl"),
                    approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
-                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl"),
+                   log_dir = options::opt("log_dir", env = "whirl")
                    ) {
         wrs_initialize(verbosity_level,
                        check_renv,
@@ -29,6 +30,7 @@ whirl_r_session <- R6::R6Class(
                        track_files_keep,
                        approved_pkgs_folder,
                        approved_pkgs_url,
+                       log_dir,
                        self, private, super)
     },
 
@@ -109,6 +111,7 @@ whirl_r_session <- R6::R6Class(
     wd = NULL,
     track_files = NULL,
     out_formats = NULL,
+    log_dir = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
     approved_pkgs_folder = NULL,
@@ -122,7 +125,7 @@ whirl_r_session <- R6::R6Class(
 
 wrs_initialize <- function(verbosity_level, check_renv, track_files,
                            out_formats, track_files_discards, track_files_keep,
-                           approved_pkgs_folder, approved_pkgs_url,
+                           approved_pkgs_folder, approved_pkgs_url, log_dir,
                            self, private, super) {
 
   super$initialize() # uses callr::r_session$initialize()
@@ -137,6 +140,7 @@ wrs_initialize <- function(verbosity_level, check_renv, track_files,
   private$track_files_keep <- track_files_keep
   private$approved_pkgs_folder <- approved_pkgs_folder
   private$approved_pkgs_url <- approved_pkgs_url
+  private$log_dir <- log_dir
 
   # If the stream does not support dynamic tty, which is needed for progress bars to update in place, the verbosity is downgraded.
   if (private$verbosity_level == "verbose" && !cli::is_dynamic_tty()) {

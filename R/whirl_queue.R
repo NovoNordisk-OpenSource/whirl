@@ -23,7 +23,8 @@ whirl_queue <- R6::R6Class(
                    track_files_discards = options::opt("track_files_discards", env = "whirl"),
                    track_files_keep = options::opt("track_files_keep", env = "whirl"),
                    approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
-                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl")
+                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl"),
+                   log_dir = options::opt("log_dir", env = "whirl")
                    ) {
       wq_initialise(self, private,
                     n_workers,
@@ -34,7 +35,8 @@ whirl_queue <- R6::R6Class(
                     track_files_discards,
                     track_files_keep,
                     approved_pkgs_folder,
-                    approved_pkgs_url)
+                    approved_pkgs_url,
+                    log_dir)
     },
 
     #' @description Push scripts to the queue
@@ -122,14 +124,15 @@ whirl_queue <- R6::R6Class(
     track_files_discards = NULL,
     track_files_keep = NULL,
     approved_pkgs_folder = NULL,
-    approved_pkgs_url = NULL
+    approved_pkgs_url = NULL,
+    log_dir = NULL
   )
 )
 
 wq_initialise <- function(self, private, n_workers,
                           verbosity_level, check_renv, track_files, out_formats,
                           track_files_discards, track_files_keep,
-                          approved_pkgs_folder, approved_pkgs_url) {
+                          approved_pkgs_folder, approved_pkgs_url, log_dir) {
 
   private$check_renv <- check_renv
   private$verbosity_level <- verbosity_level
@@ -139,13 +142,15 @@ wq_initialise <- function(self, private, n_workers,
   private$track_files_keep <- track_files_keep
   private$approved_pkgs_folder <- approved_pkgs_folder
   private$approved_pkgs_url <- approved_pkgs_url
+  private$log_dir <- log_dir
 
   private$.queue <- tibble::tibble(
     id = numeric(),
     tag = character(),
     script = character(),
     status = character(),
-    result = list()
+    result = list(),
+    log_dir = character()
   )
 
   private$.workers <- tibble::tibble(
@@ -159,12 +164,32 @@ wq_initialise <- function(self, private, n_workers,
 
 wq_add_queue <- function(self, private, scripts, tag, status) {
 
+  #Adding the log directory to the queue
+  if (is.character(private$log_dir)) {
+    #Check if the directory exists
+    if (!file.exists(private$log_dir)) {
+      cli::cli_abort("Logs cannot be saved because {.val {private$log_dir}} does not exist")
+    }
+    folder <- file.path(private$log_dir)
+
+  } else {
+
+    folder <- private$log_dir(scripts)
+    #Check if the directory exists
+    unique_folders <- unique(folder)
+    if (any(!file.exists(unique_folders))) {
+      missing <- unique_folders[!file.exists(unique_folders)]
+      cli::cli_abort("Logs cannot be saved because {.val {missing}} does not exist")
+    }
+  }
+
   private$.queue <- self$queue |>
     tibble::add_row(
       id = nrow(self$queue) + seq_along(scripts),
       tag = tag,
       script = scripts,
-      status = status
+      status = status,
+      log_dir = folder
     )
   return(invisible(self))
 }
@@ -180,7 +205,7 @@ wq_skip <- function(self, private, scripts, tag) {
 wq_poll <- function(self, private, timeout,
                     check_renv, verbosity_level, track_files, out_formats,
                     track_files_discards, track_files_keep,
-                    approved_pkgs_folder, approved_pkgs_url) {
+                    approved_pkgs_folder, approved_pkgs_url, log_dir) {
 
   # Start new sessions if there are available workers and waiting scripts in the queue
 
@@ -196,7 +221,8 @@ wq_poll <- function(self, private, timeout,
                                  track_files_discards = private$track_files_discards,
                                  track_files_keep = private$track_files_keep,
                                  approved_pkgs_folder = private$approved_pkgs_folder,
-                                 approved_pkgs_url = private$approved_pkgs_url),
+                                 approved_pkgs_url = private$approved_pkgs_url,
+                                 log_dir = private$log_dir),
       simplify = FALSE)
     private$.workers[wid, "id_script"] <- nid
     private$.workers[wid, "active"] <- TRUE
@@ -251,7 +277,7 @@ wq_next_step <- function(self, private, wid) {
           "3" = {
             purrr::pluck(private$.queue, "result", id_script) <- session$
               log_finish()$
-              create_outputs(out_dir = dirname(purrr::pluck(private$.queue, "script", id_script)),
+              create_outputs(out_dir = purrr::pluck(private$.queue, "log_dir", id_script),
                              format = private$out_formats)
 
             purrr::pluck(private$.queue, "status", id_script) <-

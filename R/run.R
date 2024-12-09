@@ -43,6 +43,19 @@
 #'     ),
 #'    n_workers = 2)
 #'
+#' @examplesIf FALSE
+#'
+#' # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
+#' # run(). This will require that the sub-folder exist and the code is therefore
+#' # not executed
+#'
+#' # Specifying the path using a manually defined character
+#' run("success.R", log_dir = getwd())
+#'
+#' # Specifying the path with a generic function that can handle the scripts
+#' # individually.
+#' run("success.R", log_dir = function(x) {paste0(dirname(x), "/logs")})
+#'
 #' @export
 
 run <- function(input,
@@ -52,7 +65,8 @@ run <- function(input,
                 check_renv = options::opt("check_renv", env = "whirl"),
                 verbosity_level = options::opt("verbosity_level", env = "whirl"),
                 track_files = options::opt("track_files", env = "whirl"),
-                out_formats = options::opt("out_formats", env = "whirl")
+                out_formats = options::opt("out_formats", env = "whirl"),
+                log_dir = options::opt("log_dir", env = "whirl")
                 ) {
 
   # Additional Settings
@@ -105,7 +119,8 @@ run <- function(input,
                            track_files_discards = track_files_discards,
                            track_files_keep = track_files_keep,
                            approved_pkgs_folder = approved_pkgs_folder,
-                           approved_pkgs_url = approved_pkgs_url)
+                           approved_pkgs_url = approved_pkgs_url,
+                           log_dir = log_dir)
 
   result <- internal_run(input = input,
                          steps = steps,
