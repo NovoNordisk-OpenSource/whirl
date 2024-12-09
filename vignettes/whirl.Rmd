@@ -141,7 +141,7 @@ When executing `run()` the default is to store logs in the directory where the i
 If the logs should be stored in a different directory, the `log_dir` argument can be used. 
 This argument can be supplied with a character string or a function. Note that in either case the directory that `log_dir` points to must exist before the execution is initiated.  
 
-If the `log_dir` is supplied with a character pointing the a specific path the call could look like:
+If the `log_dir` is supplied with a character pointing to a specific path the call could look like:
 
 ```{r}
 run(input = "path/to/script.R", log_dir = "path/to/logs")
