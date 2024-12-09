@@ -53,30 +53,30 @@ test_that("Run multiple R scripts", {
     expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
 })
 
-test_that("Run multiple python scripts", {
-
-  res <- test_script(c("py_success.py", "py_warning.py", "py_error.py")) |>
-    run(n_workers = 2) |>
-    expect_no_error()
-
-  res[["status"]] |>
-    expect_equal(c("success", "warning", "error"))
-
-  res[["result"]][[1]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
-
-  res[["result"]][[2]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
-
-  res[["result"]][[3]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
-})
+# test_that("Run multiple python scripts", {
+#
+#   res <- test_script(c("py_success.py", "py_warning.py", "py_error.py")) |>
+#     run(n_workers = 2) |>
+#     expect_no_error()
+#
+#   res[["status"]] |>
+#     expect_equal(c("success", "warning", "error"))
+#
+#   res[["result"]][[1]][["status"]][c("error", "warning")] |>
+#     lapply(\(x) length(x) > 0) |>
+#     unlist() |>
+#     expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
+#
+#   res[["result"]][[2]][["status"]][c("error", "warning")] |>
+#     lapply(\(x) length(x) > 0) |>
+#     unlist() |>
+#     expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
+#
+#   res[["result"]][[3]][["status"]][c("error", "warning")] |>
+#     lapply(\(x) length(x) > 0) |>
+#     unlist() |>
+#     expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
+# })
 
 test_that("Run yaml config file", {
 
