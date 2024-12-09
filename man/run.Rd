@@ -74,18 +74,17 @@ run(
     ),
    n_workers = 2)
 
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
 # run(). This will require that the sub-folder exist and the code is therefore
 # not executed
 
-\dontrun{
 # Specifying the path using a manually defined character
 run("success.R", log_dir = getwd())
 
 # Specifying the path with a generic function that can handle the scripts
 # individually.
 run("success.R", log_dir = function(x) {paste0(dirname(x), "/logs")})
-}
-
+\dontshow{\}) # examplesIf}
 }

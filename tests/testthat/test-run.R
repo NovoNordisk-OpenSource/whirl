@@ -89,17 +89,7 @@ test_that("Run yaml config file", {
 
 test_that("Change the log_dir to a path", {
   #Custom path
-  custom_path <- test_path("scripts/logs") |>
-    normalize_with_base(base = getwd())
-
-  #Create the dir if it does not exist
-  if (!file.exists(custom_path)) {
-    dir.create(custom_path)
-  } else {
-    #If it exists then clean the folder
-    list.files(custom_path, full.names = TRUE) |>
-      file.remove()
-  }
+  custom_path <- withr::local_tempdir()
 
   #Execute run() with log_dir = custom path
   res <- test_script("success.R") |>
@@ -107,39 +97,26 @@ test_that("Change the log_dir to a path", {
     expect_no_error()
 
   #Check if the log file is created in the custom path
-  expect_true(file.exists(test_script("logs/success_log.html")))
-
-  #Clean the folder
-  list.files(custom_path, full.names = TRUE) |>
-    file.remove()
-
+  file.path(custom_path, "success_log.html") |>
+    file.exists() |>
+    expect_true()
 })
 
-
 test_that("Change the log_dir with a function", {
-  #Custom path
-  custom_path <- test_path("scripts/logs") |>
-    normalize_with_base(base = getwd())
-
-  #Create the dir if it does not exist
-  if (!file.exists(custom_path)) {
-    dir.create(custom_path)
-  } else {
-  #If it exists then clean the folder
-  list.files(custom_path, full.names = TRUE) |>
-    file.remove()
-  }
+  #Custom path and copy script
+  custom_path <- withr::local_tempdir()
+  dir.create(file.path(custom_path, "logs"))
+  file.copy(from = test_script("warning.R"), to = custom_path) |>
+    expect_true()
 
   #Execute run() with log_dir as a function
-  res <- test_script("warning.R") |>
+  res <- file.path(custom_path, "warning.R") |>
     run(log_dir = function(x) {paste0(dirname(x), "/logs")}) |>
     expect_no_error()
 
   #Check if the log file is created in the correct folder
-  expect_true(file.exists(test_script("logs/warning_log.html")))
-
-  #Clean the folder
-  list.files(custom_path, full.names = TRUE) |>
-    file.remove()
+  file.path(custom_path, "logs", "warning_log.html") |>
+    file.exists() |>
+    expect_true()
 })
 
