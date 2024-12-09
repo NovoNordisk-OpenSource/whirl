@@ -64,7 +64,12 @@ test_that("Enrich input works as expected", {
     enrich_input() |>
     expect_error()
 
-})
+  # Evaluate expressions in yaml
 
-
-
+  test_script("_whirl_expression.yaml") |>
+    enrich_input() |>
+    expect_type("list") |>
+    expect_length(1) |>
+    vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
+    expect_match(regexp = format(Sys.Date()))
+ })
