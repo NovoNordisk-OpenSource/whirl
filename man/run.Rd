@@ -41,7 +41,7 @@ summary log will be stored.}
 
 \item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
-\item{log_dir}{The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information se details. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
+\item{log_dir}{The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
 }
 \value{
 A tibble containing the execution results for all the scripts.

@@ -6,7 +6,7 @@
 \arguments{
 \item{verbosity_level}{How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
 
-\item{log_dir}{The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information se details. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
+\item{log_dir}{The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
 
 \item{n_workers}{Number of simultanous workers used in the run function. A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 

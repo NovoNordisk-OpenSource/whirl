@@ -76,7 +76,7 @@ Number of simultanous workers used in the run function. A maximum of 128 workers
 }}
 
 \item{log_dir}{\describe{
-The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information se details.\item{default: }{\preformatted{dirname}}
+The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of \code{run()} or \code{vignette('whirl')}.\item{default: }{\preformatted{dirname}}
 \item{option: }{whirl.log_dir}
 \item{envvar: }{R_WHIRL_LOG_DIR (evaluated if possible, raw string otherwise)}
 }}
