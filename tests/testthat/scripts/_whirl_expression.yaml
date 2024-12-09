@@ -1,0 +1,4 @@
+steps:
+  - name: !expr "paste('Today is', Sys.Date())"
+    paths:
+      - "success.R"
