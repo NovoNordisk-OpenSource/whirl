@@ -9,16 +9,6 @@ on:
       - master
 
 name: debug R-CMD-check standard
-on:
-  push:
-    branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
 
 permissions:
   contents: read
