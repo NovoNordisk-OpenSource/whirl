@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,7 +83,7 @@ package.</p>
 <h2 id="ways-to-call-the-run-function">Ways to call the <code>run()</code> function<a class="anchor" aria-label="anchor" href="#ways-to-call-the-run-function"></a>
 </h2>
 <div class="section level3">
-<h3 id="single-and-multiple-files-and-regular-expressions">Single and multiple files, and regular expressions<a class="anchor" aria-label="anchor" href="#single-and-multiple-files-and-regular-expressions"></a>
+<h3 id="single-and-multiple-files-and-wild-cards">Single and multiple files, and wild cards<a class="anchor" aria-label="anchor" href="#single-and-multiple-files-and-wild-cards"></a>
 </h3>
 <p>The <code>input</code> argument in the <code><a href="../reference/run.html">run()</a></code> function
 can in the most simple case point to a single file for which an
@@ -114,10 +114,10 @@ with the <code>summary_file</code> argument.</p>
 <span>  summary_file <span class="op">=</span> <span class="st">"path/to/summary"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>More information on how the wildcards are interpreted see
-<code><a href="https://rdrr.io/r/utils/glob2rx.html" class="external-link">utils::glob2rx()</a></code>.</p>
+<code><a href="https://rdrr.io/r/base/Sys.glob.html" class="external-link">Sys.glob()</a></code>.</p>
 <p>It is also possible to provide a character vector of several paths
-(either single files or regular expression) that should be executed.
-Note that whenever the <code>input</code> argument in is supplied with a
+(either single files or glob expression) that should be executed. Note
+that whenever the <code>input</code> argument in is supplied with a
 character vector
 (e.g. <code>c("path/to/script1.R", "path/to/script2.R")</code>) it
 assumes that these can be executed independently and in parallel. If the
@@ -201,6 +201,50 @@ initiated as follows:</p>
 <p>Each steps in the config file will be executed independently while
 scrips within each step will be executed in parallel using the number of
 workers specified with the <code>n_workers</code> argument.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="adjusting-the-log-directory">Adjusting the log directory<a class="anchor" aria-label="anchor" href="#adjusting-the-log-directory"></a>
+</h2>
+<div class="section level3">
+<h3 id="how-to-use-the-log_dir-argument-to-specify-where-to-store-the-logs">How to use the <code>log_dir</code> argument to specify where to
+store the logs<a class="anchor" aria-label="anchor" href="#how-to-use-the-log_dir-argument-to-specify-where-to-store-the-logs"></a>
+</h3>
+<p>When executing <code><a href="../reference/run.html">run()</a></code> the default is to store logs in the
+directory where the individual scripts are located. For example, if we
+apply <code><a href="../reference/run.html">run()</a></code> to a a vector of scripts with the following
+paths <code>c(path/to/dir1/script1.R, path/to/dir2/script2.R)</code>,
+the log of script1.R and script2.R will be stored in
+<strong>path/to/dir1</strong> and <strong>path/to/dir2</strong>,
+respectively.</p>
+<p>If the logs should be stored in a different directory, the
+<code>log_dir</code> argument can be used. This argument can be supplied
+with a character string or a function. Note that in either case the
+directory that <code>log_dir</code> points to must exist before the
+execution is initiated.</p>
+<p>If the <code>log_dir</code> is supplied with a character pointing the
+a specific path the call could look like:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span>input <span class="op">=</span> <span class="st">"path/to/script.R"</span>, log_dir <span class="op">=</span> <span class="st">"path/to/logs"</span><span class="op">)</span></span></code></pre></div>
+<p>In this example the log of script.R will be stored in
+<strong>path/to/logs</strong>.<br>
+Note that if multiple scripts are executed and <code>log_dir</code> is a
+character to a path, then every log will be redirected to the same
+directory - in this case <strong>path/to/logs</strong>.</p>
+<p>If a more dynamic approach is needed the <code>log_dir</code>
+argument can also be supplied with a function that will be applied to
+the individual path of every script.<br>
+For example, if multiple script are executed and the logs needs to be
+stored in a sub-folder within the script directories this could be
+achieved by:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span>input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/dir1/script1.R"</span>, <span class="st">"path/to/dir2/script2.R"</span><span class="op">)</span>, </span>
+<span>    log_dir <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="st">"/logs"</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>In this exampel the log of script1.R will be stored in
+<strong>path/to/dir1/logs</strong> and the log of script2.R will be
+stored in <strong>path/to/dir2/logs</strong>.</p>
+<p>Note that <strong>x</strong> refer to the path of the script that is
+being executed.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
