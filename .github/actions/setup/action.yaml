@@ -29,4 +29,4 @@ runs:
 
     - name: install numpy
       shell: bash
-      run: python3 pip install --break-system-packages numpy
+      run: python3 -m pip install --break-system-packages numpy
