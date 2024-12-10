@@ -5,7 +5,7 @@
 #'
 #' @noRd
 
-session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, python_packages = NULL) {
+session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, python = FALSE, python_packages = NULL) {
   info <- sessioninfo::session_info()
 
   if (!is.null(approved_folder_pkgs) |
@@ -45,7 +45,7 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
     }
   }
 
-  if (!is.null(python_packages)) {
+  if (python) {
 
     # TODO: Get the same information as for R packages (not only name and version)
     # TODO: Only show used, and not all installed, packages if possible
@@ -53,9 +53,9 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
     info$python_packages <- python_packages
     class(info$python_packages) <- c("packages_info", class(info$python_packages))
 
-    quarto_python_path <- Sys.getenv("QUARTO_PYTHON")
-    quarto_python_version <- gsub(".*/([0-9]+\\.[0-9]+\\.[0-9]+)/.*", "\\1", quarto_python_path)
-    info$platform$python <- quarto_python_version
+    info$platform$python <- reticulate::py_config()[["version"]] |>
+      as.character() |>
+      paste("@", reticulate::py_config()[["python"]])
   }
 
   class(info) <- c("whirl_session_info", class(info))
