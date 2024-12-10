@@ -72,6 +72,11 @@ jobs:
           quarto render py_dummy.qmd
           Rscript -e "quarto::quarto_render('py_dummy.qmd')"
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dummy-report
+          path: py_dummy.html
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
