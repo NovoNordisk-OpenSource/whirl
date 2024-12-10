@@ -26,7 +26,3 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: py -m pip install jupyter
-
-    - name: install numpy
-      shell: bash
-      run: python3 -m pip install --break-system-packages numpy

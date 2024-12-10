@@ -72,8 +72,11 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 
 python_package_info <- function(json) {
 
+  json <- jsonlite::fromJSON(json)
+
+  if (!length(json)) return(NULL)
+
   json |>
-    jsonlite::fromJSON() |>
     tibble::enframe(name = "Package") |>
     tidyr::unnest_wider(col = "value") |>
     dplyr::rename(
