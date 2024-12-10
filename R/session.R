@@ -5,7 +5,7 @@
 #'
 #' @noRd
 
-session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, python = FALSE, python_packages = NULL) {
+session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, python_packages = NULL) {
   info <- sessioninfo::session_info()
 
   if (!is.null(approved_folder_pkgs) |
@@ -45,7 +45,7 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
     }
   }
 
-  if (python) {
+  if (!is.null(python_packages)) {
 
     # TODO: Get the same information as for R packages (not only name and version)
     # TODO: Only show used, and not all installed, packages if possible
@@ -74,7 +74,11 @@ python_package_info <- function(json) {
 
   json <- jsonlite::fromJSON(json)
 
-  if (!length(json)) return(NULL)
+  if (!length(json)) {
+    return(structure(list(Package = character(0), Version = character(0),
+                          Path = character(0)), row.names = integer(0), class = c("tbl_df",
+                                                                                  "tbl", "data.frame")))
+  }
 
   json |>
     tibble::enframe(name = "Package") |>
