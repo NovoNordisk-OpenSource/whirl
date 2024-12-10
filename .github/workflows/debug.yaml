@@ -68,7 +68,9 @@ jobs:
 
       - name: Quarto render dummy script
         shell: bash
-        run: quarto render py_dummy.qmd
+        run: |
+          quarto render py_dummy.qmd
+          Rscript -e "quarto::quarto_render('py_dummy.qmd')"
 
       - uses: r-lib/actions/check-r-package@v2
         with:
