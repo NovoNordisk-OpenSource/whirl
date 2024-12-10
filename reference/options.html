@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -187,6 +187,21 @@ Number of simultanous workers used in the run function. A maximum of 128 workers
 
 <dt>envvar: </dt>
 <dd><p>R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)</p></dd>
+
+
+</dl></dd>
+
+
+<dt>log_dir</dt>
+<dd><dl>
+The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of run() or vignette('whirl').<dt>default: </dt>
+<dd><div class="sourceCode"><pre><code><span><span class="va">dirname</span></span></code></pre></div></dd>
+
+<dt>option: </dt>
+<dd><p>whirl.log_dir</p></dd>
+
+<dt>envvar: </dt>
+<dd><p>R_WHIRL_LOG_DIR (evaluated if possible, raw string otherwise)</p></dd>
 
 
 </dl></dd>
