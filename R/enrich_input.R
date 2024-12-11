@@ -18,7 +18,7 @@ enrich_input <- function(input, steps = NULL,
   # Read yaml and extract list
   if (is_config_file & length(input) == 1) {
     root_dir <- dirname(input)
-    config_whirl <- yaml::yaml.load_file(input)
+    config_whirl <- yaml::read_yaml(file = input, eval.expr = TRUE)
     got <- config_whirl$"steps"
   } else {
     root_dir = getwd()
