@@ -25,8 +25,6 @@ test_that("interactive whirl R session components not tested in run", {
   p$call(func = \() 1 + "a") # Something with an error
   expect_error(p$wait()$check_status())
 
-  invisible(p$read()) # Make sure the process is ready to be deleted
-
   # Test temp dir is deleted correctly
   dir <- p$get_wd()
   rm(p)
