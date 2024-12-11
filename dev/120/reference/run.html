@@ -13,7 +13,7 @@ e.g. the verbosity of the logs. See options on how to configure these."><meta pr
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,8 @@ e.g. the verbosity of the logs. See <a href="options.html">options</a> on how to
 <span>  check_renv <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"check_renv"</span>, env <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span>,</span>
 <span>  verbosity_level <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"verbosity_level"</span>, env <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span>,</span>
 <span>  track_files <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"track_files"</span>, env <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span>,</span>
-<span>  out_formats <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"out_formats"</span>, env <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span></span>
+<span>  out_formats <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"out_formats"</span>, env <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span>,</span>
+<span>  log_dir <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"log_dir"</span>, env <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -107,6 +108,10 @@ summary log will be stored.</p></dd>
 <dt id="arg-out-formats">out_formats<a class="anchor" aria-label="anchor" href="#arg-out-formats"></a></dt>
 <dd><p>Which log format(s) to produce. Possiblities are <code>html</code>, <code>json</code>, and markdown formats:<code>gfm</code>, <code>commonmark</code>, and <code>markua</code>. (Defaults to <code>"html"</code>, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')</p></dd>
 
+
+<dt id="arg-log-dir">log_dir<a class="anchor" aria-label="anchor" href="#arg-log-dir"></a></dt>
+<dd><p>The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of <code>run()</code> or <code><a href="../articles/whirl.html">vignette('whirl')</a></code>. (Defaults to <code>dirname</code>, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -131,6 +136,7 @@ summary log will be stored.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Step 1: Unnamed chunk</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> success.R: Completed succesfully</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run several scripts in parallel on up to 2 workers</span></span></span>
@@ -144,6 +150,7 @@ summary log will be stored.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> success.R: Completed succesfully</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">⚠</span> warning.R: Completed with warnings</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> error.R: Completed with errors</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run scripts in two steps by providing them as list elements</span></span></span>
@@ -163,10 +170,25 @@ summary log will be stored.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> success.R: Completed succesfully</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">⚠</span> warning.R: Completed with warnings</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Step 2: Unnamed chunk</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> error.R: Completed with errors</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Re-directing the logs to a sub-folder by utilizing the log_dir argument in</span></span></span>
+<span class="r-in"><span><span class="co"># run(). This will require that the sub-folder exist and the code is therefore</span></span></span>
+<span class="r-in"><span><span class="co"># not executed</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specifying the path using a manually defined character</span></span></span>
+<span class="r-in"><span><span class="fu">run</span><span class="op">(</span><span class="st">"success.R"</span>, log_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specifying the path with a generic function that can handle the scripts</span></span></span>
+<span class="r-in"><span><span class="co"># individually.</span></span></span>
+<span class="r-in"><span><span class="fu">run</span><span class="op">(</span><span class="st">"success.R"</span>, log_dir <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="st">"/logs"</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
