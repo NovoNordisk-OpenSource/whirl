@@ -71,7 +71,6 @@ saveRDS(
   object = whirl:::session_info(
     approved_folder_pkgs = params$check_approved_folder_pkgs, 
     approved_url_pkgs = params$check_approved_url_pkgs, 
-    python = file.exists(file.path(params$tmpdir, "python_imports.json")),
     python_packages = python_packages
     ),
   file = file.path(params$tmpdir, "session_info.rds")
