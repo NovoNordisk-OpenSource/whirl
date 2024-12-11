@@ -50,9 +50,11 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
   ncols <- ncol(hold)
 
   if (grepl("rstudio_cloud", Sys.getenv("R_CONFIG_ACTIVE"))) {
-    formatted <- file.path("/file_show?path=", hold[["Hyperlink"]])
+    formatted <- file.path("/file_show?path=", hold$"Hyperlink")
   } else {
-    formatted <- file.path(path_rel(hold[["Hyperlink"]], start = path_rel_start))
+    formatted <- lapply(hold$"Hyperlink", path_rel, start = path_rel_start) |>
+      unlist() |>
+      file.path()
   }
 
   hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', formatted, "HTML Log"))

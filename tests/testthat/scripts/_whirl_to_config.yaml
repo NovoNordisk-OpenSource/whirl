@@ -1,4 +1,7 @@
 steps:
-  - name: "Run config file"
+  - name: "Run _whirl.yaml"
     paths:
       - "_whirl.yaml"
+  - name: "Run _whirl_unnamed.yaml"
+    paths:
+      - "_whirl_unnamed.yaml"

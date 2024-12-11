@@ -12,7 +12,8 @@ run(
   check_renv = options::opt("check_renv", env = "whirl"),
   verbosity_level = options::opt("verbosity_level", env = "whirl"),
   track_files = options::opt("track_files", env = "whirl"),
-  out_formats = options::opt("out_formats", env = "whirl")
+  out_formats = options::opt("out_formats", env = "whirl"),
+  log_dir = options::opt("log_dir", env = "whirl")
 )
 }
 \arguments{
@@ -39,6 +40,8 @@ summary log will be stored.}
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
 \item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
+
+\item{log_dir}{The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
 }
 \value{
 A tibble containing the execution results for all the scripts.
@@ -71,4 +74,17 @@ run(
     ),
    n_workers = 2)
 
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
+# Re-directing the logs to a sub-folder by utilizing the log_dir argument in
+# run(). This will require that the sub-folder exist and the code is therefore
+# not executed
+
+# Specifying the path using a manually defined character
+run("success.R", log_dir = getwd())
+
+# Specifying the path with a generic function that can handle the scripts
+# individually.
+run("success.R", log_dir = function(x) {paste0(dirname(x), "/logs")})
+\dontshow{\}) # examplesIf}
 }
