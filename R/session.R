@@ -53,9 +53,9 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
     info$python_packages <- python_packages
     class(info$python_packages) <- c("packages_info", class(info$python_packages))
 
-    quarto_python_path <- Sys.getenv("QUARTO_PYTHON")
-    quarto_python_version <- gsub(".*/([0-9]+\\.[0-9]+\\.[0-9]+)/.*", "\\1", quarto_python_path)
-    info$platform$python <- quarto_python_version
+    info$platform$python <- reticulate::py_config()[["version"]] |>
+      as.character() |>
+      paste("@", reticulate::py_config()[["python"]])
   }
 
   class(info) <- c("whirl_session_info", class(info))
@@ -72,8 +72,15 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 
 python_package_info <- function(json) {
 
+  json <- jsonlite::fromJSON(json)
+
+  if (!length(json)) {
+    return(structure(list(Package = character(0), Version = character(0),
+                          Path = character(0)), row.names = integer(0), class = c("tbl_df",
+                                                                                  "tbl", "data.frame")))
+  }
+
   json |>
-    jsonlite::fromJSON() |>
     tibble::enframe(name = "Package") |>
     tidyr::unnest_wider(col = "value") |>
     dplyr::rename(
