@@ -230,6 +230,24 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
+  # Set the execute directory of the Quarto process calling the script
+  quarto_execute_dir <- options::opt("execute_dir", env = "whirl")
+  if (is.null(quarto_execute_dir)) {
+    quarto_execute_dir <- switch(
+      get_file_ext(script),
+      "R" = getwd(),
+      normalizePath(dirname(script))
+    )
+  } else if (is.function(quarto_execute_dir)) {
+    quarto_execute_dir <- quarto_execute_dir(script)
+  }
+
+  if (!file.exists(quarto_execute_dir)) {
+    cli::cli_abort("Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist")
+  }
+
+  # Execute the script
+
   if (private$verbosity_level != "quiet") {
     private$pb <- pb_script$new(
       script = private$current_script,
@@ -238,11 +256,6 @@ wrs_log_script <- function(script, self, private, super) {
   }
 
   self$pb_update(status = "Running script")
-
-  quarto_execute_dir <- switch(get_file_ext(script),
-                               "R" = getwd(),
-                               normalizePath(dirname(script)) # TODO: Should this default be changed?
-  )
 
   self$call(
     func = \(...) quarto::quarto_render(...),

@@ -89,3 +89,8 @@ options::define_option(
   desc = "The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of `run()` or `vignette('whirl')`."
 )
 
+options::define_option(
+  option = "execute_dir",
+  default = NULL,
+  desc = "The working directory of the process executing each script. Defeault us to execute R files from the working directory when calling `run()` and all other functions from the directory of the script. To change provide a character path (used for all scripts) or a function that takes the script as input and returns the execution directory."
+)

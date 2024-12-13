@@ -10,6 +10,8 @@
 
 \item{n_workers}{Number of simultanous workers used in the run function. A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
+\item{execute_dir}{The working directory of the process executing each script. Defeault us to execute R files from the working directory when calling \code{run()} and all other functions from the directory of the script. To change provide a character path (used for all scripts) or a function that takes the script as input and returns the execution directory. (Defaults to \code{NULL}, overwritable using option 'whirl.execute_dir' or environment variable 'R_WHIRL_EXECUTE_DIR')}
+
 \item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE (Defaults to \verb{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", ;     "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache", .libPaths())}, overwritable using option 'whirl.track_files_discards' or environment variable 'R_WHIRL_TRACK_FILES_DISCARDS')}
 
 \item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
