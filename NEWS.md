@@ -1,6 +1,6 @@
 # whirl (development version)
-* Enable redirection of logs through the `log_dir` argument in `run()`. 
-* Changed the title on the individual logs to the script name and moved the path to a distinct section within the title-block. 
+* Enable redirection of logs through the `log_dir` argument in `run()`.
+* Changed the title on the individual logs to the script name and moved the path to a distinct section within the title-block.
 * Fixed a bug where the hyperlink in the summary files was not rendered correctly.
 * Fixed a bug where the installed python packages were not listed in the log.
 
@@ -17,11 +17,11 @@
 * Add `use_whirl()` utility function.
 
 # whirl 0.1.3 (2024-10-23)
-* Adding additional arguments to `run()` allowing the user to: 
-  - control the verbosity level 
+* Adding additional arguments to `run()` allowing the user to:
+  - control the verbosity level
   - specify whether renv should be checked
   - specify which files to track
-  - adjust the output format of the log files. 
+  - adjust the output format of the log files.
 
 # whirl 0.1.2 (2024-10-21)
 * Updated package website url and example code
