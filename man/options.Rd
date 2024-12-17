@@ -81,6 +81,12 @@ The output directory of the log files. Default is the folder of the excuted scri
 \item{envvar: }{R_WHIRL_LOG_DIR (evaluated if possible, raw string otherwise)}
 }}
 
+\item{execute_dir}{\describe{
+The working directory of the process executing each script. Defeault us to execute R files from the working directory when calling \code{run()} and all other functions from the directory of the script. To change provide a character path (used for all scripts) or a function that takes the script as input and returns the execution directory.\item{default: }{\preformatted{NULL}}
+\item{option: }{whirl.execute_dir}
+\item{envvar: }{R_WHIRL_EXECUTE_DIR (evaluated if possible, raw string otherwise)}
+}}
+
 }
 }
 

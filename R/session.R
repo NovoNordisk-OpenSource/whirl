@@ -23,7 +23,7 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 
   info$environment <- Sys.getenv() |>
     as.list() |>
-    unlist(recursive = F) |>
+    unlist(recursive = FALSE) |>
     tibble::enframe(name = "Setting", value = "Value")
   class(info$environment) <- c("environment_info", class(info$environment))
 
@@ -46,16 +46,15 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
   }
 
   if (!is.null(python_packages)) {
-
     # TODO: Get the same information as for R packages (not only name and version)
     # TODO: Only show used, and not all installed, packages if possible
 
     info$python_packages <- python_packages
     class(info$python_packages) <- c("packages_info", class(info$python_packages))
 
-    quarto_python_path <- Sys.getenv("QUARTO_PYTHON")
-    quarto_python_version <- gsub(".*/([0-9]+\\.[0-9]+\\.[0-9]+)/.*", "\\1", quarto_python_path)
-    info$platform$python <- quarto_python_version
+    info$platform$python <- reticulate::py_config()[["version"]] |>
+      as.character() |>
+      paste("@", reticulate::py_config()[["python"]])
   }
 
   class(info) <- c("whirl_session_info", class(info))
@@ -71,9 +70,19 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 #' @noRd
 
 python_package_info <- function(json) {
+  json <- jsonlite::fromJSON(json)
+
+  if (!length(json)) {
+    return(
+      tibble::tibble(
+        Package = character(0),
+        Version = character(0),
+        Path = character(0)
+      )
+    )
+  }
 
   json |>
-    jsonlite::fromJSON() |>
     tibble::enframe(name = "Package") |>
     tidyr::unnest_wider(col = "value") |>
     dplyr::rename(
@@ -110,8 +119,7 @@ knit_print.whirl_platform_info <- function(x, ...) {
 #' @noRd
 
 knit_print.whirl_packages_info <- function(x, ...) {
-
-  if (!is.null(x$package)){
+  if (!is.null(x$package)) {
     x <- data.frame(
       Package = x$package,
       Version = x$loadedversion,
@@ -215,7 +223,7 @@ knit_print.whirl_environment_info <- function(x, ...) {
       char_to_insert = "<br>",
       interval = 45
     ) |>
-    knitr::kable(escape = F) |>
+    knitr::kable(escape = FALSE) |>
     kableExtra::kable_styling(
       bootstrap_options = "striped",
       full_width = TRUE

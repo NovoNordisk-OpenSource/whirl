@@ -86,7 +86,6 @@ test_that("Run yaml config file", {
 
 })
 
-
 test_that("Change the log_dir to a path", {
   #Custom path
   custom_path <- withr::local_tempdir()
@@ -118,5 +117,30 @@ test_that("Change the log_dir with a function", {
   file.path(custom_path, "logs", "warning_log.html") |>
     file.exists() |>
     expect_true()
+})
+
+test_that("Change the execute_dir to a path", {
+
+  custom_path <- withr::local_tempdir()
+  withr::local_options(whirl.execute_dir = custom_path)
+
+  test_script("success.R") |>
+    run() |>
+    expect_no_error()
+
+  withr::local_options(whirl.execute_dir = "this/path/does/not/exist")
+
+  test_script("success.R") |>
+    run() |>
+    expect_error()
+})
+
+test_that("Change the execute_dir to a function", {
+
+  withr::local_options(whirl.execute_dir = \(x) dirname(x))
+
+  test_script("success.R") |>
+    run() |>
+    expect_no_error()
 })
 
