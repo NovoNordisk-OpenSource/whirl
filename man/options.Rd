@@ -20,12 +20,6 @@ options::opt(x, default, env = "whirl")
 \section{Options}{
 
 \describe{
-\item{verbosity_level}{\describe{
-How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.\item{default: }{\preformatted{"verbose"}}
-\item{option: }{whirl.verbosity_level}
-\item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
-}}
-
 \item{out_formats}{\describe{
 Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}.\item{default: }{\preformatted{"html"}}
 \item{option: }{whirl.out_formats}
@@ -55,6 +49,12 @@ List of file naming patterns not be tracked when track_files = TRUE\item{default
 List of file naming patterns alway to be tracked when track_files = TRUE\item{default: }{\preformatted{paste0("^", getwd())}}
 \item{option: }{whirl.track_files_keep}
 \item{envvar: }{R_WHIRL_TRACK_FILES_KEEP (as character vector, split on ';' delimiter)}
+}}
+
+\item{verbosity_level}{\describe{
+How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.\item{default: }{\preformatted{"verbose"}}
+\item{option: }{whirl.verbosity_level}
+\item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
 }}
 
 \item{approved_pkgs_folder}{\describe{
