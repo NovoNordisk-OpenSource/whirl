@@ -46,7 +46,6 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
   }
 
   if (!is.null(python_packages)) {
-
     # TODO: Get the same information as for R packages (not only name and version)
     # TODO: Only show used, and not all installed, packages if possible
 
@@ -71,7 +70,6 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 #' @noRd
 
 python_package_info <- function(json) {
-
   json <- jsonlite::fromJSON(json)
 
   if (!length(json)) {
@@ -80,8 +78,8 @@ python_package_info <- function(json) {
         Package = character(0),
         Version = character(0),
         Path = character(0)
-        )
       )
+    )
   }
 
   json |>
@@ -121,8 +119,7 @@ knit_print.whirl_platform_info <- function(x, ...) {
 #' @noRd
 
 knit_print.whirl_packages_info <- function(x, ...) {
-
-  if (!is.null(x$package)){
+  if (!is.null(x$package)) {
     x <- data.frame(
       Package = x$package,
       Version = x$loadedversion,
@@ -226,7 +223,7 @@ knit_print.whirl_environment_info <- function(x, ...) {
       char_to_insert = "<br>",
       interval = 45
     ) |>
-    knitr::kable(escape = F) |>
+    knitr::kable(escape = FALSE) |>
     kableExtra::kable_styling(
       bootstrap_options = "striped",
       full_width = TRUE
