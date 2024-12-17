@@ -1,8 +1,10 @@
-# whirl (development version)
+# whirl 0.1.7 (2024-12-17)
 * Enable redirection of logs through the `log_dir` argument in `run()`.
 * Changed the title on the individual logs to the script name and moved the path to a distinct section within the title-block.
 * Fixed a bug where the hyperlink in the summary files was not rendered correctly.
 * Fixed a bug where the installed python packages were not listed in the log.
+* Enable the use of R expressions in the yaml configuration file.
+* Enables the user to define the working directory for each script with the `execute_dir` option.
 
 # whirl 0.1.6 (2024-11-25)
 * Added support for logging of Python scripts with `run()`.
