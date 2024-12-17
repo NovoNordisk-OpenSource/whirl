@@ -23,7 +23,7 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 
   info$environment <- Sys.getenv() |>
     as.list() |>
-    unlist(recursive = F) |>
+    unlist(recursive = FALSE) |>
     tibble::enframe(name = "Setting", value = "Value")
   class(info$environment) <- c("environment_info", class(info$environment))
 
@@ -75,9 +75,13 @@ python_package_info <- function(json) {
   json <- jsonlite::fromJSON(json)
 
   if (!length(json)) {
-    return(structure(list(Package = character(0), Version = character(0),
-                          Path = character(0)), row.names = integer(0), class = c("tbl_df",
-                                                                                  "tbl", "data.frame")))
+    return(
+      tibble::tibble(
+        Package = character(0),
+        Version = character(0),
+        Path = character(0)
+        )
+      )
   }
 
   json |>
