@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,22 @@ accessed by passing the package name to <code>env</code>.</p>
     <h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a></h2>
 
 
-<dl><dt>out_formats</dt>
+<dl><dt>verbosity_level</dt>
+<dd><dl>
+How chatty should the log be? Possibilities are quiet, minimal and verbose.<dt>default: </dt>
+<dd><div class="sourceCode"><pre><code><span><span class="st">"verbose"</span></span></code></pre></div></dd>
+
+<dt>option: </dt>
+<dd><p>whirl.verbosity_level</p></dd>
+
+<dt>envvar: </dt>
+<dd><p>R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)</p></dd>
+
+
+</dl></dd>
+
+
+<dt>out_formats</dt>
 <dd><dl>
 Which log format(s) to produce. Possiblities are html, json, and markdown formats:gfm, commonmark, and markua.<dt>default: </dt>
 <dd><div class="sourceCode"><pre><code><span><span class="st">"html"</span></span></code></pre></div></dd>
@@ -132,21 +147,6 @@ List of file naming patterns alway to be tracked when track_files = TRUE<dt>defa
 </dl></dd>
 
 
-<dt>verbosity_level</dt>
-<dd><dl>
-How chatty should the log be? Possibilities are quiet, minimal and verbose.<dt>default: </dt>
-<dd><div class="sourceCode"><pre><code><span><span class="st">"verbose"</span></span></code></pre></div></dd>
-
-<dt>option: </dt>
-<dd><p>whirl.verbosity_level</p></dd>
-
-<dt>envvar: </dt>
-<dd><p>R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)</p></dd>
-
-
-</dl></dd>
-
-
 <dt>approved_pkgs_folder</dt>
 <dd><dl>
 Approved folder library packages<dt>default: </dt>
@@ -202,6 +202,21 @@ The output directory of the log files. Default is the folder of the excuted scri
 
 <dt>envvar: </dt>
 <dd><p>R_WHIRL_LOG_DIR (evaluated if possible, raw string otherwise)</p></dd>
+
+
+</dl></dd>
+
+
+<dt>execute_dir</dt>
+<dd><dl>
+The working directory of the process executing each script. Defeault us to execute R files from the working directory when calling run() and all other functions from the directory of the script. To change provide a character path (used for all scripts) or a function that takes the script as input and returns the execution directory.<dt>default: </dt>
+<dd><div class="sourceCode"><pre><code><span><span class="cn">NULL</span></span></code></pre></div></dd>
+
+<dt>option: </dt>
+<dd><p>whirl.execute_dir</p></dd>
+
+<dt>envvar: </dt>
+<dd><p>R_WHIRL_EXECUTE_DIR (evaluated if possible, raw string otherwise)</p></dd>
 
 
 </dl></dd>
