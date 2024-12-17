@@ -1,4 +1,4 @@
-# whirl 0.17 (2024-12-17)
+# whirl 0.1.7 (2024-12-17)
 * Enable redirection of logs through the `log_dir` argument in `run()`.
 * Changed the title on the individual logs to the script name and moved the path to a distinct section within the title-block.
 * Fixed a bug where the hyperlink in the summary files was not rendered correctly.
