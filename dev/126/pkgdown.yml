@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   articles/example: example.html
   whirl: whirl.html
-last_built: 2024-12-18T13:35Z
+last_built: 2024-12-18T14:05Z
 urls:
   reference: https://novonordisk-opensource.github.io/whirl/reference
   article: https://novonordisk-opensource.github.io/whirl/articles

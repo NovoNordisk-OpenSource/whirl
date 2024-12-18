@@ -58,7 +58,7 @@ accessed by passing the package name to <code>env</code>.</p>
 
 <dl><dt>out_formats</dt>
 <dd><dl>
-Which log format(s) to produce. Possiblities are html, json, and
+Which log format(s) to produce. Possibilities are html, json, and
 markdown formats: gfm, commonmark, and markua.<dt>default: </dt>
 <dd><div class="sourceCode"><pre><code><span><span class="st">"html"</span></span></code></pre></div></dd>
 
@@ -121,7 +121,7 @@ List of file naming patterns not be tracked when track_files = TRUE<dt>default: 
 
 <dt>track_files_keep</dt>
 <dd><dl>
-List of file naming patterns alway to be tracked when
+List of file naming patterns always to be tracked when
 track_files = TRUE<dt>default: </dt>
 <dd><div class="sourceCode"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"^"</span>, <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div></dd>
 
@@ -183,7 +183,7 @@ Approved URL library packages<dt>default: </dt>
 
 <dt>n_workers</dt>
 <dd><dl>
-Number of simultanous workers used in the run function.
+Number of simultaneous workers used in the run function.
 A maximum of 128 workers is allowed.<dt>default: </dt>
 <dd><div class="sourceCode"><pre><code><span><span class="fl">1</span></span></code></pre></div></dd>
 
@@ -200,7 +200,7 @@ A maximum of 128 workers is allowed.<dt>default: </dt>
 <dt>log_dir</dt>
 <dd><dl>
 The output directory of the log files. Default is the folder of the
-excuted script. log_dir can be a path as a character or it can be a function
+executed script. log_dir can be a path as a character or it can be a function
 that takes the script path as input and returns the log directory.
 For more information see the examples of run() or vignette('whirl').<dt>default: </dt>
 <dd><div class="sourceCode"><pre><code><span><span class="va">dirname</span></span></code></pre></div></dd>
@@ -218,7 +218,7 @@ For more information see the examples of run() or vignette('whirl').<dt>default:
 <dt>execute_dir</dt>
 <dd><dl>
 The working directory of the process executing each script.
-Defeault us to execute R files from the working directory when calling run()
+Default us to execute R files from the working directory when calling run()
 and all other functions from the directory of the script. To change provide
 a character path (used for all scripts) or a function that takes the script
 as input and returns the execution directory.<dt>default: </dt>
