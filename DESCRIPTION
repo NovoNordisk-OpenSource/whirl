@@ -10,7 +10,7 @@ Authors@R: c(
     person("Vladimir", "Obucina", , email = "vlob@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
-Description: Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
+Description: Provides functionalities for running R scripts in batch, while simultaneously creating logs for each script execution.
 License: Apache License (>= 2)
 URL: https://novonordisk-opensource.github.io/whirl/, https://github.com/novonordisk-opensource/whirl
 Depends: 

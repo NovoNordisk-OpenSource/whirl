@@ -16,5 +16,6 @@
 ^whirl.*\.tgz$
 ^whirl\.Rcheck$
 ^whirl\.Rproj$
+^înst/WORDLIST$
 plot1.png
 summary.html

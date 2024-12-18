@@ -31,7 +31,7 @@ then all steps listed in the config file will be executed.}
 \item{summary_file}{A character string specifying the file path where the
 summary log will be stored.}
 
-\item{n_workers}{Number of simultanous workers used in the run function.
+\item{n_workers}{Number of simultaneous workers used in the run function.
 A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
@@ -42,11 +42,11 @@ A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using o
 \item{track_files}{Should files read and written be tracked?
 Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
-\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and
+\item{out_formats}{Which log format(s) to produce. Possibilities are \code{html}, \code{json}, and
 markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
 \item{log_dir}{The output directory of the log files. Default is the folder of the
-excuted script. log_dir can be a path as a character or it can be a function
+executed script. log_dir can be a path as a character or it can be a function
 that takes the script path as input and returns the log directory.
 For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
 }

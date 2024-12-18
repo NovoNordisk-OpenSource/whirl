@@ -1,5 +1,4 @@
 Aksel
-alway
 aut
 callr
 Cervan
@@ -10,12 +9,9 @@ config
 Config
 cph
 cre
-Defeault
 dev
 dir
 dplyr
-exampel
-excuted
 Falgreen
 Gakava
 getenv
@@ -48,7 +44,6 @@ OpenSource
 overwritable
 PKGS
 pkgs
-Possiblities
 pre
 purrr
 README
@@ -63,8 +58,6 @@ RoxygenNote
 sessioninfo
 setenv
 sffl
-simultanous
-simultanously
 Steffen
 stringr
 Sys

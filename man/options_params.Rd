@@ -8,15 +8,15 @@
 \code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
 
 \item{log_dir}{The output directory of the log files. Default is the folder of the
-excuted script. log_dir can be a path as a character or it can be a function
+executed script. log_dir can be a path as a character or it can be a function
 that takes the script path as input and returns the log directory.
 For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
 
-\item{n_workers}{Number of simultanous workers used in the run function.
+\item{n_workers}{Number of simultaneous workers used in the run function.
 A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
 \item{execute_dir}{The working directory of the process executing each script.
-Defeault us to execute R files from the working directory when calling \code{run()}
+Default us to execute R files from the working directory when calling \code{run()}
 and all other functions from the directory of the script. To change provide
 a character path (used for all scripts) or a function that takes the script
 as input and returns the execution directory. (Defaults to \code{NULL}, overwritable using option 'whirl.execute_dir' or environment variable 'R_WHIRL_EXECUTE_DIR')}
@@ -26,14 +26,14 @@ as input and returns the execution directory. (Defaults to \code{NULL}, overwrit
 \item{track_files}{Should files read and written be tracked?
 Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
-\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and
+\item{out_formats}{Which log format(s) to produce. Possibilities are \code{html}, \code{json}, and
 markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
 \item{approved_pkgs_folder}{Approved folder library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkgs_folder' or environment variable 'R_WHIRL_APPROVED_PKGS_FOLDER')}
 
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 
-\item{track_files_keep}{List of file naming patterns alway to be tracked when
+\item{track_files_keep}{List of file naming patterns always to be tracked when
 track_files = TRUE (Defaults to \code{paste0("^", getwd())}, overwritable using option 'whirl.track_files_keep' or environment variable 'R_WHIRL_TRACK_FILES_KEEP')}
 
 \item{approved_pkgs_url}{Approved URL library packages (Defaults to \code{NULL}, overwritable using option 'whirl.approved_pkgs_url' or environment variable 'R_WHIRL_APPROVED_PKGS_URL')}

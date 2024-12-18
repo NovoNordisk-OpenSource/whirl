@@ -11,7 +11,7 @@ NULL
 options::define_option(
   option = "out_formats",
   default = "html",
-  desc = "Which log format(s) to produce. Possiblities are `html`, `json`, and
+  desc = "Which log format(s) to produce. Possibilities are `html`, `json`, and
   markdown formats: `gfm`, `commonmark`, and `markua`."
 )
 
@@ -54,7 +54,7 @@ options::define_option(
 options::define_option(
   option = "track_files_keep",
   default = paste0("^", getwd()),
-  desc = "List of file naming patterns alway to be tracked when
+  desc = "List of file naming patterns always to be tracked when
   track_files = TRUE",
   envvar_fn = options::envvar_str_split(delim = ";")
 )
@@ -83,7 +83,7 @@ options::define_option(
 options::define_option(
   option = "n_workers",
   default = 1,
-  desc = "Number of simultanous workers used in the run function.
+  desc = "Number of simultaneous workers used in the run function.
   A maximum of 128 workers is allowed."
 )
 
@@ -91,7 +91,7 @@ options::define_option(
   option = "log_dir",
   default = dirname,
   desc = "The output directory of the log files. Default is the folder of the
-  excuted script. log_dir can be a path as a character or it can be a function
+  executed script. log_dir can be a path as a character or it can be a function
   that takes the script path as input and returns the log directory.
   For more information see the examples of `run()` or `vignette('whirl')`."
 )
@@ -100,7 +100,7 @@ options::define_option(
   option = "execute_dir",
   default = NULL,
   desc = "The working directory of the process executing each script.
-  Defeault us to execute R files from the working directory when calling `run()`
+  Default us to execute R files from the working directory when calling `run()`
    and all other functions from the directory of the script. To change provide
   a character path (used for all scripts) or a function that takes the script
   as input and returns the execution directory."

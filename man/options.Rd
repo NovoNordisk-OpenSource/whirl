@@ -21,7 +21,7 @@ options::opt(x, default, env = "whirl")
 
 \describe{
 \item{out_formats}{\describe{
-Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and
+Which log format(s) to produce. Possibilities are \code{html}, \code{json}, and
 markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}.\item{default: }{\preformatted{"html"}}
 \item{option: }{whirl.out_formats}
 \item{envvar: }{R_WHIRL_OUT_FORMATS (evaluated if possible, raw string otherwise)}
@@ -48,7 +48,7 @@ List of file naming patterns not be tracked when track_files = TRUE\item{default
 }}
 
 \item{track_files_keep}{\describe{
-List of file naming patterns alway to be tracked when
+List of file naming patterns always to be tracked when
 track_files = TRUE\item{default: }{\preformatted{paste0("^", getwd())}}
 \item{option: }{whirl.track_files_keep}
 \item{envvar: }{R_WHIRL_TRACK_FILES_KEEP (as character vector, split on ';' delimiter)}
@@ -74,7 +74,7 @@ Approved URL library packages\item{default: }{\preformatted{NULL}}
 }}
 
 \item{n_workers}{\describe{
-Number of simultanous workers used in the run function.
+Number of simultaneous workers used in the run function.
 A maximum of 128 workers is allowed.\item{default: }{\preformatted{1}}
 \item{option: }{whirl.n_workers}
 \item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
@@ -82,7 +82,7 @@ A maximum of 128 workers is allowed.\item{default: }{\preformatted{1}}
 
 \item{log_dir}{\describe{
 The output directory of the log files. Default is the folder of the
-excuted script. log_dir can be a path as a character or it can be a function
+executed script. log_dir can be a path as a character or it can be a function
 that takes the script path as input and returns the log directory.
 For more information see the examples of \code{run()} or \code{vignette('whirl')}.\item{default: }{\preformatted{dirname}}
 \item{option: }{whirl.log_dir}
@@ -91,7 +91,7 @@ For more information see the examples of \code{run()} or \code{vignette('whirl')
 
 \item{execute_dir}{\describe{
 The working directory of the process executing each script.
-Defeault us to execute R files from the working directory when calling \code{run()}
+Default us to execute R files from the working directory when calling \code{run()}
 and all other functions from the directory of the script. To change provide
 a character path (used for all scripts) or a function that takes the script
 as input and returns the execution directory.\item{default: }{\preformatted{NULL}}

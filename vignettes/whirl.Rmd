@@ -166,6 +166,6 @@ run(
 )
 ```
 
-In this exampel the log of script1.R will be stored in **path/to/dir1/logs** and the log of script2.R will be stored in **path/to/dir2/logs**.
+In this example the log of script1.R will be stored in **path/to/dir1/logs** and the log of script2.R will be stored in **path/to/dir2/logs**.
 
 Note that **x** refer to the path of the script that is being executed. 
