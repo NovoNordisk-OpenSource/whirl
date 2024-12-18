@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,15 +102,15 @@ with the <code>summary_file</code> argument.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Execution of all R files in a specific directory</span></span>
 <span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
-<span>  input <span class="op">=</span> <span class="st">"path/to/directory/*.R"</span>, </span>
-<span>  n_workers <span class="op">=</span> <span class="fl">4</span>, </span>
+<span>  input <span class="op">=</span> <span class="st">"path/to/directory/*.R"</span>,</span>
+<span>  n_workers <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  summary_file <span class="op">=</span> <span class="st">"path/to/summary"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Execution of all R files starting with "mk200" in a specific directory</span></span>
 <span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
-<span>  input <span class="op">=</span> <span class="st">"path/to/directory/mk200*.R"</span>, </span>
-<span>  n_workers <span class="op">=</span> <span class="fl">8</span>, </span>
+<span>  input <span class="op">=</span> <span class="st">"path/to/directory/mk200*.R"</span>,</span>
+<span>  n_workers <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  summary_file <span class="op">=</span> <span class="st">"path/to/summary"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>More information on how the wildcards are interpreted see
@@ -135,28 +135,30 @@ listed in the same element being executed in parallel (if
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># In the below example, script1.R and script2.R will be executed in parallel</span></span>
 <span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
-<span>  input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>,</span>
-<span>            <span class="st">"path/to/script2.R"</span><span class="op">)</span>,</span>
+<span>  input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"path/to/script1.R"</span>,</span>
+<span>    <span class="st">"path/to/script2.R"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  n_workers <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># In the below example, script1.R and script2.R will be executed in parallel, </span></span>
+<span><span class="co"># In the below example, script1.R and script2.R will be executed in parallel,</span></span>
 <span><span class="co"># and all R files in the directory will subsequently be executed in parallel</span></span>
 <span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
 <span>  input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>, <span class="st">"path/to/script2.R"</span><span class="op">)</span>, </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>, <span class="st">"path/to/script2.R"</span><span class="op">)</span>,</span>
 <span>    <span class="st">"path/to/directory/*.R"</span></span>
-<span>    <span class="op">)</span>,</span>
+<span>  <span class="op">)</span>,</span>
 <span>  n_workers <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># In the below example, script1.R and script2.R will be executed in parallel, and subsequently </span></span>
-<span><span class="co"># script3.R and script4.R will be executed in parallel</span></span>
+<span><span class="co"># In the below example, script1.R and script2.R will be executed in parallel,</span></span>
+<span><span class="co"># and subsequently script3.R and script4.R will be executed in parallel</span></span>
 <span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
 <span>  input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>, <span class="st">"path/to/script2.R"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script3.R"</span>, <span class="st">"path/to/script4.R"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
+<span>  <span class="op">)</span>,</span>
 <span>  n_workers <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The list can also be supplied with names list elements. This can be
@@ -164,14 +166,15 @@ useful during execution as some of these ‘name’ will be printed to the
 console.</p>
 <p>E.g.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span>input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    name <span class="op">=</span> <span class="st">"Step 1"</span>, </span>
-<span>    paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>, <span class="st">"path/to/script2.R"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
+<span>  input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      name <span class="op">=</span> <span class="st">"Step 1"</span>,</span>
+<span>      paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>, <span class="st">"path/to/script2.R"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    name <span class="op">=</span> <span class="st">"Step 2"</span>,</span>
-<span>    paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script3.R"</span>, <span class="st">"path/to/script4.R"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      name <span class="op">=</span> <span class="st">"Step 2"</span>,</span>
+<span>      paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script3.R"</span>, <span class="st">"path/to/script4.R"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  n_workers <span class="op">=</span> <span class="fl">2</span></span>
@@ -238,8 +241,12 @@ For example, if multiple script are executed and the logs needs to be
 stored in a sub-folder within the script directories this could be
 achieved by:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span>input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/dir1/script1.R"</span>, <span class="st">"path/to/dir2/script2.R"</span><span class="op">)</span>, </span>
-<span>    log_dir <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="st">"/logs"</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
+<span>  input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/dir1/script1.R"</span>, <span class="st">"path/to/dir2/script2.R"</span><span class="op">)</span>,</span>
+<span>  log_dir <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="st">"/logs"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>In this exampel the log of script1.R will be stored in
 <strong>path/to/dir1/logs</strong> and the log of script2.R will be
 stored in <strong>path/to/dir2/logs</strong>.</p>
