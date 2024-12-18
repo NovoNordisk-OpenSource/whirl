@@ -34,7 +34,10 @@ check_approved <- function(approved_pkg_folder,
         ) |>
         dplyr::select("Package", "Version", "Repository")
       session_pkgs |>
-        dplyr::left_join(src_url, by = c("package" = "Package", "loadedversion" = "Version")) |>
+        dplyr::left_join(
+          y = src_url,
+          by = c("package" = "Package", "loadedversion" = "Version")
+        ) |>
         dplyr::mutate(
           Approved = ifelse(is.na(.data[["Repository"]]), "No", "Yes"),
           "Approved Repository" = url
@@ -56,7 +59,10 @@ check_approved <- function(approved_pkg_folder,
         ) |>
         dplyr::select("Package", "Version", "Repository")
       session_pkgs |>
-        dplyr::left_join(src_file, by = c("package" = "Package", "loadedversion" = "Version")) |>
+        dplyr::left_join(
+          y = src_file,
+          by = c("package" = "Package", "loadedversion" = "Version")
+        ) |>
         dplyr::mutate(
           Approved = ifelse(is.na(.data[["Repository"]]), "No", "Yes"),
           "Approved Repository" = folder
@@ -69,17 +75,30 @@ check_approved <- function(approved_pkg_folder,
 
   if (is.null(approved_pkg_folder)) {
     approved_dset <- approved_dset_url |>
-      dplyr::select("package", "loadedversion", "date", "source", "Approved", "Approved Repository") |>
+      dplyr::select(
+        "package", "loadedversion", "date", "source", "Approved",
+        "Approved Repository"
+      ) |>
       dplyr::rename("Repository URL" = "Approved Repository") |>
       dplyr::arrange(.data[["Approved"]], .data[["package"]])
   } else if (is.null(approved_pkg_url) || length(approved_pkg_url) == 0) {
     approved_dset <- approved_dset_file |>
-      dplyr::select("package", "loadedversion", "date", "source", "Approved", "Approved Repository") |>
+      dplyr::select(
+        "package", "loadedversion", "date", "source", "Approved",
+        "Approved Repository"
+      ) |>
       dplyr::rename("Repository Folder" = "Approved Repository") |>
       dplyr::arrange(.data[["Approved"]], .data[["package"]])
   } else {
-    approved_dset <- dplyr::full_join(approved_dset_url, approved_dset_file, by = c("package", "loadedversion")) |>
-      dplyr::select("package", "loadedversion", "date.x", "source.x", "Approved.x", "Approved Repository.x", "Approved.y", "Approved Repository.y") |>
+    approved_dset <- dplyr::full_join(
+      x = approved_dset_url,
+      y = approved_dset_file,
+      by = c("package", "loadedversion")
+    ) |>
+      dplyr::select(
+        "package", "loadedversion", "date.x", "source.x", "Approved.x",
+        "Approved Repository.x", "Approved.y", "Approved Repository.y"
+      ) |>
       dplyr::rename(
         "date" = "date.x",
         "source" = "source.x",
@@ -88,7 +107,11 @@ check_approved <- function(approved_pkg_folder,
         "Approved in Repository URL" = "Approved.x",
         "Approved in Repository Folder" = "Approved.y"
       ) |>
-      dplyr::arrange(.data[["Approved in Repository URL"]], .data[["Approved in Repository Folder"]], .data[["package"]])
+      dplyr::arrange(
+        .data[["Approved in Repository URL"]],
+        .data[["Approved in Repository Folder"]],
+        .data[["package"]]
+      )
   }
 
   if (is.null(output_file)) {
@@ -103,18 +126,36 @@ check_approved <- function(approved_pkg_folder,
 create_approval_plot <- function(data) {
   row.names(data) <- NULL
 
-  data$grpvar <- ifelse(rowSums(as.matrix(data[, grepl("^Approved", colnames(data))]) == "No") == ncol(as.matrix(data[, grepl("^Approved", colnames(data))])), "No", "Yes")
+  data$grpvar <- ifelse(
+    rowSums(as.matrix(data[, grepl("^Approved", colnames(data))]) == "No") ==
+      ncol(as.matrix(data[, grepl("^Approved", colnames(data))])),
+    "No", "Yes"
+  )
 
   data |>
     dplyr::count(.data[["grpvar"]]) |>
     dplyr::mutate(
       pct = prop.table(.data[["n"]]),
       status = "grpvar",
-      lbl = paste0(.data[["grpvar"]], ": ", .data[["n"]], "/", sum(.data[["n"]]), " (", scale_to_percent(.data[["pct"]]), ")")
+      lbl = paste0(
+        .data[["grpvar"]], ": ",
+        .data[["n"]], "/",
+        sum(.data[["n"]]), " (",
+        scale_to_percent(.data[["pct"]]), ")"
+      )
     ) |>
-    ggplot2::ggplot(ggplot2::aes(x = .data[["pct"]], y = .data[["status"]], fill = .data[["grpvar"]], label = .data[["lbl"]])) +
+    ggplot2::ggplot(
+      mapping = ggplot2::aes(
+        x = .data[["pct"]],
+        y = .data[["status"]],
+        fill = .data[["grpvar"]],
+        label = .data[["lbl"]]
+      )
+    ) +
     ggplot2::geom_bar(position = "fill", stat = "identity") +
-    ggplot2::geom_text(position = ggplot2::position_stack(vjust = 0.5, reverse = FALSE)) +
+    ggplot2::geom_text(
+      position = ggplot2::position_stack(vjust = 0.5, reverse = FALSE)
+    ) +
     ggplot2::theme_void() +
     ggplot2::theme(
       legend.position = "none",

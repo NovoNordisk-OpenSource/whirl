@@ -1,6 +1,7 @@
 #' Get execution status
 #'
-#' Retrieves errors and warnings from the generated markdown file, and derives the execution status.
+#' Retrieves errors and warnings from the generated markdown file,
+#' and derives the execution status.
 #'
 #' @noRd
 
@@ -18,7 +19,9 @@ get_status <- function(md) {
   # Errors
 
   errors <- x |>
-    stringr::str_subset(pattern = "^ *\\{\\.cell-output \\.cell-output-error\\}") |>
+    stringr::str_subset(
+      pattern = "^ *\\{\\.cell-output \\.cell-output-error\\}"
+    ) |>
     stringr::str_remove_all("\\{[^\\}]*\\}") |>
     stringr::str_squish()
 
@@ -35,7 +38,9 @@ get_status <- function(md) {
   # Warnings
 
   warnings <- x |>
-    stringr::str_subset(pattern = "^ *\\{\\.cell-output \\.cell-output-stderr\\}") |>
+    stringr::str_subset(
+      pattern = "^ *\\{\\.cell-output \\.cell-output-stderr\\}"
+    ) |>
     stringr::str_remove_all("\\{[^\\}]*\\}") |>
     stringr::str_squish() |>
     stringr::str_subset(pattern = "^(W|w)arning")

@@ -7,11 +7,11 @@
 
 read_glob <- function(input) {
   files_ <- lapply(input, function(x) {
-    #If the file exist then return the path
+    # If the file exist then return the path
     if (file.exists(x)) {
       return(x)
     } else {
-      #If the file does not exist then check if it is a glob
+      # If the file does not exist then check if it is a glob
       files <- Sys.glob(x)
       if (length(files) == 0) {
         cli::cli_alert_warning("No files or folders for this path {x}")
@@ -23,5 +23,3 @@ read_glob <- function(input) {
 
   return(files_)
 }
-
-

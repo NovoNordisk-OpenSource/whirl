@@ -34,7 +34,7 @@ format:
 #| echo: false
 
 status <- params$tmpdir |>
-  file.path("doc.md") |> 
+  file.path("doc.md") |>
   whirl:::get_status()
 
 status_txt <- status[c("error", "warning")]
@@ -59,8 +59,8 @@ whirl:::quarto_callout(
 #| echo: false
 #| eval: !expr file.exists(file.path(params$tmpdir, "renv_status.rds"))
 
-params$tmpdir |> 
-  file.path("renv_status.rds") |> 
+params$tmpdir |>
+  file.path("renv_status.rds") |>
   readRDS()
 ```
 
@@ -71,9 +71,9 @@ log_info <- whirl:::read_from_log()
 use_log_info <- nrow(log_info) > 0
 
 if (use_log_info) {
-    log_info <- log_info |> 
-      dplyr::arrange(time) |> 
-      whirl:::split_log()
+  log_info <- log_info |>
+    dplyr::arrange(time) |>
+    whirl:::split_log()
 }
 ```
 
@@ -135,9 +135,9 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 
-info <- params$tmpdir |> 
-    file.path("session_info.rds") |> 
-    readRDS()
+info <- params$tmpdir |>
+  file.path("session_info.rds") |>
+  readRDS()
 ```
 
 ```{r}
@@ -164,7 +164,7 @@ info$python_packages
 #| fig.height: 0.5
 cat("\n## R Packages\n")
 
-if (!is.null(params$check_approved_folder_pkgs) |
+if (!is.null(params$check_approved_folder_pkgs) ||
   !is.null(params$check_approved_url_pkgs)) {
   whirl:::create_approval_plot(info$packages |> data.frame())
 }

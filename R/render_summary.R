@@ -1,12 +1,13 @@
 #' Render dataframe into a summary.html file
 #'
-#' @param input The input data.frame that should be rendered into a summary.html file
-#' @param summary_file A character string specifying the path where the summary HTML file should be saved. Defaults to `"summary.html"`.
+#' @param input The input data.frame that should be rendered into a summary.html
+#' file
+#' @param summary_file A character string specifying the path where the summary
+#' HTML file should be saved. Defaults to `"summary.html"`.
 #'
 #' @return Takes a dataframe as input and returns a log in html format
 #' @noRd
 render_summary <- function(input, summary_file = "summary.html") {
-
   summary_qmd <- withr::local_tempfile(
     lines = readLines(system.file("documents/summary.qmd", package = "whirl")),
     fileext = ".qmd"
@@ -28,7 +29,7 @@ render_summary <- function(input, summary_file = "summary.html") {
   )
 
   # Create requested outputs
-  file_copy <- tryCatch(
+  tryCatch(
     file.copy(
       from = summary_log_html,
       to = summary_file,
@@ -57,7 +58,10 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
       file.path()
   }
 
-  hold$Hyperlink <- paste0(sprintf('<a href="%s" target="_blank">%s</a>', formatted, "HTML Log"))
+  hold$Hyperlink <- paste0(sprintf(
+    '<a href="%s" target="_blank">%s</a>',
+    formatted, "HTML Log"
+  ))
 
   knitr::kable(hold, format = "html", escape = FALSE) |>
     kableExtra::column_spec(1:ncols, background = ifelse(
@@ -67,10 +71,13 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
         hold[["Status"]] == "warning",
         "#fffaea",
         ifelse(hold[["Status"]] == "success", "#ebf5f1",
-               ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
+          ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
         )
       )
     )) |>
-    kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE) |>
+    kableExtra::kable_styling(
+      bootstrap_options = "striped",
+      full_width = TRUE
+    ) |>
     knitr::knit_print()
 }

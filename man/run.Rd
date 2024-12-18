@@ -31,17 +31,24 @@ then all steps listed in the config file will be executed.}
 \item{summary_file}{A character string specifying the file path where the
 summary log will be stored.}
 
-\item{n_workers}{Number of simultanous workers used in the run function. A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
+\item{n_workers}{Number of simultanous workers used in the run function.
+A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
 
 \item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
 
-\item{verbosity_level}{How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
+\item{verbosity_level}{How chatty should the log be? Possibilities are
+\code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
 
-\item{track_files}{Should files read and written be tracked? Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
+\item{track_files}{Should files read and written be tracked?
+Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
 
-\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
+\item{out_formats}{Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and
+markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
 
-\item{log_dir}{The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
+\item{log_dir}{The output directory of the log files. Default is the folder of the
+excuted script. log_dir can be a path as a character or it can be a function
+that takes the script path as input and returns the log directory.
+For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
 }
 \value{
 A tibble containing the execution results for all the scripts.
@@ -56,9 +63,11 @@ e.g. the verbosity of the logs. See \link{options} on how to configure these.
 \examples{
 # Start by copying the following three example scripts:
 file.copy(
-  from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+  from = system.file("examples", c("success.R", "warning.R", "error.R"),
+    package = "whirl"
+  ),
   to = "."
-  )
+)
 
 # Run a single script
 run("success.R")
@@ -71,20 +80,23 @@ run(
   list(
     c("success.R", "warning.R"),
     "error.R"
-    ),
-   n_workers = 2)
+  ),
+  n_workers = 2
+)
 
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
-# run(). This will require that the sub-folder exist and the code is therefore
-# not executed
+# run(). This will require that the sub-folder exist and the code is
+# therefore not executed
 
 # Specifying the path using a manually defined character
 run("success.R", log_dir = getwd())
 
 # Specifying the path with a generic function that can handle the scripts
 # individually.
-run("success.R", log_dir = function(x) {paste0(dirname(x), "/logs")})
+run("success.R", log_dir = function(x) {
+  paste0(dirname(x), "/logs")
+})
 \dontshow{\}) # examplesIf}
 }

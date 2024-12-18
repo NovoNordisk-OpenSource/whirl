@@ -21,13 +21,15 @@ options::opt(x, default, env = "whirl")
 
 \describe{
 \item{out_formats}{\describe{
-Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and markdown formats:\code{gfm}, \code{commonmark}, and \code{markua}.\item{default: }{\preformatted{"html"}}
+Which log format(s) to produce. Possiblities are \code{html}, \code{json}, and
+markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}.\item{default: }{\preformatted{"html"}}
 \item{option: }{whirl.out_formats}
 \item{envvar: }{R_WHIRL_OUT_FORMATS (evaluated if possible, raw string otherwise)}
 }}
 
 \item{track_files}{\describe{
-Should files read and written be tracked? Currently only supported on Linux.\item{default: }{\preformatted{FALSE}}
+Should files read and written be tracked?
+Currently only supported on Linux.\item{default: }{\preformatted{FALSE}}
 \item{option: }{whirl.track_files}
 \item{envvar: }{R_WHIRL_TRACK_FILES (TRUE if one of 'TRUE', '1', FALSE otherwise)}
 }}
@@ -46,13 +48,15 @@ List of file naming patterns not be tracked when track_files = TRUE\item{default
 }}
 
 \item{track_files_keep}{\describe{
-List of file naming patterns alway to be tracked when track_files = TRUE\item{default: }{\preformatted{paste0("^", getwd())}}
+List of file naming patterns alway to be tracked when
+track_files = TRUE\item{default: }{\preformatted{paste0("^", getwd())}}
 \item{option: }{whirl.track_files_keep}
 \item{envvar: }{R_WHIRL_TRACK_FILES_KEEP (as character vector, split on ';' delimiter)}
 }}
 
 \item{verbosity_level}{\describe{
-How chatty should the log be? Possibilities are \code{quiet}, \code{minimal} and \code{verbose}.\item{default: }{\preformatted{"verbose"}}
+How chatty should the log be? Possibilities are
+\code{quiet}, \code{minimal} and \code{verbose}.\item{default: }{\preformatted{"verbose"}}
 \item{option: }{whirl.verbosity_level}
 \item{envvar: }{R_WHIRL_VERBOSITY_LEVEL (evaluated if possible, raw string otherwise)}
 }}
@@ -70,19 +74,27 @@ Approved URL library packages\item{default: }{\preformatted{NULL}}
 }}
 
 \item{n_workers}{\describe{
-Number of simultanous workers used in the run function. A maximum of 128 workers is allowed.\item{default: }{\preformatted{1}}
+Number of simultanous workers used in the run function.
+A maximum of 128 workers is allowed.\item{default: }{\preformatted{1}}
 \item{option: }{whirl.n_workers}
 \item{envvar: }{R_WHIRL_N_WORKERS (evaluated if possible, raw string otherwise)}
 }}
 
 \item{log_dir}{\describe{
-The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of \code{run()} or \code{vignette('whirl')}.\item{default: }{\preformatted{dirname}}
+The output directory of the log files. Default is the folder of the
+excuted script. log_dir can be a path as a character or it can be a function
+that takes the script path as input and returns the log directory.
+For more information see the examples of \code{run()} or \code{vignette('whirl')}.\item{default: }{\preformatted{dirname}}
 \item{option: }{whirl.log_dir}
 \item{envvar: }{R_WHIRL_LOG_DIR (evaluated if possible, raw string otherwise)}
 }}
 
 \item{execute_dir}{\describe{
-The working directory of the process executing each script. Defeault us to execute R files from the working directory when calling \code{run()} and all other functions from the directory of the script. To change provide a character path (used for all scripts) or a function that takes the script as input and returns the execution directory.\item{default: }{\preformatted{NULL}}
+The working directory of the process executing each script.
+Defeault us to execute R files from the working directory when calling \code{run()}
+and all other functions from the directory of the script. To change provide
+a character path (used for all scripts) or a function that takes the script
+as input and returns the execution directory.\item{default: }{\preformatted{NULL}}
 \item{option: }{whirl.execute_dir}
 \item{envvar: }{R_WHIRL_EXECUTE_DIR (evaluated if possible, raw string otherwise)}
 }}

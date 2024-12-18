@@ -8,7 +8,7 @@
 #' @noRd
 util_queue_summary <- function(queue_table) {
   if (!"result" %in% names(queue_table) ||
-        !is.list(queue_table$result)) {
+    !is.list(queue_table$result)) {
     stop("queue_table must contain a list named 'result'")
   }
 
@@ -39,5 +39,4 @@ util_queue_summary <- function(queue_table) {
   ) |>
     tidyr::unnest(cols = c("Information"), keep_empty = TRUE) |>
     tidyr::replace_na(list(Information = ""))
-
 }
