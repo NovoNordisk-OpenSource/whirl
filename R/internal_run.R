@@ -9,47 +9,52 @@
 #'   of the steps found in the config file. If kept as NULL (default) then all
 #'   steps listed in the config file will be executed.
 #' @param queue The whirl_r_queue that should execute the scripts
-#' @param level Depth of the recursive config calls. The initial call will have 1
+#' @param level Depth of the recursive config calls.
+#' The initial call will have 1.
 #' @inheritParams options_params
 #' @return A tibble containing the execution results for all the scripts.
 #' @noRd
-internal_run <- function(input, steps, queue, level,
-                         verbosity_level = options::opt("verbosity_level", env = "whirl")) {
-
+internal_run <- function(
+    input,
+    steps,
+    queue,
+    level,
+    verbosity_level = options::opt("verbosity_level", env = "whirl")) {
   # Enrich the input with "name" and "path" elements
   enriched <- enrich_input(input, steps, verbosity_level)
 
   # Loop over the elements
   for (i in seq_along(enriched)) {
-
     files <- enriched[[i]]$path
     name <- enriched[[i]]$name
 
     # Messages
     cli_level <- get(paste0("cli_h", min(level, 3)), envir = asNamespace("cli"))
     zephyr::msg(name,
-                msg_fun = cli_level,
-                levels_to_write = "verbose",
-                verbosity_level = verbosity_level)
+      msg_fun = cli_level,
+      levels_to_write = "verbose",
+      verbosity_level = verbosity_level
+    )
 
     # If the step points to a config file then re-initiate internal_run()
     if (any(grepl("yaml|yml", get_file_ext(files)))) {
-      internal_run(input = files,
-                   steps = steps,
-                   queue = queue,
-                   level = level + 1,
-                   verbosity_level = verbosity_level)
+      internal_run(
+        input = files,
+        steps = steps,
+        queue = queue,
+        level = level + 1,
+        verbosity_level = verbosity_level
+      )
     } else {
       # Execute the scripts
       queue$run(files)
       zephyr::msg("\n",
-                  msg_fun = cli::cli_verbatim,
-                  levels_to_write = "verbose",
-                  verbosity_level = verbosity_level)
-
+        msg_fun = cli::cli_verbatim,
+        levels_to_write = "verbose",
+        verbosity_level = verbosity_level
+      )
     }
   }
 
   invisible(queue)
 }
-

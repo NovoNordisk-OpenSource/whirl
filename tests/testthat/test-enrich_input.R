@@ -1,5 +1,4 @@
 test_that("Enrich input works as expected", {
-
   # Find all R programs
 
   enriched <- test_script("_whirl_r_programs.yaml") |>
@@ -21,7 +20,9 @@ test_that("Enrich input works as expected", {
     expect_type("list") |>
     expect_length(3) |>
     vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
-    expect_equal(c("Named step", "Step 2: Unnamed chunk", "Step 3: Unnamed chunk"))
+    expect_equal(
+      c("Named step", "Step 2: Unnamed chunk", "Step 3: Unnamed chunk")
+    )
 
   # File input
 
@@ -39,8 +40,8 @@ test_that("Enrich input works as expected", {
       c(
         name = "Step 1: Unnamed chunk",
         paths = test_script("success.R")
-        )
       )
+    )
 
   # Pruning a config file
 
@@ -72,4 +73,4 @@ test_that("Enrich input works as expected", {
     expect_length(1) |>
     vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
     expect_match(regexp = format(Sys.Date()))
- })
+})

@@ -3,14 +3,15 @@
 #' Useful for e.g. read and write operations on databases etc.
 #' that are not automatically captured.
 #'
-#' The default environment variable `WHIRL_LOG_MSG` is set in the session used to log scripts, and input
-#' is automatically captured in the resulting log.
+#' The default environment variable `WHIRL_LOG_MSG` is set in the session used
+#' to log scripts, and input is automatically captured in the resulting log.
 #'
-#' If run outside of whirl, meaning when the above environment variable is unset, the operations
-#' are streamed to `stdout()`. By default the console.
+#' If run outside of whirl, meaning when the above environment variable is
+#' unset, the operations are streamed to `stdout()`. By default the console.
 #'
 #' @name custom_logging
-#' @param file [character()] description of the file that was read, written or deleted.
+#' @param file [character()] description of the file that was read, written or
+#' deleted.
 #' @param log [character()] path to the log file.
 NULL
 
@@ -37,17 +38,15 @@ write_to_log <- function(
     file,
     type = c("read", "write", "delete"),
     log = Sys.getenv("WHIRL_LOG_MSG")) {
-
   type <- rlang::arg_match(type)
   checkmate::assert_string(type)
   checkmate::assert_string(file)
   checkmate::assert_string(log)
-  time <- Sys.time()
 
   x <- log_df(
     type = type,
     file = file
-    )
+  )
 
   if (log == "") {
     jsonlite::stream_out(x = x, verbose = FALSE)
@@ -60,7 +59,6 @@ write_to_log <- function(
 
 #' @noRd
 read_from_log <- function(log = Sys.getenv("WHIRL_LOG_MSG")) {
-
   if (log == "" || !file.exists(log)) {
     return(log_df())
   }
@@ -83,7 +81,6 @@ log_df <- function(type = character(), file = character()) {
 
 #' @noRd
 split_log <- function(log_df, types = c("read", "write", "delete")) {
-
   class(log_df) <- c("whirl_log_info", class(log_df))
 
   # Split in a tibble for each type of output
@@ -108,7 +105,7 @@ split_log <- function(log_df, types = c("read", "write", "delete")) {
 }
 
 #' @noRd
-knit_print.whirl_log_info <- function(x, ...) {
+knit_print.whirl_log_info <- function(x, ...) { # nolint
   x |>
     knitr::kable(
       row.names = FALSE

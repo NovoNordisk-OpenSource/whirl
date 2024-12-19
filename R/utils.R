@@ -5,7 +5,11 @@ get_file_ext <- function(file_paths) {
     FUN = function(file_path) {
       file_name <- basename(file_path)
       file_parts <- strsplit(file_name, "\\.")[[1]]
-      file_extension <- ifelse(length(file_parts) == 1, "", utils::tail(file_parts, 1))
+      file_extension <- ifelse(
+        length(file_parts) == 1,
+        "",
+        utils::tail(file_parts, 1)
+      )
       return(file_extension)
     },
     FUN.VALUE = character(1),
@@ -16,7 +20,10 @@ get_file_ext <- function(file_paths) {
 # Function to scale a numeric vector to percentage
 scale_to_percent <- function(x, digits = 2) {
   percent_values <- x * 100
-  formatted_percent_values <- sprintf(paste0("%.", digits, "f%%"), percent_values)
+  formatted_percent_values <- sprintf(
+    fmt = paste0("%.", digits, "f%%"),
+    percent_values
+  )
   return(formatted_percent_values)
 }
 
