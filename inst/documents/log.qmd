@@ -165,7 +165,7 @@ info$python_packages
 cat("\n## R Packages\n")
 
 if (!is.null(params$check_approved_folder_pkgs) ||
-  !is.null(params$check_approved_url_pkgs)) {
+      !is.null(params$check_approved_url_pkgs)) {
   whirl:::create_approval_plot(info$packages |> data.frame())
 }
 

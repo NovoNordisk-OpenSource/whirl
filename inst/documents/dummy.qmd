@@ -79,7 +79,7 @@ saveRDS(
 )
 
 if (is.character(params$renv) && params$renv == "yes" ||
-  is.logical(params$renv) && params$renv) {
+      is.logical(params$renv) && params$renv) {
   saveRDS(
     object = whirl:::renv_status(),
     file = file.path(params$tmpdir, "renv_status.rds")

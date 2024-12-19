@@ -11,7 +11,7 @@ session_info <- function(approved_folder_pkgs = NULL,
   info <- sessioninfo::session_info()
 
   if (!is.null(approved_folder_pkgs) ||
-    !is.null(approved_url_pkgs)) {
+        !is.null(approved_url_pkgs)) {
     info$packages <- check_approved(
       approved_pkg_folder = approved_folder_pkgs,
       approved_pkg_url = approved_url_pkgs,
@@ -81,7 +81,6 @@ session_info <- function(approved_folder_pkgs = NULL,
 #' Get Python package info from json file
 #'
 #' @noRd
-
 python_package_info <- function(json) {
   json <- jsonlite::fromJSON(json)
 
@@ -105,15 +104,13 @@ python_package_info <- function(json) {
 }
 
 #' @noRd
-
-knit_print.whirl_session_info <- function(x, ...) {
+knit_print.whirl_session_info <- function(x, ...) { # nolint
   x |>
     lapply(knitr::knit_print)
 }
 
 #' @noRd
-
-knit_print.whirl_platform_info <- function(x, ...) {
+knit_print.whirl_platform_info <- function(x, ...) { # nolint
   data.frame(
     Setting = names(x),
     Value = x |>
@@ -130,8 +127,7 @@ knit_print.whirl_platform_info <- function(x, ...) {
 }
 
 #' @noRd
-
-knit_print.whirl_packages_info <- function(x, ...) {
+knit_print.whirl_packages_info <- function(x, ...) { # nolint
   if (!is.null(x$package)) {
     x <- data.frame(
       Package = x$package,
@@ -152,8 +148,7 @@ knit_print.whirl_packages_info <- function(x, ...) {
 }
 
 #' @noRd
-
-knit_print.whirl_approved_pkgs <- function(x, ...) {
+knit_print.whirl_approved_pkgs <- function(x, ...) { # nolint
   hold <- x |>
     data.frame(
       check.names = FALSE
@@ -216,10 +211,7 @@ insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
 }
 
 #' @noRd
-
-
-
-knit_print.whirl_environment_info <- function(x, ...) {
+knit_print.whirl_environment_info <- function(x, ...) { # nolint
   dropped_info <-
     c(
       "BASH_FUNC",
@@ -262,7 +254,7 @@ knit_print.whirl_environment_info <- function(x, ...) {
 }
 
 #' @noRd
-knit_print.whirl_options_info <- function(x, ...) {
+knit_print.whirl_options_info <- function(x, ...) { # nolint
   data.frame(t(sapply(unlist(x), c))) |>
     tidyr::pivot_longer(dplyr::everything(),
       values_to = "Value",

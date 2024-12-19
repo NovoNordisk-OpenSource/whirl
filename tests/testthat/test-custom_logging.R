@@ -6,12 +6,12 @@ test_that("stream to console outside whirl context", {
 
   log_write("test_write") |>
     expect_output(
-      regexp = "\\{\"time\":\".*\",\"type\":\"write\",\"file\":\"test_write\"\\}"
+      regexp = "\\{\"time\":\".*\",\"type\":\"write\",\"file\":\"test_write\"\\}" # nolint
     )
 
   log_delete("test_delete") |>
     expect_output(
-      regexp = "\\{\"time\":\".*\",\"type\":\"delete\",\"file\":\"test_delete\"\\}"
+      regexp = "\\{\"time\":\".*\",\"type\":\"delete\",\"file\":\"test_delete\"\\}" # nolint
     )
 })
 

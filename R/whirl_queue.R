@@ -176,7 +176,7 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
   if (is.character(private$log_dir)) {
     # Check if the directory exists
     if (!file.exists(private$log_dir)) {
-      cli::cli_abort("Logs cannot be saved because {.val {private$log_dir}} does not exist")
+      cli::cli_abort("Logs cannot be saved because {.val {private$log_dir}} does not exist") # nolint
     }
     folder <- file.path(private$log_dir)
   } else {
@@ -185,7 +185,7 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
     unique_folders <- unique(folder)
     if (any(!file.exists(unique_folders))) {
       missing <- unique_folders[!file.exists(unique_folders)] # nolint
-      cli::cli_abort("Logs cannot be saved because {.val {missing}} does not exist")
+      cli::cli_abort("Logs cannot be saved because {.val {missing}} does not exist") # nolint
     }
   }
 
@@ -287,12 +287,13 @@ wq_next_step <- function(self, private, wid) {
     },
     # Step 3: Finish log and create outputs
     "3" = {
-      purrr::pluck(private$.queue, "result", id_script) <- session$
+      purrr::pluck(private$.queue, "result", id_script) <-
+        session$
         log_finish()$
         create_outputs(
-        out_dir = purrr::pluck(private$.queue, "log_dir", id_script),
-        format = private$out_formats
-      )
+          out_dir = purrr::pluck(private$.queue, "log_dir", id_script),
+          format = private$out_formats
+        )
 
       purrr::pluck(private$.queue, "status", id_script) <-
         purrr::pluck(private$.queue, "result", id_script, "status", "status")
@@ -312,5 +313,5 @@ wq_next_step <- function(self, private, wid) {
 wq_run <- function(scripts, self) {
   self$
     push(scripts)$
-    wait()
+    wait() # nolint
 }

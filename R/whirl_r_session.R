@@ -111,7 +111,7 @@ whirl_r_session <- R6::R6Class(
     #' @param format [character] Output formats to create
     #' @return [invisible],[list] of logging information
     create_outputs = \(out_dir,
-      format = options::opt("out_formats", env = "whirl")) {
+                       format = options::opt("out_formats", env = "whirl")) {
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
@@ -259,7 +259,7 @@ wrs_log_script <- function(script, self, private, super) {
   }
 
   if (!file.exists(quarto_execute_dir)) {
-    cli::cli_abort("Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist")
+    cli::cli_abort("Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist") # nolint
   }
 
   # Execute the script
