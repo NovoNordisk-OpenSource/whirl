@@ -1,11 +1,11 @@
-#' Render dataframe into a summary.html file
+#' Render data.frame into a summary.html file
 #'
 #' @param input The input data.frame that should be rendered into a summary.html
 #' file
 #' @param summary_file A character string specifying the path where the summary
 #' HTML file should be saved. Defaults to `"summary.html"`.
 #'
-#' @return Takes a dataframe as input and returns a log in html format
+#' @return Takes a data.frame as input and returns a log in html format
 #' @noRd
 render_summary <- function(input, summary_file = "summary.html") {
   summary_qmd <- withr::local_tempfile(
