@@ -16,5 +16,6 @@ Utility function to setup execution with whirl in your project:
 \item Updates \code{.gitignore} to not include log files
 }
 
-See \code{vignette("whirl")} for how to specify paths inside the configuration file.
+See \code{vignette("whirl")} for how to specify paths inside the
+configuration file.
 }

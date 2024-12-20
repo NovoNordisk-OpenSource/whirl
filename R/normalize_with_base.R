@@ -1,13 +1,18 @@
 #' Normalize a Path with Respect to a Base Directory
 #'
-#' This function normalizes a given path with respect to a specified base directory.
-#' If the path is relative, it combines the base directory and the path, then normalizes the resulting path.
+#' This function normalizes a given path with respect to a specified base
+#' directory.
+#' If the path is relative, it combines the base directory and the path, then
+#' normalizes the resulting path.
 #' If the path is absolute or starts with `~`, it normalizes the path directly.
-#' If no base directory is specified, the current working directory is used as the base.
+#' If no base directory is specified, the current working directory is used as
+#' the base.
 #'
-#' @param path A character string representing the path to be normalized. Can be relative, absolute, or start with `~`.
-#' @param base A character string representing the base directory with respect to which the path should be normalized.
-#' The default is the current working directory (".").
+#' @param path A character string representing the path to be normalized.
+#' Can be relative, absolute, or start with `~`.
+#' @param base A character string representing the base directory with respect
+#' to which the path should be normalized. The default is the current working
+#' directory (".").
 #' @return A character string representing the normalized path.
 #' @examples
 #' \dontrun{
