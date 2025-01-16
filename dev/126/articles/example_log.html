@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.39">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -3338,7 +3338,7 @@ border: 0;
 <div>
   <div class="quarto-title-meta-heading">Execution end time</div>
   <div class="quarto-title-meta-contents">
-    <p class="date">2024-12-20T14:58:53 Coordinated Universal Time</p>
+    <p class="date">2025-01-16T15:30:06 Coordinated Universal Time</p>
   </div>
 </div>
 
@@ -3346,7 +3346,7 @@ border: 0;
 <div>
   <div class="quarto-title-meta-heading">Path to script</div>
   <div class="quarto-title-meta-contents">
-    <p class="abstract">/tmp/Rtmp9Il4V9/file21fc47bf373c/example.R</p>
+    <p class="abstract">/tmp/RtmprQC0B1/file231c4dbf8cbe/example.R</p>
   </div>
 </div>
 </div></header>
@@ -3355,10 +3355,6 @@ border: 0;
 <section id="summary" class="level1">
 <h1>Summary</h1>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Error in get(paste0(generic, &quot;.&quot;, class), envir = get_method_env()) : 
-  object &#39;type_sum.accel&#39; not found</code></pre>
-</div>
 <div class="cell-output-display">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
@@ -3391,16 +3387,16 @@ success
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">2024-12-20 14:58:44</td>
+<td style="text-align: left;">2025-01-16 15:29:58</td>
 <td style="text-align: left;">/dev/urandom</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">2024-12-20 14:58:45</td>
+<td style="text-align: left;">2025-01-16 15:29:59</td>
 <td style="text-align: left;">/home/runner/.Rprofile</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">2024-12-20 14:58:46</td>
-<td style="text-align: left;">/tmp/Rtmp9Il4V9/file21fc47bf373c/example.R</td>
+<td style="text-align: left;">2025-01-16 15:29:59</td>
+<td style="text-align: left;">/tmp/RtmprQC0B1/file231c4dbf8cbe/example.R</td>
 </tr>
 </tbody>
 </table>
@@ -3420,12 +3416,12 @@ success
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">2024-12-20 14:58:44</td>
+<td style="text-align: left;">2025-01-16 15:29:58</td>
 <td style="text-align: left;">/dev/null</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">2024-12-20 14:58:47</td>
-<td style="text-align: left;">/tmp/Rtmp9Il4V9/file21fc47bf373c/plot1.png</td>
+<td style="text-align: left;">2025-01-16 15:30:01</td>
+<td style="text-align: left;">/tmp/RtmprQC0B1/file231c4dbf8cbe/plot1.png</td>
 </tr>
 </tbody>
 </table>
@@ -3458,11 +3454,7 @@ success
 <div class="cell-output-display">
 <p>Setup</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Error in get(paste0(generic, &quot;.&quot;, class), envir = get_method_env()) : 
-  object &#39;type_sum.accel&#39; not found</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Attaching package: &#39;dplyr&#39;</code></pre>
 </div>
@@ -3476,14 +3468,14 @@ success
 
     intersect, setdiff, setequal, union</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Prepare data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> mtcars <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">&quot;car&quot;</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> mtcars <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">&quot;car&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[38;5;246m# A tibble: 32 × 12[39m
    car           mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
@@ -3503,8 +3495,8 @@ success
 </div>
 <p>Create and save plot</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> x) <span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp, <span class="at">size =</span> wt, <span class="at">colour =</span> <span class="fu">as.factor</span>(am)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> x) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp, <span class="at">size =</span> wt, <span class="at">colour =</span> <span class="fu">as.factor</span>(am)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3512,7 +3504,7 @@ success
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;plot1.png&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;plot1.png&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>[1m[22mSaving 7 x 5 in image</code></pre>
 </div>
@@ -3566,7 +3558,7 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">date</td>
-<td style="text-align: left;">2024-12-20</td>
+<td style="text-align: left;">2025-01-16</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">pandoc</td>
@@ -3574,7 +3566,7 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">quarto</td>
-<td style="text-align: left;">1.6.39 @ /opt/quarto/bin/quarto</td>
+<td style="text-align: left;">1.6.40 @ /opt/quarto/bin/quarto</td>
 </tr>
 </tbody>
 </table>
@@ -3625,8 +3617,8 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">evaluate</td>
-<td style="text-align: left;">1.0.1</td>
-<td style="text-align: left;">2024-10-10</td>
+<td style="text-align: left;">1.0.3</td>
+<td style="text-align: left;">2025-01-10</td>
 <td style="text-align: left;">RSPM</td>
 </tr>
 <tr class="odd">
@@ -3681,7 +3673,7 @@ success
 <td style="text-align: left;">knitr</td>
 <td style="text-align: left;">1.49</td>
 <td style="text-align: left;">2024-11-08</td>
-<td style="text-align: left;">any (@1.49)</td>
+<td style="text-align: left;">RSPM</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">labeling</td>
@@ -3721,8 +3713,8 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">pillar</td>
-<td style="text-align: left;">1.10.0</td>
-<td style="text-align: left;">2024-12-17</td>
+<td style="text-align: left;">1.10.1</td>
+<td style="text-align: left;">2025-01-07</td>
 <td style="text-align: left;">RSPM</td>
 </tr>
 <tr class="odd">
@@ -3739,8 +3731,8 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">processx</td>
-<td style="text-align: left;">3.8.4</td>
-<td style="text-align: left;">2024-03-16</td>
+<td style="text-align: left;">3.8.5</td>
+<td style="text-align: left;">2025-01-08</td>
 <td style="text-align: left;">RSPM</td>
 </tr>
 <tr class="even">
@@ -3763,8 +3755,8 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Rcpp</td>
-<td style="text-align: left;">1.0.13-1</td>
-<td style="text-align: left;">2024-11-02</td>
+<td style="text-align: left;">1.0.14</td>
+<td style="text-align: left;">2025-01-12</td>
 <td style="text-align: left;">RSPM</td>
 </tr>
 <tr class="even">
@@ -3836,7 +3828,7 @@ success
 <tr class="odd">
 <td style="text-align: left;">whirl</td>
 <td style="text-align: left;">0.1.7.9000</td>
-<td style="text-align: left;">2024-12-20</td>
+<td style="text-align: left;">2025-01-16</td>
 <td style="text-align: left;">local</td>
 </tr>
 <tr class="even">
@@ -3847,8 +3839,8 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">xfun</td>
-<td style="text-align: left;">0.49</td>
-<td style="text-align: left;">2024-10-31</td>
+<td style="text-align: left;">0.50</td>
+<td style="text-align: left;">2025-01-07</td>
 <td style="text-align: left;">RSPM</td>
 </tr>
 <tr class="even">
@@ -4042,7 +4034,7 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_ENV</td>
-<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/set_env_aeca10bb-e85e-472a-9f7d-a088cdfa462&lt;br&gt;2</td>
+<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/set_env_60d1afd1-63f7-46d8-989a-8da36f3ecb6&lt;br&gt;9</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GITHUB_EVENT_NAME</td>
@@ -4066,11 +4058,11 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_OUTPUT</td>
-<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/set_output_aeca10bb-e85e-472a-9f7d-a088cdfa&lt;br&gt;4622</td>
+<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/set_output_60d1afd1-63f7-46d8-989a-8da36f3e&lt;br&gt;cb69</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GITHUB_PATH</td>
-<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/add_path_aeca10bb-e85e-472a-9f7d-a088cdfa46&lt;br&gt;22</td>
+<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/add_path_60d1afd1-63f7-46d8-989a-8da36f3ecb&lt;br&gt;69</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_REF</td>
@@ -4114,11 +4106,11 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_RUN_ID</td>
-<td style="text-align: left;">12433560684</td>
+<td style="text-align: left;">12812095367</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GITHUB_RUN_NUMBER</td>
-<td style="text-align: left;">136</td>
+<td style="text-align: left;">138</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_SERVER_URL</td>
@@ -4126,15 +4118,15 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">GITHUB_SHA</td>
-<td style="text-align: left;">b0880e3ebd0ae5c82b40072b673ba3218ba12576</td>
+<td style="text-align: left;">a67fd6be520e0db63919ef8c4ed45174f1282e6b</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_STATE</td>
-<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/save_state_aeca10bb-e85e-472a-9f7d-a088cdfa&lt;br&gt;4622</td>
+<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/save_state_60d1afd1-63f7-46d8-989a-8da36f3e&lt;br&gt;cb69</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GITHUB_STEP_SUMMARY</td>
-<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/step_summary_aeca10bb-e85e-472a-9f7d-a088cd&lt;br&gt;fa4622</td>
+<td style="text-align: left;">/home/runner/work/_temp/_runner_file_command&lt;br&gt;s/step_summary_60d1afd1-63f7-46d8-989a-8da36f&lt;br&gt;3ecb69</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_TRIGGERING_ACTOR</td>
@@ -4150,7 +4142,7 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">GITHUB_WORKFLOW_SHA</td>
-<td style="text-align: left;">b0880e3ebd0ae5c82b40072b673ba3218ba12576</td>
+<td style="text-align: left;">a67fd6be520e0db63919ef8c4ed45174f1282e6b</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GITHUB_WORKSPACE</td>
@@ -4170,7 +4162,7 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GRADLE_HOME</td>
-<td style="text-align: left;">/usr/share/gradle-8.11.1</td>
+<td style="text-align: left;">/usr/share/gradle-8.12</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HOME</td>
@@ -4190,7 +4182,7 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">ImageVersion</td>
-<td style="text-align: left;">20241215.1.0</td>
+<td style="text-align: left;">20250105.1.0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">IN_PKGDOWN</td>
@@ -4198,7 +4190,7 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">INVOCATION_ID</td>
-<td style="text-align: left;">d06006d7e3884ff48ac0846b8ec13a61</td>
+<td style="text-align: left;">b976a9fb838845afb53baf88b919513f</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">JAVA_HOME</td>
@@ -4222,7 +4214,7 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">JOURNAL_STREAM</td>
-<td style="text-align: left;">8:7027</td>
+<td style="text-align: left;">8:5941</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LANG</td>
@@ -4289,20 +4281,20 @@ success
 <td style="text-align: left;">GitHub-Actions-ubuntu24</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">PROCESSX_PS5EK69GWX7H_1734706722</td>
+<td style="text-align: left;">PROCESSX_PS1e2f55ca42d9_1737041395</td>
 <td style="text-align: left;">YES</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">PROCESSX_PSP8IJM8ZEFF_1734706724</td>
+<td style="text-align: left;">PROCESSX_PS231c2fc90891_1737041397</td>
 <td style="text-align: left;">YES</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">PROCESSX_PSWL4DIEEXOM_1734706723</td>
+<td style="text-align: left;">PROCESSX_PS233eb474298_1737041398</td>
 <td style="text-align: left;">YES</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PWD</td>
-<td style="text-align: left;">/tmp/Rtmp9Il4V9/file21fc6e049ee9</td>
+<td style="text-align: left;">/tmp/RtmprQC0B1/file231c5e63411c</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">QUARTO_BIN_PATH</td>
@@ -4314,7 +4306,7 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">QUARTO_DOCUMENT_PATH</td>
-<td style="text-align: left;">/tmp/Rtmp9Il4V9/file21fc6e049ee9</td>
+<td style="text-align: left;">/tmp/RtmprQC0B1/file231c5e63411c</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">QUARTO_PROFILE</td>
@@ -4322,11 +4314,11 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">QUARTO_PROJECT_DIR</td>
-<td style="text-align: left;">/tmp/Rtmp9Il4V9/file21fc6e049ee9</td>
+<td style="text-align: left;">/tmp/RtmprQC0B1/file231c5e63411c</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">QUARTO_PROJECT_ROOT</td>
-<td style="text-align: left;">/tmp/Rtmp9Il4V9/file21fc6e049ee9</td>
+<td style="text-align: left;">/tmp/RtmprQC0B1/file231c5e63411c</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">QUARTO_ROOT</td>
@@ -4406,7 +4398,7 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">R_SESSION_TMPDIR</td>
-<td style="text-align: left;">/tmp/Rtmpy4DOLv</td>
+<td style="text-align: left;">/tmp/RtmploISPy</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">R_SHARE_DIR</td>
@@ -4454,7 +4446,7 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">RUNNER_NAME</td>
-<td style="text-align: left;">GitHub Actions 15</td>
+<td style="text-align: left;">GitHub Actions 10</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">RUNNER_OS</td>
@@ -4474,7 +4466,7 @@ success
 </tr>
 <tr class="odd">
 <td style="text-align: left;">RUNNER_TRACKING_ID</td>
-<td style="text-align: left;">github_d4fa0a43-0542-4b0f-8fc3-dd534f582c81</td>
+<td style="text-align: left;">github_8e549ee9-b974-417d-ad9e-8d383f227c4b</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RUNNER_USER</td>
@@ -4582,7 +4574,7 @@ success
 </tr>
 <tr class="even">
 <td style="text-align: left;">WHIRL_LOG_MSG</td>
-<td style="text-align: left;">/tmp/Rtmp9Il4V9/file21fc6e049ee9/log_msg.jso&lt;br&gt;n</td>
+<td style="text-align: left;">/tmp/RtmprQC0B1/file231c5e63411c/log_msg.jso&lt;br&gt;n</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">XDG_CONFIG_HOME</td>
@@ -4864,118 +4856,122 @@ success
 <td style="text-align: left;">https://cran.rstudio.com</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">rlang_trace_top_env</td>
+<td style="text-align: left;">&lt;environment: R_GlobalEnv&gt;</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">scipen</td>
 <td style="text-align: left;">0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">show.coef.Pvalues</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">show.error.messages</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">show.signif.stars</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">showErrorCalls</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">showNCalls</td>
 <td style="text-align: left;">50</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">showWarnCalls</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">str.strict.width</td>
 <td style="text-align: left;">no</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">str.digits.d</td>
 <td style="text-align: left;">3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">str.vec.len</td>
 <td style="text-align: left;">4</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">str.list.len</td>
 <td style="text-align: left;">99</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">str.drop.deparse.attr</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">str.formatNum</td>
 <td style="text-align: left;">function (x, ...) , format(x, trim = TRUE, drop0trailing = TRUE, ...)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">str.dendrogram.last</td>
 <td style="text-align: left;">`</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">texi2dvi</td>
 <td style="text-align: left;">/usr/bin/texi2dvi</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">tikzMetricsDictionary</td>
 <td style="text-align: left;">dummy-tikzDictionary</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">timeout</td>
 <td style="text-align: left;">60</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">try.outFile</td>
 <td style="text-align: left;">3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">ts.eps</td>
 <td style="text-align: left;">1e-05</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">ts.S.compat</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">unzip</td>
 <td style="text-align: left;">/usr/bin/unzip</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">useFancyQuotes</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">verbose</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">warn</td>
 <td style="text-align: left;">0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">warning.length</td>
 <td style="text-align: left;">1000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">warnPartialMatchArgs</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">warnPartialMatchAttr</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">warnPartialMatchDollar</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">width</td>
 <td style="text-align: left;">80</td>
 </tr>

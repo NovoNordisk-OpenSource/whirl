@@ -99,8 +99,6 @@ script, and since this vignette is created on Linux we can use the
 files:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://novonordisk-opensource.github.io/whirl/">whirl</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/options.html">options</a></span><span class="op">(</span>whirl.track_files <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/options.html">options</a></span><span class="op">(</span>whirl.verbosity_level <span class="op">=</span> <span class="st">"minimal"</span><span class="op">)</span></span></code></pre></div>
@@ -115,7 +113,7 @@ script:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">#&gt;      id tag   script                                 status result       log_dir</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 <span style="color: #BB0000;">NA</span>    /tmp/Rtmp9Il4V9/file21fc47bf373c/exam… succe… <span style="color: #949494;">&lt;named list&gt;</span> /tmp/R…</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 <span style="color: #BB0000;">NA</span>    /tmp/RtmprQC0B1/file231c4dbf8cbe/exam… succe… <span style="color: #949494;">&lt;named list&gt;</span> /tmp/R…</span></span></code></pre></div>
 <p>The script is now executed and you can access the logs below:</p>
 <ul>
 <li><a href="summary.html">View summary log</a></li>
