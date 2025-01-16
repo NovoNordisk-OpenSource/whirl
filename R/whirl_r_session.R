@@ -138,8 +138,6 @@ wrs_initialize <- function(verbosity_level, check_renv, track_files,
                            self, private, super) {
   super$initialize() # uses callr::r_session$initialize()
 
-  # TODO: Is there a way to use `.local_envir` to avoid having to clean up the
-  #       temp dir in finalize?
   private$wd <- withr::local_tempdir(clean = FALSE)
   private$verbosity_level <- verbosity_level
   private$check_renv <- check_renv

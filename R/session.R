@@ -33,7 +33,6 @@ session_info <- function(approved_folder_pkgs = NULL,
   info$options <- info$options[!names(info$options) %in% "rl_word_breaks"]
   class(info$options) <- c("options_info", class(info$options))
 
-  # TODO: Extend to also cover external.
   info[!names(info) %in% c("platform", "packages", "environment", "options")] <-
     NULL
 
@@ -52,9 +51,6 @@ session_info <- function(approved_folder_pkgs = NULL,
   }
 
   if (!is.null(python_packages)) {
-    # TODO: Get the same information as for R packages
-    #       (not only name and version)
-    # TODO: Only show used, and not all installed, packages if possible
 
     info$python_packages <- python_packages
     class(info$python_packages) <- c(
