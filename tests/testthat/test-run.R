@@ -1,14 +1,20 @@
+expect_single_script <- function(res) {
+  res[["status"]] |>
+    testthat::expect_equal("success")
+
+  res[["result"]][[1]] |>
+    names() |>
+    testthat::expect_equal(c("status", "session_info_rlist", "log_details"))
+
+  return(invisible(res))
+}
+
 test_that("Run single R script", {
   res <- test_script("success.R") |>
     run() |>
     expect_no_condition()
 
-  res[["status"]] |>
-    expect_equal("success")
-
-  res[["result"]][[1]] |>
-    names() |>
-    expect_equal(c("status", "session_info_rlist", "log_details"))
+  expect_single_script(res)
 })
 
 test_that("Run single python script", {
@@ -16,36 +22,37 @@ test_that("Run single python script", {
     run() |>
     expect_no_condition()
 
-  res[["status"]] |>
-    expect_equal("success")
-
-  res[["result"]][[1]] |>
-    names() |>
-    expect_equal(c("status", "session_info_rlist", "log_details"))
+  expect_single_script(res)
 })
+
+expect_multiple_scripts <- function(res) {
+  res[["status"]] |>
+    testthat::expect_equal(c("success", "warning", "error"))
+
+  res[["result"]][[1]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    testthat::expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
+
+  res[["result"]][[2]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    testthat::expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
+
+  res[["result"]][[3]][["status"]][c("error", "warning")] |>
+    lapply(\(x) length(x) > 0) |>
+    unlist() |>
+    testthat::expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
+
+  return(invisible(res))
+}
 
 test_that("Run multiple R scripts", {
   res <- test_script(c("success.R", "warning.R", "error.R")) |>
     run(n_workers = 2) |>
     expect_no_error()
 
-  res[["status"]] |>
-    expect_equal(c("success", "warning", "error"))
-
-  res[["result"]][[1]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
-
-  res[["result"]][[2]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
-
-  res[["result"]][[3]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
+  expect_multiple_scripts(res)
 })
 
 test_that("Run multiple python scripts", {
@@ -53,23 +60,7 @@ test_that("Run multiple python scripts", {
     run(n_workers = 2) |>
     expect_no_error()
 
-  res[["status"]] |>
-    expect_equal(c("success", "warning", "error"))
-
-  res[["result"]][[1]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
-
-  res[["result"]][[2]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
-
-  res[["result"]][[3]][["status"]][c("error", "warning")] |>
-    lapply(\(x) length(x) > 0) |>
-    unlist() |>
-    expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
+  expect_multiple_scripts(res)
 })
 
 test_that("Run yaml config file", {
