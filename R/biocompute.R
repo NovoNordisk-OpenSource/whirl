@@ -157,30 +157,3 @@ create_bco <- function(
   return(biocompute_json)
 }
 
-
-
-script <- "../../azure-projects/7519-bioinformatics-pipeline/proteomics/process_olink_prod_data.R"
-obje <- whirl::run(
-  script,
-  out_formats = "json",
-  track_files = TRUE #,
-  # biocompute_object = TRUE, ?? default = FALSE. If true ignore out_formats?
-  # descriptive_domains = descriptive_domains.json ?? <- this should be a optional input, but a required input if bco = TRUE
-)
-
-session_info_rlist <- obje$result[[1]]$session_info_rlist
-
-io_domain <- create_io_domain(session_info_rlist)
-execution_domain <- create_execution_domain(obje$script, session_info_rlist)
-parametric_domain <- create_parametrics_domain()
-
-
-biocompute_json <- create_bco(
-  execution_domain,
-  parametric_domain,
-  io_domain
-)
-
-# Write the JSON data to a file
-write(biocompute_json, "biocompute/biocompute.json")
-
