@@ -14,7 +14,8 @@ log_write(file, log = Sys.getenv("WHIRL_LOG_MSG"))
 log_delete(file, log = Sys.getenv("WHIRL_LOG_MSG"))
 }
 \arguments{
-\item{file}{\code{\link[=character]{character()}} description of the file that was read, written or deleted.}
+\item{file}{\code{\link[=character]{character()}} description of the file that was read, written or
+deleted.}
 
 \item{log}{\code{\link[=character]{character()}} path to the log file.}
 }
@@ -23,9 +24,9 @@ Useful for e.g. read and write operations on databases etc.
 that are not automatically captured.
 }
 \details{
-The default environment variable \code{WHIRL_LOG_MSG} is set in the session used to log scripts, and input
-is automatically captured in the resulting log.
+The default environment variable \code{WHIRL_LOG_MSG} is set in the session used
+to log scripts, and input is automatically captured in the resulting log.
 
-If run outside of whirl, meaning when the above environment variable is unset, the operations
-are streamed to \code{stdout()}. By default the console.
+If run outside of whirl, meaning when the above environment variable is
+unset, the operations are streamed to \code{stdout()}. By default the console.
 }

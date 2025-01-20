@@ -69,11 +69,11 @@ the script execution similar to the content of the summary above:
 
 ``` r
 print(result)
-#> # A tibble: 2 × 5
-#>      id tag   script                                         status result      
-#>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… succe… <named list>
-#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… warni… <named list>
+#> # A tibble: 2 × 6
+#>      id tag   script                                 status result       log_dir
+#>   <dbl> <chr> <chr>                                  <chr>  <list>       <chr>  
+#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5… succe… <named list> /priva…
+#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5… warni… <named list> /priva…
 ```
 
 ## Config files
@@ -111,12 +111,12 @@ result <- run("_whirl.yaml", n_workers = 2)
 
 ``` r
 print(result)
-#> # A tibble: 3 × 5
-#>      id tag   script                                         status result      
-#>   <dbl> <chr> <chr>                                          <chr>  <list>      
-#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… succe… <named list>
-#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… warni… <named list>
-#> 3     3 <NA>  /private/var/folders/fx/71by3f551qzb5wkxt82cv… error  <named list>
+#> # A tibble: 3 × 6
+#>      id tag   script                                 status result       log_dir
+#>   <dbl> <chr> <chr>                                  <chr>  <list>       <chr>  
+#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5… succe… <named list> /priva…
+#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5… warni… <named list> /priva…
+#> 3     3 <NA>  /private/var/folders/fx/71by3f551qzb5… error  <named list> /priva…
 ```
 
 ## Customize run()

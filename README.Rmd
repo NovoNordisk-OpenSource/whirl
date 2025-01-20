@@ -18,8 +18,8 @@ options(whirl.verbosity_level = "minimal")
 # Use a temporary directory as working directory with all examples available
 tmp <- withr::local_tempdir()
 
-system.file("examples", package = "whirl") |> 
-  list.files(full.names = TRUE) |> 
+system.file("examples", package = "whirl") |>
+  list.files(full.names = TRUE) |>
   file.copy(to = tmp)
 
 knitr::opts_knit$set(root.dir = tmp)

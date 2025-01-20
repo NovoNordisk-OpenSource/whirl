@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Provides functionalities for running R scripts in batch, while simultanously creating logs for each script execution.
+Provides functionalities for running R scripts in batch, while simultaneously creating logs for each script execution.
 }
 \seealso{
 Useful links:

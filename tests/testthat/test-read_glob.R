@@ -1,5 +1,4 @@
 test_that("testing read_glob()", {
-
   # A single file
   test_script("success.R") |>
     read_glob() |>
@@ -18,5 +17,4 @@ test_that("testing read_glob()", {
     file.path("fake_program.R") |>
     read_glob() |>
     expect_message()
-
 })

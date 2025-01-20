@@ -4,7 +4,6 @@ pb_script <- R6::R6Class(
   classname = "pb_script",
   public = list(
     initialize = \(script, use_progress = cli::is_dynamic_tty()) {
-
       withr::local_options(
         cli.progress_show_after = 0,
         cli.progress_clear = FALSE
@@ -25,13 +24,13 @@ pb_script <- R6::R6Class(
           ),
           format = paste0(
             "{cli::pb_spin} ",
-            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",
+            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ", # nolint
             "{cli::pb_status}",
             "[{cli::pb_elapsed}]"
           ),
           format_done = paste0(
             "{cli::pb_extra$done} ",
-            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",
+            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ", # nolint
             "{cli::pb_status}",
             "[{cli::pb_elapsed}]"
           )
@@ -39,19 +38,17 @@ pb_script <- R6::R6Class(
         self$update()
       }
     },
-    update = \(...){
+    update = \(...) {
       if (!is.null(private$id)) cli::cli_progress_update(id = private$id, ...)
     },
-    done = \(status = c("success", "warning", "error")){
+    done = \(status = c("success", "warning", "error")) {
       status <- rlang::arg_match(status)
-      done <- switch(
-        status,
+      done <- switch(status,
         success = cli::col_green(cli::symbol$tick),
         warning = cli::col_yellow(cli::symbol$warning),
         error = cli::col_red(cli::symbol$cross)
       )
-      done_msg <- switch(
-        status,
+      done_msg <- switch(status,
         success = "Completed succesfully",
         warning = "Completed with warnings",
         error = "Completed with errors"

@@ -1,7 +1,5 @@
 test_that("All example scripts run with consistent output", {
-
   withr::with_tempdir({
-
     # Copy all example scripts to the temporary working directory
 
     system.file("examples", package = "whirl") |>

@@ -63,20 +63,23 @@ knitr::spin_child(params$script)
 
 python_packages <- NULL
 
-if (file.exists(file.path(params$tmpdir, "python_imports.json"))){
-  python_packages <- whirl:::python_package_info(file.path(params$tmpdir, "python_imports.json"))
+if (file.exists(file.path(params$tmpdir, "python_imports.json"))) {
+  python_packages <- whirl:::python_package_info(
+    json = file.path(params$tmpdir, "python_imports.json")
+  )
 }
 
 saveRDS(
   object = whirl:::session_info(
-    approved_folder_pkgs = params$check_approved_folder_pkgs, 
-    approved_url_pkgs = params$check_approved_url_pkgs, 
+    approved_folder_pkgs = params$check_approved_folder_pkgs,
+    approved_url_pkgs = params$check_approved_url_pkgs,
     python_packages = python_packages
-    ),
+  ),
   file = file.path(params$tmpdir, "session_info.rds")
 )
 
-if (is.character(params$renv) && params$renv == "yes" | is.logical(params$renv) && params$renv) {
+if (is.character(params$renv) && params$renv == "yes" ||
+      is.logical(params$renv) && params$renv) {
   saveRDS(
     object = whirl:::renv_status(),
     file = file.path(params$tmpdir, "renv_status.rds")

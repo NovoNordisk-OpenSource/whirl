@@ -8,9 +8,11 @@
 #' @param collapse description
 #' @noRd
 
-quarto_callout <- function(text = NULL, title = NULL,
-                           type = c("note", "warning", "important", "tip", "caution"),
-                           collapse = NULL) {
+quarto_callout <- function(
+    text = NULL,
+    title = NULL,
+    type = c("note", "warning", "important", "tip", "caution"),
+    collapse = NULL) {
   type <- rlang::arg_match(type)
   if (!is.null(collapse)) {
     collapse <- ifelse(collapse, "true", "false")

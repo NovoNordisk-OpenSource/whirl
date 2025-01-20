@@ -1,6 +1,7 @@
 #' Whirl R session
 #' @description
-#' Extension of [callr::r_session] with additional methods for easier creating logs.
+#' Extension of [callr::r_session] with additional methods for easier creating
+#' logs.
 #' @importFrom R6 R6Class
 #' @importFrom callr r_session
 #' @noRd
@@ -12,26 +13,33 @@ whirl_r_session <- R6::R6Class(
     #' @description Initialize the new whirl R session
     #' @inheritParams options_params
     #' @return A [whirl_r_session] object
-    initialize = \(verbosity_level = options::opt("verbosity_level", env = "whirl"),
-                   check_renv = options::opt("check_renv", env = "whirl"),
-                   track_files = options::opt("track_files", env = "whirl"),
-                   out_formats = options::opt("out_formats", env = "whirl"),
-                   track_files_discards = options::opt("track_files_discards", env = "whirl"),
-                   track_files_keep = options::opt("track_files_keep", env = "whirl"),
-                   approved_pkgs_folder = options::opt("approved_pkgs_folder", env = "whirl"),
-                   approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl"),
-                   log_dir = options::opt("log_dir", env = "whirl")
-                   ) {
-        wrs_initialize(verbosity_level,
-                       check_renv,
-                       track_files,
-                       out_formats,
-                       track_files_discards,
-                       track_files_keep,
-                       approved_pkgs_folder,
-                       approved_pkgs_url,
-                       log_dir,
-                       self, private, super)
+    initialize = \(
+      verbosity_level = options::opt("verbosity_level", env = "whirl"),
+      check_renv = options::opt("check_renv", env = "whirl"),
+      track_files = options::opt("track_files", env = "whirl"),
+      out_formats = options::opt("out_formats", env = "whirl"),
+      track_files_discards = options::opt("track_files_discards",
+        env = "whirl"
+      ),
+      track_files_keep = options::opt("track_files_keep", env = "whirl"),
+      approved_pkgs_folder = options::opt("approved_pkgs_folder",
+        env = "whirl"
+      ),
+      approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl"),
+      log_dir = options::opt("log_dir", env = "whirl")
+    ) {
+      wrs_initialize(
+        verbosity_level,
+        check_renv,
+        track_files,
+        out_formats,
+        track_files_discards,
+        track_files_keep,
+        approved_pkgs_folder,
+        approved_pkgs_url,
+        log_dir,
+        self, private, super
+      )
     },
 
     #' @description Finalize the whirl R session
@@ -102,7 +110,8 @@ whirl_r_session <- R6::R6Class(
     #' @param out_dir [character] Output directory for the log
     #' @param format [character] Output formats to create
     #' @return [invisible],[list] of logging information
-    create_outputs = \(out_dir, format = options::opt("out_formats", env = "whirl")) {
+    create_outputs = \(out_dir,
+                       format = options::opt("out_formats", env = "whirl")) {
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
@@ -127,10 +136,8 @@ wrs_initialize <- function(verbosity_level, check_renv, track_files,
                            out_formats, track_files_discards, track_files_keep,
                            approved_pkgs_folder, approved_pkgs_url, log_dir,
                            self, private, super) {
-
   super$initialize() # uses callr::r_session$initialize()
 
-  # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
   private$wd <- withr::local_tempdir(clean = FALSE)
   private$verbosity_level <- verbosity_level
   private$check_renv <- check_renv
@@ -142,7 +149,8 @@ wrs_initialize <- function(verbosity_level, check_renv, track_files,
   private$approved_pkgs_url <- approved_pkgs_url
   private$log_dir <- log_dir
 
-  # If the stream does not support dynamic tty, which is needed for progress bars to update in place, the verbosity is downgraded.
+  # If the stream does not support dynamic tty, which is needed for progress
+  # bars to update in place, the verbosity is downgraded.
   if (private$verbosity_level == "verbose" && !cli::is_dynamic_tty()) {
     private$verbosity_level <- "minimal"
   }
@@ -153,8 +161,10 @@ wrs_initialize <- function(verbosity_level, check_renv, track_files,
     list.files(full.names = TRUE) |>
     file.copy(to = private$wd)
 
-  super$run(func = Sys.setenv,
-            args = list(WHIRL_LOG_MSG = file.path(private$wd,'log_msg.json')))
+  super$run(
+    func = Sys.setenv,
+    args = list(WHIRL_LOG_MSG = file.path(private$wd, "log_msg.json"))
+  )
 
   environment_file <- file.path(private$wd, "_environment")
   environment_file |>
@@ -163,12 +173,15 @@ wrs_initialize <- function(verbosity_level, check_renv, track_files,
     writeLines(environment_file)
 
   if (track_files) {
-    start_strace(pid = super$get_pid(), file = file.path(private$wd, "strace.log"))
+    start_strace(
+      pid = super$get_pid(),
+      file = file.path(private$wd, "strace.log")
+    )
   }
 }
 
 wrs_finalize <- function(self, private, super) {
-  super$run(func = setwd, args = list(dir = getwd())) # Needed for Windows to be able to delete the temp wd
+  super$run(func = setwd, args = list(dir = getwd()))
   unlink(private$wd, recursive = TRUE)
   super$finalize()
 }
@@ -212,7 +225,9 @@ wrs_wait <- function(timeout, self, private, super) {
   go <- TRUE
   while (go) {
     go <- self$poll(timeout = 50) == "timeout"
-    if (timeout >= 0 && difftime(Sys.time(), start, units = "secs") > timeout) break
+    if (timeout >= 0 && difftime(Sys.time(), start, units = "secs") > timeout) {
+      break
+    }
   }
   return(invisible(self))
 }
@@ -233,8 +248,7 @@ wrs_log_script <- function(script, self, private, super) {
   # Set the execute directory of the Quarto process calling the script
   quarto_execute_dir <- options::opt("execute_dir", env = "whirl")
   if (is.null(quarto_execute_dir)) {
-    quarto_execute_dir <- switch(
-      get_file_ext(script),
+    quarto_execute_dir <- switch(get_file_ext(script),
       "R" = getwd(),
       normalizePath(dirname(script))
     )
@@ -243,7 +257,7 @@ wrs_log_script <- function(script, self, private, super) {
   }
 
   if (!file.exists(quarto_execute_dir)) {
-    cli::cli_abort("Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist")
+    cli::cli_abort("Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist") # nolint
   }
 
   # Execute the script
@@ -252,7 +266,7 @@ wrs_log_script <- function(script, self, private, super) {
     private$pb <- pb_script$new(
       script = private$current_script,
       use_progress = private$verbosity_level == "verbose"
-      )
+    )
   }
 
   self$pb_update(status = "Running script")
@@ -293,7 +307,7 @@ wrs_create_log <- function(self, private, super) {
     con <- file(
       description = self$run(Sys.getenv, list("WHIRL_LOG_MSG")),
       open = "a"
-      )
+    )
     jsonlite::stream_out(x = strace_msg, con = con, verbose = FALSE)
     close(con)
   }
@@ -338,15 +352,17 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
     session_info_rlist = file.path(self$get_wd(), "objects.rds") |>
       readRDS() |>
       unlist(recursive = FALSE),
-    log_details = list(location = file.path(
-      out_dir,
-      gsub(
-        pattern = "\\.[^\\.]*$",
-        replacement = "_log.html",
-        x = basename(private$current_script)
-      )
-    ),
-    script = private$current_script)
+    log_details = list(
+      location = file.path(
+        out_dir,
+        gsub(
+          pattern = "\\.[^\\.]*$",
+          replacement = "_log.html",
+          x = basename(private$current_script)
+        )
+      ),
+      script = private$current_script
+    )
   )
 
   # Create requested outputs
