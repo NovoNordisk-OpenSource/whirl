@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,19 +47,28 @@
 
 
 <dl><dt id="arg-verbosity-level">verbosity_level<a class="anchor" aria-label="anchor" href="#arg-verbosity-level"></a></dt>
-<dd><p>How chatty should the log be? Possibilities are <code>quiet</code>, <code>minimal</code> and <code>verbose</code>. (Defaults to <code>"verbose"</code>, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')</p></dd>
+<dd><p>How chatty should the log be? Possibilities are
+<code>quiet</code>, <code>minimal</code> and <code>verbose</code>. (Defaults to <code>"verbose"</code>, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')</p></dd>
 
 
 <dt id="arg-log-dir">log_dir<a class="anchor" aria-label="anchor" href="#arg-log-dir"></a></dt>
-<dd><p>The output directory of the log files. Default is the folder of the excuted script. log_dir can be a path as a character or it can be a function that takes the script path as input and returns the log directory. For more information see the examples of <code><a href="run.html">run()</a></code> or <code><a href="../articles/whirl.html">vignette('whirl')</a></code>. (Defaults to <code>dirname</code>, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')</p></dd>
+<dd><p>The output directory of the log files. Default is the folder of the
+executed script. log_dir can be a path as a character or it can be a function
+that takes the script path as input and returns the log directory.
+For more information see the examples of <code><a href="run.html">run()</a></code> or <code><a href="../articles/whirl.html">vignette('whirl')</a></code>. (Defaults to <code>dirname</code>, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')</p></dd>
 
 
 <dt id="arg-n-workers">n_workers<a class="anchor" aria-label="anchor" href="#arg-n-workers"></a></dt>
-<dd><p>Number of simultanous workers used in the run function. A maximum of 128 workers is allowed. (Defaults to <code>1</code>, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')</p></dd>
+<dd><p>Number of simultaneous workers used in the run function.
+A maximum of 128 workers is allowed. (Defaults to <code>1</code>, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')</p></dd>
 
 
 <dt id="arg-execute-dir">execute_dir<a class="anchor" aria-label="anchor" href="#arg-execute-dir"></a></dt>
-<dd><p>The working directory of the process executing each script. Defeault us to execute R files from the working directory when calling <code><a href="run.html">run()</a></code> and all other functions from the directory of the script. To change provide a character path (used for all scripts) or a function that takes the script as input and returns the execution directory. (Defaults to <code>NULL</code>, overwritable using option 'whirl.execute_dir' or environment variable 'R_WHIRL_EXECUTE_DIR')</p></dd>
+<dd><p>The working directory of the process executing each script.
+Default us to execute R files from the working directory when calling <code><a href="run.html">run()</a></code>
+and all other functions from the directory of the script. To change provide
+a character path (used for all scripts) or a function that takes the script
+as input and returns the execution directory. (Defaults to <code>NULL</code>, overwritable using option 'whirl.execute_dir' or environment variable 'R_WHIRL_EXECUTE_DIR')</p></dd>
 
 
 <dt id="arg-track-files-discards">track_files_discards<a class="anchor" aria-label="anchor" href="#arg-track-files-discards"></a></dt>
@@ -67,11 +76,13 @@
 
 
 <dt id="arg-track-files">track_files<a class="anchor" aria-label="anchor" href="#arg-track-files"></a></dt>
-<dd><p>Should files read and written be tracked? Currently only supported on Linux. (Defaults to <code>FALSE</code>, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')</p></dd>
+<dd><p>Should files read and written be tracked?
+Currently only supported on Linux. (Defaults to <code>FALSE</code>, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')</p></dd>
 
 
 <dt id="arg-out-formats">out_formats<a class="anchor" aria-label="anchor" href="#arg-out-formats"></a></dt>
-<dd><p>Which log format(s) to produce. Possiblities are <code>html</code>, <code>json</code>, and markdown formats:<code>gfm</code>, <code>commonmark</code>, and <code>markua</code>. (Defaults to <code>"html"</code>, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')</p></dd>
+<dd><p>Which log format(s) to produce. Possibilities are <code>html</code>, <code>json</code>, and
+markdown formats: <code>gfm</code>, <code>commonmark</code>, and <code>markua</code>. (Defaults to <code>"html"</code>, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')</p></dd>
 
 
 <dt id="arg-approved-pkgs-folder">approved_pkgs_folder<a class="anchor" aria-label="anchor" href="#arg-approved-pkgs-folder"></a></dt>
@@ -83,7 +94,8 @@
 
 
 <dt id="arg-track-files-keep">track_files_keep<a class="anchor" aria-label="anchor" href="#arg-track-files-keep"></a></dt>
-<dd><p>List of file naming patterns alway to be tracked when track_files = TRUE (Defaults to <code>paste0("^", getwd())</code>, overwritable using option 'whirl.track_files_keep' or environment variable 'R_WHIRL_TRACK_FILES_KEEP')</p></dd>
+<dd><p>List of file naming patterns always to be tracked when
+track_files = TRUE (Defaults to <code>paste0("^", getwd())</code>, overwritable using option 'whirl.track_files_keep' or environment variable 'R_WHIRL_TRACK_FILES_KEEP')</p></dd>
 
 
 <dt id="arg-approved-pkgs-url">approved_pkgs_url<a class="anchor" aria-label="anchor" href="#arg-approved-pkgs-url"></a></dt>
