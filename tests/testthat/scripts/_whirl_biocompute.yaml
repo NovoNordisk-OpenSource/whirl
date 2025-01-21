@@ -1,0 +1,11 @@
+biocompute:
+  - bla bla bla
+steps:
+  - name: "First step"
+    paths:
+      - "biocompute.R"
+    parameter_files:
+      - "_biocompute_parametrics.yml"
+  - name: "Second step"
+    paths:
+      - "success.R"

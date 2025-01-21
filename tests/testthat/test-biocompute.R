@@ -1,5 +1,8 @@
 
-queue <- whirl::run(input = test_script(c("biocompute.R", "success.R")),
+execution_overview = "~/github-projects/whirl/tests/testthat/scripts/_whirl_biocompute.yaml"
+#~/github-projects/whirl/tests/testthat/scripts/_whirl_biocompute.yaml
+
+queue <- whirl::run(input = test_script(execution_overview),
   out_formats = "json",
   track_files = TRUE
 )
@@ -10,7 +13,7 @@ execution_domain <- create_execution_domain(queue)
 
 
 
-parametric_domain <- create_parametrics_domain()
+parametric_domain <- create_parametrics_domain(execution_overview)
 
 biocompute_json <- create_bco(
   execution_domain,
