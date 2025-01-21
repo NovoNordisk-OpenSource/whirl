@@ -18,7 +18,7 @@
 #'   then all steps listed in the config file will be executed.
 #' @param summary_file A character string specifying the file path where the
 #'   summary log will be stored.
-#' @inheritParams options_params
+# #' @inheritParams options_params
 #' @return A tibble containing the execution results for all the scripts.
 #'
 
@@ -67,17 +67,17 @@ run <- function(
     input,
     steps = NULL,
     summary_file = "summary.html",
-    n_workers = options::opt("n_workers", env = "whirl"),
-    check_renv = options::opt("check_renv", env = "whirl"),
-    verbosity_level = options::opt("verbosity_level", env = "whirl"),
-    track_files = options::opt("track_files", env = "whirl"),
-    out_formats = options::opt("out_formats", env = "whirl"),
-    log_dir = options::opt("log_dir", env = "whirl")) {
+    n_workers = zephyr::get_option("n_workers", "whirl"),
+    check_renv = zephyr::get_option("check_renv", "whirl"),
+    verbosity_level = zephyr::get_verbosity_level("whirl"),
+    track_files = zephyr::get_option("track_files", "whirl"),
+    out_formats = zephyr::get_option("out_formats", "whirl"),
+    log_dir = zephyr::get_option("log_dir", "whirl")) {
   # Additional Settings
-  track_files_discards <- options::opt("track_files_discards", env = "whirl")
-  track_files_keep <- options::opt("track_files_keep", env = "whirl")
-  approved_pkgs_folder <- options::opt("approved_pkgs_folder", env = "whirl")
-  approved_pkgs_url <- options::opt("approved_pkgs_url", env = "whirl")
+  track_files_discards <- zephyr::get_option("track_files_discards")
+  track_files_keep <- zephyr::get_option("track_files_keep")
+  approved_pkgs_folder <- zephyr::get_option("approved_pkgs_folder")
+  approved_pkgs_url <- zephyr::get_option("approved_pkgs_url")
 
   # Message when initiating
   d <- NULL
@@ -129,8 +129,7 @@ run <- function(
     input = input,
     steps = steps,
     queue = queue,
-    level = 1,
-    verbosity_level = verbosity_level
+    level = 1
   )
 
   # Create the summary log if required

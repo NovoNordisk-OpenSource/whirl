@@ -14,14 +14,12 @@
 #' @inheritParams options_params
 #' @return A tibble containing the execution results for all the scripts.
 #' @noRd
-internal_run <- function(
-    input,
-    steps,
-    queue,
-    level,
-    verbosity_level = options::opt("verbosity_level", env = "whirl")) {
+internal_run <- function(input,
+                         steps,
+                         queue,
+                         level) {
   # Enrich the input with "name" and "path" elements
-  enriched <- enrich_input(input, steps, verbosity_level)
+  enriched <- enrich_input(input, steps)
 
   # Loop over the elements
   for (i in seq_along(enriched)) {
@@ -38,8 +36,7 @@ internal_run <- function(
         input = files,
         steps = steps,
         queue = queue,
-        level = level + 1,
-        verbosity_level = verbosity_level
+        level = level + 1
       )
     } else {
       # Execute the scripts

@@ -4,14 +4,10 @@
 #' @param input Can be a vector, a list or a whirl config file.
 #' @param steps A filter argument for selecting specific steps that should be
 #'   executed
-#' @inheritParams options_params
-#'
 #' @return A list
 #' @noRd
-enrich_input <- function(
-    input,
-    steps = NULL,
-    verbosity_level = options::opt("verbosity_level", env = "whirl")) {
+enrich_input <- function(input,
+                         steps = NULL) {
   # Characterize the input
   is_config_file <- any(grepl("yaml|yml", get_file_ext(input)))
   is_character <- is.character(input)
