@@ -143,35 +143,47 @@ create_execution_domain <- function(queue) {
 }
 
 
-
-
 # PARAMETRIC DOMAIN
-create_parametrics_domain <- function(script) {
-  # Initialize an empty list to store the dictionaries
+create_parametrics_domain <- function(execution_overview) {
+  execution_info = yaml::read_yaml(execution_overview)
 
-  # filtered_variable_names <- ls()[sapply(ls(), function(x) {
-  #   obj <- get(x)
-  #   typeof(obj) %in% c("character", "double", "integer")
-  # })]
-  #
-  # parametric_domain_list <- list()
-  #
-  # # Loop over the filtered_variable_names and create dictionaries
-  # for (var_name in filtered_variable_names) {
-  #   value <- get(var_name)  # Get the value of the variable
-  #   parametric_domain_list <- c(
-  #     parametric_domain_list,
-  #     list(
-  #       param = var_name,
-  #       value = as.character(value),
-  #       step = "0"
-  #     )
-  #   )
-  # }
-  #
-  # return(parametric_domain_list)
-  return(list())
+  parametric_domain = list()
+  step_number = 0
+  for (step in execution_info$steps) {
+    if (!("parameter_files" %in% names(step))) {
+      step_number = step_number + 1
+      next
+    }
+
+    for (parameter_file in step$parameter_files) {
+      parameters <- yaml::read_yaml(parameter_file)
+
+      parametric_domain <- append(
+        parametric_domain,
+        purrr::map2(
+          parameters,
+          names(parameters),
+          \(x,y) list(param = y, value = x, step = step_number)
+        ) |>
+          unname()
+      )
+    }
+    step_number = step_number + 1
+  }
+  return(parametric_domain)
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # CREATE BCO
