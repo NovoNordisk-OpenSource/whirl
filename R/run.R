@@ -81,13 +81,11 @@ run <- function(
 
   # Message when initiating
   d <- NULL
-  zephyr::msg(
+  zephyr::msg_verbose(
     message = "Executing scripts and generating logs",
     theme = list(
       rule = list(color = "skyblue3", "line-type" = "double")
     ),
-    levels_to_write = c("verbose"),
-    verbosity_level = verbosity_level,
     msg_fun = \(message, theme, .envir) {
       d <<- cli::cli_div(theme = theme, .auto_close = FALSE)
       cli::cli_rule(message, .envir = .envir)
@@ -96,11 +94,9 @@ run <- function(
 
   # Message when ending
   on.exit({
-    zephyr::msg(
+    zephyr::msg_verbose(
       message = "End of process",
       div = d,
-      levels_to_write = c("verbose"),
-      verbosity_level = verbosity_level,
       msg_fun = \(message, div, .envir) {
         cli::cli_rule(message, .envir = .envir)
         cli::cli_end(div)
@@ -111,10 +107,8 @@ run <- function(
   # Constrain the number of workers
   n_workers <- min(128, n_workers)
 
-  zephyr::msg("Executing scripts in parallel using {n_workers} cores\n",
-    levels_to_write = "verbose",
-    verbosity_level = verbosity_level,
-    msg_fun = cli::cli_inform
+  zephyr::msg_verbose(
+    message = "Executing scripts in parallel using {n_workers} cores"
   )
 
   # Initiating the queue

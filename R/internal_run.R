@@ -30,11 +30,7 @@ internal_run <- function(
 
     # Messages
     cli_level <- get(paste0("cli_h", min(level, 3)), envir = asNamespace("cli"))
-    zephyr::msg(name,
-      msg_fun = cli_level,
-      levels_to_write = "verbose",
-      verbosity_level = verbosity_level
-    )
+    zephyr::msg_verbose(message = name, msg_fun = cli_level)
 
     # If the step points to a config file then re-initiate internal_run()
     if (any(grepl("yaml|yml", get_file_ext(files)))) {
@@ -48,11 +44,7 @@ internal_run <- function(
     } else {
       # Execute the scripts
       queue$run(files)
-      zephyr::msg("\n",
-        msg_fun = cli::cli_verbatim,
-        levels_to_write = "verbose",
-        verbosity_level = verbosity_level
-      )
+      zephyr::msg_verbose(message = "\n", msg_fun = cli::cli_verbatim)
     }
   }
 

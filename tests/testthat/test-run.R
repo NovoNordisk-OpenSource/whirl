@@ -12,7 +12,8 @@ expect_single_script <- function(res) {
 test_that("Run single R script", {
   res <- test_script("success.R") |>
     run() |>
-    expect_no_condition()
+    expect_no_warning() |>
+    expect_no_error()
 
   expect_single_script(res)
 })
@@ -20,7 +21,8 @@ test_that("Run single R script", {
 test_that("Run single python script", {
   res <- test_script("py_success.py") |>
     run() |>
-    expect_no_condition()
+    expect_no_warning() |>
+    expect_no_error()
 
   expect_single_script(res)
 })

@@ -40,14 +40,12 @@ Imports:
     utils,
     withr,
     yaml,
-    zephyr (>= 0.0.0.9000),
+    zephyr (>= 0.1.0),
     glue,
     reticulate
 Suggests: 
     testthat (>= 3.0.0),
     usethis
-Remotes: 
-    NovoNordisk-OpenSource/zephyr@a4d5163108e2c4042f98bd00f17f1af7353b08c2
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

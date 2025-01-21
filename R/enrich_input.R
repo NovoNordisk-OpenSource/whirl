@@ -99,11 +99,7 @@ enrich_input <- function(
     step_names |> rlang::set_names("*")
   )
 
-  zephyr::msg(message_,
-    msg_fun = cli::cli_inform,
-    levels_to_write = "verbose",
-    verbosity_level = verbosity_level
-  )
+  zephyr::msg_verbose(message = message_, msg_fun = cli::cli_inform)
 
   invisible(out)
 }
