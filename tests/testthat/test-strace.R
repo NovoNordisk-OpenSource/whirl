@@ -1,5 +1,4 @@
 expect_strace <- function(read, delete, write, path = "strace.log") {
-
   strace_info <- read_strace_info(
     path = path,
     p_wd = getwd(),
