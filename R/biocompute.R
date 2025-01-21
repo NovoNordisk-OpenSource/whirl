@@ -31,73 +31,119 @@
 #           - defines the empirical and algorithmic limits and error sources of the BCO
 # }
 
-# IO DOMAIN
-create_io_domain <- function(session_info_rlist) {
-  input_subdomain_list <- lapply(session_info_rlist$log_info.read$file, function(file) {
-    list(uri = list(uri = file))
-  })
+bco_create_outputs <- function(files) {
 
-  get_output_subdomain_list <- function(output_file_list) {
+  entry <- vector(mode = "list", length = length(files))
+  for (i in seq_along(entry)) {
 
-    output_subdomain_list <- lapply(output_file_list, function(file) {
+    entry[[i]]$mediatype <- if (grepl("\\.html$", files[[i]])) {
+      "text/html"
+    } else if (grepl("\\.zip$", files[[i]])) {
+      "application/zip"
+    } else if (grepl("\\.csv$", files[[i]])) {
+      "text/csv"
+    } else if (grepl("\\.txt$", files[[i]])) {
+      "text/txt"
+    } else {
+      " "
+    }
 
-      if (grepl("\\.html$", file)) {
-        mediatype = "text/html"
-      } else if (grepl("\\.zip$", file)) {
-        mediatype = "application/zip"
-      } else if (grepl("\\.csv$", file)) {
-        mediatype = "text/csv"
-      } else if (grepl("\\txt$", file)) {
-        mediatype = "text/txt"
-      } else {
-        mediatype = " "
-      }
-
-      list(
-        mediatype = mediatype,
-        uri = list(
-          filename = basename(file),
-          uri = file
-        )
-      )
-    })
-
-    return(output_subdomain_list)
+    entry[[i]]$uri <- list(
+      filename = basename(files[[i]]),
+      uri = files[[i]]
+    )
   }
-  output_subdomain_list <- get_output_subdomain_list(session_info_rlist$log_info.write$file)
+
+  return(entry)
+}
+
+bco_create_inputs <- function(files) {
+
+  entry <- vector(mode = "list", length = length(files))
+  for (i in seq_along(entry)) {
+
+    entry[[i]]$uri <- list(
+      uri = files[[i]]
+    )
+  }
+
+  return(entry)
+}
+
+# IO DOMAIN
+create_io_domain <- function(queue) {
+  input <- queue$result |>
+    purrr::map(c("session_info_rlist", "log_info.read", "file")) |>
+    unlist() |>
+    unique() |>
+    bco_create_inputs()
+
+  output <- queue$result |>
+    purrr::map(c("session_info_rlist", "log_info.write", "file")) |>
+    unlist() |>
+    unique() |>
+    bco_create_outputs()
+
 
   return(list(
-    input_subdomain = input_subdomain_list,
-    output_subdomain = output_subdomain_list
+    input_subdomain = input,
+    output_subdomain = output
   ))
 }
 
 # EXECUTION DOMAIN
 # Here we should be more dynamic, this setup is more made to fit Bifrost.
-create_execution_domain <- function(script, session_info_rlist) {
+
+get_single_unique <- function(x) {
+  x <- x |>
+    unlist() |>
+    unique()
+
+  stopifnot(length(x) == 1)
+
+  return(x)
+}
+
+create_execution_domain <- function(queue) {
+
+  envvars <- queue$result |>
+    purrr::map_dfr(c("session_info_rlist", "environment_options.environment"))
+
   execution_domain <- list(
-    script = script,
-    script_driver = session_info_rlist$environment_options.platform$version,
+    script = queue$script,
+    script_driver = queue$result |>
+      purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
+      get_single_unique(),
     software_prerequisites = list(
       list(
         name = "R",
-        version = sub("R version ([0-9]+\\.[0-9]+\\.[0-9]+).*", "\\1", session_info_rlist$environment_options.platform$version)
+        version = sub("R version ([0-9]+\\.[0-9]+\\.[0-9]+).*", "\\1", queue$result |>
+                        purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
+                        get_single_unique())
       ),
       list(
         name = "quarto",
-        version = session_info_rlist$environment_options.platform$quarto
+        version = queue$result |>
+          purrr::map(c("session_info_rlist", "environment_options.platform", "quarto")) |>
+          get_single_unique()
       ),
       list(
         name = "pandoc",
-        version = session_info_rlist$environment_options.platform$pandoc
+        version = queue$result |>
+          purrr::map(c("session_info_rlist", "environment_options.platform", "pandoc")) |>
+          get_single_unique()
       )
     ),
     external_data_endpoints = list(),
-    environment_variables = session_info_rlist$environment_options.environment
+    environment_variables = setNames(envvars$Value, envvars$Setting) |>
+      as.list()
   )
 
   return(execution_domain)
 }
+
+
+
 
 # PARAMETRIC DOMAIN
 create_parametrics_domain <- function(script) {
