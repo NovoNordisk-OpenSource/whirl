@@ -1,5 +1,9 @@
 biocompute:
-  - bla bla bla
+  object_id: "urn:uuid:1234567890"
+  spec_version: "https://w3id.org/ieee/ieee-2791-schema/2791object.json%22"
+  etag: "c69asgs797agfka"
+  usability: |
+    This is an example of a biocompute project.
 steps:
   - name: "First step"
     paths:
@@ -9,3 +13,5 @@ steps:
   - name: "Second step"
     paths:
       - "success.R"
+    parameter_files:
+      - "_biocompute_parametrics.yml"

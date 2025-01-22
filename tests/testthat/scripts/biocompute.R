@@ -1,6 +1,10 @@
 
-ymlfile <- "~/github-projects/whirl/tests/testthat/scripts/_biocompute_parametrics.yml"
-paths = yaml::read_yaml(ymlfile) # read config file
+library(whirl)
 
-writeLines("Hello World!", paths$outputFilePath)
+log_read("my_project/params.yml")
 
+log_read("my_data/data.rds")
+
+log_write("my_output/output.txt")
+
+log_write("my_output/plot.png")

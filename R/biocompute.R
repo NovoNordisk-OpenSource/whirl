@@ -31,6 +31,36 @@
 #           - defines the empirical and algorithmic limits and error sources of the BCO
 # }
 
+#' @export
+create_biocompute <- function(queue, config) {
+  metadata <- yaml::read_yaml(config)
+
+  list(
+    object_id = metadata[["biocompute"]][["object_id"]] |>
+      get_single_unique(),
+    spec_version = metadata[["biocompute"]][["spec_version"]] |>
+      get_single_unique(),
+    etag = metadata[["biocompute"]][["etag"]] |>
+      get_single_unique(),
+    provenance_domain = NULL,
+    usability_domain = metadata[["biocompute"]][["usability"]] |>
+      get_single_unique(),
+    execution_domain = create_execution_domain(queue),
+    parametric_domain = create_parametrics_domain(metadata, dirname(config)),
+    io_domain = create_io_domain(queue),
+    error_domain = list(
+      algorithmic_error = NULL,
+      empirical_error = NULL
+    )
+  )
+}
+
+#' @export
+write_biocompute <- function(bco, path = "bco.json", auto_unbox = TRUE, ...) {
+  jsonlite::write_json(x = bco, path = path, auto_unbox = TRUE, ...)
+}
+
+#' @noRd
 bco_create_outputs <- function(files) {
 
   entry <- vector(mode = "list", length = length(files))
@@ -57,6 +87,7 @@ bco_create_outputs <- function(files) {
   return(entry)
 }
 
+#' @noRd
 bco_create_inputs <- function(files) {
 
   entry <- vector(mode = "list", length = length(files))
@@ -70,7 +101,7 @@ bco_create_inputs <- function(files) {
   return(entry)
 }
 
-# IO DOMAIN
+#' @noRd
 create_io_domain <- function(queue) {
   input <- queue$result |>
     purrr::map(c("session_info_rlist", "log_info.read", "file")) |>
@@ -94,6 +125,7 @@ create_io_domain <- function(queue) {
 # EXECUTION DOMAIN
 # Here we should be more dynamic, this setup is more made to fit Bifrost.
 
+#' @noRd
 get_single_unique <- function(x) {
   x <- x |>
     unlist() |>
@@ -104,6 +136,13 @@ get_single_unique <- function(x) {
   return(x)
 }
 
+#' @noRd
+get_unique_values <- function(x) {
+  split(x, names(x)) |>
+    lapply(\(x) x |> unlist() |> unique() |> paste(collapse = ";"))
+}
+
+#' @noRd
 create_execution_domain <- function(queue) {
 
   envvars <- queue$result |>
@@ -136,27 +175,25 @@ create_execution_domain <- function(queue) {
     ),
     external_data_endpoints = list(),
     environment_variables = setNames(envvars$Value, envvars$Setting) |>
-      as.list()
+      as.list() |>
+      get_unique_values()
   )
 
   return(execution_domain)
 }
 
-
-# PARAMETRIC DOMAIN
-create_parametrics_domain <- function(execution_overview) {
-  execution_info = yaml::read_yaml(execution_overview)
-
+#' @noRd
+create_parametrics_domain <- function(config, base_path) {
   parametric_domain = list()
   step_number = 0
-  for (step in execution_info$steps) {
+  for (step in config$steps) {
     if (!("parameter_files" %in% names(step))) {
       step_number = step_number + 1
       next
     }
 
     for (parameter_file in step$parameter_files) {
-      parameters <- yaml::read_yaml(parameter_file)
+      parameters <- yaml::read_yaml(normalize_with_base(parameter_file, base_path))
 
       parametric_domain <- append(
         parametric_domain,
@@ -172,46 +209,3 @@ create_parametrics_domain <- function(execution_overview) {
   }
   return(parametric_domain)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# CREATE BCO
-create_bco <- function(
-    execution_domain,
-    parametric_domain,
-    io_domain) {
-
-  biocompute_data <- list(
-    object_id = NULL,
-    spec_version = NULL,
-    etag = NULL,
-    provenance_domain = NULL,
-    usability_domain = NULL,
-    execution_domain = execution_domain,
-    parametric_domain = parametric_domain,
-    io_domain = list(
-      input_subdomain = io_domain$input_subdomain,
-      output_subdomain = io_domain$output_subdomain
-    ),
-    error_domain = list(
-      algorithmic_error = NULL,
-      empirical_error = NULL
-    )
-  )
-
-  biocompute_json <- jsonlite::toJSON(biocompute_data, pretty = TRUE, auto_unbox = TRUE)
-
-  return(biocompute_json)
-}
-
