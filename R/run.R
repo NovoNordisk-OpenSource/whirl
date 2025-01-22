@@ -18,7 +18,7 @@
 #'   then all steps listed in the config file will be executed.
 #' @param summary_file A character string specifying the file path where the
 #'   summary log will be stored.
-# #' @inheritParams options_params
+#' @inheritParams whirl-options-params
 #' @return A tibble containing the execution results for all the scripts.
 #'
 
@@ -74,7 +74,8 @@ run <- function(
     out_formats = zephyr::get_option("out_formats", "whirl"),
     log_dir = zephyr::get_option("log_dir", "whirl")) {
   # Additional Settings
-  track_files_discards <- zephyr::get_option("track_files_discards")
+  track_files_discards <- zephyr::get_option("track_files_discards") |>
+    c(.libPaths()) # Don't track the library paths
   track_files_keep <- zephyr::get_option("track_files_keep")
   approved_pkgs_folder <- zephyr::get_option("approved_pkgs_folder")
   approved_pkgs_url <- zephyr::get_option("approved_pkgs_url")

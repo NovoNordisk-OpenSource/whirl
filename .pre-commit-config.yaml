@@ -21,7 +21,7 @@ repos:
           - tibble
           - tidyr
           - unglue
-          - NovoNordisk-OpenSource/zephyr
+          - NovoNordisk-OpenSource/zephyr@260b9858b0edc9831ce49492d087c7e4959cd8e1
           - reticulate
     -   id: use-tidy-description
     -   id: spell-check

@@ -7,12 +7,14 @@ Authors@R: c(
     person("Cervan", "Girard", , "cgid@novonordisk.com", role = "aut"),
     person("Kristian", "Troejelsgaard", , "ktqn@novonordisk.com", role = "aut"),
     person("Steffen Falgreen", "Larsen", , "sffl@novonordisk.com", role = "aut"),
-    person("Vladimir", "Obucina", , email = "vlob@novonordisk.com", role = "aut"),
+    person("Vladimir", "Obucina", , "vlob@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
-Description: Provides functionalities for running R scripts in batch, while simultaneously creating logs for each script execution.
+Description: Provides functionalities for running R scripts in batch,
+    while simultaneously creating logs for each script execution.
 License: Apache License (>= 2)
-URL: https://novonordisk-opensource.github.io/whirl/, https://github.com/novonordisk-opensource/whirl
+URL: https://novonordisk-opensource.github.io/whirl/,
+    https://github.com/novonordisk-opensource/whirl
 Depends: 
     R (>= 4.1)
 Imports: 
@@ -21,6 +23,7 @@ Imports:
     cli,
     dplyr,
     ggplot2,
+    glue,
     httr,
     jsonlite,
     kableExtra,
@@ -29,6 +32,7 @@ Imports:
     quarto,
     R6,
     renv,
+    reticulate,
     rlang,
     rmarkdown,
     sessioninfo,
@@ -39,14 +43,15 @@ Imports:
     utils,
     withr,
     yaml,
-    zephyr (>= 0.1.0),
-    glue,
-    reticulate
+    zephyr (>= 0.1.1)
 Suggests: 
     testthat (>= 3.0.0),
     usethis
+VignetteBuilder: 
+    knitr
+Remotes: 
+    novonordisk-opensource/zephyr@260b9858b0edc9831ce49492d087c7e4959cd8e1
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-VignetteBuilder: knitr

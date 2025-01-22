@@ -1,21 +1,22 @@
-# #' @name whirl-options
-# #' @title Options for whirl
-# #' @description
-# #' `r zephyr::list_options(as = "markdown", .envir = "whirl")`
-# NULL
-#
-# #' @title Internal parameters for reuse in functions
-# #' @name whirl-options-params
-# #' @eval zephyr::list_options(as = "params", .envir = "whirl")
-# #' @details
-# #' See [whirl-options] for more information.
-# #' @keywords internal
-# NULL
+#' @name whirl-options
+#' @title Options for whirl
+#' @description
+#' `r zephyr::list_options(as = "markdown", .envir = "whirl")`
+NULL
+
+#' @title Internal parameters for reuse in functions
+#' @name whirl-options-params
+#' @eval zephyr::list_options(as = "params", .envir = "whirl")
+#' @details
+#' See [whirl-options] for more information.
+#' @keywords internal
+NULL
 
 zephyr::create_option(
   name = "verbosity_level",
   default = NA_character_,
-  description = "Verbosity level for functions in whirl. See [zephyr::verbosity_level] for details." # nolint: line_length_linter
+  description = "Verbosity level for functions in whirl.
+  See [zephyr::verbosity_level] for details."
 )
 
 zephyr::create_option(
@@ -52,8 +53,7 @@ zephyr::create_option(
     "^/tmp",
     "^/null",
     "^/urandom",
-    "^/.cache",
-    .libPaths()
+    "^/.cache"
   ),
   description =
     "List of file naming patterns not be tracked when track_files = TRUE"
@@ -61,7 +61,7 @@ zephyr::create_option(
 
 zephyr::create_option(
   name = "track_files_keep",
-  default = paste0("^", getwd()),
+  default = NULL,
   description = "List of file naming patterns always to be tracked when
   track_files = TRUE"
 )
@@ -87,7 +87,7 @@ zephyr::create_option(
 
 zephyr::create_option(
   name = "log_dir",
-  default = dirname,
+  default = \(x) dirname(x),
   description = "The output directory of the log files. Default is the folder of
   the executed script. log_dir can be a path as a character or it can be a
   function that takes the script path as input and returns the log directory.

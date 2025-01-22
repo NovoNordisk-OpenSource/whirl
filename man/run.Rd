@@ -30,6 +30,25 @@ then all steps listed in the config file will be executed.}
 
 \item{summary_file}{A character string specifying the file path where the
 summary log will be stored.}
+
+\item{n_workers}{Number of simultaneous workers used in the run function.
+A maximum of 128 workers is allowed.. Default: \code{1}.}
+
+\item{check_renv}{Should the projects renv status be checked?. Default: \code{FALSE}.}
+
+\item{verbosity_level}{Verbosity level for functions in whirl.
+See \link[zephyr:verbosity_level]{zephyr::verbosity_level} for details.. Default: \code{NA_character_}.}
+
+\item{track_files}{Should files read and written be tracked?
+Currently only supported on Linux.. Default: \code{FALSE}.}
+
+\item{out_formats}{Which log format(s) to produce. Possibilities are \code{html},
+\code{json}, and markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}.. Default: \code{"html"}.}
+
+\item{log_dir}{The output directory of the log files. Default is the folder of
+the executed script. log_dir can be a path as a character or it can be a
+function that takes the script path as input and returns the log directory.
+For more information see the examples of \code{run()} or \code{vignette('whirl')}.. Default: \code{function (x)  dirname(x)}.}
 }
 \value{
 A tibble containing the execution results for all the scripts.

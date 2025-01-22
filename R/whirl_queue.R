@@ -20,9 +20,11 @@ whirl_queue <- R6::R6Class(
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
       out_formats = zephyr::get_option("out_formats", "whirl"),
-      track_files_discards = zephyr::get_option("track_files_discards", "whirl"),
+      track_files_discards =
+        zephyr::get_option("track_files_discards", "whirl"),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
-      approved_pkgs_folder = zephyr::get_option("approved_pkgs_folder", "whirl"),
+      approved_pkgs_folder =
+        zephyr::get_option("approved_pkgs_folder", "whirl"),
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl")
     ) {
