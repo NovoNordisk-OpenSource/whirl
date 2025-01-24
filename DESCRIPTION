@@ -43,7 +43,7 @@ Imports:
     utils,
     withr,
     yaml,
-    zephyr (>= 0.1.1)
+    zephyr
 Suggests: 
     testthat (>= 3.0.0),
     usethis

@@ -58,7 +58,7 @@ Executes and logs the execution of the scripts.
 Logs for each script are stored in the same folder as the script.
 
 The way the execution is logged is configurable through several options for
-e.g. the verbosity of the logs. See \link{options} on how to configure these.
+e.g. the verbosity of the logs. See \link{whirl-options} on how to configure these.
 }
 \examples{
 # Start by copying the following three example scripts:

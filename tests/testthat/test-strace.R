@@ -2,7 +2,7 @@ expect_strace <- function(read, delete, write, path = "strace.log") {
   strace_info <- read_strace_info(
     path = path,
     p_wd = getwd(),
-    strace_discards = options::opt("track_files_discards"),
+    strace_discards = zephyr::get_option("track_files_discards", "whirl"),
     strace_keep = getwd()
   )
 

@@ -5,7 +5,7 @@
 #' Logs for each script are stored in the same folder as the script.
 #'
 #' The way the execution is logged is configurable through several options for
-#' e.g. the verbosity of the logs. See [options] on how to configure these.
+#' e.g. the verbosity of the logs. See [whirl-options] on how to configure these.
 #'
 #' @param input  A character vector of file path(s) to R, R Markdown, Quarto
 #'   scripts, or files in a folder using regular expression, or to to a whirl
