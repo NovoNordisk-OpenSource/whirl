@@ -8,12 +8,12 @@ run(
   input,
   steps = NULL,
   summary_file = "summary.html",
-  n_workers = options::opt("n_workers", env = "whirl"),
-  check_renv = options::opt("check_renv", env = "whirl"),
-  verbosity_level = options::opt("verbosity_level", env = "whirl"),
-  track_files = options::opt("track_files", env = "whirl"),
-  out_formats = options::opt("out_formats", env = "whirl"),
-  log_dir = options::opt("log_dir", env = "whirl")
+  n_workers = zephyr::get_option("n_workers", "whirl"),
+  check_renv = zephyr::get_option("check_renv", "whirl"),
+  verbosity_level = zephyr::get_verbosity_level("whirl"),
+  track_files = zephyr::get_option("track_files", "whirl"),
+  out_formats = zephyr::get_option("out_formats", "whirl"),
+  log_dir = zephyr::get_option("log_dir", "whirl")
 )
 }
 \arguments{
@@ -32,23 +32,23 @@ then all steps listed in the config file will be executed.}
 summary log will be stored.}
 
 \item{n_workers}{Number of simultaneous workers used in the run function.
-A maximum of 128 workers is allowed. (Defaults to \code{1}, overwritable using option 'whirl.n_workers' or environment variable 'R_WHIRL_N_WORKERS')}
+A maximum of 128 workers is allowed.. Default: \code{1}.}
 
-\item{check_renv}{Should the projects renv status be checked? (Defaults to \code{FALSE}, overwritable using option 'whirl.check_renv' or environment variable 'R_WHIRL_CHECK_RENV')}
+\item{check_renv}{Should the projects renv status be checked?. Default: \code{FALSE}.}
 
-\item{verbosity_level}{How chatty should the log be? Possibilities are
-\code{quiet}, \code{minimal} and \code{verbose}. (Defaults to \code{"verbose"}, overwritable using option 'whirl.verbosity_level' or environment variable 'R_WHIRL_VERBOSITY_LEVEL')}
+\item{verbosity_level}{Verbosity level for functions in whirl.
+See \link[zephyr:verbosity_level]{zephyr::verbosity_level} for details.. Default: \code{NA_character_}.}
 
 \item{track_files}{Should files read and written be tracked?
-Currently only supported on Linux. (Defaults to \code{FALSE}, overwritable using option 'whirl.track_files' or environment variable 'R_WHIRL_TRACK_FILES')}
+Currently only supported on Linux.. Default: \code{FALSE}.}
 
-\item{out_formats}{Which log format(s) to produce. Possibilities are \code{html}, \code{json}, and
-markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}. (Defaults to \code{"html"}, overwritable using option 'whirl.out_formats' or environment variable 'R_WHIRL_OUT_FORMATS')}
+\item{out_formats}{Which log format(s) to produce. Possibilities are \code{html},
+\code{json}, and markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}.. Default: \code{"html"}.}
 
-\item{log_dir}{The output directory of the log files. Default is the folder of the
-executed script. log_dir can be a path as a character or it can be a function
-that takes the script path as input and returns the log directory.
-For more information see the examples of \code{run()} or \code{vignette('whirl')}. (Defaults to \code{dirname}, overwritable using option 'whirl.log_dir' or environment variable 'R_WHIRL_LOG_DIR')}
+\item{log_dir}{The output directory of the log files. Default is the folder of
+the executed script. log_dir can be a path as a character or it can be a
+function that takes the script path as input and returns the log directory.
+For more information see the examples of \code{run()} or \code{vignette('whirl')}.. Default: \code{function (x)  dirname(x)}.}
 }
 \value{
 A tibble containing the execution results for all the scripts.
@@ -58,7 +58,7 @@ Executes and logs the execution of the scripts.
 Logs for each script are stored in the same folder as the script.
 
 The way the execution is logged is configurable through several options for
-e.g. the verbosity of the logs. See \link{options} on how to configure these.
+e.g. the verbosity of the logs. See \link{whirl-options} on how to configure these.
 }
 \examples{
 # Start by copying the following three example scripts:

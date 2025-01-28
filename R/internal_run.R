@@ -14,14 +14,12 @@
 #' @inheritParams options_params
 #' @return A tibble containing the execution results for all the scripts.
 #' @noRd
-internal_run <- function(
-    input,
-    steps,
-    queue,
-    level,
-    verbosity_level = options::opt("verbosity_level", env = "whirl")) {
+internal_run <- function(input,
+                         steps,
+                         queue,
+                         level) {
   # Enrich the input with "name" and "path" elements
-  enriched <- enrich_input(input, steps, verbosity_level)
+  enriched <- enrich_input(input, steps)
 
   # Loop over the elements
   for (i in seq_along(enriched)) {
@@ -30,11 +28,7 @@ internal_run <- function(
 
     # Messages
     cli_level <- get(paste0("cli_h", min(level, 3)), envir = asNamespace("cli"))
-    zephyr::msg(name,
-      msg_fun = cli_level,
-      levels_to_write = "verbose",
-      verbosity_level = verbosity_level
-    )
+    zephyr::msg_verbose(message = name, msg_fun = cli_level)
 
     # If the step points to a config file then re-initiate internal_run()
     if (any(grepl("yaml|yml", get_file_ext(files)))) {
@@ -42,17 +36,12 @@ internal_run <- function(
         input = files,
         steps = steps,
         queue = queue,
-        level = level + 1,
-        verbosity_level = verbosity_level
+        level = level + 1
       )
     } else {
       # Execute the scripts
       queue$run(files)
-      zephyr::msg("\n",
-        msg_fun = cli::cli_verbatim,
-        levels_to_write = "verbose",
-        verbosity_level = verbosity_level
-      )
+      zephyr::msg_verbose(message = "\n", msg_fun = cli::cli_verbatim)
     }
   }
 

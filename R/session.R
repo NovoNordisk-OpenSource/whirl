@@ -51,7 +51,6 @@ session_info <- function(approved_folder_pkgs = NULL,
   }
 
   if (!is.null(python_packages)) {
-
     info$python_packages <- python_packages
     class(info$python_packages) <- c(
       "packages_info",

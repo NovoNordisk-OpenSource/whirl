@@ -15,20 +15,18 @@ whirl_queue <- R6::R6Class(
     #' @inheritParams options_params
     #' @description Initialize the new whirl_queue
     #' @return A [whirl_queue] object
-    initialize = \(n_workers = options::opt("n_workers", env = "whirl"),
-      verbosity_level = options::opt("verbosity_level", env = "whirl"),
-      check_renv = options::opt("check_renv", env = "whirl"),
-      track_files = options::opt("track_files", env = "whirl"),
-      out_formats = options::opt("out_formats", env = "whirl"),
-      track_files_discards = options::opt("track_files_discards",
-        env = "whirl"
-      ),
-      track_files_keep = options::opt("track_files_keep", env = "whirl"),
-      approved_pkgs_folder = options::opt("approved_pkgs_folder",
-        env = "whirl"
-      ),
-      approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl"),
-      log_dir = options::opt("log_dir", env = "whirl")
+    initialize = \(n_workers = zephyr::get_option("n_workers", "whirl"),
+      verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
+      check_renv = zephyr::get_option("check_renv", "whirl"),
+      track_files = zephyr::get_option("track_files", "whirl"),
+      out_formats = zephyr::get_option("out_formats", "whirl"),
+      track_files_discards =
+        zephyr::get_option("track_files_discards", "whirl"),
+      track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
+      approved_pkgs_folder =
+        zephyr::get_option("approved_pkgs_folder", "whirl"),
+      approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
+      log_dir = zephyr::get_option("log_dir", "whirl")
     ) {
       wq_initialise(
         self, private,

@@ -14,19 +14,19 @@ whirl_r_session <- R6::R6Class(
     #' @inheritParams options_params
     #' @return A [whirl_r_session] object
     initialize = \(
-      verbosity_level = options::opt("verbosity_level", env = "whirl"),
-      check_renv = options::opt("check_renv", env = "whirl"),
-      track_files = options::opt("track_files", env = "whirl"),
-      out_formats = options::opt("out_formats", env = "whirl"),
-      track_files_discards = options::opt("track_files_discards",
-        env = "whirl"
+      verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
+      check_renv = zephyr::get_option("check_renv", "whirl"),
+      track_files = zephyr::get_option("track_files", "whirl"),
+      out_formats = zephyr::get_option("out_formats", "whirl"),
+      track_files_discards = zephyr::get_option(
+        "track_files_discards", "whirl"
       ),
-      track_files_keep = options::opt("track_files_keep", env = "whirl"),
-      approved_pkgs_folder = options::opt("approved_pkgs_folder",
-        env = "whirl"
+      track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
+      approved_pkgs_folder = zephyr::get_option(
+        "approved_pkgs_folder", "whirl"
       ),
-      approved_pkgs_url = options::opt("approved_pkgs_url", env = "whirl"),
-      log_dir = options::opt("log_dir", env = "whirl")
+      approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
+      log_dir = zephyr::get_option("log_dir", "whirl")
     ) {
       wrs_initialize(
         verbosity_level,
@@ -111,7 +111,7 @@ whirl_r_session <- R6::R6Class(
     #' @param format [character] Output formats to create
     #' @return [invisible],[list] of logging information
     create_outputs = \(out_dir,
-                       format = options::opt("out_formats", env = "whirl")) {
+                       format = zephyr::get_option("out_formats", "whirl")) {
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
@@ -246,7 +246,7 @@ wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
   # Set the execute directory of the Quarto process calling the script
-  quarto_execute_dir <- options::opt("execute_dir", env = "whirl")
+  quarto_execute_dir <- zephyr::get_option("execute_dir", "whirl")
   if (is.null(quarto_execute_dir)) {
     quarto_execute_dir <- switch(get_file_ext(script),
       "R" = getwd(),
