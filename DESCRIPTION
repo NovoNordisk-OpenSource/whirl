@@ -1,6 +1,6 @@
 Package: whirl
 Title: Logging package
-Version: 0.1.7.9001
+Version: 0.1.8
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
     person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
@@ -43,14 +43,12 @@ Imports:
     utils,
     withr,
     yaml,
-    zephyr
+    zephyr (>= 0.1.1)
 Suggests: 
     testthat (>= 3.0.0),
     usethis
 VignetteBuilder: 
     knitr
-Remotes: 
-    novonordisk-opensource/zephyr@260b9858b0edc9831ce49492d087c7e4959cd8e1
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
