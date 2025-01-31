@@ -44,8 +44,7 @@ create_biocompute <- function(queue, config) {
     provenance_domain = NULL, # TODO
     usability_domain = metadata[["biocompute"]][["usability"]] |>
       get_single_unique(),
-    extension_domain = list(), #metadata[["biocompute"]][["extension"]] |>
-      get_single_unique(),
+    extension_domain = list(), #TODO
     description_domain = create_description_domain(queue),
     execution_domain = create_execution_domain(queue),
     parametric_domain = create_parametrics_domain(metadata, dirname(config)),
@@ -66,28 +65,32 @@ write_biocompute <- function(bco, path = "bco.json", auto_unbox = TRUE, ...) {
 #' @noRd
 create_description_domain <- function(queue) {
 
-
   pipeline_steps <- vector(mode = "list", length = length(queue$id))
   for (step in seq_along(pipeline_steps)) {
-    pipeline_steps[[step]]$name <- basename(queue$script[[1]]) |>
+    pipeline_steps[[step]]$name <- basename(queue$script[[step]]) |>
       sub(pattern = "\\.\\w+$", replacement = "") |>
       gsub(pattern = "[-_]", replacement = " ")
     pipeline_steps[[step]]$step_number <- queue$id[[step]]
     pipeline_steps[[step]]$version <- NULL
     pipeline_steps[[step]]$description <- NULL
-    pipeline_steps[[step]]$input <- list()
+    pipeline_steps[[step]]$input_list <- queue$result[[step]]$session_info_rlist$log_info.read |>
+      dplyr::mutate(
+        filename = basename(file),
+        time = format(time, format = "%Y-%m-%d %H:%M:%S %Z")
+      ) |>
+      dplyr::rename(uri = file, access_time = time) |>
+      dplyr::select(filename, uri, access_time) |>
+      purrr::transpose()
   }
 
-  execution_domain <- list(
+  description_domain <- list(
     keywords = list(), # TODO
     External_Reference = list(), #TODO
     pipeline_steps = pipeline_steps
   )
 
-
   return (description_domain)
 }
-
 
 
 # EXECUTION DOMAIN
