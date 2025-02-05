@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,20 +100,31 @@ files:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://novonordisk-opensource.github.io/whirl/">whirl</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/options.html">options</a></span><span class="op">(</span>whirl.track_files <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/options.html">options</a></span><span class="op">(</span>whirl.verbosity_level <span class="op">=</span> <span class="st">"minimal"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>whirl.track_files <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>whirl.verbosity_level <span class="op">=</span> <span class="st">"minimal"</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>verbosity_level</code> is set to <code>minimal</code> for
 nicer printing in this vignette. Now we are ready to execute the
 script:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="st">"example.R"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #87AFD7;">══ Executing scripts and generating logs ═══════════════════════════════════════</span></span></span>
+<span><span class="co">#&gt; → Executing scripts in parallel using 1 cores</span></span>
+<span><span class="co">#&gt; The following steps will be executed</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Step 1: Unnamed chunk</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Step 1: Unnamed chunk</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> example.R: Completed succesfully</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">#&gt;      id tag   script                                 status result       log_dir</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 <span style="color: #BB0000;">NA</span>    /tmp/RtmpKnLP6H/file233843a23f5a/exam… succe… <span style="color: #949494;">&lt;named list&gt;</span> /tmp/R…</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 <span style="color: #BB0000;">NA</span>    /tmp/Rtmpacm6h1/file2502401c3ff/examp… succe… <span style="color: #949494;">&lt;named list&gt;</span> /tmp/R…</span></span></code></pre></div>
 <p>The script is now executed and you can access the logs below:</p>
 <ul>
 <li><a href="summary.html">View summary log</a></li>
