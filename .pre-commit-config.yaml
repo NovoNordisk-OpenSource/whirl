@@ -14,14 +14,13 @@ repos:
           - httr
           - jsonlite
           - kableExtra
-          - options
           - quarto
           - rmarkdown
           - sessioninfo
           - tibble
           - tidyr
           - unglue
-          - NovoNordisk-OpenSource/zephyr
+          - zephyr
           - reticulate
     -   id: use-tidy-description
     -   id: spell-check
