@@ -9,7 +9,6 @@
 whirl_r_session <- R6::R6Class(
   classname = "whirl_r_session",
   public = list(
-
     #' @description Initialize the new whirl R session
     #' @inheritParams options_params
     #' @return A [whirl_r_session] object
@@ -19,11 +18,13 @@ whirl_r_session <- R6::R6Class(
       track_files = zephyr::get_option("track_files", "whirl"),
       out_formats = zephyr::get_option("out_formats", "whirl"),
       track_files_discards = zephyr::get_option(
-        "track_files_discards", "whirl"
+        "track_files_discards",
+        "whirl"
       ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
       approved_pkgs_folder = zephyr::get_option(
-        "approved_pkgs_folder", "whirl"
+        "approved_pkgs_folder",
+        "whirl"
       ),
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl")
@@ -38,7 +39,9 @@ whirl_r_session <- R6::R6Class(
         approved_pkgs_folder,
         approved_pkgs_url,
         log_dir,
-        self, private, super
+        self,
+        private,
+        super
       )
     },
 
@@ -110,8 +113,10 @@ whirl_r_session <- R6::R6Class(
     #' @param out_dir [character] Output directory for the log
     #' @param format [character] Output formats to create
     #' @return [invisible],[list] of logging information
-    create_outputs = \(out_dir,
-                       format = zephyr::get_option("out_formats", "whirl")) {
+    create_outputs = \(
+      out_dir,
+      format = zephyr::get_option("out_formats", "whirl")
+    ) {
       wrs_create_outputs(out_dir, format, self, private, super)
     }
   ),
@@ -132,10 +137,20 @@ whirl_r_session <- R6::R6Class(
   inherit = callr::r_session
 )
 
-wrs_initialize <- function(verbosity_level, check_renv, track_files,
-                           out_formats, track_files_discards, track_files_keep,
-                           approved_pkgs_folder, approved_pkgs_url, log_dir,
-                           self, private, super) {
+wrs_initialize <- function(
+  verbosity_level,
+  check_renv,
+  track_files,
+  out_formats,
+  track_files_discards,
+  track_files_keep,
+  approved_pkgs_folder,
+  approved_pkgs_url,
+  log_dir,
+  self,
+  private,
+  super
+) {
   super$initialize() # uses callr::r_session$initialize()
 
   private$wd <- withr::local_tempdir(clean = FALSE)
@@ -248,7 +263,8 @@ wrs_log_script <- function(script, self, private, super) {
   # Set the execute directory of the Quarto process calling the script
   quarto_execute_dir <- zephyr::get_option("execute_dir", "whirl")
   if (is.null(quarto_execute_dir)) {
-    quarto_execute_dir <- switch(get_file_ext(script),
+    quarto_execute_dir <- switch(
+      get_file_ext(script),
       "R" = getwd(),
       normalizePath(dirname(script))
     )
@@ -257,7 +273,9 @@ wrs_log_script <- function(script, self, private, super) {
   }
 
   if (!file.exists(quarto_execute_dir)) {
-    cli::cli_abort("Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist") # nolint
+    cli::cli_abort(
+      "Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist"
+    ) # nolint
   }
 
   # Execute the script
@@ -407,6 +425,19 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       )
     )
   }
+
+  # Return logs from strace or whirl
+  file.copy(
+    from = file.path(self$get_wd(), "log_msg.json"),
+    to = file.path(
+      out_dir,
+      gsub(
+        pattern = "\\.[^\\.]*$",
+        replacement = "_msg_log.json",
+        x = basename(private$current_script)
+      )
+    )
+  )
 
   return(invisible(output))
 }
