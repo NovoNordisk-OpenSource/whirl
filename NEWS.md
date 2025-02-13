@@ -1,4 +1,5 @@
 # whirl dev
+* Fix UT for azure CI
 * Added pre-commit for developers
 * Fixed linting errors
 
