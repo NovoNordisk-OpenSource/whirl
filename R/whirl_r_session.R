@@ -27,7 +27,8 @@ whirl_r_session <- R6::R6Class(
         "whirl"
       ),
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
-      log_dir = zephyr::get_option("log_dir", "whirl")
+      log_dir = zephyr::get_option("log_dir", "whirl"),
+      wait_timeout = zephyr::get_option("wait_timeout", "whirl")
     ) {
       wrs_initialize(
         verbosity_level,
@@ -39,6 +40,7 @@ whirl_r_session <- R6::R6Class(
         approved_pkgs_folder,
         approved_pkgs_url,
         log_dir,
+        wait_timeout,
         self,
         private,
         super
@@ -147,11 +149,12 @@ wrs_initialize <- function(
   approved_pkgs_folder,
   approved_pkgs_url,
   log_dir,
+  wait_timeout,
   self,
   private,
   super
 ) {
-  super$initialize() # uses callr::r_session$initialize()
+  super$initialize(wait_timeout = wait_timeout) # uses callr::r_session$initialize()
 
   private$wd <- withr::local_tempdir(clean = FALSE)
   private$verbosity_level <- verbosity_level
