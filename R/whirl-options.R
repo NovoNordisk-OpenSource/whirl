@@ -103,3 +103,9 @@ zephyr::create_option(
   a character path (used for all scripts) or a function that takes the script
   as input and returns the execution directory."
 )
+
+zephyr::create_option(
+  name = "wait_timeout",
+  default = 9000,
+  description = "Timeout for waiting for the R process from callr::r_session to start, in milliseconds."
+)

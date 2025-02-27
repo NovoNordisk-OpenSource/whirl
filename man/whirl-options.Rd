@@ -125,4 +125,14 @@ as input and returns the execution directory.
 \item Environment: \code{R_WHIRL_EXECUTE_DIR}
 }
 }
+
+\subsection{wait_timeout}{
+
+Timeout for waiting for the R process from callr::r_session to start, in milliseconds.
+\itemize{
+\item Default: \code{9000}
+\item Option: \code{whirl.wait_timeout}
+\item Environment: \code{R_WHIRL_WAIT_TIMEOUT}
+}
+}
 }
