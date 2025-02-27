@@ -143,6 +143,18 @@ Environment: R_WHIRL_EXECUTE_DIR
 
 
 
+
+
+wait_timeout
+
+
+Timeout for waiting for the R process from callr::r_session to start, in milliseconds.
+Default: 9000
+Option: whirl.wait_timeout
+Environment: R_WHIRL_WAIT_TIMEOUT
+
+
+
 "><meta property="og:description" content="
 
 verbosity_level
@@ -287,6 +299,18 @@ Environment: R_WHIRL_EXECUTE_DIR
 
 
 
+
+
+wait_timeout
+
+
+Timeout for waiting for the R process from callr::r_session to start, in milliseconds.
+Default: 9000
+Option: whirl.wait_timeout
+Environment: R_WHIRL_WAIT_TIMEOUT
+
+
+
 "><meta property="og:image" content="https://novonordisk-opensource.github.io/whirl/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -295,7 +319,7 @@ Environment: R_WHIRL_EXECUTE_DIR
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -436,6 +460,15 @@ a character path (used for all scripts) or a function that takes the script
 as input and returns the execution directory.</p><ul><li><p>Default: <code>NULL</code></p></li>
 <li><p>Option: <code>whirl.execute_dir</code></p></li>
 <li><p>Environment: <code>R_WHIRL_EXECUTE_DIR</code></p></li>
+</ul></div>
+
+<div class="section">
+<h3 id="wait-timeout">wait_timeout<a class="anchor" aria-label="anchor" href="#wait-timeout"></a></h3>
+
+
+<p>Timeout for waiting for the R process from callr::r_session to start, in milliseconds.</p><ul><li><p>Default: <code>9000</code></p></li>
+<li><p>Option: <code>whirl.wait_timeout</code></p></li>
+<li><p>Environment: <code>R_WHIRL_WAIT_TIMEOUT</code></p></li>
 </ul></div>
 
     </div>

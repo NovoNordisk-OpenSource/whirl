@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,6 +100,10 @@ Default us to execute R files from the working directory when calling <code><a h
 and all other functions from the directory of the script. To change provide
 a character path (used for all scripts) or a function that takes the script
 as input and returns the execution directory.. Default: <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-wait-timeout">wait_timeout<a class="anchor" aria-label="anchor" href="#arg-wait-timeout"></a></dt>
+<dd><p>Timeout for waiting for the R process from callr::r_session to start, in milliseconds.. Default: <code>9000</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
