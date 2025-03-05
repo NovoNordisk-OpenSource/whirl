@@ -71,16 +71,43 @@ create_description_domain <- function(queue) {
       sub(pattern = "\\.\\w+$", replacement = "") |>
       gsub(pattern = "[-_]", replacement = " ")
     pipeline_steps[[step]]$step_number <- queue$id[[step]]
-    pipeline_steps[[step]]$version <- NULL
-    pipeline_steps[[step]]$description <- NULL
-    pipeline_steps[[step]]$input_list <- queue$result[[step]]$session_info_rlist$log_info.read |>
+    pipeline_steps[[step]]$version <- NULL #TODO
+    pipeline_steps[[step]]$description <- NULL # TODO - consider taking from header?
+
+
+    pipeline_steps[[step]]$prerequisite <- queue$result[[step]]$session_info_rlist$environment_options.packages |>
       dplyr::mutate(
-        filename = basename(file),
-        time = format(time, format = "%Y-%m-%d %H:%M:%S %Z")
+        name = paste("R pacakge:", package, "version:", ondiskversion),
+        uri = lapply(package, function(x) packageDescription(x)$URL)
       ) |>
-      dplyr::rename(uri = file, access_time = time) |>
-      dplyr::select(filename, uri, access_time) |>
+      dplyr::select(name, uri) |>
       purrr::transpose()
+
+    if (is.null(queue$result[[step]]$session_info_rlist$log_info.read)) {
+      pipeline_steps[[step]]$input_list <- list()
+    } else {
+      pipeline_steps[[step]]$input_list <- queue$result[[step]]$session_info_rlist$log_info.read |>
+        dplyr::mutate(
+          filename = basename(file),
+          time = format(time, format = "%Y-%m-%d %H:%M:%S %Z")
+        ) |>
+        dplyr::rename(uri = file, access_time = time) |>
+        dplyr::select(filename, uri, access_time) |>
+        purrr::transpose()
+    }
+
+    if (is.null(queue$result[[step]]$session_info_rlist$log_info.write)) {
+      pipeline_steps[[step]]$output_list <- list()
+    } else {
+      pipeline_steps[[step]]$output_list <- queue$result[[step]]$session_info_rlist$log_info.write |>
+        dplyr::mutate(
+          filename = basename(file),
+          time = format(time, format = "%Y-%m-%d %H:%M:%S %Z")
+        ) |>
+        dplyr::rename(uri = file, access_time = time) |>
+        dplyr::select(filename, uri, access_time) |>
+        purrr::transpose()
+    }
   }
 
   description_domain <- list(

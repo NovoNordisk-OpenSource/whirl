@@ -1,7 +1,7 @@
+# input_yml <- test_script("_whirl_biocompute.yaml")
+input_yml <- test_script("_biocompute_parametrics_bco-pro.yml")
 
-queue <- whirl::run(input = test_script(c("biocompute.R", "biocompute.R")),
-                    out_formats = NULL
-)
+queue <- whirl::run(input = input_yml, out_formats = NULL, track_files = TRUE)
 
 create_io_domain(queue) |>
   expect_no_condition() |>
@@ -10,11 +10,8 @@ create_io_domain(queue) |>
 create_execution_domain(queue) |>
   expect_no_condition()
 
-create_parametrics_domain(test_script("_whirl_biocompute.yaml"))
 
-queue$result[[1]]$session_info_rlist$log_info.read
+create_parametrics_domain(input_yml)
 
-
-create_biocompute(queue, test_script("_whirl_biocompute.yaml")) |>
+create_biocompute(queue, input_yml) |>
   write_biocompute(pretty = TRUE)
-
