@@ -47,13 +47,13 @@ Should the projects renv status be checked?
 }
 }
 
-\subsection{tack_files_discards}{
+\subsection{track_files_discards}{
 
 List of file naming patterns not be tracked when track_files = TRUE
 \itemize{
 \item Default: \code{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")}
-\item Option: \code{whirl.tack_files_discards}
-\item Environment: \code{R_WHIRL_TACK_FILES_DISCARDS}
+\item Option: \code{whirl.track_files_discards}
+\item Environment: \code{R_WHIRL_TRACK_FILES_DISCARDS}
 }
 }
 
