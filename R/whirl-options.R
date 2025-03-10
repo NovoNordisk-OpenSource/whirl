@@ -40,7 +40,7 @@ zephyr::create_option(
 )
 
 zephyr::create_option(
-  name = "tack_files_discards",
+  name = "track_files_discards",
   default = c(
     "^/lib",
     "^/etc",

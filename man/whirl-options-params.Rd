@@ -15,7 +15,7 @@ Currently only supported on Linux.. Default: \code{FALSE}.}
 
 \item{check_renv}{Should the projects renv status be checked?. Default: \code{FALSE}.}
 
-\item{tack_files_discards}{List of file naming patterns not be tracked when track_files = TRUE. Default: \code{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")}.}
+\item{track_files_discards}{List of file naming patterns not be tracked when track_files = TRUE. Default: \code{c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")}.}
 
 \item{track_files_keep}{List of file naming patterns always to be tracked when
 track_files = TRUE. Default: \code{NULL}.}
