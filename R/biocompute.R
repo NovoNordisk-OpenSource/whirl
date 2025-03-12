@@ -41,10 +41,11 @@ create_biocompute <- function(queue, config) {
       get_single_unique(),
     etag = metadata[["biocompute"]][["etag"]] |>
       get_single_unique(),
-    provenance_domain = NULL, # TODO
+    provenance_domain = NULL,
     usability_domain = metadata[["biocompute"]][["usability"]] |>
       get_single_unique(),
-    extension_domain = list(), #TODO
+    extension_domain = metadata[["biocompute"]][["extension"]] |>
+      get_single_unique(),
     description_domain = create_description_domain(queue),
     execution_domain = create_execution_domain(queue),
     parametric_domain = create_parametrics_domain(metadata, dirname(config)),
@@ -77,7 +78,7 @@ create_description_domain <- function(queue) {
 
     pipeline_steps[[step]]$prerequisite <- queue$result[[step]]$session_info_rlist$environment_options.packages |>
       dplyr::mutate(
-        name = paste("R pacakge:", package, "version:", ondiskversion),
+        name = paste("R package:", package, "- version:", ondiskversion),
         uri = lapply(package, function(x) packageDescription(x)$URL)
       ) |>
       dplyr::select(name, uri) |>
@@ -118,7 +119,6 @@ create_description_domain <- function(queue) {
 
   return (description_domain)
 }
-
 
 # EXECUTION DOMAIN
 # Here we should be more dynamic, this setup is more made to fit Bifrost.
