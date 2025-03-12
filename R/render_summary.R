@@ -19,11 +19,11 @@ render_summary <- function(input, summary_file = "summary.html") {
 
   withr::with_dir(
     tempdir(),
-    rmarkdown::render(
+    quarto::quarto_render(
       input = summary_qmd,
-      output_format = "html_document",
-      output_file = summary_log_html,
-      params = list(summary_df = input, summary_dir = summary_dir_f),
+      output_format = "html",
+      output_file = basename(summary_log_html),
+      execute_params = list(summary_df = input, summary_dir = summary_dir_f),
       quiet = TRUE
     )
   )
