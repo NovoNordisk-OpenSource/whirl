@@ -1,5 +1,4 @@
-# input_yml <- test_script("_whirl_biocompute.yaml")
-input_yml <- test_script("_biocompute_parametrics_bco-pro.yml")
+input_yml <- test_script("_whirl_biocompute.yaml")
 
 queue <- whirl::run(input = input_yml, out_formats = NULL, track_files = TRUE)
 
