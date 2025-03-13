@@ -13,19 +13,24 @@ render_summary <- function(input, summary_file = "summary.html") {
     fileext = ".qmd"
   )
 
-  summary_log_html <- withr::local_tempfile(fileext = ".html")
+  summary_log_html <- gsub(
+    pattern = "qmd",
+    replacement = "html",
+    x = basename(summary_qmd)
+  )
 
   summary_dir_f <- normalizePath(dirname(summary_file), winslash = "/")
 
   withr::with_dir(
     tempdir(),
-    quarto::quarto_render(
-      input = summary_qmd,
-      output_format = "html",
-      output_file = basename(summary_log_html),
-      execute_params = list(summary_df = input, summary_dir = summary_dir_f),
-      quiet = TRUE
-    )
+    {
+      quarto::quarto_render(
+        input = summary_qmd,
+        output_format = "html",
+        execute_params = list(summary_df = input, summary_dir = summary_dir_f),
+        quiet = TRUE
+      )
+    }
   )
 
   # Create requested outputs
@@ -43,7 +48,8 @@ render_summary <- function(input, summary_file = "summary.html") {
 }
 
 #' @noRd
-knit_print.whirl_summary_info <- function(x, path_rel_start, ...) { # nolint
+knit_print.whirl_summary_info <- function(x, path_rel_start, ...) {
+  # nolint
   hold <- x |>
     data.frame(check.names = FALSE)
 
@@ -60,21 +66,27 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) { # nolint
 
   hold$Hyperlink <- paste0(sprintf(
     '<a href="%s" target="_blank">%s</a>',
-    formatted, "HTML Log"
+    formatted,
+    "HTML Log"
   ))
 
   knitr::kable(hold, format = "html", escape = FALSE) |>
-    kableExtra::column_spec(1:ncols, background = ifelse(
-      hold[["Status"]] == "error",
-      "#fceeef",
-      ifelse(
-        hold[["Status"]] == "warning",
-        "#fffaea",
-        ifelse(hold[["Status"]] == "success", "#ebf5f1",
-          ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
+    kableExtra::column_spec(
+      1:ncols,
+      background = ifelse(
+        hold[["Status"]] == "error",
+        "#fceeef",
+        ifelse(
+          hold[["Status"]] == "warning",
+          "#fffaea",
+          ifelse(
+            hold[["Status"]] == "success",
+            "#ebf5f1",
+            ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
+          )
         )
       )
-    )) |>
+    ) |>
     kableExtra::kable_styling(
       bootstrap_options = "striped",
       full_width = TRUE
