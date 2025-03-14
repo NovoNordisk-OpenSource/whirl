@@ -4,6 +4,8 @@ biocompute:
   etag: "c69asgs797agfka"
   usability: |
     This is an example of a biocompute project.
+  extension: |
+    example text
 steps:
   - name: "First step"
     paths:
