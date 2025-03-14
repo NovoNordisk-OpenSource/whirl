@@ -8,12 +8,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-# Use a temporary directory as working directory with the example program available
+# Use a temporary directory as working directory with the example program
 
 wd <- getwd()
 tmp <- withr::local_tempdir()
 
-system.file("examples/prg1.R", package = "whirl") |>  
+system.file("examples/prg1.R", package = "whirl") |>
   file.copy(to = file.path(tmp, "example.R"))
 
 knitr::opts_knit$set(root.dir = tmp)
@@ -51,14 +51,14 @@ The script is now executed and you can access the logs below:
 
 articles_folder <- file.path(wd, "../../docs/articles")
 
-articles_folder |> 
-  dir.exists() |> 
+articles_folder |>
+  dir.exists() |>
   stopifnot()
 
-c("summary.html", "example_log.html", "plot1.png") |> 
-  lapply(file.copy, to = articles_folder, overwrite = TRUE) |> 
-  unlist() |> 
-  all() |> 
+c("summary.html", "example_log.html", "plot1.png") |>
+  lapply(file.copy, to = articles_folder, overwrite = TRUE) |>
+  unlist() |>
+  all() |>
   stopifnot()
 ```
 

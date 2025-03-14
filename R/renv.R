@@ -21,7 +21,7 @@ print.whirl_renv_status <- function(x, ...) {
 
 #' @noRd
 
-knit_print.whirl_renv_status <- function(x, ...) {
+knit_print.whirl_renv_status <- function(x, ...) { # nolint
   if (!length(x$status$lockfile$Packages)) {
     renv_note <- "warning"
     renv_title <- "renv not used"
@@ -50,7 +50,8 @@ knit_print.whirl_renv_status <- function(x, ...) {
   )
 }
 
-#' Format renv message with markdown table. Used when packages are in inconsistent state only.
+#' Format renv message with markdown table.
+#' Used when packages are in inconsistent state only.
 #' @noRd
 
 renv_message_table <- function(renv_message) {
@@ -61,7 +62,12 @@ renv_message_table <- function(renv_message) {
     return(renv_message)
   }
 
-  renv_message[i] <- gsub(pattern = "( |$)(?! )", replacement = "|", x = renv_message[i], perl = TRUE)
+  renv_message[i] <- gsub(
+    pattern = "( |$)(?! )",
+    replacement = "|",
+    x = renv_message[i],
+    perl = TRUE
+  )
 
   j <- i[[1]]
 

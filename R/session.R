@@ -5,11 +5,13 @@
 #'
 #' @noRd
 
-session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, python_packages = NULL) {
+session_info <- function(approved_folder_pkgs = NULL,
+                         approved_url_pkgs = NULL,
+                         python_packages = NULL) {
   info <- sessioninfo::session_info()
 
-  if (!is.null(approved_folder_pkgs) |
-    !is.null(approved_url_pkgs)) {
+  if (!is.null(approved_folder_pkgs) ||
+        !is.null(approved_url_pkgs)) {
     info$packages <- check_approved(
       approved_pkg_folder = approved_folder_pkgs,
       approved_pkg_url = approved_url_pkgs,
@@ -31,8 +33,8 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
   info$options <- info$options[!names(info$options) %in% "rl_word_breaks"]
   class(info$options) <- c("options_info", class(info$options))
 
-  # TODO: Extend to also cover external.
-  info[!names(info) %in% c("platform", "packages", "environment", "options")] <- NULL
+  info[!names(info) %in% c("platform", "packages", "environment", "options")] <-
+    NULL
 
   if (is.null(info$platform$quarto)) {
     quarto_path <- Sys.getenv("QUARTO_PATH")
@@ -41,16 +43,19 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
     if (nzchar(quarto_path)) {
       quarto_version <- system2(quarto_path, "--version", stdout = TRUE)
 
-      info$platform$quarto <- paste(quarto_version, "@", normalizePath(quarto_path, winslash = "/"))
+      info$platform$quarto <- paste(
+        quarto_version, "@",
+        normalizePath(quarto_path, winslash = "/")
+      )
     }
   }
 
   if (!is.null(python_packages)) {
-    # TODO: Get the same information as for R packages (not only name and version)
-    # TODO: Only show used, and not all installed, packages if possible
-
     info$python_packages <- python_packages
-    class(info$python_packages) <- c("packages_info", class(info$python_packages))
+    class(info$python_packages) <- c(
+      "packages_info",
+      class(info$python_packages)
+    )
 
     info$platform$python <- reticulate::py_config()[["version"]] |>
       as.character() |>
@@ -59,7 +64,10 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 
   class(info) <- c("whirl_session_info", class(info))
   for (i in seq_along(info)) {
-    class(info[[i]]) <- c(paste0("whirl_", class(info[[i]])[[1]]), class(info[[i]]))
+    class(info[[i]]) <- c(
+      paste0("whirl_", class(info[[i]])[[1]]),
+      class(info[[i]])
+    )
   }
 
   return(info)
@@ -68,7 +76,6 @@ session_info <- function(approved_folder_pkgs = NULL, approved_url_pkgs = NULL, 
 #' Get Python package info from json file
 #'
 #' @noRd
-
 python_package_info <- function(json) {
   json <- jsonlite::fromJSON(json)
 
@@ -92,15 +99,13 @@ python_package_info <- function(json) {
 }
 
 #' @noRd
-
-knit_print.whirl_session_info <- function(x, ...) {
+knit_print.whirl_session_info <- function(x, ...) { # nolint
   x |>
     lapply(knitr::knit_print)
 }
 
 #' @noRd
-
-knit_print.whirl_platform_info <- function(x, ...) {
+knit_print.whirl_platform_info <- function(x, ...) { # nolint
   data.frame(
     Setting = names(x),
     Value = x |>
@@ -117,8 +122,7 @@ knit_print.whirl_platform_info <- function(x, ...) {
 }
 
 #' @noRd
-
-knit_print.whirl_packages_info <- function(x, ...) {
+knit_print.whirl_packages_info <- function(x, ...) { # nolint
   if (!is.null(x$package)) {
     x <- data.frame(
       Package = x$package,
@@ -139,8 +143,7 @@ knit_print.whirl_packages_info <- function(x, ...) {
 }
 
 #' @noRd
-
-knit_print.whirl_approved_pkgs <- function(x, ...) {
+knit_print.whirl_approved_pkgs <- function(x, ...) { # nolint
   hold <- x |>
     data.frame(
       check.names = FALSE
@@ -164,7 +167,19 @@ knit_print.whirl_approved_pkgs <- function(x, ...) {
       bootstrap_options = "striped",
       full_width = TRUE
     ) |>
-    kableExtra::column_spec(1:ncols, background = ifelse(as.integer(rowSums(as.matrix(hold[, grepl("^Approved", colnames(hold))]) == "No") == ncol(as.matrix(hold[, grepl("^Approved", colnames(hold))]))) == 1, "orange", "white")) |>
+    kableExtra::column_spec(
+      column = 1:ncols,
+      background = ifelse(
+        as.integer(
+          rowSums(
+            as.matrix(hold[, grepl("^Approved", colnames(hold))]) == "No"
+          ) ==
+            ncol(as.matrix(hold[, grepl("^Approved", colnames(hold))]))
+        ) == 1,
+        "orange",
+        "white"
+      )
+    ) |>
     knitr::knit_print()
 }
 
@@ -176,8 +191,13 @@ insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
     } else {
       result <- input_string
       insert_positions <- seq(interval, nchar(input_string), by = interval)
-      for (i in length(insert_positions):1) {
-        result <- paste(substr(result, 1, insert_positions[i] - 1), char_to_insert, substr(result, insert_positions[i], nchar(result)), sep = "")
+      for (i in rev(seq_along(insert_positions))) {
+        result <- paste(
+          substr(result, 1, insert_positions[i] - 1),
+          char_to_insert,
+          substr(result, insert_positions[i], nchar(result)),
+          sep = ""
+        )
       }
       return(result)
     }
@@ -186,10 +206,7 @@ insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
 }
 
 #' @noRd
-
-
-
-knit_print.whirl_environment_info <- function(x, ...) {
+knit_print.whirl_environment_info <- function(x, ...) { # nolint
   dropped_info <-
     c(
       "BASH_FUNC",
@@ -232,7 +249,7 @@ knit_print.whirl_environment_info <- function(x, ...) {
 }
 
 #' @noRd
-knit_print.whirl_options_info <- function(x, ...) {
+knit_print.whirl_options_info <- function(x, ...) { # nolint
   data.frame(t(sapply(unlist(x), c))) |>
     tidyr::pivot_longer(dplyr::everything(),
       values_to = "Value",

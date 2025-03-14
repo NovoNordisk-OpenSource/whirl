@@ -4,28 +4,25 @@
 #' @param input Can be a vector, a list or a whirl config file.
 #' @param steps A filter argument for selecting specific steps that should be
 #'   executed
-#' @inheritParams options_params
-#'
 #' @return A list
 #' @noRd
-enrich_input <- function(input, steps = NULL,
-                         verbosity_level = options::opt("verbosity_level", env = "whirl")) {
-
+enrich_input <- function(input,
+                         steps = NULL) {
   # Characterize the input
   is_config_file <- any(grepl("yaml|yml", get_file_ext(input)))
   is_character <- is.character(input)
 
   # Read yaml and extract list
-  if (is_config_file & length(input) == 1) {
+  if (is_config_file && length(input) == 1) {
     root_dir <- dirname(input)
     config_whirl <- yaml::read_yaml(file = input, eval.expr = TRUE)
     got <- config_whirl$"steps"
   } else {
-    root_dir = getwd()
+    root_dir <- getwd()
   }
 
   # Convert vector to list
-  if (is_character & !is_config_file) {
+  if (is_character && !is_config_file) {
     got <- list(input)
   }
 
@@ -36,7 +33,6 @@ enrich_input <- function(input, steps = NULL,
   names <- list()
   paths <- list()
   for (i in seq_along(got)) {
-
     # Identify the step names - if none, then create a default name
     check_name <- any(grepl("name", names(got[[i]])))
     if (check_name) {
@@ -56,7 +52,11 @@ enrich_input <- function(input, steps = NULL,
 
   # Normalizing the paths and read regexp
   for (j in seq_along(paths)) {
-    normalized <- unlist(lapply(paths[[j]], normalize_with_base, base = root_dir))
+    normalized <- unlist(lapply(
+      X = paths[[j]],
+      FUN = normalize_with_base,
+      base = root_dir
+    ))
     paths[[j]] <- read_glob(normalized)
   }
 
@@ -72,8 +72,10 @@ enrich_input <- function(input, steps = NULL,
   }
 
   # Merge the names and paths into a list
-  out <- mapply(list, "name" = names, "paths" = paths,
-                SIMPLIFY = FALSE)
+  out <- mapply(list,
+    "name" = names, "paths" = paths,
+    SIMPLIFY = FALSE
+  )
 
   # Get the step names
   step_names <- unlist(out)[grepl("name", names(unlist(out)))]
@@ -81,9 +83,9 @@ enrich_input <- function(input, steps = NULL,
   # Prune the list when steps have been selected
   if (!is.null(steps)) {
     id <- which(step_names %in% steps)
-    #Update the vector of names
+    # Update the vector of names
     step_names <- step_names[id]
-    #Update the list
+    # Update the list
     out <- out[id]
   }
 
@@ -93,11 +95,7 @@ enrich_input <- function(input, steps = NULL,
     step_names |> rlang::set_names("*")
   )
 
-  zephyr::msg(message_,
-              msg_fun = cli::cli_inform,
-              levels_to_write = "verbose",
-              verbosity_level = verbosity_level
-  )
+  zephyr::msg_verbose(message = message_, msg_fun = cli::cli_inform)
 
   invisible(out)
 }

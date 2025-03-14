@@ -39,5 +39,4 @@ util_queue_summary <- function(queue_table) {
   ) |>
     tidyr::unnest(cols = c("Information"), keep_empty = TRUE) |>
     tidyr::replace_na(list(Information = ""))
-
 }

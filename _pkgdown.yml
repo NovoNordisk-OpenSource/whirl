@@ -8,7 +8,7 @@ reference:
   contents:
   - run
   - use_whirl
-  - options
+  - whirl-options
 
 - title: "Log custom actions"
   contents:

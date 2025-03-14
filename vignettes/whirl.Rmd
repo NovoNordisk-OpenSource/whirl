@@ -39,15 +39,15 @@ The location of the summary file can be controlled with the `summary_file` argum
 ```{r}
 # Execution of all R files in a specific directory
 run(
-  input = "path/to/directory/*.R", 
-  n_workers = 4, 
+  input = "path/to/directory/*.R",
+  n_workers = 4,
   summary_file = "path/to/summary"
 )
 
 # Execution of all R files starting with "mk200" in a specific directory
 run(
-  input = "path/to/directory/mk200*.R", 
-  n_workers = 8, 
+  input = "path/to/directory/mk200*.R",
+  n_workers = 8,
   summary_file = "path/to/summary"
 )
 ```
@@ -63,28 +63,30 @@ If the scripts have to be executed in a specific order, the `input` argument can
 ```{r}
 # In the below example, script1.R and script2.R will be executed in parallel
 run(
-  input = c("path/to/script1.R",
-            "path/to/script2.R"),
+  input = c(
+    "path/to/script1.R",
+    "path/to/script2.R"
+  ),
   n_workers = 2
 )
 
-# In the below example, script1.R and script2.R will be executed in parallel, 
+# In the below example, script1.R and script2.R will be executed in parallel,
 # and all R files in the directory will subsequently be executed in parallel
 run(
   input = list(
-    c("path/to/script1.R", "path/to/script2.R"), 
+    c("path/to/script1.R", "path/to/script2.R"),
     "path/to/directory/*.R"
-    ),
+  ),
   n_workers = 2
 )
 
-# In the below example, script1.R and script2.R will be executed in parallel, and subsequently 
-# script3.R and script4.R will be executed in parallel
+# In the below example, script1.R and script2.R will be executed in parallel,
+# and subsequently script3.R and script4.R will be executed in parallel
 run(
   input = list(
     c("path/to/script1.R", "path/to/script2.R"),
     c("path/to/script3.R", "path/to/script4.R")
-    ),
+  ),
   n_workers = 2
 )
 ```
@@ -94,14 +96,15 @@ This can be useful during execution as some of these 'name' will be printed to t
 
 E.g.
 ```{r}
-run(input = list(
-  list(
-    name = "Step 1", 
-    paths = c("path/to/script1.R", "path/to/script2.R")
+run(
+  input = list(
+    list(
+      name = "Step 1",
+      paths = c("path/to/script1.R", "path/to/script2.R")
     ),
-  list(
-    name = "Step 2",
-    paths = c("path/to/script3.R", "path/to/script4.R")
+    list(
+      name = "Step 2",
+      paths = c("path/to/script3.R", "path/to/script4.R")
     )
   ),
   n_workers = 2
@@ -155,10 +158,14 @@ If a more dynamic approach is needed the `log_dir` argument can also be supplied
 For example, if multiple script are executed and the logs needs to be stored in a sub-folder within the script directories this could be achieved by:
 
 ```{r}
-run(input = c("path/to/dir1/script1.R", "path/to/dir2/script2.R"), 
-    log_dir = function(x) {paste0(dirname(x), "/logs")})
+run(
+  input = c("path/to/dir1/script1.R", "path/to/dir2/script2.R"),
+  log_dir = function(x) {
+    paste0(dirname(x), "/logs")
+  }
+)
 ```
 
-In this exampel the log of script1.R will be stored in **path/to/dir1/logs** and the log of script2.R will be stored in **path/to/dir2/logs**.
+In this example the log of script1.R will be stored in **path/to/dir1/logs** and the log of script2.R will be stored in **path/to/dir2/logs**.
 
 Note that **x** refer to the path of the script that is being executed. 
