@@ -23,7 +23,6 @@ Imports:
     cli,
     dplyr,
     ggplot2,
-    glue,
     jsonlite,
     kableExtra,
     knitr,
