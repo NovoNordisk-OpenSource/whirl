@@ -24,7 +24,6 @@ Imports:
     dplyr,
     ggplot2,
     glue,
-    httr,
     jsonlite,
     kableExtra,
     knitr,
