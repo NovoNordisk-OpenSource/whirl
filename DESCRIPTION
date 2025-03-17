@@ -26,7 +26,6 @@ Imports:
     jsonlite,
     kableExtra,
     knitr,
-    purrr,
     quarto,
     R6,
     renv,
