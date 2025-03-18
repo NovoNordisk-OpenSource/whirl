@@ -17,6 +17,10 @@ test_that("Run single R script", {
     expect_no_error()
 
   expect_single_script(res)
+
+  test_script("success.R") |> 
+    run(verbosity_level = "verbose") |> 
+    expect_message()
 })
 
 test_that("Run single python script", {
