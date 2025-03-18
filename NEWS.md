@@ -3,6 +3,7 @@
 * Added pre-commit for developers
 * Fixed linting errors
 * Fix typo in `track_files_discards` option
+* Increases unit test coverage and skips `run()` tests etc. when Quarto is not available
 
 # whirl 0.1.7 (2024-12-17)
 * Enable redirection of logs through the `log_dir` argument in `run()`.
