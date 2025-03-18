@@ -61,6 +61,8 @@ The way the execution is logged is configurable through several options for
 e.g. the verbosity of the logs. See \link{whirl-options} on how to configure these.
 }
 \examples{
+\dontshow{if (!is.null(quarto::quarto_path())) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
 # Start by copying the following three example scripts:
 file.copy(
   from = system.file("examples", c("success.R", "warning.R", "error.R"),
@@ -83,7 +85,7 @@ run(
   ),
   n_workers = 2
 )
-
+\dontshow{\}) # examplesIf}
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Re-directing the logs to a sub-folder by utilizing the log_dir argument in

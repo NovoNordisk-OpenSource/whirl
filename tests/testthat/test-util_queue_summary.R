@@ -20,6 +20,7 @@ test_that(
 # Test for successful creation of summary tibble
 
 test_that("Summary tibble is created successfully", {
+  skip_if_no_quarto()
   q <- whirl_queue$new(n_workers = 2)
 
   test_script(c("success.R", "py_success.py")) |>
