@@ -33,4 +33,24 @@ test_that("stream to log file in a whirl context", {
       expect_equal(x$file, c("test_read", "test_write", "test_delete"))
     }
   )
+
+  split_log(x) |>
+    expect_length(3) |>
+    lapply(expect_s3_class, "data.frame") |>
+    vapply(\(x) x[["file"]], character(1)) |>
+    expect_equal(
+      c(read = "test_read", write = "test_write", delete = "test_delete")
+    )
+
+  split_log(x[-2,]) |>
+    expect_length(3) |>
+    lapply(expect_s3_class, "data.frame") |>
+    vapply(\(x) x[["file"]], character(1)) |>
+    expect_equal(
+      c(read = "test_read", write = "No files", delete = "test_delete")
+    )
+
+  x["time"] <- as.POSIXct("2000-01-01 01:01:01")
+  knit_print.whirl_log_info(x) |>
+    expect_snapshot()
 })
