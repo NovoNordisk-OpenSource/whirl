@@ -21,8 +21,8 @@
 #' @inheritParams whirl-options-params
 #' @return A tibble containing the execution results for all the scripts.
 #'
-
-#' @examples
+#' @examplesIf !is.null(quarto::quarto_path())
+#'
 #' # Start by copying the following three example scripts:
 #' file.copy(
 #'   from = system.file("examples", c("success.R", "warning.R", "error.R"),

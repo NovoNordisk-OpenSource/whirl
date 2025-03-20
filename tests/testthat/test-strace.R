@@ -7,19 +7,6 @@ strace_info <- function(path = "strace.log") {
   )
 }
 
-# expect_strace <- function(read, delete, write, path = "strace.log") {
-#   strace_info <- strace_info(path = path)
-
-#   strace_info$read$file |>
-#     testthat::expect_match(read)
-
-#   strace_info$delete$file |>
-#     testthat::expect_match(delete)
-
-#   strace_info$write$file |>
-#     testthat::expect_match(write)
-# }
-
 test_that("strace works", {
   skip_on_ci()
   skip_on_os(c("windows", "mac", "solaris"))
@@ -31,10 +18,6 @@ test_that("strace works", {
       p <- callr::r_session$new()
 
       start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
-
-      # No output yet
-
-      # p$run(\() 1 + 1)
 
       # Only save a file
 
@@ -65,7 +48,6 @@ test_that("strace works", {
         testthat::expect_true()
       any(grepl(x = test$delete$file, pattern = "dummy.txt")) |>
         testthat::expect_true()
-      # expect_strace("/dummy.txt$", "/dummy.txt$", "/mtcars.rds$")
 
       p$kill()
       p$finalize()
