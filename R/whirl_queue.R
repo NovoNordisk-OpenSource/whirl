@@ -296,8 +296,6 @@ wq_next_step <- function(self, private, wid) {
       purrr::pluck(private$.queue, "status", id_script) <-
         purrr::pluck(private$.queue, "result", id_script, "status", "status")
 
-      #session$kill() # kill process
-
       purrr::pluck(private$.workers, "session", wid) <- NULL
       purrr::pluck(private$.workers, "active", wid) <- FALSE
       purrr::pluck(private$.workers, "id_script", wid) <- 0
