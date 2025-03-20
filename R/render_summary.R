@@ -21,25 +21,30 @@ render_summary <- function(input, summary_file = "summary.html") {
 
   summary_dir_f <- normalizePath(dirname(summary_file), winslash = "/")
 
-  withr::with_dir(
-    tempdir(),
-    {
-      quarto::quarto_render(
-        input = summary_qmd,
-        output_format = "html",
-        execute_params = list(summary_df = input, summary_dir = summary_dir_f),
-        quiet = TRUE
-      )
-    }
-  )
-
   # Create requested outputs
   tryCatch(
-    file.copy(
-      from = summary_log_html,
-      to = summary_file,
-      overwrite = TRUE
-    ),
+    {
+      withr::with_dir(
+        tempdir(),
+        {
+          quarto::quarto_render(
+            input = summary_qmd,
+            output_format = "html",
+            execute_params = list(
+              summary_df = input,
+              summary_dir = summary_dir_f
+            ),
+            quiet = TRUE
+          )
+        }
+      )
+
+      file.copy(
+        from = summary_log_html,
+        to = summary_file,
+        overwrite = TRUE
+      )
+    },
     error = function(e) {
       warning("File copy failed: ", e$message)
       FALSE
