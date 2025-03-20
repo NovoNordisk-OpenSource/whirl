@@ -296,7 +296,7 @@ wq_next_step <- function(self, private, wid) {
       purrr::pluck(private$.queue, "status", id_script) <-
         purrr::pluck(private$.queue, "result", id_script, "status", "status")
 
-      session$finalize()
+      #session$kill() # kill process
 
       purrr::pluck(private$.workers, "session", wid) <- NULL
       purrr::pluck(private$.workers, "active", wid) <- FALSE
@@ -312,4 +312,5 @@ wq_run <- function(scripts, self) {
   self$
     push(scripts)$
     wait() # nolint
+  on.exit(gc()) # finalizes used whirl_r_sessions - clenup temp folders
 }

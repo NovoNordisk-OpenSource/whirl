@@ -50,7 +50,6 @@ test_that("strace works", {
         testthat::expect_true()
 
       p$kill()
-      p$finalize()
     },
     tmpdir = getwd()
   )
