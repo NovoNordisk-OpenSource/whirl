@@ -7,5 +7,4 @@
   s3_register("knitr::knit_print", "whirl_environment_info")
   s3_register("knitr::knit_print", "whirl_options_info")
   s3_register("knitr::knit_print", "whirl_log_info")
-  s3_register("knitr::knit_print", "whirl_summary_info")
 } # nocov end

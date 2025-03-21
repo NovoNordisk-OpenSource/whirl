@@ -185,10 +185,8 @@ wrs_initialize <- function(
   )
 
   environment_file <- file.path(private$wd, "_environment")
-  environment_file |>
-    readLines() |>
-    glue::glue() |>
-    writeLines(environment_file)
+  # Add whirl log file to environment file
+  cat(sprintf("WHIRL_LOG_MSG='%s'", file.path(private$wd,'log_msg.json')), file = environment_file, append = TRUE)
 
   if (track_files) {
     start_strace(

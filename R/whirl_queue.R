@@ -267,16 +267,16 @@ wq_wait <- function(self, private, timeout) {
 }
 
 wq_next_step <- function(self, private, wid) {
-  purrr::pluck(private$.workers, "step", wid) <-
-    purrr::pluck(private$.workers, "step", wid) + 1
-  id_script <- purrr::pluck(private$.workers, "id_script", wid)
-  session <- purrr::pluck(private$.workers, "session", wid)
 
-  switch(EXPR = purrr::pluck(private$.workers, "step", wid),
+  private$.workers$step[[wid]] <- private$.workers$step[[wid]] + 1
+  id_script <- private$.workers$id_script[[wid]]
+  session <- private$.workers$session[[wid]]
+
+  switch(EXPR = private$.workers$step[[wid]],
 
     # Step 1: Log script
     "1" = {
-      script <- purrr::pluck(private$.queue, "script", id_script)
+      script <- private$.queue$script[[id_script]]
       session$log_script(script)
     },
     # Step 2: Create log
@@ -285,23 +285,20 @@ wq_next_step <- function(self, private, wid) {
     },
     # Step 3: Finish log and create outputs
     "3" = {
-      purrr::pluck(private$.queue, "result", id_script) <-
-        session$
-        log_finish()$
-        create_outputs(
-          out_dir = purrr::pluck(private$.queue, "log_dir", id_script),
+      private$.queue$result[[id_script]] <-
+        session$log_finish()$create_outputs(
+          out_dir = private$.queue$log_dir[[id_script]],
           format = private$out_formats
         )
-
-      purrr::pluck(private$.queue, "status", id_script) <-
-        purrr::pluck(private$.queue, "result", id_script, "status", "status")
+      # fmt: skip
+      private$.queue$status[[id_script]] <- private$.queue$result[[id_script]]$status$status
 
       session$finalize()
 
-      purrr::pluck(private$.workers, "session", wid) <- NULL
-      purrr::pluck(private$.workers, "active", wid) <- FALSE
-      purrr::pluck(private$.workers, "id_script", wid) <- 0
-      purrr::pluck(private$.workers, "step", wid) <- 0
+      private$.workers$session[wid] <- list(NULL)
+      private$.workers$active[[wid]] <- FALSE
+      private$.workers$id_script[[wid]] <- 0
+      private$.workers$step[[wid]] <- 0
     }
   )
 
