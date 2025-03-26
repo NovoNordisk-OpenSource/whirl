@@ -2,10 +2,13 @@
 #'
 #' An utility function to help you build your approved packages .
 #' @noRd
-check_approved <- function(approved_pkg_folder,
-                           approved_pkg_url,
-                           session_pkgs,
-                           output_file = NULL) {
+# nolint start
+check_approved <- function(
+  approved_pkg_folder,
+  approved_pkg_url,
+  session_pkgs,
+  output_file = NULL
+) {
   if (is.null(approved_pkg_folder) && is.null(approved_pkg_url)) {
     stop("Both approved_pkg_folder and approved_pkg_url cannot be NULL")
   }
@@ -23,7 +26,10 @@ check_approved <- function(approved_pkg_folder,
       } else {
         paste0(url, "/PACKAGES")
       }
-      if (httr::http_error(tmpf)) {
+
+      status <- check_url(tmpf)
+
+      if (!status) {
         stop("The repository is not available")
       }
 
@@ -76,7 +82,11 @@ check_approved <- function(approved_pkg_folder,
   if (is.null(approved_pkg_folder)) {
     approved_dset <- approved_dset_url |>
       dplyr::select(
-        "package", "loadedversion", "date", "source", "Approved",
+        "package",
+        "loadedversion",
+        "date",
+        "source",
+        "Approved",
         "Approved Repository"
       ) |>
       dplyr::rename("Repository URL" = "Approved Repository") |>
@@ -84,7 +94,11 @@ check_approved <- function(approved_pkg_folder,
   } else if (is.null(approved_pkg_url) || length(approved_pkg_url) == 0) {
     approved_dset <- approved_dset_file |>
       dplyr::select(
-        "package", "loadedversion", "date", "source", "Approved",
+        "package",
+        "loadedversion",
+        "date",
+        "source",
+        "Approved",
         "Approved Repository"
       ) |>
       dplyr::rename("Repository Folder" = "Approved Repository") |>
@@ -96,8 +110,14 @@ check_approved <- function(approved_pkg_folder,
       by = c("package", "loadedversion")
     ) |>
       dplyr::select(
-        "package", "loadedversion", "date.x", "source.x", "Approved.x",
-        "Approved Repository.x", "Approved.y", "Approved Repository.y"
+        "package",
+        "loadedversion",
+        "date.x",
+        "source.x",
+        "Approved.x",
+        "Approved Repository.x",
+        "Approved.y",
+        "Approved Repository.y"
       ) |>
       dplyr::rename(
         "date" = "date.x",
@@ -120,7 +140,7 @@ check_approved <- function(approved_pkg_folder,
     saveRDS(approved_dset, output_file)
   }
 }
-
+# nolint end
 
 #' @noRd
 create_approval_plot <- function(data) {
@@ -129,7 +149,8 @@ create_approval_plot <- function(data) {
   data$grpvar <- ifelse(
     rowSums(as.matrix(data[, grepl("^Approved", colnames(data))]) == "No") ==
       ncol(as.matrix(data[, grepl("^Approved", colnames(data))])),
-    "No", "Yes"
+    "No",
+    "Yes"
   )
 
   data |>
@@ -138,10 +159,14 @@ create_approval_plot <- function(data) {
       pct = prop.table(.data[["n"]]),
       status = "grpvar",
       lbl = paste0(
-        .data[["grpvar"]], ": ",
-        .data[["n"]], "/",
-        sum(.data[["n"]]), " (",
-        scale_to_percent(.data[["pct"]]), ")"
+        .data[["grpvar"]],
+        ": ",
+        .data[["n"]],
+        "/",
+        sum(.data[["n"]]),
+        " (",
+        scale_to_percent(.data[["pct"]]),
+        ")"
       )
     ) |>
     ggplot2::ggplot(
@@ -163,4 +188,20 @@ create_approval_plot <- function(data) {
     ) +
     ggplot2::scale_fill_manual(values = c("Yes" = "green", "No" = "orange")) +
     ggplot2::labs(title = "Approved")
+}
+
+#' @noRd
+check_url <- function(url) {
+  status <- tryCatch(
+    {
+      con <- url(url, "r")
+      readLines(con, n = 1)
+      close(con)
+      TRUE
+    },
+    error = function(e) {
+      FALSE
+    }
+  )
+  return(status)
 }

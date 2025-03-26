@@ -184,10 +184,15 @@ wrs_initialize <- function(
   )
 
   environment_file <- file.path(private$wd, "_environment")
-  environment_file |>
-    readLines() |>
-    glue::glue() |>
-    writeLines(environment_file)
+  # Add whirl log file to environment file
+  cat(
+    sprintf(
+      "WHIRL_LOG_MSG='%s'",
+      file.path(private$wd, "log_msg.json")
+    ),
+    file = environment_file,
+    append = TRUE
+  )
 
   if (track_files) {
     start_strace(
@@ -196,11 +201,15 @@ wrs_initialize <- function(
     )
   }
 
-  zephyr::msg_debug("Started session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}")
+  zephyr::msg_debug(
+    "Started session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}"
+  )
 }
 
 wrs_finalize <- function(self, private, super) {
-  zephyr::msg_debug("Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}")
+  zephyr::msg_debug(
+    "Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}"
+  )
   super$run(func = setwd, args = list(dir = getwd()))
   unlink(private$wd, recursive = TRUE)
   super$finalize()
