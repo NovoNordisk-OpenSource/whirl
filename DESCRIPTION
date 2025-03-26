@@ -19,7 +19,6 @@ Depends:
     R (>= 4.1)
 Imports: 
     callr,
-    checkmate,
     cli,
     dplyr,
     ggplot2,
