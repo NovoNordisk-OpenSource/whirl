@@ -216,8 +216,9 @@ insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
 }
 
 #' @noRd
+# nolint start
 knit_print.whirl_environment_info <- function(x, ...) {
-  # nolint
+  # nolint end
   dropped_info <-
     c(
       "BASH_FUNC",

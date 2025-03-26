@@ -334,5 +334,5 @@ wq_next_step <- function(self, private, wid) {
 
 wq_run <- function(scripts, self) {
   self$push(scripts)$wait() # nolint
-  on.exit(gc()) # finalizes used whirl_r_sessions - clenup temp folders
+  on.exit(gc()) # finalizes used whirl_r_sessions - cleanup temp folders
 }

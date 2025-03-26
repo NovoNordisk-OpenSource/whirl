@@ -2,6 +2,7 @@
 #'
 #' An utility function to help you build your approved packages .
 #' @noRd
+# nolint start
 check_approved <- function(
   approved_pkg_folder,
   approved_pkg_url,
@@ -139,7 +140,7 @@ check_approved <- function(
     saveRDS(approved_dset, output_file)
   }
 }
-
+# nolint end
 
 #' @noRd
 create_approval_plot <- function(data) {

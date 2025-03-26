@@ -1,4 +1,4 @@
-test_that("Runing approved_pkgs workflow", {
+test_that("Running approved_pkgs workflow", {
   url <- getOption("repos")
   status <- check_url(sprintf("%s/src/contrib/PACKAGES", url))
 

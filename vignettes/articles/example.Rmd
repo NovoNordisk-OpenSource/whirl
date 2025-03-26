@@ -61,7 +61,6 @@ withr::with_dir(tmp, {
     all() |>
     stopifnot()
 })
-
 ```
 
 * [View summary log](summary.html)
