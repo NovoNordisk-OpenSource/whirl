@@ -129,4 +129,4 @@ logging for your needs see the following:
   advanced usage.
 - `vignette("articles/example")`: With a simple example, including the
   created log.
-- `options()`: On how to change the default behavior of whirl.
+- `whirl-options()`: On how to change the default behavior of whirl.
