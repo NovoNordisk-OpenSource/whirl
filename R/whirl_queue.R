@@ -11,25 +11,30 @@
 whirl_queue <- R6::R6Class(
   classname = "whirl_queue",
   public = list(
-
     #' @inheritParams options_params
     #' @description Initialize the new whirl_queue
     #' @return A [whirl_queue] object
-    initialize = \(n_workers = zephyr::get_option("n_workers", "whirl"),
+    initialize = \(
+      n_workers = zephyr::get_option("n_workers", "whirl"),
       verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
       out_formats = zephyr::get_option("out_formats", "whirl"),
-      track_files_discards =
-        zephyr::get_option("track_files_discards", "whirl"),
+      track_files_discards = zephyr::get_option(
+        "track_files_discards",
+        "whirl"
+      ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
-      approved_pkgs_folder =
-        zephyr::get_option("approved_pkgs_folder", "whirl"),
+      approved_pkgs_folder = zephyr::get_option(
+        "approved_pkgs_folder",
+        "whirl"
+      ),
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl")
     ) {
       wq_initialise(
-        self, private,
+        self,
+        private,
         n_workers,
         verbosity_level,
         check_renv,
@@ -137,10 +142,20 @@ whirl_queue <- R6::R6Class(
   )
 )
 
-wq_initialise <- function(self, private, n_workers,
-                          verbosity_level, check_renv, track_files, out_formats,
-                          track_files_discards, track_files_keep,
-                          approved_pkgs_folder, approved_pkgs_url, log_dir) {
+wq_initialise <- function(
+  self,
+  private,
+  n_workers,
+  verbosity_level,
+  check_renv,
+  track_files,
+  out_formats,
+  track_files_discards,
+  track_files_keep,
+  approved_pkgs_folder,
+  approved_pkgs_url,
+  log_dir
+) {
   private$check_renv <- check_renv
   private$verbosity_level <- verbosity_level
   private$track_files <- track_files
@@ -174,7 +189,9 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
   if (is.character(private$log_dir)) {
     # Check if the directory exists
     if (!file.exists(private$log_dir)) {
-      cli::cli_abort("Logs cannot be saved because {.val {private$log_dir}} does not exist") # nolint
+      cli::cli_abort(
+        "Logs cannot be saved because {.val {private$log_dir}} does not exist"
+      ) # nolint
     }
     folder <- file.path(private$log_dir)
   } else {
@@ -183,7 +200,9 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
     unique_folders <- unique(folder)
     if (any(!file.exists(unique_folders))) {
       missing <- unique_folders[!file.exists(unique_folders)] # nolint
-      cli::cli_abort("Logs cannot be saved because {.val {missing}} does not exist") # nolint
+      cli::cli_abort(
+        "Logs cannot be saved because {.val {missing}} does not exist"
+      ) # nolint
     }
   }
 
@@ -206,10 +225,20 @@ wq_skip <- function(self, private, scripts, tag) {
   wq_add_queue(self, private, scripts, tag, status = "skipped")
 }
 
-wq_poll <- function(self, private, timeout,
-                    check_renv, verbosity_level, track_files, out_formats,
-                    track_files_discards, track_files_keep,
-                    approved_pkgs_folder, approved_pkgs_url, log_dir) {
+wq_poll <- function(
+  self,
+  private,
+  timeout,
+  check_renv,
+  verbosity_level,
+  track_files,
+  out_formats,
+  track_files_discards,
+  track_files_keep,
+  approved_pkgs_folder,
+  approved_pkgs_url,
+  log_dir
+) {
   # Start new sessions if there are available workers and waiting scripts in
   # the queue
 
@@ -267,12 +296,12 @@ wq_wait <- function(self, private, timeout) {
 }
 
 wq_next_step <- function(self, private, wid) {
-
   private$.workers$step[[wid]] <- private$.workers$step[[wid]] + 1
   id_script <- private$.workers$id_script[[wid]]
   session <- private$.workers$session[[wid]]
 
-  switch(EXPR = private$.workers$step[[wid]],
+  switch(
+    EXPR = private$.workers$step[[wid]],
 
     # Step 1: Log script
     "1" = {
@@ -293,8 +322,6 @@ wq_next_step <- function(self, private, wid) {
       # fmt: skip
       private$.queue$status[[id_script]] <- private$.queue$result[[id_script]]$status$status
 
-      session$finalize()
-
       private$.workers$session[wid] <- list(NULL)
       private$.workers$active[[wid]] <- FALSE
       private$.workers$id_script[[wid]] <- 0
@@ -306,7 +333,6 @@ wq_next_step <- function(self, private, wid) {
 }
 
 wq_run <- function(scripts, self) {
-  self$
-    push(scripts)$
-    wait() # nolint
+  self$push(scripts)$wait() # nolint
+  on.exit(gc()) # finalizes used whirl_r_sessions - clenup temp folders
 }

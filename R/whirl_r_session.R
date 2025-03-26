@@ -47,11 +47,6 @@ whirl_r_session <- R6::R6Class(
       )
     },
 
-    #' @description Finalize the whirl R session
-    finalize = \() {
-      wrs_finalize(self, private, super)
-    },
-
     #' @description Print the whirl R session
     #' @return [invisible] self
     print = \() {
@@ -123,6 +118,10 @@ whirl_r_session <- R6::R6Class(
     }
   ),
   private = list(
+    #' @description Finalize the whirl R session
+    finalize = \() {
+      wrs_finalize(self, private, super)
+    },
     verbosity_level = NULL,
     wd = NULL,
     track_files = NULL,
@@ -194,9 +193,12 @@ wrs_initialize <- function(
       file = file.path(private$wd, "strace.log")
     )
   }
+
+  zephyr::msg_debug("Started session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}")
 }
 
 wrs_finalize <- function(self, private, super) {
+  zephyr::msg_debug("Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}")
   super$run(func = setwd, args = list(dir = getwd()))
   unlink(private$wd, recursive = TRUE)
   super$finalize()
