@@ -21,7 +21,6 @@ Imports:
     callr,
     cli,
     dplyr,
-    ggplot2,
     jsonlite,
     kableExtra,
     knitr,
@@ -39,6 +38,7 @@ Imports:
     yaml,
     zephyr (>= 0.1.1)
 Suggests: 
+    ggplot2,
     renv,
     testthat (>= 3.0.0),
     usethis

@@ -82,6 +82,9 @@ run <- function(
 
   # Check suggest imports if they are needed
   if (check_renv) rlang::check_installed("renv")
+  if (!is.null(approved_pkgs_folder) || !is.null(approved_pkgs_url)) {
+    rlang::check_installed("ggplot2")
+  }
 
   # Message when initiating
   d <- NULL

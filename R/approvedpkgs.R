@@ -144,6 +144,7 @@ check_approved <- function(
 
 #' @noRd
 create_approval_plot <- function(data) {
+  rlang::check_installed("ggplot2")
   row.names(data) <- NULL
 
   data$grpvar <- ifelse(
