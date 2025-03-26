@@ -27,7 +27,6 @@ Imports:
     knitr,
     quarto,
     R6 (>= 2.4.0),
-    renv,
     reticulate,
     rlang,
     sessioninfo,
@@ -40,6 +39,7 @@ Imports:
     yaml,
     zephyr (>= 0.1.1)
 Suggests: 
+    renv,
     testthat (>= 3.0.0),
     usethis
 VignetteBuilder: 

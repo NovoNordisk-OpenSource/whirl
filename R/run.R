@@ -80,6 +80,9 @@ run <- function(
   approved_pkgs_folder <- zephyr::get_option("approved_pkgs_folder")
   approved_pkgs_url <- zephyr::get_option("approved_pkgs_url")
 
+  # Check suggest imports if they are needed
+  if (check_renv) rlang::check_installed("renv")
+
   # Message when initiating
   d <- NULL
   zephyr::msg_verbose(
