@@ -1,0 +1,4 @@
+Name: 📝 Run current script
+Description: Run the current script and produce a log
+Binding: whirl::run(input = rstudioapi::getSourceEditorContext()$path)
+Interactive: false
