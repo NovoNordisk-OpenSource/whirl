@@ -39,9 +39,8 @@ write_to_log <- function(
     type = c("read", "write", "delete"),
     log = Sys.getenv("WHIRL_LOG_MSG")) {
   type <- rlang::arg_match(type)
-  checkmate::assert_string(type)
-  checkmate::assert_string(file)
-  checkmate::assert_string(log)
+  stopifnot(rlang::is_string(file))
+  stopifnot(rlang::is_string(log))
 
   x <- log_df(
     type = type,
