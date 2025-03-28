@@ -62,9 +62,8 @@
 #' })
 #'
 #' @export
-
 run <- function(
-    input,
+    input = "_whirl.yml",
     steps = NULL,
     summary_file = "summary.html",
     n_workers = zephyr::get_option("n_workers", "whirl"),
@@ -73,6 +72,7 @@ run <- function(
     track_files = zephyr::get_option("track_files", "whirl"),
     out_formats = zephyr::get_option("out_formats", "whirl"),
     log_dir = zephyr::get_option("log_dir", "whirl")) {
+
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths
