@@ -1,5 +1,6 @@
 # whirl dev
-* Added RStudio addin for running active script
+* New default `input` argument of run() set to "_whirl.yml"
+* Added RStudio addins for running all and the active script
 * Minor tweaks on the run() printout
 * Fix UT for azure CI
 * Added pre-commit for developers

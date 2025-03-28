@@ -1,7 +1,7 @@
 #' RStudio IDE runner
 #'
 #' Easy to run and view log in RStudio. Also available as an addin. Takes
-#' the active source document and whirl::run() it.
+#' the active source document and [run()] it.
 #'
 #' @keywords intern
 #' @noRd
@@ -15,7 +15,8 @@ run_current_script <- function() {
   file <- gsub(paste0(normalizePath(getwd()), .Platform$file.sep),
                "", normalizePath(script_info$path))
 
-  run(input = file, verbosity_level = "minimal")
+  run(input = list(list(names = basename(file), paths = file)),
+      verbosity_level = "minimal")
 
   if (grepl(".[Rr]$", file)) {
     log_file <- gsub(".R$", "_log.html", file, ignore.case = TRUE)
