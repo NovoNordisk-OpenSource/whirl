@@ -7,7 +7,6 @@
 #' @param type description
 #' @param collapse description
 #' @noRd
-
 quarto_callout <- function(
     text = NULL,
     title = NULL,
