@@ -1,4 +1,6 @@
 # whirl dev
+* Added RStudio addin for running active script
+* Minor tweaks on the run() printout
 * Fix UT for azure CI
 * Added pre-commit for developers
 * Fixed linting errors
