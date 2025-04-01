@@ -38,7 +38,7 @@ test_that("Enrich input works as expected", {
     unlist() |>
     expect_equal(
       c(
-        name = "Step 1: Unnamed chunk",
+        name = "Step 1",
         paths = test_script("success.R")
       )
     )
