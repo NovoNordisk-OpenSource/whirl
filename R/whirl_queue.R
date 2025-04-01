@@ -15,6 +15,7 @@ whirl_queue <- R6::R6Class(
     #' @description Initialize the new whirl_queue
     #' @return A [whirl_queue] object
     initialize = \(
+      # jscpd:ignore-start
       n_workers = zephyr::get_option("n_workers", "whirl"),
       verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
@@ -31,6 +32,7 @@ whirl_queue <- R6::R6Class(
       ),
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl")
+      # jscpd:ignore-end
     ) {
       wq_initialise(
         self,

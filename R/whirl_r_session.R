@@ -13,6 +13,7 @@ whirl_r_session <- R6::R6Class(
     #' @inheritParams options_params
     #' @return A [whirl_r_session] object
     initialize = \(
+      # jscpd:ignore-start
       verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
@@ -29,6 +30,7 @@ whirl_r_session <- R6::R6Class(
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl"),
       wait_timeout = zephyr::get_option("wait_timeout", "whirl")
+      # jscpd:ignore-end
     ) {
       wrs_initialize(
         verbosity_level,
