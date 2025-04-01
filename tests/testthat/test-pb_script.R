@@ -1,6 +1,8 @@
 test_that("progress bar updates correctly when used", {
   expect_message(
-    object = {pb <- pb_script$new(script = "test.R", use_progress = TRUE)},
+    object = {
+      pb <- pb_script$new(script = "test.R", use_progress = TRUE)
+    },
     regexp = "test\\.R.*Started"
   )
 
@@ -25,7 +27,9 @@ test_that("progress bar updates correctly when used", {
 
 test_that("if not, only final status is shown", {
   expect_no_message(
-    object = {pb <- pb_script$new(script = "test.R", use_progress = FALSE)}
+    object = {
+      pb <- pb_script$new(script = "test.R", use_progress = FALSE)
+    }
   )
 
   pb$update(status = "Running", force = TRUE) |>

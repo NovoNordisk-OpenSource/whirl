@@ -19,7 +19,9 @@ test_that("consistent output from renv help functions", {
 
   knit_print.whirl_renv_status(status) |>
     as.character() |>
-    expect_match("::: \\{.callout-important collapse=true\\}\n## renv out of sync")
+    expect_match(
+      "::: \\{.callout-important collapse=true\\}\n## renv out of sync"
+    )
 
   status$status$synchronized <- TRUE
 
@@ -27,4 +29,3 @@ test_that("consistent output from renv help functions", {
     as.character() |>
     expect_match("::: \\{.callout-tip collapse=true\\}\n## renv synchronized")
 })
-

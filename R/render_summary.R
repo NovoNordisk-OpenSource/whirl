@@ -63,8 +63,6 @@ render_summary <- function(input, summary_file = "summary.html") {
 
 #' @noRd
 knit_print_whirl_summary_info <- function(x, path_rel_start, ...) {
-  # nolint
-
   hold <- x |>
     data.frame(check.names = FALSE)
 

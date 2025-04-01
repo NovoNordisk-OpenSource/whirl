@@ -6,11 +6,15 @@ test_script <- function(script) {
   return(script)
 }
 
-# Use to test quarto availability or version lower than - from the quarto package
+# Use to test quarto availability or version lower than required
 skip_if_no_quarto <- function(ver = NULL) {
   skip_if(is.null(quarto::quarto_path()), message = "Quarto is not available")
   skip_if(
     quarto::quarto_version() < ver,
-    message = sprintf("Version of quarto is lower than %s: %s.", ver,  quarto::quarto_version())
+    message = sprintf(
+      fmt = "Version of quarto is lower than %s: %s.",
+      ver,
+      quarto::quarto_version()
+    )
   )
 }

@@ -18,8 +18,8 @@ test_that("Run single R script", {
 
   expect_single_script(res)
 
-  test_script("success.R") |> 
-    run(verbosity_level = "verbose") |> 
+  test_script("success.R") |>
+    run(verbosity_level = "verbose") |>
     expect_message()
 })
 
