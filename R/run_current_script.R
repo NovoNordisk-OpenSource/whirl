@@ -3,6 +3,8 @@
 #' Easy to run and view log in RStudio. Also available as an addin. Takes
 #' the active source document and [run()] it.
 #'
+#' @return Returns nothing. Run for side effects.
+#' @seealso [run()]
 #' @keywords intern
 #' @noRd
 run_current_script <- function() {
@@ -15,18 +17,19 @@ run_current_script <- function() {
   file <- gsub(paste0(normalizePath(getwd()), .Platform$file.sep),
                "", normalizePath(script_info$path))
 
-  run(input = list(list(names = basename(file), paths = file)),
-      verbosity_level = "minimal")
+  run_result <- run(input = list(list(names = basename(file),
+                                      paths = file)),
+                    verbosity_level = "minimal")
 
+  log_file <- run_result[["result"]][[1]][["log_details"]][["location"]][[1]]
   if (grepl(".[Rr]$", file)) {
-    log_file <- gsub(".R$", "_log.html", file, ignore.case = TRUE)
-    if (file.exists(log_file))
+    if (file.exists(log_file)) {
       rstudioapi::viewer(log_file)
+    }
   }
-
   if (grepl(".Rmd$", file)) {
-    log_file <- gsub(".Rmd$", "_log.html", file)
-    if (file.exists(log_file))
+    if (file.exists(log_file)) {
       rstudioapi::viewer(log_file)
+    }
   }
 }
