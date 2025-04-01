@@ -1,12 +1,12 @@
 import json
-import subprocess # nosec B404
+import subprocess  # nosec B404
 import sys
 
-temp_dir = r.params["tmpdir"] # pylint: disable=undefined-variable
+temp_dir = r.params["tmpdir"]  # pylint: disable=undefined-variable # noqa: F821
 
 # Get a list of installed packages using pip list
 installed_packages = (
-    subprocess.check_output([sys.executable, "-m", "pip", "list", "-v"]) # nosec B603
+    subprocess.check_output([sys.executable, "-m", "pip", "list", "-v"])  # nosec B603
     .decode("utf-8")
     .strip()
     .split("\n")[2:]
