@@ -1,12 +1,12 @@
 import json
-import subprocess
+import subprocess # nosec B404
 import sys
 
 temp_dir = r.params["tmpdir"]
 
 # Get a list of installed packages using pip list
 installed_packages = (
-    subprocess.check_output([sys.executable, "-m", "pip", "list", "-v"])
+    subprocess.check_output([sys.executable, "-m", "pip", "list", "-v"]) # nosec B603
     .decode("utf-8")
     .strip()
     .split("\n")[2:]
