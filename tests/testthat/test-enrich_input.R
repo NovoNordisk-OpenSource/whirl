@@ -21,7 +21,7 @@ test_that("Enrich input works as expected", {
     expect_length(3) |>
     vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
     expect_equal(
-      c("Named step", "Step 2: Unnamed chunk", "Step 3: Unnamed chunk")
+      c("Named step", "Step 2", "Step 3")
     )
 
   # File input
