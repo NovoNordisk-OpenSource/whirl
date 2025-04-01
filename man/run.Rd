@@ -5,7 +5,7 @@
 \title{Execute single or multiple R, R Markdown, and Quarto scripts}
 \usage{
 run(
-  input,
+  input = "_whirl.yml",
   steps = NULL,
   summary_file = "summary.html",
   n_workers = zephyr::get_option("n_workers", "whirl"),
