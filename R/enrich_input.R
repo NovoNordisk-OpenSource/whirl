@@ -6,7 +6,7 @@
 #'   executed
 #' @return A list
 #' @noRd
-enrich_input <- function(input,
+enrich_input <- function(input, # nolint: cyclocomp_linter
                          steps = NULL) {
   # Characterize the input
   is_config_file <- any(grepl("yaml|yml", get_file_ext(input)))
