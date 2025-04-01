@@ -12,8 +12,8 @@ test_that("progress bar updates correctly when used", {
   pb$update(force = TRUE) |>
     expect_message(regexp = "test\\.R.*Running")
 
-  pb$update(status = "newstatus", force = TRUE) |>
-    expect_message(regexp = "test\\.R.*newstatus")
+  pb$update(status = "new status", force = TRUE) |>
+    expect_message(regexp = "test\\.R.*new status")
 
   pb$done() |>
     expect_message(regexp = "test\\.R.*Completed")
@@ -39,7 +39,7 @@ test_that("if not, only final status is shown", {
     expect_message(regexp = "test\\.R.*Completed")
 })
 
-test_that("correct messages are shown depending on execition status", {
+test_that("correct messages are shown depending on execution status", {
   pb_script$new(script = "test.R")$done() |>
     expect_message(regexp = "Completed succesfully")
 
