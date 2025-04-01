@@ -1,9 +1,10 @@
 # mypy: disable-error-code="name-defined,assignment,call-overload"
+# pylint: disable=undefined-variable
 import json
 import subprocess  # nosec B404
 import sys
 
-temp_dir = r.params["tmpdir"]  # pylint: disable=undefined-variable # noqa: F821 # pyright: ignore [reportUndefinedVariable]
+temp_dir = r.params["tmpdir"]  # noqa: F821 # pyright: ignore [reportUndefinedVariable]
 
 # Get a list of installed packages using pip list
 installed_packages = (
