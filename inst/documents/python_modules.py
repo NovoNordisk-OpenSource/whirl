@@ -1,3 +1,4 @@
+# mypy: disable-error-code="name-defined,assignment,call-overload"
 import json
 import subprocess  # nosec B404
 import sys
