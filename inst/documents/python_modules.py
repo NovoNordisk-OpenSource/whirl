@@ -2,7 +2,7 @@ import json
 import subprocess # nosec B404
 import sys
 
-temp_dir = r.params["tmpdir"]
+temp_dir = r.params["tmpdir"] # pylint: disable=undefined-variable
 
 # Get a list of installed packages using pip list
 installed_packages = (
