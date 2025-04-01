@@ -22,14 +22,7 @@ run_current_script <- function() {
                     verbosity_level = "minimal")
 
   log_file <- run_result[["result"]][[1]][["log_details"]][["location"]][[1]]
-  if (grepl(".[Rr]$", file)) {
-    if (file.exists(log_file)) {
-      rstudioapi::viewer(log_file)
-    }
-  }
-  if (grepl(".Rmd$", file)) {
-    if (file.exists(log_file)) {
-      rstudioapi::viewer(log_file)
-    }
+  if (file.exists(log_file)) {
+    rstudioapi::viewer(log_file)
   }
 }
