@@ -109,6 +109,7 @@ Roxygenize
 RoxygenNote
 Rproj
 rstudio
+rstudioapi
 sessioninfo
 setenv
 sffl
