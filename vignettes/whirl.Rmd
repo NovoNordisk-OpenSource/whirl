@@ -44,9 +44,9 @@ run(
   summary_file = "path/to/summary"
 )
 
-# Execution of all R files starting with "mk200" in a specific directory
+# Execution of all R files starting with "2_" in a specific directory
 run(
-  input = "path/to/directory/mk200*.R",
+  input = "path/to/directory/2_*.R",
   n_workers = 8,
   summary_file = "path/to/summary"
 )
