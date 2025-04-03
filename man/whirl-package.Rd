@@ -4,11 +4,11 @@
 \name{whirl-package}
 \alias{whirl}
 \alias{whirl-package}
-\title{whirl: Execute and log execution of scripts}
+\title{whirl: Log Execution of Scripts}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Execute scripts in batch, while simultaneously creating logs for each script execution.
+Execute scripts in batch, while simultaneously creating logs for the execution of each script.
 }
 \seealso{
 Useful links:

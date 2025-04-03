@@ -54,8 +54,8 @@ It is also possible to run several scripts simultaneously:
 
 ``` r
 result <- run(c("success.R", "warning.R"), n_workers = 2)
-#> ⚠ warning.R: Completed with warnings
 #> ✔ success.R: Completed succesfully
+#> ⚠ warning.R: Completed with warnings
 ```
 
 Here we are specifying that `run()` can use up to two simultaneous
