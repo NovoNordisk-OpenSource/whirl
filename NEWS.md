@@ -1,4 +1,6 @@
-# whirl dev
+# whirl 0.2.0
+
+* Initial CRAN release
 * New default `input` argument of run() set to "_whirl.yml"
 * Added RStudio addins for running all and the active script
 * Minor tweaks on the run() printout
