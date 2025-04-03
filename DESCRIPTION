@@ -1,5 +1,5 @@
 Package: whirl
-Title: Logging package
+Title: Execute and log execution of scripts
 Version: 0.2.0
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
@@ -10,8 +10,7 @@ Authors@R: c(
     person("Vladimir", "Obucina", , "vlob@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
-Description: Provides functionalities for running R scripts in batch,
-    while simultaneously creating logs for each script execution.
+Description: Execute scripts in batch, while simultaneously creating logs for each script execution.
 License: Apache License (>= 2)
 URL: https://novonordisk-opensource.github.io/whirl/,
     https://github.com/novonordisk-opensource/whirl
