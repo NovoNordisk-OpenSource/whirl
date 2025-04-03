@@ -85,7 +85,7 @@ read_strace <- function(path, p_wd) {
     stringr::str_squish() |>
     stringr::str_subset("openat|unlink|chdir") |>
     stringr::str_subset(
-      pattern = "ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)", # nolint
+      pattern = "ENOENT \\(No such file or directory\\)|ENXIO \\(No such device or address\\)| ENOTDIR \\(Not a directory\\)",  # nolint: line_length_linter
       negate = TRUE
     ) |>
     stringr::str_subset("<unfinished \\.{3}>|<\\.{3} [a-zA-Z]+ resumed>",
@@ -110,10 +110,10 @@ read_strace <- function(path, p_wd) {
   strace_df <- strace |>
     unglue::unglue_data(
       patterns = list(
-        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}, {access}) = {result}<{result_dir}> <{duration}>", # nolint
-        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}) = {result}<{result_dir}> <{duration}>", # nolint
-        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}) = {result} <{duration}>", # nolint
-        "{pid} {time} {funct}(\"{path}\") = {result} <{duration}>" # nolint
+        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}, {access}) = {result}<{result_dir}> <{duration}>",  # nolint: line_length_linter
+        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}) = {result}<{result_dir}> <{duration}>",  # nolint: line_length_linter
+        "{pid} {time} {funct}({keyword}<{dir}>, \"{path}\", {action}) = {result} <{duration}>",  # nolint: line_length_linter
+        "{pid} {time} {funct}(\"{path}\") = {result} <{duration}>"  # nolint: line_length_linter
       )
     ) |>
     tibble::as_tibble() |>

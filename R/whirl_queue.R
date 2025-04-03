@@ -15,6 +15,7 @@ whirl_queue <- R6::R6Class(
     #' @description Initialize the new whirl_queue
     #' @return A [whirl_queue] object
     initialize = \(
+      # jscpd:ignore-start
       n_workers = zephyr::get_option("n_workers", "whirl"),
       verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
@@ -31,6 +32,7 @@ whirl_queue <- R6::R6Class(
       ),
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl")
+      # jscpd:ignore-end
     ) {
       wq_initialise(
         self,
@@ -191,7 +193,7 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
     if (!file.exists(private$log_dir)) {
       cli::cli_abort(
         "Logs cannot be saved because {.val {private$log_dir}} does not exist"
-      ) # nolint
+      )
     }
     folder <- file.path(private$log_dir)
   } else {
@@ -199,10 +201,10 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
     # Check if the directory exists
     unique_folders <- unique(folder)
     if (any(!file.exists(unique_folders))) {
-      missing <- unique_folders[!file.exists(unique_folders)] # nolint
+      missing <- unique_folders[!file.exists(unique_folders)]  # nolint: object_usage_linter
       cli::cli_abort(
         "Logs cannot be saved because {.val {missing}} does not exist"
-      ) # nolint
+      )
     }
   }
 
@@ -320,7 +322,8 @@ wq_next_step <- function(self, private, wid) {
           format = private$out_formats
         )
       # fmt: skip
-      private$.queue$status[[id_script]] <- private$.queue$result[[id_script]]$status$status
+      private$.queue$status[[id_script]] <-
+        private$.queue$result[[id_script]]$status$status
 
       private$.workers$session[wid] <- list(NULL)
       private$.workers$active[[wid]] <- FALSE
@@ -333,6 +336,6 @@ wq_next_step <- function(self, private, wid) {
 }
 
 wq_run <- function(scripts, self) {
-  self$push(scripts)$wait() # nolint
+  self$push(scripts)$wait()
   on.exit(gc()) # finalizes used whirl_r_sessions - cleanup temp folders
 }

@@ -107,5 +107,6 @@ zephyr::create_option(
 zephyr::create_option(
   name = "wait_timeout",
   default = 9000,
-  description = "Timeout for waiting for the R process from callr::r_session to start, in milliseconds."
+  description = "Timeout for waiting for the R process from callr::r_session to 
+  start, in milliseconds."
 )

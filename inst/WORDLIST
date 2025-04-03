@@ -22,6 +22,7 @@ Config
 cph
 CRAN
 cre
+cyclocomp
 dev
 dir
 dontrun
@@ -108,6 +109,7 @@ Roxygenize
 RoxygenNote
 Rproj
 rstudio
+rstudioapi
 sessioninfo
 setenv
 sffl

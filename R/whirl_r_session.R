@@ -13,6 +13,7 @@ whirl_r_session <- R6::R6Class(
     #' @inheritParams options_params
     #' @return A [whirl_r_session] object
     initialize = \(
+      # jscpd:ignore-start
       verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
@@ -29,6 +30,7 @@ whirl_r_session <- R6::R6Class(
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl"),
       wait_timeout = zephyr::get_option("wait_timeout", "whirl")
+      # jscpd:ignore-end
     ) {
       wrs_initialize(
         verbosity_level,
@@ -153,7 +155,8 @@ wrs_initialize <- function(
   private,
   super
 ) {
-  super$initialize(wait_timeout = wait_timeout) # uses callr::r_session$initialize()
+  # uses callr::r_session$initialize()
+  super$initialize(wait_timeout = wait_timeout)
 
   private$wd <- withr::local_tempdir(clean = FALSE)
   private$verbosity_level <- verbosity_level
@@ -202,13 +205,13 @@ wrs_initialize <- function(
   }
 
   zephyr::msg_debug(
-    "Started session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}"
+    "Started session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}" # nolint: line_length_linter
   )
 }
 
 wrs_finalize <- function(self, private, super) {
   zephyr::msg_debug(
-    "Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}"
+    "Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}" # nolint: line_length_linter
   )
   super$run(func = setwd, args = list(dir = getwd()))
   unlink(private$wd, recursive = TRUE)
@@ -288,8 +291,8 @@ wrs_log_script <- function(script, self, private, super) {
 
   if (!file.exists(quarto_execute_dir)) {
     cli::cli_abort(
-      "Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist"
-    ) # nolint
+      "Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist" # nolint: line_length_linter
+    )
   }
 
   # Execute the script

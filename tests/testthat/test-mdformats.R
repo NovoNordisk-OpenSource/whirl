@@ -3,7 +3,10 @@ test_that("pandoc works", {
 
   x <- whirl_r_session$new()
 
-  file.copy(from = test_script("test-mdformats.html"), to = file.path(x$get_wd(), "log.html")) |>
+  file.copy(
+    from = test_script("test-mdformats.html"),
+    to = file.path(x$get_wd(), "log.html")
+  ) |>
     expect_true()
 
   tmpdir <- withr::local_tempdir()
@@ -16,7 +19,10 @@ test_that("pandoc works", {
     self = x
   )
 
-  file.path(tmpdir, paste0("test1_log_", c("gfm", "commonmark", "markua"), ".md")) |>
+  file.path(
+    tmpdir,
+    paste0("test1_log_", c("gfm", "commonmark", "markua"), ".md")
+  ) |>
     file.exists() |>
     all() |>
     expect_true()

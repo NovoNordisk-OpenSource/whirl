@@ -105,14 +105,12 @@ python_package_info <- function(json) {
 
 #' @noRd
 knit_print.whirl_session_info <- function(x, ...) {
-  # nolint
   x |>
     lapply(knitr::knit_print)
 }
 
 #' @noRd
 knit_print.whirl_platform_info <- function(x, ...) {
-  # nolint
   data.frame(
     Setting = names(x),
     Value = x |>
@@ -130,7 +128,6 @@ knit_print.whirl_platform_info <- function(x, ...) {
 
 #' @noRd
 knit_print.whirl_packages_info <- function(x, ...) {
-  # nolint
   if (!is.null(x$package)) {
     x <- data.frame(
       Package = x$package,
@@ -152,7 +149,6 @@ knit_print.whirl_packages_info <- function(x, ...) {
 
 #' @noRd
 knit_print.whirl_approved_pkgs <- function(x, ...) {
-  # nolint
   hold <- x |>
     data.frame(
       check.names = FALSE
@@ -216,9 +212,7 @@ insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
 }
 
 #' @noRd
-# nolint start
 knit_print.whirl_environment_info <- function(x, ...) {
-  # nolint end
   dropped_info <-
     c(
       "BASH_FUNC",
@@ -268,7 +262,6 @@ knit_print.whirl_environment_info <- function(x, ...) {
 
 #' @noRd
 knit_print.whirl_options_info <- function(x, ...) {
-  # nolint
   data.frame(t(sapply(unlist(x), c))) |>
     tidyr::pivot_longer(
       dplyr::everything(),
