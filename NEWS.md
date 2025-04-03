@@ -34,7 +34,7 @@
 * Fix enabling rendering of md log formats("gfm", "commonmark", "markua").
 
 # whirl 0.1.0
-* First version publically available on GitHub.
+* First version publicly available on GitHub.
 
 # whirl 0.0.5
 * Updated documentation
