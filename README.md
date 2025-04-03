@@ -27,6 +27,15 @@ a log that, among other things, contains information about:
 And all this is wrapped into a nicely formatted html document that is
 easy to navigate.
 
+## Installation
+
+``` r
+# Install the released version from CRAN:
+install.packages("whirl")
+# Install the development version from GitHub:
+pak::pak("NovoNordisk-OpenSource/whirl")
+```
+
 ## Usage
 
 The main function in the whirl package is `run()` which takes an `input`
@@ -45,8 +54,8 @@ It is also possible to run several scripts simultaneously:
 
 ``` r
 result <- run(c("success.R", "warning.R"), n_workers = 2)
-#> ✔ success.R: Completed succesfully
 #> ⚠ warning.R: Completed with warnings
+#> ✔ success.R: Completed succesfully
 ```
 
 Here we are specifying that `run()` can use up to two simultaneous
@@ -119,7 +128,7 @@ print(result)
 #> 3     3 <NA>  /private/var/folders/fx/71by3f551qzb5… error  <named list> /priva…
 ```
 
-## Customize run()
+## Useful links
 
 For more information about how to customize the the execution and the
 logging for your needs see the following:
@@ -131,3 +140,6 @@ logging for your needs see the following:
   created log.
 - [whirl-options](https://novonordisk-opensource.github.io/whirl/reference/whirl-options.html):
   On how to change the default behavior of whirl.
+- [NovoNordisk-OpenSource/R-packages](https://novonordisk-opensource.github.io/R-packages/)
+  for an overview of connector and other R packages published by Novo
+  Nordisk.
