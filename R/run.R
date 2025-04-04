@@ -21,34 +21,34 @@
 #'   summary log will be stored.
 #' @inheritParams whirl-options-params
 #' @return A tibble containing the execution results for all the scripts.
-#' 
+#'
 #' @examplesIf !is.null(quarto::quarto_path())
-#' 
+#'
 #' # Run a single script:
 #' withr::with_dir(
-#'   new = withr::local_tempdir(tmpdir = "."), 
+#'   new = withr::local_tempdir(tmpdir = "."),
 #'   code = {
-#'
-#' # Copy example script:
+#'     # Copy example script:
 #'     file.copy(
 #'       from = system.file("examples", "success.R", package = "whirl"),
 #'       to = "."
 #'     )
 #'
-#' # Run script and create log:
+#'     # Run script and create log:
 #'     run("success.R")
 #'   }
 #' )
-#' 
+#'
 #' @examplesIf !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
-#' 
+#'
 #' # Run several scripts in parallel on up to 2 workers:
 #' withr::with_dir(
-#'   new = withr::local_tempdir(tmpdir = "."), 
+#'   new = withr::local_tempdir(tmpdir = "."),
 #'   code = {
-#'
 #'     file.copy(
-#'       from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+#'       from = system.file("examples", c("success.R", "warning.R", "error.R"),
+#'         package = "whirl"
+#'       ),
 #'       to = "."
 #'     )
 #'
@@ -58,25 +58,26 @@
 #'
 #' # Run several scripts in two steps by providing them as list elements:
 #' withr::with_dir(
-#'   new = withr::local_tempdir(tmpdir = "."), 
+#'   new = withr::local_tempdir(tmpdir = "."),
 #'   code = {
-#'
 #'     file.copy(
-#'       from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+#'       from = system.file("examples", c("success.R", "warning.R", "error.R"),
+#'         package = "whirl"
+#'       ),
 #'       to = "."
 #'     )
 #'
 #'     run(
 #'       list(
-#'         c("success.R", "warning.R"), 
+#'         c("success.R", "warning.R"),
 #'         "error.R"
 #'       )
 #'     )
 #'   }
 #' )
-#' 
+#'
 #' @examplesIf FALSE
-#' 
+#'
 #' # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
 #' # run(). This will require that the sub-folder exist and the code is
 #' # therefore not executed
@@ -101,7 +102,6 @@ run <- function(
     track_files = zephyr::get_option("track_files", "whirl"),
     out_formats = zephyr::get_option("out_formats", "whirl"),
     log_dir = zephyr::get_option("log_dir", "whirl")) {
-
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths

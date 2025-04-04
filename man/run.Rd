@@ -66,16 +66,15 @@ See \link{whirl-options} on how to configure these.
 
 # Run a single script:
 withr::with_dir(
-  new = withr::local_tempdir(tmpdir = "."), 
+  new = withr::local_tempdir(tmpdir = "."),
   code = {
-
-# Copy example script:
+    # Copy example script:
     file.copy(
       from = system.file("examples", "success.R", package = "whirl"),
       to = "."
     )
 
-# Run script and create log:
+    # Run script and create log:
     run("success.R")
   }
 )
@@ -84,11 +83,12 @@ withr::with_dir(
 
 # Run several scripts in parallel on up to 2 workers:
 withr::with_dir(
-  new = withr::local_tempdir(tmpdir = "."), 
+  new = withr::local_tempdir(tmpdir = "."),
   code = {
-
     file.copy(
-      from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+      from = system.file("examples", c("success.R", "warning.R", "error.R"),
+        package = "whirl"
+      ),
       to = "."
     )
 
@@ -98,17 +98,18 @@ withr::with_dir(
 
 # Run several scripts in two steps by providing them as list elements:
 withr::with_dir(
-  new = withr::local_tempdir(tmpdir = "."), 
+  new = withr::local_tempdir(tmpdir = "."),
   code = {
-
     file.copy(
-      from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+      from = system.file("examples", c("success.R", "warning.R", "error.R"),
+        package = "whirl"
+      ),
       to = "."
     )
 
     run(
       list(
-        c("success.R", "warning.R"), 
+        c("success.R", "warning.R"),
         "error.R"
       )
     )

@@ -22,7 +22,7 @@ skip_if_no_quarto <- function(ver = NULL) {
 # Use to test if python is available for simple tests
 skip_if_no_python <- function() {
   skip_if(
-    condition = reticulate::py_available(initialize = TRUE), 
+    condition = reticulate::py_available(initialize = TRUE),
     message = "Python is not available"
   )
 }
