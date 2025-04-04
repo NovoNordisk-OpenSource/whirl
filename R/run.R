@@ -22,7 +22,7 @@
 #' @inheritParams whirl-options-params
 #' @return A tibble containing the execution results for all the scripts.
 #'
-#' @examplesIf !is.null(quarto::quarto_path())
+#' @examplesIf !is.null(quarto::quarto_path()) && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
 #'
 #' # Run a single script:
 #' withr::with_dir(
@@ -38,8 +38,6 @@
 #'     run("success.R")
 #'   }
 #' )
-#'
-#' @examplesIf !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
 #'
 #' # Run several scripts in parallel on up to 2 workers:
 #' withr::with_dir(

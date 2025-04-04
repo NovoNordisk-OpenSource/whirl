@@ -62,7 +62,7 @@ e.g. the verbosity of the logs.
 See \link{whirl-options} on how to configure these.
 }
 \examples{
-\dontshow{if (!is.null(quarto::quarto_path())) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (!is.null(quarto::quarto_path()) && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Run a single script:
 withr::with_dir(
@@ -78,8 +78,6 @@ withr::with_dir(
     run("success.R")
   }
 )
-\dontshow{\}) # examplesIf}
-\dontshow{if (!isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Run several scripts in parallel on up to 2 workers:
 withr::with_dir(
