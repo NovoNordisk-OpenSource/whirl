@@ -131,17 +131,21 @@ For more information see the examples of <code>run()</code> or <code><a href="..
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Start by copying the following three example scripts:</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span>, <span class="st">"error.R"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    package <span class="op">=</span> <span class="st">"whirl"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  to <span class="op">=</span> <span class="st">"."</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE TRUE TRUE</span>
+<span class="r-in"><span><span class="co"># Run a single script:</span></span></span>
+<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  new <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempdir</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="st">"."</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  code <span class="op">=</span> <span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Run a single script</span></span></span>
-<span class="r-in"><span><span class="fu">run</span><span class="op">(</span><span class="st">"success.R"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Copy example script:</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"success.R"</span>, package <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      to <span class="op">=</span> <span class="st">"."</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Run script and create log:</span></span></span>
+<span class="r-in"><span>    <span class="fu">run</span><span class="op">(</span><span class="st">"success.R"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ Executing scripts and generating logs ═══════════════════════════════════════</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Executing scripts in parallel using 1 cores</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following steps will be executed</span>
@@ -151,44 +155,41 @@ For more information see the examples of <code>run()</code> or <code><a href="..
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> success.R: Completed succesfully</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Run several scripts in parallel on up to 2 workers</span></span></span>
-<span class="r-in"><span><span class="fu">run</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span>, <span class="st">"error.R"</span><span class="op">)</span>, n_workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ Executing scripts and generating logs ═══════════════════════════════════════</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Executing scripts in parallel using 2 cores</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following steps will be executed</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Step 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Step 1</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> success.R: Completed succesfully</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">⚠</span> warning.R: Completed with warnings</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> error.R: Completed with errors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span>
+<span class="r-in"><span><span class="co"># Run several scripts in parallel on up to 2 workers:</span></span></span>
+<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  new <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempdir</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="st">"."</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  code <span class="op">=</span> <span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Run scripts in two steps by providing them as list elements</span></span></span>
-<span class="r-in"><span><span class="fu">run</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"error.R"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  n_workers <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span>, <span class="st">"error.R"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      to <span class="op">=</span> <span class="st">"."</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="fu">run</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span>, <span class="st">"error.R"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ Executing scripts and generating logs ═══════════════════════════════════════</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Executing scripts in parallel using 2 cores</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following steps will be executed</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Step 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Step 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Step 1</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> success.R: Completed succesfully</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">⚠</span> warning.R: Completed with warnings</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Step 2</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> error.R: Completed with errors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Run several scripts in two steps by providing them as list elements:</span></span></span>
+<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  new <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempdir</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="st">"."</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  code <span class="op">=</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span>, <span class="st">"error.R"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"whirl"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      to <span class="op">=</span> <span class="st">"."</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="fu">run</span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>        <span class="st">"error.R"</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Re-directing the logs to a sub-folder by utilizing the log_dir argument in</span></span></span>
