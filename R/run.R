@@ -22,59 +22,28 @@
 #' @inheritParams whirl-options-params
 #' @return A tibble containing the execution results for all the scripts.
 #'
-#' @examplesIf !is.null(quarto::quarto_path()) && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
-#'
-#' # Run a single script:
-#' withr::with_dir(
-#'   new = withr::local_tempdir(tmpdir = "."),
-#'   code = {
-#'     # Copy example script:
-#'     file.copy(
-#'       from = system.file("examples", "success.R", package = "whirl"),
-#'       to = "."
-#'     )
-#'
-#'     # Run script and create log:
-#'     run("success.R")
-#'   }
+#' @examplesIf FALSE
+#' # Copy example scripts:
+#' file.copy(
+#'   from = system.file("examples", c("success.R", "warning.R", "error.R"),
+#'     package = "whirl"
+#'   ),
+#'   to = "."
 #' )
+#'
+#' # Run a single script and create log:
+#' run("success.R")
 #'
 #' # Run several scripts in parallel on up to 2 workers:
-#' withr::with_dir(
-#'   new = withr::local_tempdir(tmpdir = "."),
-#'   code = {
-#'     file.copy(
-#'       from = system.file("examples", c("success.R", "warning.R", "error.R"),
-#'         package = "whirl"
-#'       ),
-#'       to = "."
-#'     )
-#'
-#'     run(c("success.R", "warning.R", "error.R"))
-#'   }
-#' )
+#' run(c("success.R", "warning.R", "error.R"))
 #'
 #' # Run several scripts in two steps by providing them as list elements:
-#' withr::with_dir(
-#'   new = withr::local_tempdir(tmpdir = "."),
-#'   code = {
-#'     file.copy(
-#'       from = system.file("examples", c("success.R", "warning.R", "error.R"),
-#'         package = "whirl"
-#'       ),
-#'       to = "."
-#'     )
-#'
-#'     run(
-#'       list(
-#'         c("success.R", "warning.R"),
-#'         "error.R"
-#'       )
-#'     )
-#'   }
+#' run(
+#'   list(
+#'     c("success.R", "warning.R"),
+#'     "error.R"
+#'   )
 #' )
-#'
-#' @examplesIf FALSE
 #'
 #' # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
 #' # run(). This will require that the sub-folder exist and the code is

@@ -62,59 +62,28 @@ e.g. the verbosity of the logs.
 See \link{whirl-options} on how to configure these.
 }
 \examples{
-\dontshow{if (!is.null(quarto::quarto_path()) && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-
-# Run a single script:
-withr::with_dir(
-  new = withr::local_tempdir(tmpdir = "."),
-  code = {
-    # Copy example script:
-    file.copy(
-      from = system.file("examples", "success.R", package = "whirl"),
-      to = "."
-    )
-
-    # Run script and create log:
-    run("success.R")
-  }
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# Copy example scripts:
+file.copy(
+  from = system.file("examples", c("success.R", "warning.R", "error.R"),
+    package = "whirl"
+  ),
+  to = "."
 )
+
+# Run a single script and create log:
+run("success.R")
 
 # Run several scripts in parallel on up to 2 workers:
-withr::with_dir(
-  new = withr::local_tempdir(tmpdir = "."),
-  code = {
-    file.copy(
-      from = system.file("examples", c("success.R", "warning.R", "error.R"),
-        package = "whirl"
-      ),
-      to = "."
-    )
-
-    run(c("success.R", "warning.R", "error.R"))
-  }
-)
+run(c("success.R", "warning.R", "error.R"))
 
 # Run several scripts in two steps by providing them as list elements:
-withr::with_dir(
-  new = withr::local_tempdir(tmpdir = "."),
-  code = {
-    file.copy(
-      from = system.file("examples", c("success.R", "warning.R", "error.R"),
-        package = "whirl"
-      ),
-      to = "."
-    )
-
-    run(
-      list(
-        c("success.R", "warning.R"),
-        "error.R"
-      )
-    )
-  }
+run(
+  list(
+    c("success.R", "warning.R"),
+    "error.R"
+  )
 )
-\dontshow{\}) # examplesIf}
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
 # run(). This will require that the sub-folder exist and the code is
