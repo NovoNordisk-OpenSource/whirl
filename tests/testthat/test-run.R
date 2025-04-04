@@ -25,6 +25,7 @@ test_that("Run single R script", {
 
 test_that("Run single python script", {
   skip_if_no_quarto()
+  skip_if_no_python()
   res <- test_script("py_success.py") |>
     run() |>
     expect_no_warning() |>
@@ -66,6 +67,7 @@ test_that("Run multiple R scripts", {
 
 test_that("Run multiple python scripts", {
   skip_if_no_quarto()
+  skip_if_no_python()
   res <- test_script(c("py_success.py", "py_warning.py", "py_error.py")) |>
     run(n_workers = 2) |>
     expect_no_error()
