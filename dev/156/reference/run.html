@@ -130,7 +130,8 @@ For more information see the examples of <code>run()</code> or <code><a href="..
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># !is.null(quarto::quarto_path()) &amp;&amp; !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run a single script:</span></span></span>
 <span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  new <span class="op">=</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempdir</a></span><span class="op">(</span>tmpdir <span class="op">=</span> <span class="st">"."</span><span class="op">)</span>,</span></span>
@@ -145,16 +146,6 @@ For more information see the examples of <code>run()</code> or <code><a href="..
 <span class="r-in"><span>    <span class="fu">run</span><span class="op">(</span><span class="st">"success.R"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ Executing scripts and generating logs ═══════════════════════════════════════</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Executing scripts in parallel using 1 cores</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following steps will be executed</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Step 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Step 1</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> success.R: Completed succesfully</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #87AFD7;">══ End of process ══════════════════════════════════════════════════════════════</span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run several scripts in parallel on up to 2 workers:</span></span></span>
 <span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
