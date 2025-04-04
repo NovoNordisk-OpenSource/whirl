@@ -47,6 +47,15 @@ A log from script execution is in many pharmaceutical companies a GxP requiremen
 
 And all this is wrapped into a nicely formatted html document that is easy to navigate. 
 
+## Installation
+
+```{r, eval=FALSE}
+# Install the released version from CRAN:
+install.packages("whirl")
+# Install the development version from GitHub:
+pak::pak("NovoNordisk-OpenSource/whirl")
+```
+
 ## Usage
 
 The main function in the whirl package is `run()` which takes an `input` argument
@@ -103,7 +112,7 @@ result <- run("_whirl.yaml", n_workers = 2)
 print(result)
 ```
 
-## Customize run()
+## Useful links
 
 For more information about how to customize the the execution and the logging for your needs see the following:
 
@@ -111,3 +120,4 @@ For more information about how to customize the the execution and the logging fo
 * `vignette("whirl")`: For a more in depth explanation, and more advanced usage.
 * `vignette("articles/example")`: With a simple example, including the created log.
 * [whirl-options](https://novonordisk-opensource.github.io/whirl/reference/whirl-options.html): On how to change the default behavior of whirl.
+* [NovoNordisk-OpenSource/R-packages](https://novonordisk-opensource.github.io/R-packages/) for an overview of connector and other R packages published by Novo Nordisk.

@@ -22,9 +22,8 @@
 #' @inheritParams whirl-options-params
 #' @return A tibble containing the execution results for all the scripts.
 #'
-#' @examplesIf !is.null(quarto::quarto_path())
-#'
-#' # Start by copying the following three example scripts:
+#' @examplesIf FALSE
+#' # Copy example scripts:
 #' file.copy(
 #'   from = system.file("examples", c("success.R", "warning.R", "error.R"),
 #'     package = "whirl"
@@ -32,22 +31,19 @@
 #'   to = "."
 #' )
 #'
-#' # Run a single script
+#' # Run a single script and create log:
 #' run("success.R")
 #'
-#' # Run several scripts in parallel on up to 2 workers
-#' run(c("success.R", "warning.R", "error.R"), n_workers = 2)
+#' # Run several scripts in parallel on up to 2 workers:
+#' run(c("success.R", "warning.R", "error.R"))
 #'
-#' # Run scripts in two steps by providing them as list elements
+#' # Run several scripts in two steps by providing them as list elements:
 #' run(
 #'   list(
 #'     c("success.R", "warning.R"),
 #'     "error.R"
-#'   ),
-#'   n_workers = 2
+#'   )
 #' )
-#'
-#' @examplesIf FALSE
 #'
 #' # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
 #' # run(). This will require that the sub-folder exist and the code is
@@ -73,7 +69,6 @@ run <- function(
     track_files = zephyr::get_option("track_files", "whirl"),
     out_formats = zephyr::get_option("out_formats", "whirl"),
     log_dir = zephyr::get_option("log_dir", "whirl")) {
-
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths

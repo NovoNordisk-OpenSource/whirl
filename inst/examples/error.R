@@ -1,4 +1,4 @@
 
-# This script produces error for testing purposes
+# This script produces error for example purposes
 
 stop("This is an error!")

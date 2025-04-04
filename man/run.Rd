@@ -62,9 +62,8 @@ e.g. the verbosity of the logs.
 See \link{whirl-options} on how to configure these.
 }
 \examples{
-\dontshow{if (!is.null(quarto::quarto_path())) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-
-# Start by copying the following three example scripts:
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# Copy example scripts:
 file.copy(
   from = system.file("examples", c("success.R", "warning.R", "error.R"),
     package = "whirl"
@@ -72,22 +71,19 @@ file.copy(
   to = "."
 )
 
-# Run a single script
+# Run a single script and create log:
 run("success.R")
 
-# Run several scripts in parallel on up to 2 workers
-run(c("success.R", "warning.R", "error.R"), n_workers = 2)
+# Run several scripts in parallel on up to 2 workers:
+run(c("success.R", "warning.R", "error.R"))
 
-# Run scripts in two steps by providing them as list elements
+# Run several scripts in two steps by providing them as list elements:
 run(
   list(
     c("success.R", "warning.R"),
     "error.R"
-  ),
-  n_workers = 2
+  )
 )
-\dontshow{\}) # examplesIf}
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
 # run(). This will require that the sub-folder exist and the code is
