@@ -64,27 +64,55 @@ See \link{whirl-options} on how to configure these.
 \examples{
 \dontshow{if (!is.null(quarto::quarto_path())) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-# Start by copying the following three example scripts:
-file.copy(
-  from = system.file("examples", c("success.R", "warning.R", "error.R"),
-    package = "whirl"
-  ),
-  to = "."
+# Run a single script:
+withr::with_dir(
+  new = withr::local_tempdir(tmpdir = "."), 
+  code = {
+
+# Copy example script:
+    file.copy(
+      from = system.file("examples", "success.R", package = "whirl"),
+      to = "."
+    )
+
+# Run script and create log:
+    run("success.R")
+  }
+)
+\dontshow{\}) # examplesIf}
+\dontshow{if (!isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
+# Run several scripts in parallel on up to 2 workers:
+withr::with_dir(
+  new = withr::local_tempdir(tmpdir = "."), 
+  code = {
+
+    file.copy(
+      from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+      to = "."
+    )
+
+    run(c("success.R", "warning.R", "error.R"))
+  }
 )
 
-# Run a single script
-run("success.R")
+# Run several scripts in two steps by providing them as list elements:
+withr::with_dir(
+  new = withr::local_tempdir(tmpdir = "."), 
+  code = {
 
-# Run several scripts in parallel on up to 2 workers
-run(c("success.R", "warning.R", "error.R"), n_workers = 2)
+    file.copy(
+      from = system.file("examples", c("success.R", "warning.R", "error.R"), package = "whirl"),
+      to = "."
+    )
 
-# Run scripts in two steps by providing them as list elements
-run(
-  list(
-    c("success.R", "warning.R"),
-    "error.R"
-  ),
-  n_workers = 2
+    run(
+      list(
+        c("success.R", "warning.R"), 
+        "error.R"
+      )
+    )
+  }
 )
 \dontshow{\}) # examplesIf}
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
