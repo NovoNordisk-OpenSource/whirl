@@ -10,9 +10,9 @@ Authors@R: c(
     person("Vladimir", "Obucina", , "vlob@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
-Description: Logging of scripts suitable for clinical trials. 'whirl' enables execution of scripts in batch,
-    while simultaneously creating logs for the execution of each script, and providing an overview summary log of the 
-    entire batch execution.
+Description: Logging of scripts suitable for clinical trials using 'Quarto' to create nice human readable logs. 
+    'whirl' enables execution of scripts in batch, while simultaneously creating logs for the execution of each script, 
+    and providing an overview summary log of the entire batch execution.
 License: Apache License (>= 2)
 URL: https://novonordisk-opensource.github.io/whirl/,
     https://github.com/novonordisk-opensource/whirl
