@@ -59,11 +59,8 @@ check_approved <- function(
       if (!dir.exists(folder)) {
         stop("The folder does not exist")
       }
-      src_file <- as.data.frame(utils::installed.packages(folder)) |>
-        dplyr::mutate(
-          Repository = folder
-        ) |>
-        dplyr::select("Package", "Version", "Repository")
+      src_file <- installed_packages(folder)
+
       session_pkgs |>
         dplyr::left_join(
           y = src_file,
@@ -141,6 +138,34 @@ check_approved <- function(
   }
 }
 # nolint end
+
+#' Retrieve installed packages and their version
+#' Idea is that this helper function will only be called using an installation
+#' folder with a limited number of approved packages present, and this way only
+#' the DESCRIPTION file is read from each package unlike installed.packages.
+#' @noRd
+installed_packages <- function(folder) {
+  x <- data.frame(
+    Package = sort(list.files(folder)),
+    Version = NA_character_,
+    Repository = folder
+  )
+
+  x[["Version"]] <- vapply(
+    X = x[["Package"]],
+    FUN = function(x) {
+      tryCatch(
+        as.character(packageVersion(pkg = x, lib.loc = folder)),
+        error = \(e) NA_character_
+      )
+    }
+    ,
+    FUN.VALUE = character(1)
+  )
+
+  x[!is.na(x[["Version"]]), ]
+}
+
 
 #' @noRd
 create_approval_plot <- function(data) {
