@@ -155,7 +155,7 @@ installed_packages <- function(folder) {
     X = x[["Package"]],
     FUN = function(x) {
       tryCatch(
-        as.character(packageVersion(pkg = x, lib.loc = folder)),
+        utils::packageDescription(pkg = x, lib.loc = folder, fields = "Version"),
         error = \(e) NA_character_
       )
     }
