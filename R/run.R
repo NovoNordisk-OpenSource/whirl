@@ -28,11 +28,11 @@
 #'   from = system.file("examples", c("success.R", "warning.R", "error.R"),
 #'     package = "whirl"
 #'   ),
-#'   to = "."
+#'   to = tempdir()
 #' )
 #'
 #' # Run a single script and create log:
-#' run("success.R")
+#' run(file.path(tempdir(), "success.R"))
 #'
 #' # Run several scripts in parallel on up to 2 workers:
 #' run(c("success.R", "warning.R", "error.R"))
@@ -40,8 +40,8 @@
 #' # Run several scripts in two steps by providing them as list elements:
 #' run(
 #'   list(
-#'     c("success.R", "warning.R"),
-#'     "error.R"
+#'     file.path(c("success.R", "warning.R")),
+#'     file.path("error.R")
 #'   )
 #' )
 #'
@@ -50,11 +50,11 @@
 #' # therefore not executed
 #'
 #' # Specifying the path using a manually defined character
-#' run("success.R", log_dir = getwd())
+#' run(file.path(tempdir(), "success.R"), log_dir = tempdir())
 #'
 #' # Specifying the path with a generic function that can handle the scripts
 #' # individually.
-#' run("success.R", log_dir = function(x) {
+#' run(file.path(tempdir(), "success.R"), log_dir = function(x) {
 #'   paste0(dirname(x), "/logs")
 #' })
 #'

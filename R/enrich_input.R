@@ -20,7 +20,7 @@ enrich_input <- function(input, # nolint: cyclocomp_linter
     config_whirl <- yaml::read_yaml(file = input, eval.expr = TRUE)
     got <- config_whirl$"steps"
   } else {
-    root_dir <- getwd()
+    root_dir <- "."
   }
 
   # Convert vector to list

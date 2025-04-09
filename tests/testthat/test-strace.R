@@ -1,9 +1,9 @@
 strace_info <- function(path = "strace.log") {
   read_strace_info(
     path = path,
-    p_wd = getwd(),
+    p_wd = normalizePath("."),
     strace_discards = zephyr::get_option("track_files_discards", "whirl"),
-    strace_keep = getwd()
+    strace_keep = normalizePath(".")
   )
 }
 
@@ -17,7 +17,7 @@ test_that("strace works", {
 
       p <- callr::r_session$new()
 
-      start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
+      start_strace(pid = p$get_pid(), file = file.path(".", "strace.log"))
 
       # Only save a file
 
@@ -47,6 +47,6 @@ test_that("strace works", {
 
       p$kill()
     },
-    tmpdir = getwd()
+    tmpdir = normalizePath(".")
   )
 })

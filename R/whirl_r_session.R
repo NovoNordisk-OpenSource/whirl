@@ -213,7 +213,7 @@ wrs_finalize <- function(self, private, super) {
   zephyr::msg_debug(
     "Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}" # nolint: line_length_linter
   )
-  super$run(func = setwd, args = list(dir = getwd()))
+  super$run(func = setwd, args = list(dir = "."))
   unlink(private$wd, recursive = TRUE)
   super$finalize()
 }
@@ -282,7 +282,7 @@ wrs_log_script <- function(script, self, private, super) {
   if (is.null(quarto_execute_dir)) {
     quarto_execute_dir <- switch(
       get_file_ext(script),
-      "R" = getwd(),
+      "R" = normalizePath("."),
       normalizePath(dirname(script))
     )
   } else if (is.function(quarto_execute_dir)) {
@@ -359,7 +359,7 @@ wrs_create_log <- function(self, private, super) {
         with_library_paths = .libPaths(),
         tmpdir = private$wd
       ),
-      execute_dir = getwd()
+      execute_dir = normalizePath(".")
     )
   )
 

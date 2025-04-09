@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Execute scripts in batch, while simultaneously creating logs for the execution of each script.
+Logging of scripts suitable for clinical trials using 'Quarto' to create nice human readable logs. 'whirl' enables execution of scripts in batch, while simultaneously creating logs for the execution of each script, and providing an overview summary log of the entire batch execution.
 }
 \seealso{
 Useful links:
