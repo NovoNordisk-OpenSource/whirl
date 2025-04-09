@@ -443,18 +443,5 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
     )
   }
 
-  # Return logs from strace or whirl
-  file.copy(
-    from = file.path(self$get_wd(), "log_msg.json"),
-    to = file.path(
-      out_dir,
-      gsub(
-        pattern = "\\.[^\\.]*$",
-        replacement = "_msg_log.json",
-        x = basename(private$current_script)
-      )
-    )
-  )
-
   return(invisible(output))
 }
