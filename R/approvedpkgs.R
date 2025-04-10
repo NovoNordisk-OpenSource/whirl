@@ -146,7 +146,7 @@ check_approved <- function(
 #' @noRd
 installed_packages <- function(folder) {
   x <- data.frame(
-    Package = sort(list.files(folder)),
+    Package = sort(list.files(path = folder)),
     Version = NA_character_,
     Repository = folder
   )
@@ -156,6 +156,7 @@ installed_packages <- function(folder) {
     FUN = function(x) {
       tryCatch(
         utils::packageDescription(pkg = x, lib.loc = folder, fields = "Version"),
+        warning = \(w) NA_character_,
         error = \(e) NA_character_
       )
     }
