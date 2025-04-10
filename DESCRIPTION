@@ -1,6 +1,6 @@
 Package: whirl
-Title: Logging package
-Version: 0.1.10.9008
+Title: Log Execution of Scripts
+Version: 0.2.0
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
     person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
@@ -10,11 +10,15 @@ Authors@R: c(
     person("Vladimir", "Obucina", , "vlob@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
-Description: Provides functionalities for running R scripts in batch,
-    while simultaneously creating logs for each script execution.
+Description: Logging of scripts suitable for clinical trials using
+    'Quarto' to create nice human readable logs.  'whirl' enables
+    execution of scripts in batch, while simultaneously creating logs for
+    the execution of each script, and providing an overview summary log of
+    the entire batch execution.
 License: Apache License (>= 2)
 URL: https://novonordisk-opensource.github.io/whirl/,
     https://github.com/novonordisk-opensource/whirl
+BugReports: https://github.com/NovoNordisk-OpenSource/whirl/issues
 Depends: 
     R (>= 4.1)
 Imports: 
@@ -40,8 +44,8 @@ Imports:
 Suggests: 
     ggplot2,
     renv,
-    testthat (>= 3.0.0),
     rstudioapi,
+    testthat (>= 3.0.0),
     usethis
 VignetteBuilder: 
     knitr

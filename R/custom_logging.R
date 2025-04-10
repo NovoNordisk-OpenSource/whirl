@@ -13,6 +13,11 @@
 #' @param file [character()] description of the file that was read, written or
 #' deleted.
 #' @param log [character()] path to the log file.
+#' @examples
+#' # Stream logs to console since `WHIRL_LOG_MSG` is not set:
+#' log_read("my/folder/input.txt")
+#' log_write("my/folder/output.txt")
+#' log_delete("my/folder/old_output.txt")
 NULL
 
 #' @rdname custom_logging

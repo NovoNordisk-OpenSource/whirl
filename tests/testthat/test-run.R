@@ -24,7 +24,9 @@ test_that("Run single R script", {
 })
 
 test_that("Run single python script", {
+  skip_on_cran()
   skip_if_no_quarto()
+  skip_if_no_python()
   res <- test_script("py_success.py") |>
     run() |>
     expect_no_warning() |>
@@ -65,7 +67,9 @@ test_that("Run multiple R scripts", {
 })
 
 test_that("Run multiple python scripts", {
+  skip_on_cran()
   skip_if_no_quarto()
+  skip_if_no_python()
   res <- test_script(c("py_success.py", "py_warning.py", "py_error.py")) |>
     run(n_workers = 2) |>
     expect_no_error()
@@ -74,6 +78,7 @@ test_that("Run multiple python scripts", {
 })
 
 test_that("Run yaml config file", {
+  skip_on_cran()
   skip_if_no_quarto()
   res <- test_script("_whirl.yaml") |>
     run(n_workers = 2) |>
@@ -81,6 +86,7 @@ test_that("Run yaml config file", {
 })
 
 test_that("Change the log_dir to a path", {
+  skip_on_cran()
   skip_if_no_quarto()
   # Custom path
   custom_path <- withr::local_tempdir()
@@ -97,6 +103,7 @@ test_that("Change the log_dir to a path", {
 })
 
 test_that("Change the log_dir with a function", {
+  skip_on_cran()
   skip_if_no_quarto()
   # Custom path and copy script
   custom_path <- withr::local_tempdir()
@@ -118,6 +125,7 @@ test_that("Change the log_dir with a function", {
 })
 
 test_that("Change the execute_dir to a path", {
+  skip_on_cran()
   skip_if_no_quarto()
   custom_path <- withr::local_tempdir()
   withr::local_options(whirl.execute_dir = custom_path)
@@ -134,6 +142,7 @@ test_that("Change the execute_dir to a path", {
 })
 
 test_that("Change the execute_dir to a function", {
+  skip_on_cran()
   skip_if_no_quarto()
   withr::local_options(whirl.execute_dir = \(x) dirname(x))
 

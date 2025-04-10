@@ -14,8 +14,7 @@
 #' to which the path should be normalized. The default is the current working
 #' directory (".").
 #' @return A character string representing the normalized path.
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' base <- "/my/base/directory"
 #' relative_path <- "subdir/file.txt"
 #' normalized_path <- normalize_with_base(relative_path, base)
@@ -35,7 +34,6 @@
 #' home_path <- "~/subdir/file.txt"
 #' normalized_path <- normalize_with_base(home_path)
 #' print(normalized_path)
-#' }
 #' @noRd
 normalize_with_base <- function(path, base = ".") {
   # Expand any ~ in the path to the full home directory path

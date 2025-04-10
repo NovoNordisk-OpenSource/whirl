@@ -17,7 +17,8 @@ test_that("pandoc works", {
     mdfmt = c("gfm", "commonmark", "markua"),
     out_dir = tmpdir,
     self = x
-  )
+  ) |>
+    suppressMessages()
 
   file.path(
     tmpdir,
