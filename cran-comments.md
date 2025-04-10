@@ -7,5 +7,5 @@
 This functionality is only meant to be run using an installation folder with a limited number of approved packages installed. 
 If this solution is still not allowed, we will have to rethink how these packages are checked.
 * Improved description of package including the use of 'Quarto'.
-* To ensure users do not write to their working directory when using the `run()` examples, everything is know executed
+* To ensure users do not write to their working directory when using the `run()` examples, everything is now executed
 in `tempdir()`. Before it was assumed to be sufficient the examples where not evaluated when installing.
