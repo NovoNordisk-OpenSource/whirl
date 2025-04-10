@@ -213,7 +213,7 @@ wrs_finalize <- function(self, private, super) {
   zephyr::msg_debug(
     "Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}" # nolint: line_length_linter
   )
-  super$run(func = setwd, args = list(dir = normalizePath(".")))
+  super$run(func = setwd, args = list(dir = getwd()))
   unlink(private$wd, recursive = TRUE)
   super$finalize()
 }
