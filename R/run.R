@@ -35,7 +35,10 @@
 #' run(file.path(tempdir(), "success.R"))
 #'
 #' # Run several scripts in parallel on up to 2 workers:
-#' run(c("success.R", "warning.R", "error.R"))
+#' run(
+#'   input = file.path(tempdir(), c("success.R", "warning.R", "error.R")), 
+#'   n_workers = 2
+#' )
 #'
 #' # Run several scripts in two steps by providing them as list elements:
 #' run(
@@ -46,17 +49,17 @@
 #' )
 #'
 #' # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
-#' # run(). This will require that the sub-folder exist and the code is
-#' # therefore not executed
+#' # run(). This will require that the sub-folder exists.
 #'
 #' # Specifying the path using a manually defined character
 #' run(file.path(tempdir(), "success.R"), log_dir = tempdir())
 #'
 #' # Specifying the path with a generic function that can handle the scripts
 #' # individually.
-#' run(file.path(tempdir(), "success.R"), log_dir = function(x) {
-#'   paste0(dirname(x), "/logs")
-#' })
+#' run(
+#'   input = file.path(tempdir(), "success.R"), 
+#'   log_dir = function(x) {paste0(dirname(x), "/logs")}
+#' )
 #'
 #' @export
 run <- function(
