@@ -29,9 +29,6 @@ test_that("interactive whirl R session components not tested in run", {
   # Test temp dir is deleted correctly
   dir <- p$get_wd()
   rm(p)
-  gc()
-
-  Sys.sleep(2) # To ensure unlink is completed on windows
 
   expect_false(dir.exists(dir))
 })
