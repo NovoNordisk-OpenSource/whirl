@@ -36,7 +36,7 @@
 #'
 #' # Run several scripts in parallel on up to 2 workers:
 #' run(
-#'   input = file.path(tempdir(), c("success.R", "warning.R", "error.R")), 
+#'   input = file.path(tempdir(), c("success.R", "warning.R", "error.R")),
 #'   n_workers = 2
 #' )
 #'
@@ -57,7 +57,7 @@
 #' # Specifying the path with a generic function that can handle the scripts
 #' # individually.
 #' run(
-#'   input = file.path(tempdir(), "success.R"), 
+#'   input = file.path(tempdir(), "success.R"),
 #'   log_dir = function(x) {paste0(dirname(x), "/logs")}
 #' )
 #'
