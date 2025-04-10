@@ -80,8 +80,8 @@ run(c("success.R", "warning.R", "error.R"))
 # Run several scripts in two steps by providing them as list elements:
 run(
   list(
-    file.path(c("success.R", "warning.R")),
-    file.path("error.R")
+    file.path(tempdir(), c("success.R", "warning.R")),
+    file.path(tempdir(), "error.R")
   )
 )
 

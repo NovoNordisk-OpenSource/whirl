@@ -14,7 +14,7 @@ run_current_script <- function() {
 
   # Run file
   script_info <- rstudioapi::getSourceEditorContext()
-  file <- gsub(paste0(normalizePath("."), .Platform$file.sep),
+  file <- gsub(paste0(normalizePath(getwd()), .Platform$file.sep),
                "", normalizePath(script_info$path))
 
   run_result <- run(input = list(list(names = basename(file),

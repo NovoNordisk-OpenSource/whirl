@@ -42,6 +42,7 @@ funct
 Gakava
 getenv
 getOption
+getwd
 gfm
 ggplot
 ggsave
