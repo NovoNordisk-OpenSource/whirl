@@ -10,11 +10,19 @@ test_script <- function(script) {
 skip_if_no_quarto <- function(ver = NULL) {
   skip_if(is.null(quarto::quarto_path()), message = "Quarto is not available")
   skip_if(
-    quarto::quarto_version() < ver,
+    condition = quarto::quarto_version() < ver,
     message = sprintf(
       fmt = "Version of quarto is lower than %s: %s.",
       ver,
       quarto::quarto_version()
     )
+  )
+}
+
+# Use to test if python is available for simple tests
+skip_if_no_python <- function() {
+  skip_if(
+    condition = !reticulate::py_available(initialize = TRUE),
+    message = "Python is not available"
   )
 }

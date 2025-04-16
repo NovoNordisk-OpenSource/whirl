@@ -1,5 +1,5 @@
 
-# This script produces a warning for testing purposes
+# This script produces warnings for example purposes
 
 warning("this is a warning")
 warning("this is a warning 2 ^^")

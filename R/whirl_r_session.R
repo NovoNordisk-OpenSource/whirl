@@ -282,7 +282,7 @@ wrs_log_script <- function(script, self, private, super) {
   if (is.null(quarto_execute_dir)) {
     quarto_execute_dir <- switch(
       get_file_ext(script),
-      "R" = getwd(),
+      "R" = normalizePath("."),
       normalizePath(dirname(script))
     )
   } else if (is.function(quarto_execute_dir)) {
@@ -359,7 +359,7 @@ wrs_create_log <- function(self, private, super) {
         with_library_paths = .libPaths(),
         tmpdir = private$wd
       ),
-      execute_dir = getwd()
+      execute_dir = normalizePath(".")
     )
   )
 
@@ -442,19 +442,6 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       )
     )
   }
-
-  # Return logs from strace or whirl
-  file.copy(
-    from = file.path(self$get_wd(), "log_msg.json"),
-    to = file.path(
-      out_dir,
-      gsub(
-        pattern = "\\.[^\\.]*$",
-        replacement = "_msg_log.json",
-        x = basename(private$current_script)
-      )
-    )
-  )
 
   return(invisible(output))
 }

@@ -30,3 +30,9 @@ to log scripts, and input is automatically captured in the resulting log.
 If run outside of whirl, meaning when the above environment variable is
 unset, the operations are streamed to \code{stdout()}. By default the console.
 }
+\examples{
+# Stream logs to console since `WHIRL_LOG_MSG` is not set:
+log_read("my/folder/input.txt")
+log_write("my/folder/output.txt")
+log_delete("my/folder/old_output.txt")
+}
