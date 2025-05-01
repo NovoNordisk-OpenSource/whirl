@@ -1,0 +1,9 @@
+Name: 📑 Run all
+Description: Run all scripts in the project and generate HTML logs
+Binding: run
+Interactive: false
+
+Name: 📝 Run current script
+Description: Run the current script and produce HTML log
+Binding: run_current_script
+Interactive: false

@@ -2,6 +2,8 @@
 #' @noRd
 
 renv_status <- function() {
+  rlang::check_installed("renv")
+
   msg <- utils::capture.output(status <- renv::status())
 
   structure(
@@ -21,7 +23,7 @@ print.whirl_renv_status <- function(x, ...) {
 
 #' @noRd
 
-knit_print.whirl_renv_status <- function(x, ...) { # nolint
+knit_print.whirl_renv_status <- function(x, ...) {
   if (!length(x$status$lockfile$Packages)) {
     renv_note <- "warning"
     renv_title <- "renv not used"

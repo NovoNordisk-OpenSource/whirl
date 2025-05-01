@@ -13,28 +13,47 @@ render_summary <- function(input, summary_file = "summary.html") {
     fileext = ".qmd"
   )
 
-  summary_log_html <- withr::local_tempfile(fileext = ".html")
+  summary_log_html <- gsub(
+    pattern = "qmd",
+    replacement = "html",
+    x = basename(summary_qmd)
+  )
 
   summary_dir_f <- normalizePath(dirname(summary_file), winslash = "/")
-
+  my_summaries <- knit_print_whirl_summary_info(input, summary_dir_f)
   withr::with_dir(
     tempdir(),
-    rmarkdown::render(
-      input = summary_qmd,
-      output_format = "html_document",
-      output_file = summary_log_html,
-      params = list(summary_df = input, summary_dir = summary_dir_f),
-      quiet = TRUE
-    )
+    {
+      tryCatch(
+        {
+          quarto::quarto_render(
+            input = summary_qmd,
+            output_format = "html",
+            execute_params = list(
+              summary_df = my_summaries
+            ),
+            quiet = TRUE
+          )
+        },
+        error = function(e) {
+          cli::cli_abort(
+            "Failed to render summary file {.file {summary_dir_f}}:
+           {e$message}"
+          )
+        }
+      )
+    }
   )
 
   # Create requested outputs
   tryCatch(
-    file.copy(
-      from = summary_log_html,
-      to = summary_file,
-      overwrite = TRUE
-    ),
+    {
+      file.copy(
+        from = file.path(dirname(summary_qmd), summary_log_html),
+        to = summary_file,
+        overwrite = TRUE
+      )
+    },
     error = function(e) {
       warning("File copy failed: ", e$message)
       FALSE
@@ -43,7 +62,7 @@ render_summary <- function(input, summary_file = "summary.html") {
 }
 
 #' @noRd
-knit_print.whirl_summary_info <- function(x, path_rel_start, ...) { # nolint
+knit_print_whirl_summary_info <- function(x, path_rel_start, ...) {
   hold <- x |>
     data.frame(check.names = FALSE)
 
@@ -60,24 +79,29 @@ knit_print.whirl_summary_info <- function(x, path_rel_start, ...) { # nolint
 
   hold$Hyperlink <- paste0(sprintf(
     '<a href="%s" target="_blank">%s</a>',
-    formatted, "HTML Log"
+    formatted,
+    "HTML Log"
   ))
 
   knitr::kable(hold, format = "html", escape = FALSE) |>
-    kableExtra::column_spec(1:ncols, background = ifelse(
-      hold[["Status"]] == "error",
-      "#fceeef",
-      ifelse(
-        hold[["Status"]] == "warning",
-        "#fffaea",
-        ifelse(hold[["Status"]] == "success", "#ebf5f1",
-          ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
+    kableExtra::column_spec(
+      1:ncols,
+      background = ifelse(
+        hold[["Status"]] == "error",
+        "#fceeef",
+        ifelse(
+          hold[["Status"]] == "warning",
+          "#fffaea",
+          ifelse(
+            hold[["Status"]] == "success",
+            "#ebf5f1",
+            ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
+          )
         )
       )
-    )) |>
+    ) |>
     kableExtra::kable_styling(
       bootstrap_options = "striped",
       full_width = TRUE
-    ) |>
-    knitr::knit_print()
+    )
 }

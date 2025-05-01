@@ -1,4 +1,6 @@
 test_that("testing internal_run()", {
+  skip_if_no_quarto()
+
   # A config file
 
   q <- whirl_queue$new(n_workers = 2)

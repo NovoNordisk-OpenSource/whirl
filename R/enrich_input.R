@@ -6,10 +6,12 @@
 #'   executed
 #' @return A list
 #' @noRd
-enrich_input <- function(input,
+enrich_input <- function(input, # nolint: cyclocomp_linter
                          steps = NULL) {
   # Characterize the input
-  is_config_file <- any(grepl("yaml|yml", get_file_ext(input)))
+  is_config_file <-
+    !is.list(input) &&
+    any(grepl("yaml|yml", get_file_ext(input)))
   is_character <- is.character(input)
 
   # Read yaml and extract list
@@ -38,7 +40,7 @@ enrich_input <- function(input,
     if (check_name) {
       names[[i]] <- got[[i]][[which(grepl("name", names(got[[i]])))]]
     } else {
-      names[[i]] <- paste0("Step ", i, ": Unnamed chunk")
+      names[[i]] <- paste0("Step ", i)
     }
 
     # Identify the paths
@@ -73,7 +75,8 @@ enrich_input <- function(input,
 
   # Merge the names and paths into a list
   out <- mapply(list,
-    "name" = names, "paths" = paths,
+    "name" = names,
+    "paths" = paths,
     SIMPLIFY = FALSE
   )
 

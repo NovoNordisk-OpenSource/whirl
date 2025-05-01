@@ -1,4 +1,5 @@
 test_that("All example scripts run with consistent output", {
+  skip_if_no_quarto()
   withr::with_tempdir({
     # Copy all example scripts to the temporary working directory
 

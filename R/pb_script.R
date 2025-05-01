@@ -24,13 +24,13 @@ pb_script <- R6::R6Class(
           ),
           format = paste0(
             "{cli::pb_spin} ",
-            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ", # nolint
+            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",  # nolint: line_length_linter
             "{cli::pb_status}",
             "[{cli::pb_elapsed}]"
           ),
           format_done = paste0(
             "{cli::pb_extra$done} ",
-            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ", # nolint
+            "{.href [{basename(cli::pb_extra$script)}](file://{cli::pb_extra$script})}: ",  # nolint: line_length_linter
             "{cli::pb_status}",
             "[{cli::pb_elapsed}]"
           )

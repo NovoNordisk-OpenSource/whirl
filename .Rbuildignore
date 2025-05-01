@@ -19,3 +19,5 @@
 ^înst/WORDLIST$
 plot1.png
 summary.html
+^cran-comments\.md$
+^CRAN-SUBMISSION$

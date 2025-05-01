@@ -38,7 +38,8 @@ and all other functions from the directory of the script. To change provide
 a character path (used for all scripts) or a function that takes the script
 as input and returns the execution directory.. Default: \code{NULL}.}
 
-\item{wait_timeout}{Timeout for waiting for the R process from callr::r_session to start, in milliseconds.. Default: \code{9000}.}
+\item{wait_timeout}{Timeout for waiting for the R process from callr::r_session to
+start, in milliseconds.. Default: \code{9000}.}
 }
 \description{
 Internal parameters for reuse in functions

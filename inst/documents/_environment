@@ -1,1 +1,2 @@
-WHIRL_LOG_MSG="{file.path(private$wd,'log_msg.json')}"
+# The _environment file is used to make sure the quarto processes
+# have the correct environment variables set

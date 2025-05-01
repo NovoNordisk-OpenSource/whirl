@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
 
 # Use a temporary directory as working directory with the example program
 
-wd <- getwd()
+wd <- normalizePath(".")
 tmp <- withr::local_tempdir()
 
 system.file("examples/prg1.R", package = "whirl") |>
@@ -48,18 +48,19 @@ The script is now executed and you can access the logs below:
 
 ```{r copy, include=FALSE}
 # Also check if all outputs were created as expected
+withr::with_dir(tmp, {
+  articles_folder <- file.path(wd, "../../docs/articles")
 
-articles_folder <- file.path(wd, "../../docs/articles")
+  articles_folder |>
+    dir.exists() |>
+    stopifnot()
 
-articles_folder |>
-  dir.exists() |>
-  stopifnot()
-
-c("summary.html", "example_log.html", "plot1.png") |>
-  lapply(file.copy, to = articles_folder, overwrite = TRUE) |>
-  unlist() |>
-  all() |>
-  stopifnot()
+  c("summary.html", "example_log.html", "plot1.png") |>
+    lapply(file.copy, to = articles_folder, overwrite = TRUE) |>
+    unlist() |>
+    all() |>
+    stopifnot()
+})
 ```
 
 * [View summary log](summary.html)

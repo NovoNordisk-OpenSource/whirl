@@ -13,6 +13,11 @@
 #' @param file [character()] description of the file that was read, written or
 #' deleted.
 #' @param log [character()] path to the log file.
+#' @examples
+#' # Stream logs to console since `WHIRL_LOG_MSG` is not set:
+#' log_read("my/folder/input.txt")
+#' log_write("my/folder/output.txt")
+#' log_delete("my/folder/old_output.txt")
 NULL
 
 #' @rdname custom_logging
@@ -39,9 +44,8 @@ write_to_log <- function(
     type = c("read", "write", "delete"),
     log = Sys.getenv("WHIRL_LOG_MSG")) {
   type <- rlang::arg_match(type)
-  checkmate::assert_string(type)
-  checkmate::assert_string(file)
-  checkmate::assert_string(log)
+  stopifnot(rlang::is_string(file))
+  stopifnot(rlang::is_string(log))
 
   x <- log_df(
     type = type,
@@ -105,7 +109,7 @@ split_log <- function(log_df, types = c("read", "write", "delete")) {
 }
 
 #' @noRd
-knit_print.whirl_log_info <- function(x, ...) { # nolint
+knit_print.whirl_log_info <- function(x, ...) {
   x |>
     knitr::kable(
       row.names = FALSE

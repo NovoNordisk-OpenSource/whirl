@@ -5,13 +5,17 @@
 #'
 #' @noRd
 
-session_info <- function(approved_folder_pkgs = NULL,
-                         approved_url_pkgs = NULL,
-                         python_packages = NULL) {
+session_info <- function(
+  approved_folder_pkgs = NULL,
+  approved_url_pkgs = NULL,
+  python_packages = NULL
+) {
   info <- sessioninfo::session_info()
 
-  if (!is.null(approved_folder_pkgs) ||
-        !is.null(approved_url_pkgs)) {
+  if (
+    !is.null(approved_folder_pkgs) ||
+      !is.null(approved_url_pkgs)
+  ) {
     info$packages <- check_approved(
       approved_pkg_folder = approved_folder_pkgs,
       approved_pkg_url = approved_url_pkgs,
@@ -44,7 +48,8 @@ session_info <- function(approved_folder_pkgs = NULL,
       quarto_version <- system2(quarto_path, "--version", stdout = TRUE)
 
       info$platform$quarto <- paste(
-        quarto_version, "@",
+        quarto_version,
+        "@",
         normalizePath(quarto_path, winslash = "/")
       )
     }
@@ -99,13 +104,13 @@ python_package_info <- function(json) {
 }
 
 #' @noRd
-knit_print.whirl_session_info <- function(x, ...) { # nolint
+knit_print.whirl_session_info <- function(x, ...) {
   x |>
     lapply(knitr::knit_print)
 }
 
 #' @noRd
-knit_print.whirl_platform_info <- function(x, ...) { # nolint
+knit_print.whirl_platform_info <- function(x, ...) {
   data.frame(
     Setting = names(x),
     Value = x |>
@@ -122,7 +127,7 @@ knit_print.whirl_platform_info <- function(x, ...) { # nolint
 }
 
 #' @noRd
-knit_print.whirl_packages_info <- function(x, ...) { # nolint
+knit_print.whirl_packages_info <- function(x, ...) {
   if (!is.null(x$package)) {
     x <- data.frame(
       Package = x$package,
@@ -143,7 +148,7 @@ knit_print.whirl_packages_info <- function(x, ...) { # nolint
 }
 
 #' @noRd
-knit_print.whirl_approved_pkgs <- function(x, ...) { # nolint
+knit_print.whirl_approved_pkgs <- function(x, ...) {
   hold <- x |>
     data.frame(
       check.names = FALSE
@@ -175,7 +180,8 @@ knit_print.whirl_approved_pkgs <- function(x, ...) { # nolint
             as.matrix(hold[, grepl("^Approved", colnames(hold))]) == "No"
           ) ==
             ncol(as.matrix(hold[, grepl("^Approved", colnames(hold))]))
-        ) == 1,
+        ) ==
+          1,
         "orange",
         "white"
       )
@@ -206,7 +212,7 @@ insert_at_intervals_df <- function(df, column_name, char_to_insert, interval) {
 }
 
 #' @noRd
-knit_print.whirl_environment_info <- function(x, ...) { # nolint
+knit_print.whirl_environment_info <- function(x, ...) {
   dropped_info <-
     c(
       "BASH_FUNC",
@@ -219,17 +225,23 @@ knit_print.whirl_environment_info <- function(x, ...) { # nolint
   other_sensitive <- c("_PAT")
 
   x |>
-    dplyr::filter(!(grepl(
-      paste0("(?=.*", dropped_info, ")", collapse = "|"),
-      .data$Setting,
-      perl = TRUE
-    )) & !grepl(sprintf(
-      "(%s)$",
-      paste0(
-        other_sensitive,
-        collapse = "|"
-      )
-    ), .data$Setting)) |>
+    dplyr::filter(
+      !(grepl(
+        paste0("(?=.*", dropped_info, ")", collapse = "|"),
+        .data$Setting,
+        perl = TRUE
+      )) &
+        !grepl(
+          sprintf(
+            "(%s)$",
+            paste0(
+              other_sensitive,
+              collapse = "|"
+            )
+          ),
+          .data$Setting
+        )
+    ) |>
     insert_at_intervals_df(
       column_name = "Setting",
       char_to_insert = "<br>",
@@ -249,9 +261,10 @@ knit_print.whirl_environment_info <- function(x, ...) { # nolint
 }
 
 #' @noRd
-knit_print.whirl_options_info <- function(x, ...) { # nolint
+knit_print.whirl_options_info <- function(x, ...) {
   data.frame(t(sapply(unlist(x), c))) |>
-    tidyr::pivot_longer(dplyr::everything(),
+    tidyr::pivot_longer(
+      dplyr::everything(),
       values_to = "Value",
       names_to = "Setting"
     ) |>

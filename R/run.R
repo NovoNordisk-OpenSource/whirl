@@ -5,7 +5,8 @@
 #' Logs for each script are stored in the same folder as the script.
 #'
 #' The way the execution is logged is configurable through several options for
-#' e.g. the verbosity of the logs. See [whirl-options] on how to configure these.
+#' e.g. the verbosity of the logs.
+#' See [whirl-options] on how to configure these.
 #'
 #' @param input  A character vector of file path(s) to R, R Markdown, Quarto
 #'   scripts, or files in a folder using regular expression, or to to a whirl
@@ -21,50 +22,48 @@
 #' @inheritParams whirl-options-params
 #' @return A tibble containing the execution results for all the scripts.
 #'
-
-#' @examples
-#' # Start by copying the following three example scripts:
+#' @examplesIf FALSE
+#' # Copy example scripts:
 #' file.copy(
 #'   from = system.file("examples", c("success.R", "warning.R", "error.R"),
 #'     package = "whirl"
 #'   ),
-#'   to = "."
+#'   to = tempdir()
 #' )
 #'
-#' # Run a single script
-#' run("success.R")
+#' # Run a single script and create log:
+#' run(file.path(tempdir(), "success.R"))
 #'
-#' # Run several scripts in parallel on up to 2 workers
-#' run(c("success.R", "warning.R", "error.R"), n_workers = 2)
-#'
-#' # Run scripts in two steps by providing them as list elements
+#' # Run several scripts in parallel on up to 2 workers:
 #' run(
-#'   list(
-#'     c("success.R", "warning.R"),
-#'     "error.R"
-#'   ),
+#'   input = file.path(tempdir(), c("success.R", "warning.R", "error.R")),
 #'   n_workers = 2
 #' )
 #'
-#' @examplesIf FALSE
+#' # Run several scripts in two steps by providing them as list elements:
+#' run(
+#'   list(
+#'     file.path(tempdir(), c("success.R", "warning.R")),
+#'     file.path(tempdir(), "error.R")
+#'   )
+#' )
 #'
 #' # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
-#' # run(). This will require that the sub-folder exist and the code is
-#' # therefore not executed
+#' # run(). This will require that the sub-folder exists.
 #'
 #' # Specifying the path using a manually defined character
-#' run("success.R", log_dir = getwd())
+#' run(file.path(tempdir(), "success.R"), log_dir = tempdir())
 #'
 #' # Specifying the path with a generic function that can handle the scripts
 #' # individually.
-#' run("success.R", log_dir = function(x) {
-#'   paste0(dirname(x), "/logs")
-#' })
+#' run(
+#'   input = file.path(tempdir(), "success.R"),
+#'   log_dir = function(x) {paste0(dirname(x), "/logs")}
+#' )
 #'
 #' @export
-
 run <- function(
-    input,
+    input = "_whirl.yml",
     steps = NULL,
     summary_file = "summary.html",
     n_workers = zephyr::get_option("n_workers", "whirl"),
@@ -79,6 +78,12 @@ run <- function(
   track_files_keep <- zephyr::get_option("track_files_keep")
   approved_pkgs_folder <- zephyr::get_option("approved_pkgs_folder")
   approved_pkgs_url <- zephyr::get_option("approved_pkgs_url")
+
+  # Check suggest imports if they are needed
+  if (check_renv) rlang::check_installed("renv")
+  if (!is.null(approved_pkgs_folder) || !is.null(approved_pkgs_url)) {
+    rlang::check_installed("ggplot2")
+  }
 
   # Message when initiating
   d <- NULL

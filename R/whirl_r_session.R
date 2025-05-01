@@ -13,6 +13,7 @@ whirl_r_session <- R6::R6Class(
     #' @inheritParams options_params
     #' @return A [whirl_r_session] object
     initialize = \(
+      # jscpd:ignore-start
       verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
@@ -29,6 +30,7 @@ whirl_r_session <- R6::R6Class(
       approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl"),
       wait_timeout = zephyr::get_option("wait_timeout", "whirl")
+      # jscpd:ignore-end
     ) {
       wrs_initialize(
         verbosity_level,
@@ -45,11 +47,6 @@ whirl_r_session <- R6::R6Class(
         private,
         super
       )
-    },
-
-    #' @description Finalize the whirl R session
-    finalize = \() {
-      wrs_finalize(self, private, super)
     },
 
     #' @description Print the whirl R session
@@ -123,6 +120,10 @@ whirl_r_session <- R6::R6Class(
     }
   ),
   private = list(
+    #' @description Finalize the whirl R session
+    finalize = \() {
+      wrs_finalize(self, private, super)
+    },
     verbosity_level = NULL,
     wd = NULL,
     track_files = NULL,
@@ -154,7 +155,8 @@ wrs_initialize <- function(
   private,
   super
 ) {
-  super$initialize(wait_timeout = wait_timeout) # uses callr::r_session$initialize()
+  # uses callr::r_session$initialize()
+  super$initialize(wait_timeout = wait_timeout)
 
   super$initialize(wait_timeout = 9000) # uses callr::r_session$initialize()
 
@@ -188,10 +190,15 @@ wrs_initialize <- function(
   )
 
   environment_file <- file.path(private$wd, "_environment")
-  environment_file |>
-    readLines() |>
-    glue::glue() |>
-    writeLines(environment_file)
+  # Add whirl log file to environment file
+  cat(
+    sprintf(
+      "WHIRL_LOG_MSG='%s'",
+      file.path(private$wd, "log_msg.json")
+    ),
+    file = environment_file,
+    append = TRUE
+  )
 
   if (track_files) {
     start_strace(
@@ -199,9 +206,16 @@ wrs_initialize <- function(
       file = file.path(private$wd, "strace.log")
     )
   }
+
+  zephyr::msg_debug(
+    "Started session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}" # nolint: line_length_linter
+  )
 }
 
 wrs_finalize <- function(self, private, super) {
+  zephyr::msg_debug(
+    "Finalizing session with pid={.field {self$get_pid()}} and wd={.file {private$wd}}" # nolint: line_length_linter
+  )
   super$run(func = setwd, args = list(dir = getwd()))
   unlink(private$wd, recursive = TRUE)
   super$finalize()
@@ -271,7 +285,7 @@ wrs_log_script <- function(script, self, private, super) {
   if (is.null(quarto_execute_dir)) {
     quarto_execute_dir <- switch(
       get_file_ext(script),
-      "R" = getwd(),
+      "R" = normalizePath("."),
       normalizePath(dirname(script))
     )
   } else if (is.function(quarto_execute_dir)) {
@@ -280,8 +294,8 @@ wrs_log_script <- function(script, self, private, super) {
 
   if (!file.exists(quarto_execute_dir)) {
     cli::cli_abort(
-      "Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist"
-    ) # nolint
+      "Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist" # nolint: line_length_linter
+    )
   }
 
   # Execute the script
@@ -348,7 +362,7 @@ wrs_create_log <- function(self, private, super) {
         with_library_paths = .libPaths(),
         tmpdir = private$wd
       ),
-      execute_dir = getwd()
+      execute_dir = normalizePath(".")
     )
   )
 
@@ -431,19 +445,6 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       )
     )
   }
-
-  # Return logs from strace or whirl
-  file.copy(
-    from = file.path(self$get_wd(), "log_msg.json"),
-    to = file.path(
-      out_dir,
-      gsub(
-        pattern = "\\.[^\\.]*$",
-        replacement = "_msg_log.json",
-        x = basename(private$current_script)
-      )
-    )
-  )
 
   return(invisible(output))
 }
