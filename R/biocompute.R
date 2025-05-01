@@ -110,7 +110,7 @@ create_description_domain <- function(queue) {
         uri = lapply(.data$package, function(x) utils::packageDescription(x)$URL)
       ) |>
       dplyr::select("name", "uri") |>
-      purrr::transpose()
+      purrr::list_transpose()
 
     if (is.null(queue$result[[step]]$session_info_rlist$log_info.read)) {
       pipeline_steps[[step]]$input_list <- list()
@@ -122,7 +122,7 @@ create_description_domain <- function(queue) {
         ) |>
         dplyr::rename(uri = "file", access_time = "time") |>
         dplyr::select("filename", "uri", "access_time") |>
-        purrr::transpose()
+        purrr::list_transpose()
     }
 
     if (is.null(queue$result[[step]]$session_info_rlist$log_info.write)) {
@@ -135,7 +135,7 @@ create_description_domain <- function(queue) {
         ) |>
         dplyr::rename(uri = "file", access_time = "time") |>
         dplyr::select("filename", "uri", "access_time") |>
-        purrr::transpose()
+        purrr::list_transpose()
     }
   }
 
@@ -208,7 +208,7 @@ create_execution_domain <- function(queue) {
       uri = sapply(.x$package, function(x) utils::packageDescription(x)$URL)
     )) |>
     purrr::list_rbind() |> 
-    purrr::transpose() |>
+    purrr::list_transpose() |>
     unique()
 
   software_prerequisites <- append(software_prerequisites, packages)
