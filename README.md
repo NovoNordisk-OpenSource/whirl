@@ -7,6 +7,12 @@
 
 [![Checks](https://github.com/NovoNordisk-OpenSource/whirl/actions/workflows/check_and_co.yaml/badge.svg)](https://github.com/NovoNordisk-OpenSource/whirl/actions/workflows/check_and_co.yaml)
 
+[![Codecov test
+coverage](https://codecov.io/gh/NovoNordisk-OpenSource/whirl/graph/badge.svg)](https://app.codecov.io/gh/NovoNordisk-OpenSource/whirl)
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/whirl)](https://CRAN.R-project.org/package=whirl)
+
 <!-- badges: end -->
 
 ## Overview
