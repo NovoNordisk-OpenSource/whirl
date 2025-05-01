@@ -105,12 +105,13 @@ create_description_domain <- function(queue) {
 
 
     pipeline_steps[[step]]$prerequisite <- queue$result[[step]]$session_info_rlist$environment_options.packages |>
+      tibble::as_tibble() |> 
       dplyr::mutate(
         name = paste("R package:", .data$package, "- version:", .data$ondiskversion),
         uri = lapply(.data$package, function(x) utils::packageDescription(x)$URL)
       ) |>
       dplyr::select("name", "uri") |>
-      purrr::list_transpose()
+      purrr::pmap(.f = list)
 
     if (is.null(queue$result[[step]]$session_info_rlist$log_info.read)) {
       pipeline_steps[[step]]$input_list <- list()
@@ -122,7 +123,7 @@ create_description_domain <- function(queue) {
         ) |>
         dplyr::rename(uri = "file", access_time = "time") |>
         dplyr::select("filename", "uri", "access_time") |>
-        purrr::list_transpose()
+        purrr::pmap(.f = list)
     }
 
     if (is.null(queue$result[[step]]$session_info_rlist$log_info.write)) {
@@ -135,7 +136,7 @@ create_description_domain <- function(queue) {
         ) |>
         dplyr::rename(uri = "file", access_time = "time") |>
         dplyr::select("filename", "uri", "access_time") |>
-        purrr::list_transpose()
+        purrr::pmap(.f = list)
     }
   }
 
@@ -145,7 +146,7 @@ create_description_domain <- function(queue) {
     pipeline_steps = pipeline_steps
   )
 
-  return (description_domain)
+  return(description_domain)
 }
 
 #' @noRd
@@ -189,7 +190,7 @@ create_execution_domain <- function(queue) {
       version = queue$result |>
         purrr::map(c("session_info_rlist", "environment_options.platform", "quarto")) |>
         get_single_unique(),
-      URI = "https://cran.r-project.org/web/packages/quarto/index.html"
+      URI = "https://quarto.org"
     ),
     list(
       name = "pandoc",
@@ -208,8 +209,7 @@ create_execution_domain <- function(queue) {
       uri = sapply(.x$package, function(x) utils::packageDescription(x)$URL)
     )) |>
     purrr::list_rbind() |> 
-    purrr::list_transpose() |>
-    unique()
+    purrr::pmap(.f = list)
 
   software_prerequisites <- append(software_prerequisites, packages)
 
