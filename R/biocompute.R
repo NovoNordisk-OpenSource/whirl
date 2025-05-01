@@ -19,7 +19,7 @@ write_biocompute <- function(
     cli::cli_abort("The `queue` must be created with `whirl::run()`")
   } else if (!rlang::is_string(config) || 
     !get_file_ext(config) %in% c("yml", "yaml") ||
-    !is.null(yaml::read_yaml(config)[["biocompute"]])
+    is.null(yaml::read_yaml(config)[["biocompute"]])
     ) {
     cli::cli_abort("Input to `run()` must be a path to a yaml file with a biocompute entry. See `use_biocompute()`.")
   }
@@ -109,7 +109,7 @@ create_description_domain <- function(queue) {
         name = paste("R package:", .data$package, "- version:", .data$ondiskversion),
         uri = lapply(.data$package, function(x) utils::packageDescription(x)$URL)
       ) |>
-      dplyr::select(.data$name, .data$uri) |>
+      dplyr::select("name", "uri") |>
       purrr::transpose()
 
     if (is.null(queue$result[[step]]$session_info_rlist$log_info.read)) {
@@ -120,8 +120,8 @@ create_description_domain <- function(queue) {
           filename = basename(file),
           time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
         ) |>
-        dplyr::rename(uri = .data$file, access_time = .data$time) |>
-        dplyr::select(.data$filename, .data$uri, .data$access_time) |>
+        dplyr::rename(uri = "file", access_time = "time") |>
+        dplyr::select("filename", "uri", "access_time") |>
         purrr::transpose()
     }
 
@@ -133,8 +133,8 @@ create_description_domain <- function(queue) {
           filename = basename(.data$file),
           time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
         ) |>
-        dplyr::rename(uri = .data$file, access_time = .data$time) |>
-        dplyr::select(.data$filename, .data$uri, .data$access_time) |>
+        dplyr::rename(uri = "file", access_time = "time") |>
+        dplyr::select("filename", "uri", "access_time") |>
         purrr::transpose()
     }
   }

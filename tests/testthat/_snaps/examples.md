@@ -13,6 +13,22 @@
           "attributes": {},
           "value": [1, 2, 3, 4, 5, 6, 7]
         },
+        "whirl_input": {
+          "type": "list",
+          "attributes": {},
+          "value": [
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["_whirl.yaml"]
+            },
+            {
+              "type": "character",
+              "attributes": {},
+              "value": ["error.R", "prg1.R", "success.R", "warning.R"]
+            }
+          ]
+        },
         "class": {
           "type": "character",
           "attributes": {},

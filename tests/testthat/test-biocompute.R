@@ -1,16 +1,15 @@
-input_yml <- test_script("_whirl_biocompute.yaml")
+test_that("Biocompute object created correctly", {
+  input_yml <- test_script("_whirl_biocompute.yaml")
+  queue <- whirl::run(input = input_yml, out_formats = NULL)
 
-queue <- whirl::run(input = input_yml, out_formats = NULL, track_files = TRUE)
+  create_io_domain(queue) |>
+    expect_snapshot_value()
+  
+  create_execution_domain(queue) |>
+    expect_no_condition()
+  
+  create_parametrics_domain(config = yaml::read_yaml(input_yml), base_path = dirname(input_yml)) |> 
+    expect_no_condition()
 
-create_io_domain(queue) |>
-  expect_no_condition() |>
-  expect_snapshot()
-
-create_execution_domain(queue) |>
-  expect_no_condition()
-
-
-create_parametrics_domain(input_yml)
-
-create_biocompute(queue, input_yml) |>
-  write_biocompute(pretty = TRUE)
+  write_biocompute(queue)
+})

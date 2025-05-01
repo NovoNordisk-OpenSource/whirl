@@ -10,11 +10,11 @@ test_that("use_whirl", {
       expect_message() |>
       suppressMessages()
 
-    expect_true(file.exists("_whirl.yaml"))
+    expect_true(file.exists("_whirl.yml"))
 
     expect_equal(
-      readLines("_whirl.yaml"),
-      readLines(system.file("use_whirl/_whirl.yaml", package = "whirl"))
+      readLines("_whirl.yml"),
+      readLines(system.file("use_whirl/_whirl.yml", package = "whirl"))
     )
 
     expect_true(file.exists(".gitignore"))
