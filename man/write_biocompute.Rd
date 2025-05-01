@@ -7,27 +7,29 @@
 write_biocompute(queue = run("_whirl.yml"), path = "bco.json", ...)
 }
 \arguments{
-\item{queue}{Result from \code{run()}}
+\item{queue}{Result from \code{run()}.}
 
-\item{path}{description}
+\item{path}{A character string specifying the file path to write BioCompute log to.}
 
 \item{...}{Additional arguments parsed to \code{jsonlite::write_json()}. Note always uses \code{auto_unbox = TRUE}.}
 }
 \value{
-(\code{ìnvisible}) \code{list} of the biocompute domains and their content.`
+(\code{invisible}) \code{list} of the biocompute domains and their content.
 }
 \description{
 BioCompute is a standard for logs of programs for for Bioinformatics Computational Analyses.
 
 The BioCompute object is a \code{json} log that can be created based on the output of \code{run()}.
+}
+\details{
 The object consists of the following domains:
 \itemize{
-\item Specifications:
+\item \strong{Specifications}:
 \itemize{
-\item spec_version: Version of BioCompute used (https://w3id.org/biocompute/1.3.0/)
-\item object_id: Unique project id
-\item type: Your project type
-\item etag: Your \code{etag} id from the BioCompute Object Portal
+\item \emph{spec_version}: Version of BioCompute used (`https://w3id.org/biocompute/1.3.0/``)
+\item \emph{object_id}: Unique project id
+\item \emph{type}: Your project type
+\item \emph{etag}: Your \code{etag} id from the BioCompute Object Portal
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Provenance-domain}{Provenance Domain}
 \itemize{

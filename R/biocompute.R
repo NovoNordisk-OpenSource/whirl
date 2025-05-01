@@ -4,13 +4,16 @@
 #' BioCompute is a standard for logs of programs for for Bioinformatics Computational Analyses.
 #' 
 #' The BioCompute object is a `json` log that can be created based on the output of `run()`.
+#' 
+#' @details
 #' The object consists of the following domains:
 #'
-#' * Specifications:
-#'   * spec_version: Version of BioCompute used (https://w3id.org/biocompute/1.3.0/)
-#'   * object_id: Unique project id
-#'   * type: Your project type
-#'   * etag: Your `etag` id from the BioCompute Object Portal
+#' * **Specifications**:
+#'   * *spec_version*: Version of BioCompute used (`https://w3id.org/biocompute/1.3.0/``)
+#'   * *object_id*: Unique project id
+#'   * *type*: Your project type
+#'   * *etag*: Your `etag` id from the BioCompute Object Portal
+#' 
 #' * [Provenance Domain](https://wiki.biocomputeobject.org/index.php?title=Provenance-domain)
 #'   * This is used to track the history of the BCO. Review and signatures go here.
 #'  
@@ -39,10 +42,10 @@
 #'
 #' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
 #' 
-#' @param queue Result from `run()`
-#' @param path description
+#' @param queue Result from `run()`.
+#' @param path A character string specifying the file path to write BioCompute log to.
 #' @param ... Additional arguments parsed to `jsonlite::write_json()`. Note always uses `auto_unbox = TRUE`.
-#' @return (`ìnvisible`) `list` of the biocompute domains and their content.`
+#' @return (`invisible`) `list` of the biocompute domains and their content.
 #' @export
 write_biocompute <- function(
   queue = run("_whirl.yml"), 
