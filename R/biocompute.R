@@ -1,3 +1,36 @@
+#' Create biocompute logs
+#' 
+#' @description
+#' biocompute stuff
+#' @param queue Result from `run()`
+#' @param path description
+#' @param ... Additional arguments parsed to `jsonlite::write_json()`. Note always uses `auto_unbox = TRUE`.
+#' @return (`ìnvisible`) `list` of the biocompute domains and their content.`
+#' @export
+write_biocompute <- function(
+  queue = run("_whirl.yml"), 
+  path = "bco.json", 
+  ...
+) {
+
+  config <- attr(queue, "whirl_input")
+
+  if (is.null(config)) {
+    cli::cli_abort("The `queue` must be created with `whirl::run()`")
+  } else if (!rlang::is_string(config) || 
+    !get_file_ext(config) %in% c("yml", "yaml") ||
+    !is.null(yaml::read_yaml(config)[["biocompute"]])
+    ) {
+    cli::cli_abort("Input to `run()` must be a path to a yaml file with a biocompute entry. See `use_biocompute()`.")
+  }
+
+  bco <- create_biocompute(queue = queue, config = config)
+  
+  jsonlite::write_json(x = bco, path = path, auto_unbox = TRUE, ...)
+
+  invisible(bco)
+}
+
 # "spec_version" : "https://w3id.org/biocompute/1.3.0/",
 # "object_id": "https://example.com/bco/9487ae7e-c1aa-4a3c-b18f-3d3695b33ace",
 # "type": "antiviral_resistance_detection",
@@ -30,7 +63,7 @@
 #           - defines the empirical and algorithmic limits and error sources of the BCO
 # }
 
-#' @export
+#' @noRd
 create_biocompute <- function(queue, config) {
   metadata <- yaml::read_yaml(config)
 
@@ -57,11 +90,6 @@ create_biocompute <- function(queue, config) {
   )
 }
 
-#' @export
-write_biocompute <- function(bco, path = "bco.json", auto_unbox = TRUE, ...) {
-  jsonlite::write_json(x = bco, path = path, auto_unbox = TRUE, ...)
-}
-
 # DESCRIPTION DOMAIN
 #' @noRd
 create_description_domain <- function(queue) {
@@ -78,10 +106,10 @@ create_description_domain <- function(queue) {
 
     pipeline_steps[[step]]$prerequisite <- queue$result[[step]]$session_info_rlist$environment_options.packages |>
       dplyr::mutate(
-        name = paste("R package:", package, "- version:", ondiskversion),
-        uri = lapply(package, function(x) packageDescription(x)$URL)
+        name = paste("R package:", .data$package, "- version:", .data$ondiskversion),
+        uri = lapply(.data$package, function(x) utils::packageDescription(x)$URL)
       ) |>
-      dplyr::select(name, uri) |>
+      dplyr::select(.data$name, .data$uri) |>
       purrr::transpose()
 
     if (is.null(queue$result[[step]]$session_info_rlist$log_info.read)) {
@@ -90,10 +118,10 @@ create_description_domain <- function(queue) {
       pipeline_steps[[step]]$input_list <- queue$result[[step]]$session_info_rlist$log_info.read |>
         dplyr::mutate(
           filename = basename(file),
-          time = format(time, format = "%Y-%m-%d %H:%M:%S %Z")
+          time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
         ) |>
-        dplyr::rename(uri = file, access_time = time) |>
-        dplyr::select(filename, uri, access_time) |>
+        dplyr::rename(uri = .data$file, access_time = .data$time) |>
+        dplyr::select(.data$filename, .data$uri, .data$access_time) |>
         purrr::transpose()
     }
 
@@ -102,11 +130,11 @@ create_description_domain <- function(queue) {
     } else {
       pipeline_steps[[step]]$output_list <- queue$result[[step]]$session_info_rlist$log_info.write |>
         dplyr::mutate(
-          filename = basename(file),
-          time = format(time, format = "%Y-%m-%d %H:%M:%S %Z")
+          filename = basename(.data$file),
+          time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
         ) |>
-        dplyr::rename(uri = file, access_time = time) |>
-        dplyr::select(filename, uri, access_time) |>
+        dplyr::rename(uri = .data$file, access_time = .data$time) |>
+        dplyr::select(.data$filename, .data$uri, .data$access_time) |>
         purrr::transpose()
     }
   }
@@ -120,8 +148,6 @@ create_description_domain <- function(queue) {
   return (description_domain)
 }
 
-# EXECUTION DOMAIN
-# Here we should be more dynamic, this setup is more made to fit Bifrost.
 #' @noRd
 get_single_unique <- function(x) {
   x <- x |>
@@ -143,14 +169,19 @@ get_unique_values <- function(x) {
 create_execution_domain <- function(queue) {
 
   envvars <- queue$result |>
-    purrr::map_dfr(c("session_info_rlist", "environment_options.environment"))
+    purrr::map(c("session_info_rlist", "environment_options.environment")) |> 
+    purrr::list_rbind()
 
   software_prerequisites <- list(
     list(
       name = "R",
-      version = sub("R version ([0-9]+\\.[0-9]+\\.[0-9]+).*", "\\1", queue$result |>
-                      purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
-                      get_single_unique()),
+      version = sub(
+        pattern = "R version ([0-9]+\\.[0-9]+\\.[0-9]+).*", 
+        replacement = "\\1", 
+        x = queue$result |>
+          purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
+          get_single_unique()
+      ),
       URI = "https://www.r-project.org/"
     ),
     list(
@@ -171,11 +202,12 @@ create_execution_domain <- function(queue) {
 
   packages <- queue$result |>
     purrr::map(c("session_info_rlist", "environment_options.packages")) |>
-    purrr::map_dfr(~ list(
+    purrr::map(~ tibble::tibble(
       name = .x$package,
       version = .x$loadedversion,
-      uri = lapply(.x$package, function(x) packageDescription(x)$URL)
+      uri = sapply(.x$package, function(x) utils::packageDescription(x)$URL)
     )) |>
+    purrr::list_rbind() |> 
     purrr::transpose() |>
     unique()
 
@@ -188,7 +220,7 @@ create_execution_domain <- function(queue) {
       get_single_unique(),
     software_prerequisites = software_prerequisites,
     external_data_endpoints = list(), # TODO
-    environment_variables = setNames(envvars$Value, envvars$Setting) |>
+    environment_variables = stats::setNames(envvars$Value, envvars$Setting) |>
       as.list() |>
       get_unique_values()
   )

@@ -66,3 +66,4 @@ whirl.Rcheck/
 whirl*.tar.gz
 whirl*.tgz
 CRAN-SUBMISSION
+bco.json
