@@ -8,10 +8,11 @@ Authors@R: c(
     person("Kristian", "Troejelsgaard", , "ktqn@novonordisk.com", role = "aut"),
     person("Steffen Falgreen", "Larsen", , "sffl@novonordisk.com", role = "aut"),
     person("Vladimir", "Obucina", , "vlob@novonordisk.com", role = "aut"),
+    person("Michael", "Svingel", , "wymz@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
 Description: Logging of scripts suitable for clinical trials using
-    'Quarto' to create nice human readable logs.  'whirl' enables
+    'Quarto' to create nice human readable logs. 'whirl' enables
     execution of scripts in batch, while simultaneously creating logs for
     the execution of each script, and providing an overview summary log of
     the entire batch execution.

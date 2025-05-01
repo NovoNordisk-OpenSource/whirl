@@ -17,5 +17,53 @@ write_biocompute(queue = run("_whirl.yml"), path = "bco.json", ...)
 (\code{ìnvisible}) \code{list} of the biocompute domains and their content.`
 }
 \description{
-biocompute stuff
+BioCompute is a standard for logs of programs for for Bioinformatics Computational Analyses.
+
+The BioCompute object is a \code{json} log that can be created based on the output of \code{run()}.
+The object consists of the following domains:
+\itemize{
+\item Specifications:
+\itemize{
+\item spec_version: Version of BioCompute used (https://w3id.org/biocompute/1.3.0/)
+\item object_id: Unique project id
+\item type: Your project type
+\item etag: Your \code{etag} id from the BioCompute Object Portal
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Provenance-domain}{Provenance Domain}
+\itemize{
+\item This is used to track the history of the BCO. Review and signatures go here.
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Usability-domain}{Usability Domain}
+\itemize{
+\item This is used to improve searchability by allowing a free-text description of the BCO.
+\item Provide external document.
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Extension-domain}{Extension Domain}
+\itemize{
+\item This is used to add any additional structured information that is not directly covered by the BCO.
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Description-domain}{Description Domain}
+\itemize{
+\item Contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.
+\item Provide external document.
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Execution-domain}{Execution Domain}
+\itemize{
+\item Contains fields for the execution of the BCO.
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Parametric-domain}{Parametric Domain}
+\itemize{
+\item Represents the list of parameters customizing the computational flow which can affect the output of the calculations.
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Iodomain}{IO Domain}
+\itemize{
+\item Represents the list of global input and output files created by the computational workflow.
+}
+\item \href{https://wiki.biocomputeobject.org/index.php?title=Error-domain}{Error Domain}
+\itemize{
+\item Defines the empirical and algorithmic limits and error sources of the BCO.
+}
+}
+
+See the \href{https://www.biocomputeobject.org}{BioCompute Object Portal} and the \href{https://wiki.biocomputeobject.org}{BioCompute Objects Wiki} for more information.
 }

@@ -1,7 +1,44 @@
 #' Create biocompute logs
 #' 
 #' @description
-#' biocompute stuff
+#' BioCompute is a standard for logs of programs for for Bioinformatics Computational Analyses.
+#' 
+#' The BioCompute object is a `json` log that can be created based on the output of `run()`.
+#' The object consists of the following domains:
+#'
+#' * Specifications:
+#'   * spec_version: Version of BioCompute used (https://w3id.org/biocompute/1.3.0/)
+#'   * object_id: Unique project id
+#'   * type: Your project type
+#'   * etag: Your `etag` id from the BioCompute Object Portal
+#' * [Provenance Domain](https://wiki.biocomputeobject.org/index.php?title=Provenance-domain)
+#'   * This is used to track the history of the BCO. Review and signatures go here.
+#'  
+#' * [Usability Domain](https://wiki.biocomputeobject.org/index.php?title=Usability-domain)
+#'   * This is used to improve searchability by allowing a free-text description of the BCO.
+#'   * Provide external document.
+#'  
+#' * [Extension Domain](https://wiki.biocomputeobject.org/index.php?title=Extension-domain)
+#'   * This is used to add any additional structured information that is not directly covered by the BCO.
+#'  
+#' * [Description Domain](https://wiki.biocomputeobject.org/index.php?title=Description-domain)
+#'   * Contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.
+#'   * Provide external document.
+#'  
+#' * [Execution Domain](https://wiki.biocomputeobject.org/index.php?title=Execution-domain)
+#'   * Contains fields for the execution of the BCO.
+#'  
+#'* [Parametric Domain](https://wiki.biocomputeobject.org/index.php?title=Parametric-domain)
+#'   * Represents the list of parameters customizing the computational flow which can affect the output of the calculations.
+#'  
+#' * [IO Domain](https://wiki.biocomputeobject.org/index.php?title=Iodomain)
+#'   * Represents the list of global input and output files created by the computational workflow.
+#'  
+#' * [Error Domain](https://wiki.biocomputeobject.org/index.php?title=Error-domain)
+#'   * Defines the empirical and algorithmic limits and error sources of the BCO.
+#'
+#' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
+#' 
 #' @param queue Result from `run()`
 #' @param path description
 #' @param ... Additional arguments parsed to `jsonlite::write_json()`. Note always uses `auto_unbox = TRUE`.
@@ -30,38 +67,6 @@ write_biocompute <- function(
 
   invisible(bco)
 }
-
-# "spec_version" : "https://w3id.org/biocompute/1.3.0/",
-# "object_id": "https://example.com/bco/9487ae7e-c1aa-4a3c-b18f-3d3695b33ace",
-# "type": "antiviral_resistance_detection",
-# "etag": "584C7FE128717E1712426AB19CAAEA8BC1E27365B54285BBEA1221284C7D3A48",
-#
-# "provenance_domain": {
-#           - This is used to track history of the BCO. review and signatures go here.
-# },
-# "usability_domain": [
-#           - This is used to improve searchability by allowing a free-text description of the BCO
-#           - Provide external document
-# ],
-# "extension_domain":{
-#           - This is used to add any additional structured information that is not directly covered by the BCO
-# },
-# "description_domain": {
-#           - contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.
-#           - Provide external document
-# },
-# "execution_domain": {
-#           - contains fields for the execution of the BCO
-# },
-# "parametric_domain": {
-#           - represents the list of parameters customizing the computational flow which can affect the output of the calculations
-# },
-# "io_domain": {
-#           - represents the list of global input and output files created by the computational workflow
-# },
-# "error_domain": {
-#           - defines the empirical and algorithmic limits and error sources of the BCO
-# }
 
 #' @noRd
 create_biocompute <- function(queue, config) {
