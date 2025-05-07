@@ -1,3 +1,7 @@
+# whirl dev
+
+* Add `write_biocompute()` to create [BioCompute Objects](https://www.biocomputeobject.org/) containing the logs in a standardised JSON format.
+
 # whirl 0.2.0
 
 * Initial CRAN release.
