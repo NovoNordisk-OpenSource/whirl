@@ -66,3 +66,7 @@ whirl.Rcheck/
 whirl*.tar.gz
 whirl*.tgz
 CRAN-SUBMISSION
+bco.json
+*_log.(html|json|md)
+_parametrics.yml
+_whirl.yml

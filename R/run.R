@@ -144,5 +144,8 @@ run <- function(
     render_summary(input = summary_tibble, summary_file = summary_file)
   }
 
-  invisible(result$queue)
+  queue <- result$queue
+  attr(x = queue, which = "whirl_input") <- input
+
+  invisible(queue)
 }

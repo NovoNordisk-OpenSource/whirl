@@ -189,6 +189,7 @@ cat("\n")
 ```{r}
 #| label: Options
 #| results: asis
+#| eval: false
 cat("\n## Option settings\n")
 info$options
 cat("\n")

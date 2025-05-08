@@ -4,7 +4,7 @@
 \alias{use_whirl}
 \title{Use whirl}
 \usage{
-use_whirl(config_file = "_whirl.yaml")
+use_whirl(config_file = "_whirl.yml")
 }
 \arguments{
 \item{config_file}{Path to the whirl config file, relative to the project}
@@ -12,7 +12,7 @@ use_whirl(config_file = "_whirl.yaml")
 \description{
 Utility function to setup execution with whirl in your project:
 \enumerate{
-\item Creates configuration file (default \verb{_whirl.yaml})
+\item Creates configuration file (default \verb{_whirl.yml})
 \item Updates \code{.gitignore} to not include log files
 }
 

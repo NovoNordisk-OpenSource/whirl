@@ -1,0 +1,25 @@
+biocompute:
+  object_id: "your unique id"
+  spec_version: "https://w3id.org/ieee/ieee-2791-schema/2791object.json%22"
+  etag: "tag from biocompute platform"
+  usability: |
+    This is an example of a biocompute project.
+  extension: |
+    (optional) example text
+
+steps:
+  - name: "Run single script"
+    paths:
+      - "path/to/script.R"
+  - name: "Run multiple scripts in same step"
+    paths:
+      - "path/to/script_1.R"
+      - "path/to/script_2.R"
+  - name: "Run all R scripts in folder"
+    paths:
+      - "path/to/folder/*.R"
+  - name: "Define parameter file for biocompute"
+    paths:
+      - "path/to/script.R"
+    parameter_files:
+      - "_parametrics.yml"

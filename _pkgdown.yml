@@ -7,7 +7,9 @@ reference:
 - title: "Execute scripts"
   contents:
   - run
+  - write_biocompute
   - use_whirl
+  - use_biocompute
   - whirl-options
 
 - title: "Log custom actions"
