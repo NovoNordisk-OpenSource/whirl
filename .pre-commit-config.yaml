@@ -82,6 +82,14 @@ repos:
         language: fail
         files: '\.(Rhistory|RData|Rds|rds)$'
         # `exclude: <regex>` to allow committing specific files
+    -   id: run-megalinter
+        name: Run MegaLinter
+        entry: ./run-megalinter.sh
+        language: script
+        pass_filenames: false
+        # You can specify file types to trigger this hook, e.g.:
+        # files: \.(R|r|Rmd)$
+        # Or leave it out to run on all files        
 
 ci:
     autoupdate_schedule: monthly

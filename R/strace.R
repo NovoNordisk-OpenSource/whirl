@@ -6,8 +6,8 @@
 start_strace <- function(pid, file) {
   # Check OS first
   os_type <- Sys.info()["sysname"]
-  if (os_type != 'Linux') {
-    cli::cli_abort(paste('whirl does not support', os_type))
+  if (os_type != "Linux") {
+    cli::cli_abort(paste("whirl does not support", os_type))
   }
 
   # Just construct and run the command directly
