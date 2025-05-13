@@ -81,7 +81,7 @@ repos:
         entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
         language: fail
         files: '\.(Rhistory|RData|Rds|rds)$'
-        # `exclude: <regex>` to allow committing specific files
+        # `exclude: <regex>` to allow committingecific files
     -   id: run-megalinter
         name: Run MegaLinter
         entry: ./run-megalinter.sh
