@@ -70,3 +70,11 @@ bco.json
 *_log.(html|json|md)
 _parametrics.yml
 _whirl.yml
+
+#megalintr pre-emptive gitignore adds
+megalinter-reports
+node_modules
+run-megalinter.sh
+.pre-commit-config.yaml
+package.json
+package-lock.json
