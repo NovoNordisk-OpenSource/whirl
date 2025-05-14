@@ -74,7 +74,7 @@ _whirl.yml
 #megalintr pre-emptive gitignore adds
 megalinter-reports
 node_modules
-run-megalinter.sh
+#run-megalinter.sh
 .pre-commit-config.yaml
 package.json
 package-lock.json
