@@ -6,8 +6,8 @@
 start_strace <- function(pid, file) {
   # Check OS first
   os_type <- Sys.info()["sysname"]
-  if (os_type != 'Linux') {
-    cli::cli_abort(paste('strace does not support', os_type))
+  if (os_type != "Linux") {
+    cli::cli_abort(paste("strace does not support", os_type))
   }
 
   # Just construct and run the command directly
@@ -239,7 +239,7 @@ refine_strace <- function(
         # that creation
         .data$type == "delete" &
           (!cumsum(.data$type == "write") |
-            utils::head(.data$type, 1) == "read")
+             utils::head(.data$type, 1) == "read")
     ) |>
     dplyr::ungroup() |>
     dplyr::arrange(.data$seq, .data$file) |>
