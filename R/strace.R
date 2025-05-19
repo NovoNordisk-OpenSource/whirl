@@ -23,7 +23,7 @@ start_strace <- function(pid, file) {
     error = function(e) {
       if (grepl("permission denied|not permitted", tolower(e$message))) {
         cli::cli_abort(
-          "Cannot attach to process. This may be due to permission errors"
+          "strace cannot attach to process. This may be due to permission errors"
         )
       }
 
