@@ -6,8 +6,8 @@
 start_strace <- function(pid, file) {
   # Check OS first
   os_type <- Sys.info()["sysname"]
-  if (os_type != "Linux") {
-    cli::cli_abort(paste("whirl does not support", os_type))
+  if (os_type != 'Linux') {
+    cli::cli_abort(paste('strace does not support', os_type))
   }
 
   # Just construct and run the command directly
@@ -38,18 +38,6 @@ start_strace <- function(pid, file) {
   )
 }
 
-
-#' Get strace info ready for reporting
-#'
-#' @param path [character] path to the strace log
-#' @param p_wd [character] path to the working directory used for the process
-#' tracked in strace
-#' @param strace_discards [character] keywords to use to discard files from
-#' the info
-#' @param types [character] which element(s) to report in the info. If not
-#' found in strace, a dummy `data.frame` is inserted.
-#' @return [list] of `data.frame`(s) of the relevant files for each type of info
-#' @noRd
 
 read_strace_info <- function(
   path,
@@ -251,7 +239,7 @@ refine_strace <- function(
         # that creation
         .data$type == "delete" &
           (!cumsum(.data$type == "write") |
-             utils::head(.data$type, 1) == "read")
+            utils::head(.data$type, 1) == "read")
     ) |>
     dplyr::ungroup() |>
     dplyr::arrange(.data$seq, .data$file) |>

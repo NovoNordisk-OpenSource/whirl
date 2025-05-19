@@ -1,25 +1,30 @@
-strace_info <- function(path = "strace.log") {
-  read_strace_info(
-    path = path,
-    p_wd = getwd(),
-    strace_discards = zephyr::get_option("track_files_discards", "whirl"),
-    strace_keep = getwd()
-  )
-}
+0
 
 # start changes tests/testthat/test_strace.R error handing #166
+test_that("strace fails gracefully OS error handling", {
+  skip_on_os("linux")
 
-test_that("strace fails OS error handling", {
+  # Get current OS
+  os_type <- Sys.info()["sysname"]
+
+  # Test for unsupported OS (Windows or Darwin)
+  expect_error(
+    start_strace(1234, "output.txt"),
+    paste("strace does not support", os_type)
+  )
+})
+
+test_that("strace fails gracefully with mocking error handling", {
   # Define test cases with OS names and expected outcomes
   test_cases <- list(
     list(
       os = "Windows",
       expected = "error",
-      message = "whirl does not support Windows",
+      message = "strace does not support Windows",
       system_mock = NULL # Not needed for error cases
     ),
     list(
-      os = "Darwin",
+      os = "strace",
       expected = "error",
       message = "whirl does not support Darwin",
       system_mock = NULL # Not needed for error cases
