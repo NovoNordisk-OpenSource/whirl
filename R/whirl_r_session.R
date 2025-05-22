@@ -395,7 +395,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
       output = list(),
       removed = list()
     ),
-    session = list()
+    session = list() # TODO
   )
 
 
