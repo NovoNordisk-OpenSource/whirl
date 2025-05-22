@@ -28,4 +28,6 @@ mdformats <- function(script, log_html, mdfmt, self, out_dir) {
       overwrite = TRUE
     )
   }
+
+  return(invisible(newname))
 }
