@@ -250,7 +250,7 @@ refine_strace <- function(
         # that creation
         .data$type == "delete" &
           (!cumsum(.data$type == "write") |
-            utils::head(.data$type, 1) == "read")
+           utils::head(.data$type, 1) == "read")
     ) |>
     dplyr::ungroup() |>
     dplyr::arrange(.data$seq, .data$file) |>
