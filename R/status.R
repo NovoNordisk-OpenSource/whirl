@@ -68,8 +68,8 @@ get_status <- function(md) {
   # Return list with status
 
   list(
-    status = status,
-    error = errors,
-    warning = warnings
+    message = status,
+    warnings= warnings,
+    errors = errors
   )
 }

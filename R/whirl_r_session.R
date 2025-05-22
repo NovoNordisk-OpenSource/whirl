@@ -380,6 +380,25 @@ wrs_log_finish <- function(self, private, super) {
 }
 
 wrs_create_outputs <- function(out_dir, format, self, private, super) {
+  output <- list(
+    script = list(
+      name = private$current_script,
+      md5sum = tools::md5sum(files = private$current_script),
+      content = readLines(private$current_script) |> 
+        paste0(collapse = "\n")
+    ),
+    logs = wrs_create_logs(out_dir, format, self, private, super),
+    status = file.path(self$get_wd(), "doc.md") |>
+      get_status(),
+    files = list( # TODO
+      input = list(),
+      output = list(),
+      removed = list()
+    ),
+    session = list()
+  )
+
+
   # Create R object for return
 
   output <- list(
@@ -401,48 +420,59 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
     )
   )
 
-  # Create requested outputs
+  return(invisible(output))
+}
+
+wrs_create_logs <- function(out_dir, format, self, private, super) {
+  logs <- c()
 
   if ("html" %in% format) {
+    html_log <- file.path(
+      out_dir,
+      gsub(
+        pattern = "\\.[^\\.]*$",
+        replacement = "_log.html",
+        x = basename(private$current_script)
+      )
+    )
     file.copy(
       from = file.path(self$get_wd(), "log.html"),
-      to = file.path(
-        out_dir,
-        gsub(
-          pattern = "\\.[^\\.]*$",
-          replacement = "_log.html",
-          x = basename(private$current_script)
-        )
-      ),
+      to = html_log,
       overwrite = TRUE
     )
+    logs <- c(logs, html_log)
   }
 
   if (any(c("gfm", "commonmark", "markua") %in% format)) {
-    mdformats(
+    logs_md <- mdformats(
       script = private$current_script,
       log_html = file.path(self$get_wd(), "log.html"),
       mdfmt = format[format %in% c("gfm", "commonmark", "markua")],
       out_dir = out_dir,
       self = self
     )
+    logs <- c(logs, logs_md)
   }
 
   if ("json" %in% format) {
+    json_log <- file.path(
+      out_dir, 
+      gsub(
+        pattern = "\\.[^\\.]*$",
+        replacement = "_log.json",
+        x = basename(private$current_script)
+      )
+    )
+
     jsonlite::write_json(
       x = output,
       force = TRUE,
       pretty = TRUE,
-      path = file.path(
-        out_dir,
-        gsub(
-          pattern = "\\.[^\\.]*$",
-          replacement = "_log.json",
-          x = basename(private$current_script)
-        )
-      )
+      path = json_log
     )
+
+    logs <- c(logs, json_log)
   }
 
-  return(invisible(output))
+  return(invisible(logs))
 }
