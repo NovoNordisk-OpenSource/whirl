@@ -135,7 +135,8 @@ whirl_r_session <- R6::R6Class(
     approved_pkgs_url = NULL,
     check_renv = NULL,
     pb = NULL,
-    current_script = NULL
+    current_script = NULL,
+    start_time = NULL
   ),
   inherit = callr::r_session
 )
@@ -277,6 +278,7 @@ wrs_check_status <- function(self, private, super) {
 
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
+  private$start_time <- Sys.time()
 
   # Set the execute directory of the Quarto process calling the script
   quarto_execute_dir <- zephyr::get_option("execute_dir", "whirl")
@@ -371,9 +373,9 @@ wrs_log_finish <- function(self, private, super) {
   if (!is.null(private$pb)) {
     status <- self$get_wd() |>
       file.path("doc.md") |>
-      get_status()
+      get_status(start = private$start_time)
 
-    self$pb_done(status = status[["status"]])
+    self$pb_done(status = status[["message"]])
   }
 
   return(invisible(self))
@@ -389,7 +391,7 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
     ),
     logs = wrs_create_logs(out_dir, format, self, private, super),
     status = file.path(self$get_wd(), "doc.md") |>
-      get_status(),
+      get_status(start = private$start_time),
     files = list( # TODO
       input = list(),
       output = list(),
