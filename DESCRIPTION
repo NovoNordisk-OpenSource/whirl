@@ -1,6 +1,6 @@
 Package: whirl
 Title: Log Execution of Scripts
-Version: 0.2.9001
+Version: 0.2.9002
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
     person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
@@ -9,6 +9,7 @@ Authors@R: c(
     person("Steffen Falgreen", "Larsen", , "sffl@novonordisk.com", role = "aut"),
     person("Vladimir", "Obucina", , "vlob@novonordisk.com", role = "aut"),
     person("Michael", "Svingel", , "wymz@novonordisk.com", role = "aut"),
+    person("Skander", "Mulder", , "sktf@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
 Description: Logging of scripts suitable for clinical trials using
