@@ -5,7 +5,7 @@
 #'
 #' @noRd
 
-get_status <- function(md, start) {
+get_status <- function(md, start = NULL) {
   x <- readChar(con = md, nchars = file.size(md)) |>
     paste(collapse = "\n") |>
     stringr::str_split("\n:::")

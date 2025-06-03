@@ -323,7 +323,7 @@ wq_next_step <- function(self, private, wid) {
         )
       # fmt: skip
       private$.queue$status[[id_script]] <-
-        private$.queue$result[[id_script]]$status$status
+        private$.queue$result[[id_script]]$status$message
 
       private$.workers$session[wid] <- list(NULL)
       private$.workers$active[[wid]] <- FALSE

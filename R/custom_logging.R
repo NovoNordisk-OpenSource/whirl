@@ -84,24 +84,30 @@ log_df <- function(type = character(), file = character()) {
 }
 
 #' @noRd
-split_log <- function(log_df, types = c("read", "write", "delete")) {
-  class(log_df) <- c("whirl_log_info", class(log_df))
+split_log <- function(x, types = c("read", "write", "delete"), use_no_files = TRUE) {
+  class(x) <- c("whirl_log_info", class(x))
 
   # Split in a tibble for each type of output
 
-  log_df <- split(log_df[c("time", "file")], log_df$type)
+  x <- split(x[c("time", "file")], x$type)
 
   # Add empty table for types not reported
 
   out <- vector(mode = "list", length = length(types)) |>
     rlang::set_names(types)
 
-  out[names(log_df)] <- log_df
+  out[names(x)] <- x
 
   i <- lapply(X = out, FUN = is.null) |>
     unlist() |>
     which()
-  dummy <- data.frame(file = "No files")
+
+  if (use_no_files) {
+    dummy <- data.frame(file = "No files")
+  } else {
+    dummy <- log_df()[c("time", "file")]
+  }
+
   class(dummy) <- c("whirl_log_info", class(dummy))
   out[i] <- list(dummy)
 

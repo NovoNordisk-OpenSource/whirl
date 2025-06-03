@@ -136,7 +136,8 @@ whirl_r_session <- R6::R6Class(
     check_renv = NULL,
     pb = NULL,
     current_script = NULL,
-    start_time = NULL
+    start_time = NULL,
+    track_files_log = "log_msg.json"
   ),
   inherit = callr::r_session
 )
@@ -156,7 +157,7 @@ wrs_initialize <- function(
   private,
   super
 ) {
-  # uses callr::r_session$initialize()
+
   super$initialize(wait_timeout = 9000) # uses callr::r_session$initialize()
 
   # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
@@ -185,7 +186,7 @@ wrs_initialize <- function(
 
   super$run(
     func = Sys.setenv,
-    args = list(WHIRL_LOG_MSG = file.path(private$wd, "log_msg.json"))
+    args = list(WHIRL_LOG_MSG = file.path(private$wd, private$track_files_log))
   )
 
   environment_file <- file.path(private$wd, "_environment")
@@ -193,7 +194,7 @@ wrs_initialize <- function(
   cat(
     sprintf(
       "WHIRL_LOG_MSG='%s'",
-      file.path(private$wd, "log_msg.json")
+      file.path(private$wd, private$track_files_log)
     ),
     file = environment_file,
     append = TRUE
@@ -385,42 +386,41 @@ wrs_create_outputs <- function(out_dir, format, self, private, super) {
   output <- list(
     script = list(
       name = private$current_script,
-      md5sum = tools::md5sum(files = private$current_script),
+      md5sum = tools::md5sum(files = private$current_script) |> 
+        unname(),
       content = readLines(private$current_script) |> 
         paste0(collapse = "\n")
     ),
     logs = wrs_create_logs(out_dir, format, self, private, super),
     status = file.path(self$get_wd(), "doc.md") |>
       get_status(start = private$start_time),
-    files = list( # TODO
-      input = list(),
-      output = list(),
-      removed = list()
-    ),
+    files = file.path(private$wd, private$track_files_log) |> 
+      read_from_log() |> 
+      split_log(use_no_files = FALSE), # TODO: renaming
     session = list() # TODO
   )
 
 
   # Create R object for return
 
-  output <- list(
-    status = file.path(self$get_wd(), "doc.md") |>
-      get_status(),
-    session_info_rlist = file.path(self$get_wd(), "objects.rds") |>
-      readRDS() |>
-      unlist(recursive = FALSE),
-    log_details = list(
-      location = file.path(
-        out_dir,
-        gsub(
-          pattern = "\\.[^\\.]*$",
-          replacement = "_log.html",
-          x = basename(private$current_script)
-        )
-      ),
-      script = private$current_script
-    )
-  )
+  # output <- list(
+  #   status = file.path(self$get_wd(), "doc.md") |>
+  #     get_status(),
+  #   session_info_rlist = file.path(self$get_wd(), "objects.rds") |>
+  #     readRDS() |>
+  #     unlist(recursive = FALSE),
+  #   log_details = list(
+  #     location = file.path(
+  #       out_dir,
+  #       gsub(
+  #         pattern = "\\.[^\\.]*$",
+  #         replacement = "_log.html",
+  #         x = basename(private$current_script)
+  #       )
+  #     ),
+  #     script = private$current_script
+  #   )
+  # )
 
   return(invisible(output))
 }
