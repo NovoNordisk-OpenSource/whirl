@@ -85,8 +85,6 @@ log_df <- function(type = character(), file = character()) {
 
 #' @noRd
 split_log <- function(x, types = c("read", "write", "delete"), use_no_files = TRUE) {
-  class(x) <- c("whirl_log_info", class(x))
-
   # Split in a tibble for each type of output
 
   x <- split(x[c("time", "file")], x$type)
@@ -108,17 +106,5 @@ split_log <- function(x, types = c("read", "write", "delete"), use_no_files = TR
     dummy <- log_df()[c("time", "file")]
   }
 
-  class(dummy) <- c("whirl_log_info", class(dummy))
-  out[i] <- list(dummy)
-
   return(out)
-}
-
-#' @noRd
-knit_print.whirl_log_info <- function(x, ...) {
-  x |>
-    knitr::kable(
-      row.names = FALSE
-    ) |>
-    knitr::knit_print()
 }
