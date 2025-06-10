@@ -5,7 +5,7 @@
 #'
 #' @noRd
 
-get_status <- function(md, start = NULL) {
+get_status <- function(md, start) {
   x <- readChar(con = md, nchars = file.size(md)) |>
     paste(collapse = "\n") |>
     stringr::str_split("\n:::")
@@ -71,7 +71,7 @@ get_status <- function(md, start = NULL) {
     message = status,
     warnings= warnings,
     errors = errors,
-    start = start,
+    start = readRDS(start),
     end = file.mtime(md)
   )
 }

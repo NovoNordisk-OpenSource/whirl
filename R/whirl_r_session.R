@@ -136,8 +136,8 @@ whirl_r_session <- R6::R6Class(
     check_renv = NULL,
     pb = NULL,
     current_script = NULL,
-    start_time = NULL,
-    track_files_log = "log_msg.json"
+    track_files_log = "log_msg.json",
+    result = NULL
   ),
   inherit = callr::r_session
 )
@@ -279,7 +279,22 @@ wrs_check_status <- function(self, private, super) {
 
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
-  private$start_time <- Sys.time()
+  
+  saveRDS( # Log starting time
+    object = Sys.time(),
+    file = file.path(private$wd, "start.rds")
+  )
+
+  saveRDS( # Log script metadta
+    object = list(
+      name = private$current_script,
+      md5sum = tools::md5sum(files = private$current_script) |> 
+        unname(),
+      content = readLines(private$current_script) |> 
+        paste0(collapse = "\n")
+    ),
+    file = file.path(private$wd, "script.rds")
+  )
 
   # Set the execute directory of the Quarto process calling the script
   quarto_execute_dir <- zephyr::get_option("execute_dir", "whirl")
@@ -300,7 +315,6 @@ wrs_log_script <- function(script, self, private, super) {
   }
 
   # Execute the script
-
   if (private$verbosity_level != "quiet") {
     private$pb <- pb_script$new(
       script = private$current_script,
@@ -319,8 +333,6 @@ wrs_log_script <- function(script, self, private, super) {
       execute_params = list(
         script = normalizePath(script),
         with_library_paths = .libPaths(),
-        check_approved_folder_pkgs = private$check_approved_folder_pkgs,
-        check_approved_url_pkgs = private$check_approved_url_pkgs,
         renv = private$check_renv,
         tmpdir = private$wd
       ),
@@ -371,57 +383,20 @@ wrs_create_log <- function(self, private, super) {
 }
 
 wrs_log_finish <- function(self, private, super) {
-  if (!is.null(private$pb)) {
-    status <- self$get_wd() |>
-      file.path("doc.md") |>
-      get_status(start = private$start_time)
+  private$result <- self$get_wd() |>
+    file.path("result.rds") |>
+    readRDS()
 
-    self$pb_done(status = status[["message"]])
+  if (!is.null(private$pb)) {
+    self$pb_done(status = private$result[["status"]][["message"]])
   }
 
   return(invisible(self))
 }
 
 wrs_create_outputs <- function(out_dir, format, self, private, super) {
-  output <- list(
-    script = list(
-      name = private$current_script,
-      md5sum = tools::md5sum(files = private$current_script) |> 
-        unname(),
-      content = readLines(private$current_script) |> 
-        paste0(collapse = "\n")
-    ),
-    logs = wrs_create_logs(out_dir, format, self, private, super),
-    status = file.path(self$get_wd(), "doc.md") |>
-      get_status(start = private$start_time),
-    files = file.path(private$wd, private$track_files_log) |> 
-      read_from_log() |> 
-      split_log(use_no_files = FALSE), # TODO: renaming
-    session = list() # TODO
-  )
-
-
-  # Create R object for return
-
-  # output <- list(
-  #   status = file.path(self$get_wd(), "doc.md") |>
-  #     get_status(),
-  #   session_info_rlist = file.path(self$get_wd(), "objects.rds") |>
-  #     readRDS() |>
-  #     unlist(recursive = FALSE),
-  #   log_details = list(
-  #     location = file.path(
-  #       out_dir,
-  #       gsub(
-  #         pattern = "\\.[^\\.]*$",
-  #         replacement = "_log.html",
-  #         x = basename(private$current_script)
-  #       )
-  #     ),
-  #     script = private$current_script
-  #   )
-  # )
-
+  output <- private$result
+  output$logs <- wrs_create_logs(out_dir, format, self, private, super)
   return(invisible(output))
 }
 
