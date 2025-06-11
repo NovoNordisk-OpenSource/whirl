@@ -77,14 +77,14 @@ read_from_log <- function(log = Sys.getenv("WHIRL_LOG_MSG")) {
 #' @noRd
 log_df <- function(type = character(), file = character()) {
   data.frame(
-    time = Sys.time()[length(file)],
+    time = rep(x = Sys.time(), times = length(file)),
     type = type,
     file = file
   )
 }
 
 #' @noRd
-split_log <- function(x, types = c("read", "write", "delete"), use_no_files = TRUE) {
+split_log <- function(x, types = c("read", "write", "delete")) {
   # Split in a tibble for each type of output
 
   x <- split(x[c("time", "file")], x$type)
@@ -100,11 +100,7 @@ split_log <- function(x, types = c("read", "write", "delete"), use_no_files = TR
     unlist() |>
     which()
 
-  if (use_no_files) {
-    dummy <- data.frame(file = "No files")
-  } else {
-    dummy <- log_df()[c("time", "file")]
-  }
+  out[i] <- list(log_df()[c("time", "file")])
 
-  return(out)
+  lapply(X = out, FUN = `rownames<-`, value = NULL)
 }

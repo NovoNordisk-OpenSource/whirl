@@ -1,0 +1,9 @@
+---
+---
+
+## Python Packages
+
+```{r}
+#| echo: false
+result$session$python
+```

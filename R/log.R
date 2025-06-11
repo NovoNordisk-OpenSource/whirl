@@ -22,7 +22,13 @@ read_info <- function(script, md, start, log, session, environment, options, pyt
   info$session$options <- read_options(options)
 
   if (!is.null(python) && file.exists(python)) {
-    info$platform$python <- python_version()
+    info$session$platform <- info$session$platform |> 
+      dplyr::bind_rows(
+        data.frame(
+          setting = "python",
+          value = python_version()
+        )
+      )
     info$session$python <- read_python(python)
     info$session <- info$session[c("platform", "R", "python", "environment", "options")]
   }

@@ -46,7 +46,16 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNa
 result <- withr::with_dir(
     new = params$tmpdir, 
     code = {
-      whirl:::read_info("script.rds", "doc.md", "start.rds", "log_msg.json", "session_info.rds", "environment.rds", "options.rds", "python_imports.json")
+      whirl:::read_info(
+        scrip = "script.rds",
+        md = "doc.md", 
+        start = "start.rds",
+        log = "log_msg.json",
+        session = "session_info.rds",
+        environment = "environment.rds",
+        options = "options.rds",
+        python = "python_imports.json"
+      )
     })
 
 saveRDS(
@@ -83,57 +92,9 @@ params$tmpdir |>
 ```
 
 ```{r}
-#| label: Track files
-#| echo: false
-log_info <- whirl:::read_from_log()
-use_log_info <- nrow(log_info) > 0
-
-use_log_info <- FALSE
-
-if (use_log_info) {
-  log_info <- log_info |>
-    dplyr::arrange(time) |>
-    whirl:::split_log()
-}
-```
-
-```{r}
-#| echo: false
-#| results: asis
-#| eval: !expr use_log_info
-cat("## Input", "\n")
-```
-
-```{r}
-#| echo: false
-#| eval: !expr use_log_info
-log_info$read
-```
-
-```{r}
-#| echo: false
-#| results: asis
-#| eval: !expr use_log_info
-cat("## Output", "\n")
-```
-
-```{r}
-#| echo: false
-#| eval: !expr use_log_info
-log_info$write
-```
-
-```{r}
-#| echo: false
-#| results: asis
-#| eval: !expr use_log_info
-cat("## Removed", "\n")
-```
-
-```{r}
-#| echo: false
-#| eval: !expr use_log_info
-log_info$delete
+#| label: Used files
+#| child: !expr file.path(params$tmpdir, "files.qmd")
+#| eval: !expr (!is.null(result$files))
 ```
 
 # Script
@@ -164,11 +125,8 @@ result$session$platform
 
 ```{r}
 #| label: Python
-#| results: asis
+#| child: !expr file.path(params$tmpdir, "python.qmd")
 #| eval: !expr grepl("\\.py$", params$title)
-cat("\n## Python Packages\n")
-
-result$session$python
 ```
 
 ## R Packages
