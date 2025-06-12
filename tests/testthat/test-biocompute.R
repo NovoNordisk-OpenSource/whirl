@@ -1,6 +1,6 @@
 test_that("Biocompute object created correctly", {
   input_yml <- test_script("_whirl_biocompute.yaml")
-  queue <- whirl::run(input = input_yml, out_formats = NULL)
+  queue <- whirl::run(input = input_yml, out_formats = NULL, summary_file = NULL)
 
   create_io_domain(queue) |>
     expect_snapshot_value()

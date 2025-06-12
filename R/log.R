@@ -94,7 +94,8 @@ r_secrets <- function(){
     "_KEY",
     "_KEY",
     "_KEY",
-    "_PAT"
+    "_PAT",
+    "_TOKEN"
   )
 }
 

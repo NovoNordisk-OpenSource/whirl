@@ -12,7 +12,11 @@ util_queue_summary <- function(queue_table) {
       Directory = normalizePath(dirname(script), winslash = "/"),
       Filename = basename(script),
       Status = status,
-      Hyperlink = vapply(X = result, FUN = \(x) head(x[["logs"]],1), FUN.VALUE = character(1)),
+      Hyperlink = vapply(
+        X = result, 
+        FUN = \(x) head(x[["logs"]],1),
+        FUN.VALUE = character(1)
+      ),
       Information = vapply(
         X = result, 
         FUN = \(x) x[["status"]][c("errors", "warnings")] |> 

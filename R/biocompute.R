@@ -178,8 +178,17 @@ get_unique_values <- function(x) {
 create_execution_domain <- function(queue) {
 
   envvars <- queue$result |>
-    purrr::map(c("session_info_rlist", "environment_options.environment")) |> 
-    purrr::list_rbind()
+    purrr::map(c("session", "environment")) |>
+    purrr::list_rbind() |>
+    dplyr::distinct() |>
+    dplyr::arrange("variable")
+
+  platform <- queue$result |>
+    purrr::map(c("session", "platform")) |>
+    purrr::list_rbind() |>
+    dplyr::distinct() |> 
+    dplyr::filter(setting %in% c("version", "pandoc", "quarto"))
+  platform <- split(x = platform$value, f = platform$setting)
 
   software_prerequisites <- list(
     list(
@@ -187,48 +196,42 @@ create_execution_domain <- function(queue) {
       version = sub(
         pattern = "R version ([0-9]+\\.[0-9]+\\.[0-9]+).*", 
         replacement = "\\1", 
-        x = queue$result |>
-          purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
-          get_single_unique()
+        x = get_single_unique(platform$version)
       ),
       URI = "https://www.r-project.org/"
     ),
     list(
       name = "quarto",
-      version = queue$result |>
-        purrr::map(c("session_info_rlist", "environment_options.platform", "quarto")) |>
-        get_single_unique(),
+      version = get_single_unique(platform$quarto),
       URI = "https://quarto.org"
     ),
     list(
       name = "pandoc",
-      version = queue$result |>
-        purrr::map(c("session_info_rlist", "environment_options.platform", "pandoc")) |>
-        get_single_unique(),
+      version = get_single_unique(platform$pandoc),
       URI = "https://pandoc.org/"
     )
   )
 
-  packages <- queue$result |>
-    purrr::map(c("session_info_rlist", "environment_options.packages")) |>
-    purrr::map(~ tibble::tibble(
-      name = .x$package,
-      version = .x$loadedversion,
-      uri = sapply(.x$package, function(x) utils::packageDescription(x)$URL)
-    )) |>
-    purrr::list_rbind() |> 
-    purrr::pmap(.f = list)
+  packages <- queue$result |> 
+    purrr::map(c("session", "R")) |> 
+    purrr::list_rbind() |>
+    dplyr::distinct() |>
+    dplyr::arrange(package) |>
+    dplyr::transmute(
+      name = package,
+      version = version,
+      uri = url
+    ) |> 
+    purrr::pmap(list)
 
   software_prerequisites <- append(software_prerequisites, packages)
 
   execution_domain <- list(
     script = queue$script,
-    script_driver = queue$result |>
-      purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
-      get_single_unique(),
+    script_driver = get_single_unique(platform$version),
     software_prerequisites = software_prerequisites,
     external_data_endpoints = list(), # TODO
-    environment_variables = stats::setNames(envvars$Value, envvars$Setting) |>
+    environment_variables = stats::setNames(envvars$value, envvars$variable) |>
       as.list() |>
       get_unique_values()
   )
@@ -309,13 +312,13 @@ bco_create_inputs <- function(files) {
 #' @noRd
 create_io_domain <- function(queue) {
   input <- queue$result |>
-    purrr::map(c("session_info_rlist", "log_info.read", "file")) |>
+    purrr::map(c("files", "read", "file")) |>
     unlist() |>
     unique() |>
     bco_create_inputs()
 
   output <- queue$result |>
-    purrr::map(c("session_info_rlist", "log_info.write", "file")) |>
+    purrr::map(c("files", "write", "file")) |>
     unlist() |>
     unique() |>
     bco_create_outputs()
