@@ -88,7 +88,8 @@ whirl:::quarto_callout(
 #| eval: !expr file.exists(file.path(params$tmpdir, "renv_status.rds"))
 params$tmpdir |>
   file.path("renv_status.rds") |>
-  readRDS()
+  readRDS() |> 
+  whirl:::knit_print_whirl_renv_status()
 ```
 
 ```{r}

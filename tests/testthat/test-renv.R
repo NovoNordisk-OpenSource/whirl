@@ -11,13 +11,13 @@ test_that("consistent output from renv help functions", {
   status <- renv_status() |>
     expect_s3_class(c("whirl_renv_status"))
 
-  knit_print.whirl_renv_status(status) |>
+  knit_print_whirl_renv_status(status) |>
     as.character() |>
     expect_equal("::: {.callout-warning}\n## renv not used\n:::")
 
   status$status$lockfile$Packages <- c("a", "b")
 
-  knit_print.whirl_renv_status(status) |>
+  knit_print_whirl_renv_status(status) |>
     as.character() |>
     expect_match(
       "::: \\{.callout-important collapse=true\\}\n## renv out of sync"
@@ -25,7 +25,7 @@ test_that("consistent output from renv help functions", {
 
   status$status$synchronized <- TRUE
 
-  knit_print.whirl_renv_status(status) |>
+  knit_print_whirl_renv_status(status) |>
     as.character() |>
     expect_match("::: \\{.callout-tip collapse=true\\}\n## renv synchronized")
 })
