@@ -39,17 +39,17 @@ expect_multiple_scripts <- function(res) {
   res[["status"]] |>
     testthat::expect_equal(c("success", "warning", "error"))
 
-  res[["result"]][[1]][["status"]][c("error", "warning")] |>
+  res[["result"]][[1]][["status"]][c("errors", "warnings")] |>
     lapply(\(x) length(x) > 0) |>
     unlist() |>
     testthat::expect_equal(c(FALSE, FALSE), ignore_attr = TRUE)
 
-  res[["result"]][[2]][["status"]][c("error", "warning")] |>
+  res[["result"]][[2]][["status"]][c("errors", "warnings")] |>
     lapply(\(x) length(x) > 0) |>
     unlist() |>
     testthat::expect_equal(c(FALSE, TRUE), ignore_attr = TRUE)
 
-  res[["result"]][[3]][["status"]][c("error", "warning")] |>
+  res[["result"]][[3]][["status"]][c("errors", "warnings")] |>
     lapply(\(x) length(x) > 0) |>
     unlist() |>
     testthat::expect_equal(c(TRUE, FALSE), ignore_attr = TRUE)
