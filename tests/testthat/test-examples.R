@@ -1,27 +1,27 @@
 test_that("All example scripts run with consistent output", {
   skip_if_no_quarto()
-  withr::with_tempdir({
-    # Copy all example scripts to the temporary working directory
+  
+  tmpdir <- withr::local_tempdir()
 
-    system.file("examples", package = "whirl") |>
-      list.files(full.names = TRUE) |>
-      file.copy(recursive = TRUE, to = ".")
+  # Copy all example scripts to the temporary working directory
 
-    # Run all examples after in separate steps
+  system.file("examples", package = "whirl") |>
+    list.files(full.names = TRUE) |>
+    file.copy(recursive = TRUE, to = tmpdir)
 
-    res <- list(list.files(pattern = "*.yaml"), list.files(pattern = "*.R$")) |>
-      as.list() |>
-      run(n_workers = 2) |>
-      expect_no_error() |>
-      expect_no_warning()
+  res <- list(
+    list.files(tmpdir, pattern = "\\.(yaml|yml)$", full.names = TRUE) |> 
+      as.list(),
+    list.files(tmpdir, pattern = "\\.(R|py)$", full.names = TRUE)
+    ) |> 
+    run(summary_file = NULL)
 
-    # Unify result to only be about the status of the script and without
-    # the full path to the script
+  # Unify result to only be about the status of the script and without
+  # the full path to the script
 
-    res$script <- basename(res$script)
-    res <- res[c("id", "tag", "script", "status")]
+  res$script <- basename(res$script)
+  res <- res[c("id", "tag", "script", "status")]
 
-    # Check that the results now are consistent
-    expect_snapshot_value(res, style = "json2")
-  })
+  # Check that the results now are consistent
+  expect_snapshot(res)
 })

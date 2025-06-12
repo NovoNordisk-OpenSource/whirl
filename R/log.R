@@ -60,7 +60,8 @@ read_session_info <- function(file) {
       source = source,
       url = vapply(
         X = package,
-        FUN = \(x) utils::packageDescription(x)[["URL"]],
+        FUN = \(x) utils::packageDescription(x)[["URL"]] |> 
+          dplyr::coalesce(NA_character_),
         FUN.VALUE =  character(1),
         USE.NAMES = FALSE
       )
