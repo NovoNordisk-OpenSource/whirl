@@ -176,7 +176,6 @@ get_unique_values <- function(x) {
 
 #' @noRd
 create_execution_domain <- function(queue) {
-
   envvars <- queue$result |>
     purrr::map(c("session", "environment")) |>
     purrr::list_rbind() |>
@@ -187,7 +186,7 @@ create_execution_domain <- function(queue) {
     purrr::map(c("session", "platform")) |>
     purrr::list_rbind() |>
     dplyr::distinct() |> 
-    dplyr::filter(setting %in% c("version", "pandoc", "quarto"))
+    dplyr::filter(.data$setting %in% c("version", "pandoc", "quarto"))
   platform <- split(x = platform$value, f = platform$setting)
 
   software_prerequisites <- list(
@@ -216,11 +215,11 @@ create_execution_domain <- function(queue) {
     purrr::map(c("session", "R")) |> 
     purrr::list_rbind() |>
     dplyr::distinct() |>
-    dplyr::arrange(package) |>
+    dplyr::arrange(.data$package) |>
     dplyr::transmute(
-      name = package,
-      version = version,
-      uri = url
+      name = .data$package,
+      version = .data$version,
+      uri = .data$url
     ) |> 
     purrr::pmap(list)
 

@@ -283,7 +283,7 @@ wrs_log_script <- function(script, self, private, super) {
     file = file.path(private$wd, "start.rds")
   )
 
-  saveRDS( # Log script metadta
+  saveRDS( # Log script metadata
     object = list(
       name = private$current_script,
       md5sum = tools::md5sum(files = private$current_script) |>
