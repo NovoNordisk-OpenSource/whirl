@@ -25,14 +25,16 @@
 #'   * This is used to add any additional structured information that is not directly covered by the BCO.
 #'
 #' * [Description Domain](https://wiki.biocomputeobject.org/index.php?title=Description-domain)
-#'   * Contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.
+#'   * Contains a structured field for the description of external references, the pipeline steps,
+#' and the relationship of I/O objects.
 #'   * Provide external document.
 #'
 #' * [Execution Domain](https://wiki.biocomputeobject.org/index.php?title=Execution-domain)
 #'   * Contains fields for the execution of the BCO.
 #'
 #'* [Parametric Domain](https://wiki.biocomputeobject.org/index.php?title=Parametric-domain)
-#'   * Represents the list of parameters customizing the computational flow which can affect the output of the calculations.
+#'   * Represents the list of parameters customizing the computational flow which can affect
+#' the output of the calculations.
 #'
 #' * [IO Domain](https://wiki.biocomputeobject.org/index.php?title=Iodomain)
 #'   * Represents the list of global input and output files created by the computational workflow.
@@ -40,7 +42,8 @@
 #' * [Error Domain](https://wiki.biocomputeobject.org/index.php?title=Error-domain)
 #'   * Defines the empirical and algorithmic limits and error sources of the BCO.
 #'
-#' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
+#' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the
+#' [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
 #'
 #' @param queue Result from `run()`.
 #' @param path A character string specifying the file path to write BioCompute log to.
