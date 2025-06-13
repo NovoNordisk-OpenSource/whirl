@@ -46,7 +46,7 @@ test_that("stream to log file in a whirl context", {
     expect_length(3) |>
     lapply(expect_s3_class, "data.frame") |>
     sapply(\(x) x[["file"]]) |>
-    unlist() |> 
+    unlist() |>
     expect_equal(
       c(read = "test_read", delete = "test_delete")
     )

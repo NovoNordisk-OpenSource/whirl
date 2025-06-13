@@ -1,19 +1,11 @@
-
-# info <- derive_info(
-#   log = file.path(params$tmpdir, "doc.md"),
-#   session = file.path(params$tmpdir, "session_info.rds"),
-#   environment = ,
-#   options = 
-#   files = Sys.getenv("WHIRL_LOG_MSG"),
-#   renv = file.path(params$tmpdir, "renv_status.rds")
-# )
-
-read_info <- function(script, md, start, log, session, environment, options, python = NULL) {
+read_info <- function(
+    script, md, start, log, session, environment,
+    options, python = NULL) {
   info <- list(
     script = readRDS(script),
     status = get_status(md = md, start = start),
-    files = log |> 
-      read_from_log() |> 
+    files = log |>
+      read_from_log() |>
       split_log(),
     session = read_session_info(session)
   )
@@ -22,7 +14,7 @@ read_info <- function(script, md, start, log, session, environment, options, pyt
   info$session$options <- read_options(options)
 
   if (!is.null(python) && file.exists(python)) {
-    info$session$platform <- info$session$platform |> 
+    info$session$platform <- info$session$platform |>
       dplyr::bind_rows(
         data.frame(
           setting = "python",
@@ -30,7 +22,8 @@ read_info <- function(script, md, start, log, session, environment, options, pyt
         )
       )
     info$session$python <- read_python(python)
-    info$session <- info$session[c("platform", "R", "python", "environment", "options")]
+    info$session <-
+      info$session[c("platform", "R", "python", "environment", "options")]
   }
 
   return(info)
@@ -39,12 +32,12 @@ read_info <- function(script, md, start, log, session, environment, options, pyt
 read_session_info <- function(file) {
   info <- readRDS(file)
 
-  platform <- info[["platform"]] |> 
-    unlist() |> 
+  platform <- info[["platform"]] |>
+    unlist() |>
     tibble::enframe(name = "setting", value = "value")
 
-  r_packages <- info[["packages"]] |> 
-    tibble::as_tibble() |> 
+  r_packages <- info[["packages"]] |>
+    tibble::as_tibble() |>
     dplyr::transmute(
       package = .data$package,
       version = .data$loadedversion,
@@ -54,40 +47,42 @@ read_session_info <- function(file) {
       date = vapply(
         X = .data$package,
         FUN = utils::packageDate,
-        FUN.VALUE =  Sys.Date(),
+        FUN.VALUE = Sys.Date(),
         USE.NAMES = FALSE
       ) |> as.Date(),
       source = source,
       url = vapply(
         X = .data$package,
-        FUN = \(x) utils::packageDescription(x)[["URL"]] |> 
-          dplyr::coalesce(NA_character_),
-        FUN.VALUE =  character(1),
+        FUN = \(x) {
+          utils::packageDescription(x)[["URL"]] |>
+            dplyr::coalesce(NA_character_)
+        },
+        FUN.VALUE = character(1),
         USE.NAMES = FALSE
       )
     )
-  
+
   list(
-    platform = platform, 
+    platform = platform,
     R = r_packages
   )
 }
 
 read_environment <- function(file) {
-  readRDS(file) |> 
+  readRDS(file) |>
     as.list() |>
     unlist(recursive = FALSE) |>
-    tibble::enframe(name = "variable", value = "value") |> 
+    tibble::enframe(name = "variable", value = "value") |>
     dplyr::filter(
       stringr::str_detect(
-        string = .data$variable, 
-        pattern = paste0(r_secrets(), collapse = "|"), 
+        string = .data$variable,
+        pattern = paste0(r_secrets(), collapse = "|"),
         negate = TRUE
       )
     )
 }
 
-r_secrets <- function(){
+r_secrets <- function() {
   c(
     "BASH_FUNC",
     "_SSL_CERT",
@@ -100,8 +95,8 @@ r_secrets <- function(){
 }
 
 read_options <- function(file) {
-  readRDS(file) |> 
-    tibble::enframe(name = "option", value = "value") |> 
+  readRDS(file) |>
+    tibble::enframe(name = "option", value = "value") |>
     dplyr::filter(
       !.data$option %in% "rl_word_breaks" # Removed due to breaking tables
     )
@@ -110,8 +105,8 @@ read_options <- function(file) {
 #' @noRd
 python_version <- function() {
   reticulate::py_config()[["version"]] |>
-      as.character() |>
-      paste("@", reticulate::py_config()[["python"]])
+    as.character() |>
+    paste("@", reticulate::py_config()[["python"]])
 }
 
 #' @noRd

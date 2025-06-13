@@ -143,21 +143,19 @@ whirl_r_session <- R6::R6Class(
 )
 
 wrs_initialize <- function(
-  verbosity_level,
-  check_renv,
-  track_files,
-  out_formats,
-  track_files_discards,
-  track_files_keep,
-  approved_pkgs_folder,
-  approved_pkgs_url,
-  log_dir,
-  wait_timeout,
-  self,
-  private,
-  super
-) {
-
+    verbosity_level,
+    check_renv,
+    track_files,
+    out_formats,
+    track_files_discards,
+    track_files_keep,
+    approved_pkgs_folder,
+    approved_pkgs_url,
+    log_dir,
+    wait_timeout,
+    self,
+    private,
+    super) {
   super$initialize(wait_timeout = 9000) # uses callr::r_session$initialize()
 
   # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
@@ -279,7 +277,7 @@ wrs_check_status <- function(self, private, super) {
 
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
-  
+
   saveRDS( # Log starting time
     object = Sys.time(),
     file = file.path(private$wd, "start.rds")
@@ -288,9 +286,9 @@ wrs_log_script <- function(script, self, private, super) {
   saveRDS( # Log script metadta
     object = list(
       name = private$current_script,
-      md5sum = tools::md5sum(files = private$current_script) |> 
+      md5sum = tools::md5sum(files = private$current_script) |>
         unname(),
-      content = readLines(private$current_script) |> 
+      content = readLines(private$current_script) |>
         paste0(collapse = "\n")
     ),
     file = file.path(private$wd, "script.rds")
@@ -299,8 +297,7 @@ wrs_log_script <- function(script, self, private, super) {
   # Set the execute directory of the Quarto process calling the script
   quarto_execute_dir <- zephyr::get_option("execute_dir", "whirl")
   if (is.null(quarto_execute_dir)) {
-    quarto_execute_dir <- switch(
-      get_file_ext(script),
+    quarto_execute_dir <- switch(get_file_ext(script),
       "R" = normalizePath("."),
       normalizePath(dirname(script))
     )
@@ -433,7 +430,7 @@ wrs_create_logs <- function(out_dir, format, output, self, private, super) {
 
   if ("json" %in% format) {
     json_log <- file.path(
-      out_dir, 
+      out_dir,
       gsub(
         pattern = "\\.[^\\.]*$",
         replacement = "_log.json",

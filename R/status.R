@@ -69,7 +69,7 @@ get_status <- function(md, start) {
 
   list(
     message = status,
-    warnings= warnings,
+    warnings = warnings,
     errors = errors,
     start = readRDS(start),
     end = file.mtime(md)

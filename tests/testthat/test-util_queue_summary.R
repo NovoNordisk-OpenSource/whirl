@@ -6,7 +6,7 @@ test_that("fails with invalid input", {
 
 test_that("Summary tibble is created successfully", {
   skip_if_no_quarto()
-  
+
   q <- whirl_queue$new(n_workers = 2, verbosity_level = "quiet")
 
   test_script(c("success.R", "py_success.py")) |>

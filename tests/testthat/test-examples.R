@@ -1,6 +1,6 @@
 test_that("All example scripts run with consistent output", {
   skip_if_no_quarto()
-  
+
   tmpdir <- withr::local_tempdir()
 
   # Copy all example scripts to the temporary working directory
@@ -10,10 +10,10 @@ test_that("All example scripts run with consistent output", {
     file.copy(recursive = TRUE, to = tmpdir)
 
   res <- list(
-    list.files(tmpdir, pattern = "\\.(yaml|yml)$", full.names = TRUE) |> 
+    list.files(tmpdir, pattern = "\\.(yaml|yml)$", full.names = TRUE) |>
       as.list(),
     list.files(tmpdir, pattern = "\\.(R|py)$", full.names = TRUE)
-    ) |> 
+  ) |>
     run(summary_file = NULL)
 
   # Unify result to only be about the status of the script and without
