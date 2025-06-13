@@ -119,13 +119,13 @@ whirl_queue <- R6::R6Class(
     #' @field next_ids [integer] Which scripts are next in the queue
     next_ids = \() {
       self$queue$id[self$queue$status == "waiting"] |>
-        head(length(self$available_workers))
+        utils::head(length(self$available_workers))
     },
 
     #' @field next_workers [integer] Which workers are next to be started
     next_workers = \() {
       self$available_workers |>
-        head(length(self$next_ids))
+        utils::head(length(self$next_ids))
     }
   ),
   private = list(

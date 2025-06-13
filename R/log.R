@@ -46,20 +46,20 @@ read_session_info <- function(file) {
   r_packages <- info[["packages"]] |> 
     tibble::as_tibble() |> 
     dplyr::transmute(
-      package = package,
-      version = loadedversion,
-      attached = attached,
+      package = .data$package,
+      version = .data$loadedversion,
+      attached = .data$attached,
       approved = NA, # TODO: Modified call to check_approved (see main)
-      path = loadedpath,
+      path = .data$loadedpath,
       date = vapply(
-        X = package,
+        X = .data$package,
         FUN = utils::packageDate,
         FUN.VALUE =  Sys.Date(),
         USE.NAMES = FALSE
       ) |> as.Date(),
       source = source,
       url = vapply(
-        X = package,
+        X = .data$package,
         FUN = \(x) utils::packageDescription(x)[["URL"]] |> 
           dplyr::coalesce(NA_character_),
         FUN.VALUE =  character(1),
@@ -80,7 +80,7 @@ read_environment <- function(file) {
     tibble::enframe(name = "variable", value = "value") |> 
     dplyr::filter(
       stringr::str_detect(
-        string = variable, 
+        string = .data$variable, 
         pattern = paste0(r_secrets(), collapse = "|"), 
         negate = TRUE
       )
@@ -103,7 +103,7 @@ read_options <- function(file) {
   readRDS(file) |> 
     tibble::enframe(name = "option", value = "value") |> 
     dplyr::filter(
-      !option %in% "rl_word_breaks" # Removed due to breaking tables
+      !.data$option %in% "rl_word_breaks" # Removed due to breaking tables
     )
 }
 

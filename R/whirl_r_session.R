@@ -396,11 +396,11 @@ wrs_log_finish <- function(self, private, super) {
 
 wrs_create_outputs <- function(out_dir, format, self, private, super) {
   output <- private$result
-  output$logs <- wrs_create_logs(out_dir, format, self, private, super)
+  output$logs <- wrs_create_logs(out_dir, format, output, self, private, super)
   return(invisible(output))
 }
 
-wrs_create_logs <- function(out_dir, format, self, private, super) {
+wrs_create_logs <- function(out_dir, format, output, self, private, super) {
   logs <- c()
 
   if ("html" %in% format) {
