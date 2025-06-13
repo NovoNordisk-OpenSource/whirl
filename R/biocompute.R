@@ -103,20 +103,19 @@ create_biocompute <- function(queue, config) {
 # DESCRIPTION DOMAIN
 #' @noRd
 create_description_domain <- function(queue) {
-
-  pipeline_steps <- queue |> 
+  pipeline_steps <- queue |>
     dplyr::transmute(
-      name = .data$script |> 
-        basename() |> 
+      name = .data$script |>
+        basename() |>
         sub(pattern = "\\.\\w+$", replacement = "") |>
         gsub(pattern = "[-_]", replacement = " "),
       step_number = .data$id,
       version = NA_character_, # TODO
       description = NA_character_, # TODO - consider taking from header?
-      prerequisite = .data$result |> 
-        purrr::map(c("session", "R")) |> 
+      prerequisite = .data$result |>
+        purrr::map(c("session", "R")) |>
         purrr::map(.f = \(x) {
-          x |> 
+          x |>
             dplyr::transmute(
               name = paste(
                 "R package:",
@@ -125,32 +124,31 @@ create_description_domain <- function(queue) {
                 .data$version
               ),
               uri = .data$url
-            ) |> 
+            ) |>
             purrr::pmap(.f = list)
-        }
-      ),
-      input_list = .data$result |> 
-        purrr::map(c("files", "read")) |> 
+        }),
+      input_list = .data$result |>
+        purrr::map(c("files", "read")) |>
         purrr::map(.f = \(x) {
-          x |> 
+          x |>
             dplyr::transmute(
               filename = basename(.data$file),
               uri = .data$file,
               access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
-            ) |> 
-              purrr::pmap(.f = list)
+            ) |>
+            purrr::pmap(.f = list)
         }),
-        output_list = .data$result |> 
-          purrr::map(c("files", "write")) |> 
-          purrr::map(.f = \(x) {
-            x |> 
-              dplyr::transmute(
-                filename = basename(.data$file),
-                uri = .data$file,
-                access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
-              ) |> 
-                purrr::pmap(.f = list)
-          })
+      output_list = .data$result |>
+        purrr::map(c("files", "write")) |>
+        purrr::map(.f = \(x) {
+          x |>
+            dplyr::transmute(
+              filename = basename(.data$file),
+              uri = .data$file,
+              access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
+            ) |>
+            purrr::pmap(.f = list)
+        })
     )
 
   description_domain <- list(
