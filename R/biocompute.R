@@ -133,28 +133,10 @@ create_description_domain <- function(queue) {
         }),
       input_list = .data$result |>
         purrr::map(c("files", "read")) |>
-        purrr::map(.f = \(x) {
-          x |>
-            dplyr::mutate(
-              filename = basename(.data$file),
-              uri = .data$file,
-              access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
-            ) |>
-            dplyr::select("filename", "uri", "access_time") |>
-            purrr::pmap(.f = list)
-        }),
+        purrr::map(.f = bco_fileformat),
       output_list = .data$result |>
         purrr::map(c("files", "write")) |>
-        purrr::map(.f = \(x) {
-          x |>
-            dplyr::mutate(
-              filename = basename(.data$file),
-              uri = .data$file,
-              access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
-            ) |>
-            dplyr::select("filename", "uri", "access_time") |>
-            purrr::pmap(.f = list)
-        })
+        purrr::map(.f = bco_fileformat)
     ) |>
     dplyr::select(
       "name",
@@ -173,6 +155,18 @@ create_description_domain <- function(queue) {
   )
 
   return(description_domain)
+}
+
+#' @noRd
+bco_fileformat <- function(x) {
+  x |>
+    dplyr::mutate(
+      filename = basename(.data$file),
+      uri = .data$file,
+      access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
+    ) |>
+    dplyr::select("filename", "uri", "access_time") |>
+    purrr::pmap(.f = list)
 }
 
 #' @noRd
