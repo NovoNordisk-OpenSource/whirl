@@ -69,7 +69,7 @@ zephyr::create_option(
 zephyr::create_option(
   name = "approved_packages",
   default = NULL,
-  description = "List of approved packages and their version in the format: {name}@{version}"
+  description = "List of approved packages and their version in the format: \\{name\\}@\\{version\\}"
 )
 
 zephyr::create_option(

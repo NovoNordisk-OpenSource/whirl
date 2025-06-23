@@ -29,5 +29,5 @@ package_spec <- function(x) {
   x <- strsplit(x = x, split = "@")
   n <- vapply(X = x, FUN = \(x) x[[1]], FUN.VALUE = character(1))
   v <- vapply(X = x, FUN = \(x) x[[2]], FUN.VALUE = character(1))
-  setNames(object = v, nm = n)
+  stats::setNames(object = v, nm = n)
 }

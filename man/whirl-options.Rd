@@ -70,7 +70,7 @@ track_files = TRUE
 
 \subsection{approved_packages}{
 
-List of approved packages and their version in the format: {name}@{version}
+List of approved packages and their version in the format: \{name\}@\{version\}
 \itemize{
 \item Default: \code{NULL}
 \item Option: \code{whirl.approved_packages}

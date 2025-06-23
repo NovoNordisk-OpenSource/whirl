@@ -20,7 +20,7 @@ Currently only supported on Linux.. Default: \code{FALSE}.}
 \item{track_files_keep}{List of file naming patterns always to be tracked when
 track_files = TRUE. Default: \code{NULL}.}
 
-\item{approved_packages}{List of approved packages and their version in the format: {name}@{version}. Default: \code{NULL}.}
+\item{approved_packages}{List of approved packages and their version in the format: \{name\}@\{version\}. Default: \code{NULL}.}
 
 \item{n_workers}{Number of simultaneous workers used in the run function.
 A maximum of 128 workers is allowed.. Default: \code{1}.}
