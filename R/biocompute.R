@@ -133,10 +133,10 @@ create_description_domain <- function(queue) {
         }),
       input_list = .data$result |>
         purrr::map(c("files", "read")) |>
-        purrr::map(.f = bco_fileformat),
+        purrr::map(.f = bco_file_format),
       output_list = .data$result |>
         purrr::map(c("files", "write")) |>
-        purrr::map(.f = bco_fileformat)
+        purrr::map(.f = bco_file_format)
     ) |>
     dplyr::select(
       "name",
@@ -158,7 +158,7 @@ create_description_domain <- function(queue) {
 }
 
 #' @noRd
-bco_fileformat <- function(x) {
+bco_file_format <- function(x) {
   x |>
     dplyr::mutate(
       filename = basename(.data$file),
