@@ -49,7 +49,7 @@ read_session_info <- function(file, approved_packages = NULL) {
 
   r_packages <- info[["packages"]] |>
     tibble::as_tibble() |>
-    dplyr::transmute(
+    dplyr::mutate(
       package = .data$package,
       version = .data$loadedversion,
       attached = .data$attached,
@@ -75,6 +75,16 @@ read_session_info <- function(file, approved_packages = NULL) {
         FUN.VALUE = character(1),
         USE.NAMES = FALSE
       )
+    ) |>
+    dplyr::select(
+      "package",
+      "version",
+      "attached",
+      "approved",
+      "path",
+      "date",
+      "source",
+      "url"
     )
 
   list(

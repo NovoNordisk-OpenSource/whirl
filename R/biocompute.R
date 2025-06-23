@@ -107,7 +107,7 @@ create_biocompute <- function(queue, config) {
 #' @noRd
 create_description_domain <- function(queue) {
   pipeline_steps <- queue |>
-    dplyr::transmute(
+    dplyr::mutate(
       name = .data$script |>
         basename() |>
         sub(pattern = "\\.\\w+$", replacement = "") |>
@@ -119,7 +119,7 @@ create_description_domain <- function(queue) {
         purrr::map(c("session", "R")) |>
         purrr::map(.f = \(x) {
           x |>
-            dplyr::transmute(
+            dplyr::mutate(
               name = paste(
                 "R package:",
                 .data$package,
@@ -128,30 +128,42 @@ create_description_domain <- function(queue) {
               ),
               uri = .data$url
             ) |>
+            dplyr::select("name", "uri") |>
             purrr::pmap(.f = list)
         }),
       input_list = .data$result |>
         purrr::map(c("files", "read")) |>
         purrr::map(.f = \(x) {
           x |>
-            dplyr::transmute(
+            dplyr::mutate(
               filename = basename(.data$file),
               uri = .data$file,
               access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
             ) |>
+            dplyr::select("filename", "uri", "access_time") |>
             purrr::pmap(.f = list)
         }),
       output_list = .data$result |>
         purrr::map(c("files", "write")) |>
         purrr::map(.f = \(x) {
           x |>
-            dplyr::transmute(
+            dplyr::mutate(
               filename = basename(.data$file),
               uri = .data$file,
               access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
             ) |>
+            dplyr::select("filename", "uri", "access_time") |>
             purrr::pmap(.f = list)
         })
+    ) |>
+    dplyr::select(
+      "name",
+      "step_number",
+      "version",
+      "description",
+      "prerequisite",
+      "input_list",
+      "output_list"
     )
 
   description_domain <- list(
@@ -227,11 +239,12 @@ create_execution_domain <- function(queue) {
     purrr::list_rbind() |>
     dplyr::distinct() |>
     dplyr::arrange(.data$package) |>
-    dplyr::transmute(
+    dplyr::mutate(
       name = .data$package,
       version = .data$version,
       uri = .data$url
     ) |>
+    dplyr::select("name", "version", "uri") |>
     purrr::pmap(list)
 
   software_prerequisites <- append(software_prerequisites, packages)
