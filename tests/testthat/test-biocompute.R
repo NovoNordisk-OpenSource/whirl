@@ -6,17 +6,10 @@ test_that("Biocompute object created correctly", {
     summary_file = NULL
   )
 
-  create_io_domain(queue) |>
-    expect_snapshot_value()
+  bco_tmp <- withr::local_tempfile(fileext = ".json")
 
-  create_execution_domain(queue) |>
+  bco <- write_biocompute(queue = queue, path = bco_tmp) |>
     expect_no_condition()
 
-  create_parametrics_domain(
-    config = yaml::read_yaml(input_yml),
-    base_path = dirname(input_yml)
-  ) |>
-    expect_no_condition()
-
-  write_biocompute(queue)
+  expect_snapshot_value(bco$io_domain)
 })
