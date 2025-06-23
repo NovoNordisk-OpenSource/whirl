@@ -49,6 +49,7 @@ github
 globbing
 grepl
 grpvar
+gsub
 GxP
 hjust
 https
@@ -92,8 +93,10 @@ pandoc
 parametrics
 pkgdown
 pkgload
+pkgname
 pkgs
 PKGS
+pkgversion
 pmap
 Posix
 pre
@@ -141,6 +144,7 @@ unlist
 unnest
 urandom
 usethis
+vapply
 vctr
 vctrs
 VignetteBuilder

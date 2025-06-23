@@ -68,13 +68,13 @@ track_files = TRUE
 }
 }
 
-\subsection{approved_pacakges}{
+\subsection{approved_packages}{
 
 List of approved packages and their version in the format: {name}@{version}
 \itemize{
 \item Default: \code{NULL}
-\item Option: \code{whirl.approved_pacakges}
-\item Environment: \code{R_WHIRL_APPROVED_PACAKGES}
+\item Option: \code{whirl.approved_packages}
+\item Environment: \code{R_WHIRL_APPROVED_PACKAGES}
 }
 }
 
