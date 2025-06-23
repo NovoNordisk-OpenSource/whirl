@@ -1,13 +1,24 @@
 read_info <- function(
-    script, md, start, log, session, environment,
-    options, python = NULL) {
+  script,
+  md,
+  start,
+  log,
+  session,
+  environment,
+  options,
+  python = NULL,
+  approved_packages = NULL
+) {
   info <- list(
     script = readRDS(script),
     status = get_status(md = md, start = start),
     files = log |>
       read_from_log() |>
       split_log(),
-    session = read_session_info(session)
+    session = read_session_info(
+      file = session,
+      approved_packages = approved_packages
+    )
   )
 
   info$session$environment <- read_environment(environment)
@@ -29,7 +40,7 @@ read_info <- function(
   return(info)
 }
 
-read_session_info <- function(file) {
+read_session_info <- function(file, approved_packages = NULL) {
   info <- readRDS(file)
 
   platform <- info[["platform"]] |>
@@ -42,14 +53,18 @@ read_session_info <- function(file) {
       package = .data$package,
       version = .data$loadedversion,
       attached = .data$attached,
-      approved = NA, # TODO: Modified call to check_approved (see main)
+      approved = check_approved(
+        used = paste(.data$package, .data$version, sep = "@"),
+        approved = approved_packages
+      ),
       path = .data$loadedpath,
       date = vapply(
         X = .data$package,
         FUN = utils::packageDate,
         FUN.VALUE = Sys.Date(),
         USE.NAMES = FALSE
-      ) |> as.Date(),
+      ) |>
+        as.Date(),
       source = source,
       url = vapply(
         X = .data$package,

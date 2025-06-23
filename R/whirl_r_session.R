@@ -23,11 +23,7 @@ whirl_r_session <- R6::R6Class(
         "whirl"
       ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
-      approved_pkgs_folder = zephyr::get_option(
-        "approved_pkgs_folder",
-        "whirl"
-      ),
-      approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
+      approved_packages = zephyr::get_option("approved_packages", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl"),
       wait_timeout = zephyr::get_option("wait_timeout", "whirl")
       # jscpd:ignore-end
@@ -39,8 +35,7 @@ whirl_r_session <- R6::R6Class(
         out_formats,
         track_files_discards,
         track_files_keep,
-        approved_pkgs_folder,
-        approved_pkgs_url,
+        approved_packages,
         log_dir,
         wait_timeout,
         self,
@@ -131,8 +126,7 @@ whirl_r_session <- R6::R6Class(
     log_dir = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
-    approved_pkgs_folder = NULL,
-    approved_pkgs_url = NULL,
+    approved_packages = NULL,
     check_renv = NULL,
     pb = NULL,
     current_script = NULL,
@@ -149,8 +143,7 @@ wrs_initialize <- function(
     out_formats,
     track_files_discards,
     track_files_keep,
-    approved_pkgs_folder,
-    approved_pkgs_url,
+    approved_packages,
     log_dir,
     wait_timeout,
     self,
@@ -158,7 +151,6 @@ wrs_initialize <- function(
     super) {
   super$initialize(wait_timeout = 9000) # uses callr::r_session$initialize()
 
-  # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
   private$wd <- withr::local_tempdir(clean = FALSE)
   private$verbosity_level <- verbosity_level
   private$check_renv <- check_renv
@@ -166,8 +158,7 @@ wrs_initialize <- function(
   private$out_formats <- out_formats
   private$track_files_discards <- track_files_discards
   private$track_files_keep <- track_files_keep
-  private$approved_pkgs_folder <- approved_pkgs_folder
-  private$approved_pkgs_url <- approved_pkgs_url
+  private$approved_packages <- approved_packages
   private$log_dir <- log_dir
 
   # If the stream does not support dynamic tty, which is needed for progress
@@ -367,8 +358,7 @@ wrs_create_log <- function(self, private, super) {
       output_file = "log.html",
       execute_params = list(
         title = private$current_script,
-        check_approved_folder_pkgs = private$approved_pkgs_folder,
-        check_approved_url_pkgs = private$approved_pkgs_url,
+        approved_packages = private$approved_packages,
         with_library_paths = .libPaths(),
         tmpdir = private$wd
       ),

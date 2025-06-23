@@ -26,11 +26,7 @@ whirl_queue <- R6::R6Class(
         "whirl"
       ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
-      approved_pkgs_folder = zephyr::get_option(
-        "approved_pkgs_folder",
-        "whirl"
-      ),
-      approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
+      approved_packages = zephyr::get_option("approved_packages", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl")
       # jscpd:ignore-end
     ) {
@@ -44,8 +40,7 @@ whirl_queue <- R6::R6Class(
         out_formats,
         track_files_discards,
         track_files_keep,
-        approved_pkgs_folder,
-        approved_pkgs_url,
+        approved_packages,
         log_dir
       )
     },
@@ -138,8 +133,7 @@ whirl_queue <- R6::R6Class(
     out_formats = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
-    approved_pkgs_folder = NULL,
-    approved_pkgs_url = NULL,
+    approved_packages = NULL,
     log_dir = NULL
   )
 )
@@ -154,8 +148,7 @@ wq_initialise <- function(
   out_formats,
   track_files_discards,
   track_files_keep,
-  approved_pkgs_folder,
-  approved_pkgs_url,
+  approved_packages,
   log_dir
 ) {
   private$check_renv <- check_renv
@@ -164,8 +157,7 @@ wq_initialise <- function(
   private$out_formats <- out_formats
   private$track_files_discards <- track_files_discards
   private$track_files_keep <- track_files_keep
-  private$approved_pkgs_folder <- approved_pkgs_folder
-  private$approved_pkgs_url <- approved_pkgs_url
+  private$approved_packages <- approved_packages
   private$log_dir <- log_dir
 
   private$.queue <- tibble::tibble(
@@ -230,16 +222,7 @@ wq_skip <- function(self, private, scripts, tag) {
 wq_poll <- function(
   self,
   private,
-  timeout,
-  check_renv,
-  verbosity_level,
-  track_files,
-  out_formats,
-  track_files_discards,
-  track_files_keep,
-  approved_pkgs_folder,
-  approved_pkgs_url,
-  log_dir
+  timeout
 ) {
   # Start new sessions if there are available workers and waiting scripts in
   # the queue
@@ -256,8 +239,7 @@ wq_poll <- function(
         out_formats = private$out_formats,
         track_files_discards = private$track_files_discards,
         track_files_keep = private$track_files_keep,
-        approved_pkgs_folder = private$approved_pkgs_folder,
-        approved_pkgs_url = private$approved_pkgs_url,
+        approved_packages = private$approved_packages,
         log_dir = private$log_dir
       ),
       simplify = FALSE

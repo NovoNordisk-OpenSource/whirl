@@ -67,15 +67,9 @@ zephyr::create_option(
 )
 
 zephyr::create_option(
-  name = "approved_pkgs_folder",
+  name = "approved_pacakges",
   default = NULL,
-  description = "Approved folder library packages"
-)
-
-zephyr::create_option(
-  name = "approved_pkgs_url",
-  default = NULL,
-  description = "Approved URL library packages"
+  description = "List of approved packages and their version in the format: {name}@{version}"
 )
 
 zephyr::create_option(

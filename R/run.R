@@ -76,14 +76,10 @@ run <- function(
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths
   track_files_keep <- zephyr::get_option("track_files_keep")
-  approved_pkgs_folder <- zephyr::get_option("approved_pkgs_folder")
-  approved_pkgs_url <- zephyr::get_option("approved_pkgs_url")
+  approved_packages <- zephyr::get_option("approved_packages")
 
   # Check suggest imports if they are needed
   if (check_renv) rlang::check_installed("renv")
-  if (!is.null(approved_pkgs_folder) || !is.null(approved_pkgs_url)) {
-    rlang::check_installed("ggplot2")
-  }
 
   # Message when initiating
   d <- NULL
@@ -126,8 +122,7 @@ run <- function(
     out_formats = out_formats,
     track_files_discards = track_files_discards,
     track_files_keep = track_files_keep,
-    approved_pkgs_folder = approved_pkgs_folder,
-    approved_pkgs_url = approved_pkgs_url,
+    approved_packages = approved_packages,
     log_dir = log_dir
   )
 

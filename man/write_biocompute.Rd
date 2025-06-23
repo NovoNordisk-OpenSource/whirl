@@ -46,7 +46,8 @@ The object consists of the following domains:
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Description-domain}{Description Domain}
 \itemize{
-\item Contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.
+\item Contains a structured field for the description of external references, the pipeline steps,
+and the relationship of I/O objects.
 \item Provide external document.
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Execution-domain}{Execution Domain}
@@ -55,7 +56,8 @@ The object consists of the following domains:
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Parametric-domain}{Parametric Domain}
 \itemize{
-\item Represents the list of parameters customizing the computational flow which can affect the output of the calculations.
+\item Represents the list of parameters customizing the computational flow which can affect
+the output of the calculations.
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Iodomain}{IO Domain}
 \itemize{
@@ -67,5 +69,6 @@ The object consists of the following domains:
 }
 }
 
-See the \href{https://www.biocomputeobject.org}{BioCompute Object Portal} and the \href{https://wiki.biocomputeobject.org}{BioCompute Objects Wiki} for more information.
+See the \href{https://www.biocomputeobject.org}{BioCompute Object Portal} and the
+\href{https://wiki.biocomputeobject.org}{BioCompute Objects Wiki} for more information.
 }

@@ -68,23 +68,13 @@ track_files = TRUE
 }
 }
 
-\subsection{approved_pkgs_folder}{
+\subsection{approved_pacakges}{
 
-Approved folder library packages
+List of approved packages and their version in the format: {name}@{version}
 \itemize{
 \item Default: \code{NULL}
-\item Option: \code{whirl.approved_pkgs_folder}
-\item Environment: \code{R_WHIRL_APPROVED_PKGS_FOLDER}
-}
-}
-
-\subsection{approved_pkgs_url}{
-
-Approved URL library packages
-\itemize{
-\item Default: \code{NULL}
-\item Option: \code{whirl.approved_pkgs_url}
-\item Environment: \code{R_WHIRL_APPROVED_PKGS_URL}
+\item Option: \code{whirl.approved_pacakges}
+\item Environment: \code{R_WHIRL_APPROVED_PACAKGES}
 }
 }
 
