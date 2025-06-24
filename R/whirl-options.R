@@ -89,8 +89,10 @@ zephyr::create_option(
   name = "log_dir",
   default = \(x) dirname(x),
   description = "The output directory of the log files. Default is the folder of
-  the executed script. log_dir can be a path as a character or it can be a
-  function that takes the script path as input and returns the log directory.
+  the executed script. 'log_dir' should be a
+  function that takes the argument script path (x) as input and returns the
+  log directory.
+
   For more information see the examples of `run()` or `vignette('whirl')`."
 )
 
@@ -107,6 +109,6 @@ zephyr::create_option(
 zephyr::create_option(
   name = "wait_timeout",
   default = 9000,
-  description = "Timeout for waiting for the R process from callr::r_session to 
+  description = "Timeout for waiting for the R process from callr::r_session to
   start, in milliseconds."
 )

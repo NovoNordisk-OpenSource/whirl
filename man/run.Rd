@@ -46,8 +46,10 @@ Currently only supported on Linux.. Default: \code{FALSE}.}
 \code{json}, and markdown formats: \code{gfm}, \code{commonmark}, and \code{markua}.. Default: \code{"html"}.}
 
 \item{log_dir}{The output directory of the log files. Default is the folder of
-the executed script. log_dir can be a path as a character or it can be a
-function that takes the script path as input and returns the log directory.
+the executed script. 'log_dir' should be a
+function that takes the argument script path (x) as input and returns the
+log directory.
+
 For more information see the examples of \code{run()} or \code{vignette('whirl')}.. Default: \code{function (x)  dirname(x)}.}
 }
 \value{
