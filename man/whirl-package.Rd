@@ -30,6 +30,7 @@ Authors:
   \item Steffen Falgreen Larsen \email{sffl@novonordisk.com}
   \item Vladimir Obucina \email{vlob@novonordisk.com}
   \item Michael Svingel \email{wymz@novonordisk.com}
+  \item Skander Mulder \email{sktf@novonordisk.com}
 }
 
 Other contributors:
