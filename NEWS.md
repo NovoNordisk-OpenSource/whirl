@@ -3,6 +3,7 @@
 * Add `write_biocompute()` to create [BioCompute Objects](https://www.biocomputeobject.org/) containing the logs in a standardised JSON format.
 * Calling `run()` with `track_files = TRUE` now checks if strace can be attached to the process.
 * Improved json logs and similar returned output from running a script (`result` column in return from `run()`).
+* Simplified approved packages check. Now the user suplies a character vector of packages and versions specified as `{package}@{version}`.
 
 # whirl 0.2.0
 
