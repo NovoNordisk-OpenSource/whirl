@@ -370,7 +370,7 @@ wrs_create_log <- function(self, private, super) {
 }
 
 wrs_log_finish <- function(self, private, super) {
-  private$result <- self$get_wd() |>
+  private$result <- private$wd |>
     file.path("result.rds") |>
     readRDS()
 
@@ -400,7 +400,7 @@ wrs_create_logs <- function(out_dir, format, output, self, private, super) {
       )
     )
     file.copy(
-      from = file.path(self$get_wd(), "log.html"),
+      from = file.path(private$wd, "log.html"),
       to = html_log,
       overwrite = TRUE
     )
@@ -410,7 +410,7 @@ wrs_create_logs <- function(out_dir, format, output, self, private, super) {
   if (any(c("gfm", "commonmark", "markua") %in% format)) {
     logs_md <- mdformats(
       script = private$current_script,
-      log_html = file.path(self$get_wd(), "log.html"),
+      log_html = file.path(private$wd, "log.html"),
       mdfmt = format[format %in% c("gfm", "commonmark", "markua")],
       out_dir = out_dir,
       self = self
