@@ -59,21 +59,17 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNa
 ```{r}
 #| label: Status
 #| echo: false
-result <- withr::with_dir(
-    new = params$tmpdir, 
-    code = {
-      whirl:::read_info(
-        script = "script.rds",
-        md = "doc.md", 
-        start = "start.rds",
-        log = "log_msg.json",
-        session = "session_info.rds",
-        environment = "environment.rds",
-        options = "options.rds",
-        python = "python_imports.json",
-        approved_packages = params$approved_packages
-      )
-    })
+result <- whirl:::read_info(
+  script = file.path(params$tmpdir, "script.rds"),
+  md = file.path(params$tmpdir, "doc.md"), 
+  start = file.path(params$tmpdir, "start.rds"),
+  log = file.path(params$tmpdir, "log_msg.json"),
+  session = file.path(params$tmpdir, "session_info.rds"),
+  environment = file.path(params$tmpdir, "environment.rds"),
+  options = file.path(params$tmpdir, "options.rds"),
+  python = file.path(params$tmpdir, "python_imports.json"),
+  approved_packages = params$approved_packages
+)
 
 saveRDS(
   object = result, 
