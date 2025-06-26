@@ -1,3 +1,4 @@
+#' @noRd
 read_info <- function(
   script,
   md,
@@ -40,6 +41,7 @@ read_info <- function(
   return(info)
 }
 
+#' @noRd
 read_session_info <- function(file, approved_packages = NULL) {
   info <- readRDS(file)
 
@@ -93,6 +95,7 @@ read_session_info <- function(file, approved_packages = NULL) {
   )
 }
 
+#' @noRd
 read_environment <- function(file) {
   readRDS(file) |>
     as.list() |>
@@ -107,6 +110,7 @@ read_environment <- function(file) {
     )
 }
 
+#' @noRd
 r_secrets <- function() {
   c(
     "BASH_FUNC",
@@ -119,6 +123,7 @@ r_secrets <- function() {
   )
 }
 
+#' @noRd
 read_options <- function(file) {
   readRDS(file) |>
     tibble::enframe(name = "option", value = "value") |>
