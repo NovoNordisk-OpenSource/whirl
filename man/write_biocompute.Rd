@@ -66,6 +66,9 @@ the output of the calculations.
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Error-domain}{Error Domain}
 \itemize{
 \item Defines the empirical and algorithmic limits and error sources of the BCO.
+\item \strong{Note}: Use of this domain is not clearly defined.
+It is therefore always left empty in the current implementation.
+If you want to add content do so manually after creating the BCO.
 }
 }
 

@@ -41,6 +41,9 @@
 #'
 #' * [Error Domain](https://wiki.biocomputeobject.org/index.php?title=Error-domain)
 #'   * Defines the empirical and algorithmic limits and error sources of the BCO.
+#'   * **Note**: Use of this domain is not clearly defined.
+#' It is therefore always left empty in the current implementation.
+#' If you want to add content do so manually after creating the BCO.
 #'
 #' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the
 #' [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
@@ -99,7 +102,7 @@ create_biocompute <- function(queue, config) {
     error_domain = list(
       algorithmic_error = NULL,
       empirical_error = NULL
-    ) # TODO
+    )
   )
 }
 
@@ -113,8 +116,9 @@ create_description_domain <- function(queue) {
         sub(pattern = "\\.\\w+$", replacement = "") |>
         gsub(pattern = "[-_]", replacement = " "),
       step_number = .data$id,
-      version = NA_character_, # TODO
-      description = NA_character_, # TODO - consider taking from header?
+      version = .data$result |> 
+        purrr::map_chr(c("script", "md5sum")),
+      description = NA_character_, # TODO - use name of step from queue - implement #168
       prerequisite = .data$result |>
         purrr::map(c("session", "R")) |>
         purrr::map(.f = \(x) {
@@ -286,7 +290,6 @@ create_parametrics_domain <- function(config, base_path) {
   }
   return(parametric_domain)
 }
-
 
 #' @noRd
 bco_create_outputs <- function(files) {
