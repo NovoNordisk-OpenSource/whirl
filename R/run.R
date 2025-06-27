@@ -110,7 +110,7 @@ run <- function(
   n_workers <- min(128, n_workers)
 
   zephyr::msg_verbose(
-    message = "Executing scripts in parallel using {n_workers} cores"
+    message = "Executing scripts in parallel using {n_workers} worker(s)"
   )
 
   # Initiating the queue
