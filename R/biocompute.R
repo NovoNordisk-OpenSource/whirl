@@ -116,7 +116,7 @@ create_description_domain <- function(queue) {
         sub(pattern = "\\.\\w+$", replacement = "") |>
         gsub(pattern = "[-_]", replacement = " "),
       step_number = .data$id,
-      version = .data$result |> 
+      version = .data$result |>
         purrr::map_chr(c("script", "md5sum")),
       description = NA_character_, # TODO - use name of step from queue - implement #168
       prerequisite = .data$result |>
