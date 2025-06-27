@@ -11,5 +11,5 @@ test_that("Biocompute object created correctly", {
   bco <- write_biocompute(queue = queue, path = bco_tmp) |>
     expect_no_condition()
 
-  expect_snapshot_value(bco$io_domain)
+  expect_snapshot(str(bco$io_domain))
 })
