@@ -64,6 +64,7 @@ result <- whirl:::read_info(
   md = file.path(params$tmpdir, "doc.md"), 
   start = file.path(params$tmpdir, "start.rds"),
   log = file.path(params$tmpdir, "log_msg.json"),
+  pkgs_used = file.path(params$tmpdir, "pkgs_used.rds"),
   session = file.path(params$tmpdir, "session_info.rds"),
   environment = file.path(params$tmpdir, "environment.rds"),
   options = file.path(params$tmpdir, "options.rds"),

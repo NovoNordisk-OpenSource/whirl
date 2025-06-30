@@ -4,6 +4,7 @@ read_info <- function(
   md,
   start,
   log,
+  pkgs_used,
   session,
   environment,
   options,
@@ -15,9 +16,10 @@ read_info <- function(
     status = get_status(md = md, start = start),
     files = log |>
       read_from_log() |>
-      split_log(),
+      split_log(),    
     session = read_session_info(
       file = session,
+      pkgs_used,
       approved_packages = approved_packages
     )
   )
@@ -42,9 +44,10 @@ read_info <- function(
 }
 
 #' @noRd
-read_session_info <- function(file, approved_packages = NULL) {
+read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
   info <- readRDS(file)
-
+  pkgs_used <- readRDS(pkgs_used)
+  browser()
   platform <- info[["platform"]] |>
     unlist() |>
     tibble::enframe(name = "setting", value = "value")
