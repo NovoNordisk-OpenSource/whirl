@@ -1,3 +1,4 @@
+#' Helper function to read in all temporary information to be used in the log
 #' @noRd
 read_info <- function(
   script,
@@ -43,6 +44,7 @@ read_info <- function(
   return(info)
 }
 
+#' Read and format session info output from `sessioninfo::session_info()`
 #' @noRd
 read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
   info <- readRDS(file)
@@ -98,6 +100,7 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
   )
 }
 
+#' Read and format list of environment variabes from `Sys.getenv()`
 #' @noRd
 read_environment <- function(file) {
   readRDS(file) |>
@@ -113,6 +116,8 @@ read_environment <- function(file) {
     )
 }
 
+#' List of patterns naming a secret environment variable
+#' any match will not be included in the log
 #' @noRd
 r_secrets <- function() {
   c(
@@ -126,6 +131,7 @@ r_secrets <- function() {
   )
 }
 
+#' Read and format options output from `options()`
 #' @noRd
 read_options <- function(file) {
   readRDS(file) |>
@@ -135,6 +141,7 @@ read_options <- function(file) {
     )
 }
 
+#' Retrieve python version and path
 #' @noRd
 python_version <- function() {
   reticulate::py_config()[["version"]] |>
@@ -142,6 +149,8 @@ python_version <- function() {
     paste("@", reticulate::py_config()[["python"]])
 }
 
+#' Read and format python packages information from a JSON file
+#' JSON file created in `inst/documents/python_modules.py`
 #' @noRd
 read_python <- function(json) {
   json <- jsonlite::fromJSON(json)
