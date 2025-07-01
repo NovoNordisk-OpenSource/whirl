@@ -49,10 +49,13 @@ The object consists of the following domains:
 \item Contains a structured field for the description of external references, the pipeline steps,
 and the relationship of I/O objects.
 \item Provide external document.
+\item \strong{Note}: Use of \code{keywords} and \code{External_Reference} entries are not yet implemented.
+To use fill out the entries manually after creating the BioCompute object.`
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Execution-domain}{Execution Domain}
 \itemize{
 \item Contains fields for the execution of the BCO.
+\item \strong{Note}: Use of \code{external_data_endpoints} not implemented. Fill out manually afterwards if needed.
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Parametric-domain}{Parametric Domain}
 \itemize{

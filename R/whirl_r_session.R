@@ -327,7 +327,7 @@ wrs_log_script <- function(script, self, private, super) {
         script = normalizePath(script),
         with_library_paths = .libPaths(),
         renv = private$check_renv,
-        tmpdir = private$wd
+        tmpdir = normalizePath(private$wd)
       ),
       execute_dir = quarto_execute_dir
     )
@@ -365,7 +365,7 @@ wrs_create_log <- function(self, private, super) {
         title = private$current_script,
         approved_packages = private$approved_packages,
         with_library_paths = .libPaths(),
-        tmpdir = private$wd
+        tmpdir = normalizePath(private$wd)
       ),
       execute_dir = normalizePath(".")
     )

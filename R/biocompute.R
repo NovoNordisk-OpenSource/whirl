@@ -28,9 +28,12 @@
 #'   * Contains a structured field for the description of external references, the pipeline steps,
 #' and the relationship of I/O objects.
 #'   * Provide external document.
+#'   * **Note**: Use of `keywords` and `External_Reference` entries are not yet implemented.
+#' To use fill out the entries manually after creating the BioCompute object.`
 #'
 #' * [Execution Domain](https://wiki.biocomputeobject.org/index.php?title=Execution-domain)
 #'   * Contains fields for the execution of the BCO.
+#'   * **Note**: Use of `external_data_endpoints` not implemented. Fill out manually afterwards if needed.
 #'
 #'* [Parametric Domain](https://wiki.biocomputeobject.org/index.php?title=Parametric-domain)
 #'   * Represents the list of parameters customizing the computational flow which can affect
@@ -153,8 +156,8 @@ create_description_domain <- function(queue) {
     )
 
   description_domain <- list(
-    keywords = list(), # TODO
-    External_Reference = list(), # TODO
+    keywords = list(),
+    External_Reference = list(),
     pipeline_steps = purrr::pmap(.l = pipeline_steps, .f = list)
   )
 
@@ -251,7 +254,7 @@ create_execution_domain <- function(queue) {
     script = queue$script,
     script_driver = get_single_unique(platform$version),
     software_prerequisites = software_prerequisites,
-    external_data_endpoints = list(), # TODO
+    external_data_endpoints = list(),
     environment_variables = stats::setNames(envvars$value, envvars$variable) |>
       as.list() |>
       get_unique_values()
