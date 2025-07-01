@@ -40,7 +40,7 @@ internal_run <- function(input,
       )
     } else {
       # Execute the scripts
-      queue$run(files)
+      queue$run(scripts = files, tag = name)
       zephyr::msg_verbose(message = "\n", msg_fun = cli::cli_verbatim)
     }
   }
