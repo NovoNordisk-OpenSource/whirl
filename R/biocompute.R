@@ -121,7 +121,7 @@ create_description_domain <- function(queue) {
       step_number = .data$id,
       version = .data$result |>
         purrr::map_chr(c("script", "md5sum")),
-      description = NA_character_, # TODO - use name of step from queue - implement #168
+      description = .data$tag,
       prerequisite = .data$result |>
         purrr::map(c("session", "R")) |>
         purrr::map(.f = \(x) {
