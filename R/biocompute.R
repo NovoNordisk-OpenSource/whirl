@@ -120,7 +120,7 @@ create_description_domain <- function(queue) {
         gsub(pattern = "[-_]", replacement = " "),
       step_number = .data$id,
       version = .data$result |>
-        purrr::map_chr(c("script", "md5sum")),
+        purrr::map_chr(c("script", "sha256sum")),
       description = .data$tag,
       prerequisite = .data$result |>
         purrr::map(c("session", "R")) |>
