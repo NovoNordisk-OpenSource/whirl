@@ -23,11 +23,7 @@ whirl_r_session <- R6::R6Class(
         "whirl"
       ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
-      approved_pkgs_folder = zephyr::get_option(
-        "approved_pkgs_folder",
-        "whirl"
-      ),
-      approved_pkgs_url = zephyr::get_option("approved_pkgs_url", "whirl"),
+      approved_packages = zephyr::get_option("approved_packages", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl"),
       wait_timeout = zephyr::get_option("wait_timeout", "whirl")
       # jscpd:ignore-end
@@ -39,8 +35,7 @@ whirl_r_session <- R6::R6Class(
         out_formats,
         track_files_discards,
         track_files_keep,
-        approved_pkgs_folder,
-        approved_pkgs_url,
+        approved_packages,
         log_dir,
         wait_timeout,
         self,
@@ -131,34 +126,31 @@ whirl_r_session <- R6::R6Class(
     log_dir = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
-    approved_pkgs_folder = NULL,
-    approved_pkgs_url = NULL,
+    approved_packages = NULL,
     check_renv = NULL,
     pb = NULL,
-    current_script = NULL
+    current_script = NULL,
+    track_files_log = "log_msg.json",
+    result = NULL
   ),
   inherit = callr::r_session
 )
 
 wrs_initialize <- function(
-  verbosity_level,
-  check_renv,
-  track_files,
-  out_formats,
-  track_files_discards,
-  track_files_keep,
-  approved_pkgs_folder,
-  approved_pkgs_url,
-  log_dir,
-  wait_timeout,
-  self,
-  private,
-  super
-) {
-  # uses callr::r_session$initialize()
+    verbosity_level,
+    check_renv,
+    track_files,
+    out_formats,
+    track_files_discards,
+    track_files_keep,
+    approved_packages,
+    log_dir,
+    wait_timeout,
+    self,
+    private,
+    super) {
   super$initialize(wait_timeout = 9000) # uses callr::r_session$initialize()
 
-  # TODO: Is there a way to use `.local_envir` to avoid having to clean up the temp dir in finalize?
   private$wd <- withr::local_tempdir(clean = FALSE)
   private$verbosity_level <- verbosity_level
   private$check_renv <- check_renv
@@ -166,8 +158,7 @@ wrs_initialize <- function(
   private$out_formats <- out_formats
   private$track_files_discards <- track_files_discards
   private$track_files_keep <- track_files_keep
-  private$approved_pkgs_folder <- approved_pkgs_folder
-  private$approved_pkgs_url <- approved_pkgs_url
+  private$approved_packages <- approved_packages
   private$log_dir <- log_dir
 
   # If the stream does not support dynamic tty, which is needed for progress
@@ -184,7 +175,7 @@ wrs_initialize <- function(
 
   super$run(
     func = Sys.setenv,
-    args = list(WHIRL_LOG_MSG = file.path(private$wd, "log_msg.json"))
+    args = list(WHIRL_LOG_MSG = file.path(private$wd, private$track_files_log))
   )
 
   environment_file <- file.path(private$wd, "_environment")
@@ -192,7 +183,7 @@ wrs_initialize <- function(
   cat(
     sprintf(
       "WHIRL_LOG_MSG='%s'",
-      file.path(private$wd, "log_msg.json")
+      file.path(private$wd, private$track_files_log)
     ),
     file = environment_file,
     append = TRUE
@@ -278,11 +269,26 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
+  saveRDS( # Log starting time
+    object = Sys.time(),
+    file = file.path(private$wd, "start.rds")
+  )
+
+  saveRDS( # Log script metadata
+    object = list(
+      name = private$current_script,
+      md5sum = tools::md5sum(files = private$current_script) |>
+        unname(),
+      content = readLines(private$current_script) |>
+        paste0(collapse = "\n")
+    ),
+    file = file.path(private$wd, "script.rds")
+  )
+
   # Set the execute directory of the Quarto process calling the script
   quarto_execute_dir <- zephyr::get_option("execute_dir", "whirl")
   if (is.null(quarto_execute_dir)) {
-    quarto_execute_dir <- switch(
-      get_file_ext(script),
+    quarto_execute_dir <- switch(get_file_ext(script),
       "R" = normalizePath("."),
       normalizePath(dirname(script))
     )
@@ -297,7 +303,6 @@ wrs_log_script <- function(script, self, private, super) {
   }
 
   # Execute the script
-
   if (private$verbosity_level != "quiet") {
     private$pb <- pb_script$new(
       script = private$current_script,
@@ -316,10 +321,8 @@ wrs_log_script <- function(script, self, private, super) {
       execute_params = list(
         script = normalizePath(script),
         with_library_paths = .libPaths(),
-        check_approved_folder_pkgs = private$check_approved_folder_pkgs,
-        check_approved_url_pkgs = private$check_approved_url_pkgs,
         renv = private$check_renv,
-        tmpdir = private$wd
+        tmpdir = normalizePath(private$wd)
       ),
       execute_dir = quarto_execute_dir
     )
@@ -355,10 +358,9 @@ wrs_create_log <- function(self, private, super) {
       output_file = "log.html",
       execute_params = list(
         title = private$current_script,
-        check_approved_folder_pkgs = private$approved_pkgs_folder,
-        check_approved_url_pkgs = private$approved_pkgs_url,
+        approved_packages = private$approved_packages,
         with_library_paths = .libPaths(),
-        tmpdir = private$wd
+        tmpdir = normalizePath(private$wd)
       ),
       execute_dir = normalizePath(".")
     )
@@ -368,81 +370,73 @@ wrs_create_log <- function(self, private, super) {
 }
 
 wrs_log_finish <- function(self, private, super) {
-  if (!is.null(private$pb)) {
-    status <- self$get_wd() |>
-      file.path("doc.md") |>
-      get_status()
+  private$result <- private$wd |>
+    file.path("result.rds") |>
+    readRDS()
 
-    self$pb_done(status = status[["status"]])
+  if (!is.null(private$pb)) {
+    self$pb_done(status = private$result[["status"]][["message"]])
   }
 
   return(invisible(self))
 }
 
 wrs_create_outputs <- function(out_dir, format, self, private, super) {
-  # Create R object for return
+  output <- private$result
+  output$logs <- wrs_create_logs(out_dir, format, output, self, private, super)
+  return(invisible(output))
+}
 
-  output <- list(
-    status = file.path(self$get_wd(), "doc.md") |>
-      get_status(),
-    session_info_rlist = file.path(self$get_wd(), "objects.rds") |>
-      readRDS() |>
-      unlist(recursive = FALSE),
-    log_details = list(
-      location = file.path(
-        out_dir,
-        gsub(
-          pattern = "\\.[^\\.]*$",
-          replacement = "_log.html",
-          x = basename(private$current_script)
-        )
-      ),
-      script = private$current_script
-    )
-  )
-
-  # Create requested outputs
+wrs_create_logs <- function(out_dir, format, output, self, private, super) {
+  logs <- c()
 
   if ("html" %in% format) {
+    html_log <- file.path(
+      out_dir,
+      gsub(
+        pattern = "\\.[^\\.]*$",
+        replacement = "_log.html",
+        x = basename(private$current_script)
+      )
+    )
     file.copy(
-      from = file.path(self$get_wd(), "log.html"),
-      to = file.path(
-        out_dir,
-        gsub(
-          pattern = "\\.[^\\.]*$",
-          replacement = "_log.html",
-          x = basename(private$current_script)
-        )
-      ),
+      from = file.path(private$wd, "log.html"),
+      to = html_log,
       overwrite = TRUE
     )
+    logs <- c(logs, html_log)
   }
 
   if (any(c("gfm", "commonmark", "markua") %in% format)) {
-    mdformats(
+    logs_md <- mdformats(
       script = private$current_script,
-      log_html = file.path(self$get_wd(), "log.html"),
+      log_html = file.path(private$wd, "log.html"),
       mdfmt = format[format %in% c("gfm", "commonmark", "markua")],
       out_dir = out_dir,
       self = self
     )
+    logs <- c(logs, logs_md)
   }
 
   if ("json" %in% format) {
+    json_log <- file.path(
+      out_dir,
+      gsub(
+        pattern = "\\.[^\\.]*$",
+        replacement = "_log.json",
+        x = basename(private$current_script)
+      )
+    )
+
     jsonlite::write_json(
       x = output,
       force = TRUE,
       pretty = TRUE,
-      path = file.path(
-        out_dir,
-        gsub(
-          pattern = "\\.[^\\.]*$",
-          replacement = "_log.json",
-          x = basename(private$current_script)
-        )
-      )
+      path = json_log
     )
+
+    logs <- c(logs, json_log)
   }
 
-  return(invisible(output))
+  return(invisible(logs))
 }

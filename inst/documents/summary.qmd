@@ -4,18 +4,6 @@ date: "`r Sys.time()`"
 date-format: "YYYY-MM-DDTHH:mm:ss zzz"
 params:
   summary_df: summary_df
-  title: 'dev'
-  script_md: 'dev'
-  p_wd: ""
-  strace: FALSE
-  strace_path: ''
-  strace_discards: NULL
-  strace_keep: NULL
-  objects_path: ''
-  check_approved_folder_pkgs: NULL
-  check_approved_url_pkgs: NULL
-  renv: TRUE
-  with_library_paths: library_paths
 format:
   html:
     embed-resources: true

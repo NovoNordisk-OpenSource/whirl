@@ -13,6 +13,8 @@ coverage](https://codecov.io/gh/NovoNordisk-OpenSource/whirl/graph/badge.svg)](h
 [![CRAN
 status](https://www.r-pkg.org/badges/version/whirl)](https://CRAN.R-project.org/package=whirl)
 
+[<img src="http://pharmaverse.org/shields/whirl.svg">](https://pharmaverse.org)
+
 <!-- badges: end -->
 
 ## Overview
@@ -120,8 +122,8 @@ scripts in the second steps.
 ``` r
 result <- run("_whirl.yaml", n_workers = 2)
 #> ✔ success.R: Completed succesfully
-#> ⚠ warning.R: Completed with warnings
 #> ✖ error.R: Completed with errors
+#> ⚠ warning.R: Completed with warnings
 ```
 
 ``` r

@@ -23,7 +23,7 @@ print.whirl_renv_status <- function(x, ...) {
 
 #' @noRd
 
-knit_print.whirl_renv_status <- function(x, ...) {
+knit_print_whirl_renv_status <- function(x, ...) {
   if (!length(x$status$lockfile$Packages)) {
     renv_note <- "warning"
     renv_title <- "renv not used"

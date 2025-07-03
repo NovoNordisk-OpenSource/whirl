@@ -35,6 +35,8 @@ knitr::opts_knit$set(root.dir = tmp)
 
 [![CRAN status](https://www.r-pkg.org/badges/version/whirl)](https://CRAN.R-project.org/package=whirl)
 
+[<img src="http://pharmaverse.org/shields/whirl.svg">](https://pharmaverse.org)
+
 <!-- badges: end -->
 
 ##  Overview

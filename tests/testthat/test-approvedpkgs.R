@@ -1,16 +1,18 @@
-test_that("Running approved_pkgs workflow", {
-  skip_on_cran()
-  url <- getOption("repos")[[1]]
-  status <- check_url(sprintf("%s/src/contrib/PACKAGES", url))
+test_that("Approved packages", {
+  check_approved("pkg@version") |>
+    expect_type("logical") |>
+    expect_length(1) |>
+    is.na() |>
+    expect_true()
 
-  skip_if(!status)
+  check_approved(character(), "pkg@version") |>
+    expect_type("logical") |>
+    expect_length(0)
 
-  result <- check_approved(
-    approved_pkg_folder = .libPaths()[[1]],
-    approved_pkg_url = url,
-    session_pkgs = sessioninfo::session_info()$packages
+  check_approved(
+    used = c("pkg1@1.0.0", "pkg2@5.6.7"),
+    approved = c("pkg1@1.0.0", "pkg2@4.3.2")
   ) |>
-    expect_no_error()
-
-  expect_s3_class(result, "packages_info")
+    expect_type("logical") |>
+    expect_equal(c(TRUE, FALSE))
 })
