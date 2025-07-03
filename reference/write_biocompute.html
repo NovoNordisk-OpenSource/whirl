@@ -9,7 +9,7 @@ The BioCompute object is a json log that can be created based on the output of r
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,18 +83,27 @@ The BioCompute object is a json log that can be created based on the output of r
 </ul></li>
 <li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Extension-domain" class="external-link">Extension Domain</a></p><ul><li><p>This is used to add any additional structured information that is not directly covered by the BCO.</p></li>
 </ul></li>
-<li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Description-domain" class="external-link">Description Domain</a></p><ul><li><p>Contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.</p></li>
+<li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Description-domain" class="external-link">Description Domain</a></p><ul><li><p>Contains a structured field for the description of external references, the pipeline steps,
+and the relationship of I/O objects.</p></li>
 <li><p>Provide external document.</p></li>
+<li><p><strong>Note</strong>: Use of <code>keywords</code> and <code>External_Reference</code> entries are not yet implemented.
+To use fill out the entries manually after creating the BioCompute object.`</p></li>
 </ul></li>
 <li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Execution-domain" class="external-link">Execution Domain</a></p><ul><li><p>Contains fields for the execution of the BCO.</p></li>
+<li><p><strong>Note</strong>: Use of <code>external_data_endpoints</code> not implemented. Fill out manually afterwards if needed.</p></li>
 </ul></li>
-<li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Parametric-domain" class="external-link">Parametric Domain</a></p><ul><li><p>Represents the list of parameters customizing the computational flow which can affect the output of the calculations.</p></li>
+<li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Parametric-domain" class="external-link">Parametric Domain</a></p><ul><li><p>Represents the list of parameters customizing the computational flow which can affect
+the output of the calculations.</p></li>
 </ul></li>
 <li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Iodomain" class="external-link">IO Domain</a></p><ul><li><p>Represents the list of global input and output files created by the computational workflow.</p></li>
 </ul></li>
 <li><p><a href="https://wiki.biocomputeobject.org/index.php?title=Error-domain" class="external-link">Error Domain</a></p><ul><li><p>Defines the empirical and algorithmic limits and error sources of the BCO.</p></li>
+<li><p><strong>Note</strong>: Use of this domain is not clearly defined.
+It is therefore always left empty in the current implementation.
+If you want to add content do so manually after creating the BCO.</p></li>
 </ul></li>
-</ul><p>See the <a href="https://www.biocomputeobject.org" class="external-link">BioCompute Object Portal</a> and the <a href="https://wiki.biocomputeobject.org" class="external-link">BioCompute Objects Wiki</a> for more information.</p>
+</ul><p>See the <a href="https://www.biocomputeobject.org" class="external-link">BioCompute Object Portal</a> and the
+<a href="https://wiki.biocomputeobject.org" class="external-link">BioCompute Objects Wiki</a> for more information.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
