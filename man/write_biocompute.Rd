@@ -46,16 +46,21 @@ The object consists of the following domains:
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Description-domain}{Description Domain}
 \itemize{
-\item Contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.
+\item Contains a structured field for the description of external references, the pipeline steps,
+and the relationship of I/O objects.
 \item Provide external document.
+\item \strong{Note}: Use of \code{keywords} and \code{External_Reference} entries are not yet implemented.
+To use fill out the entries manually after creating the BioCompute object.`
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Execution-domain}{Execution Domain}
 \itemize{
 \item Contains fields for the execution of the BCO.
+\item \strong{Note}: Use of \code{external_data_endpoints} not implemented. Fill out manually afterwards if needed.
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Parametric-domain}{Parametric Domain}
 \itemize{
-\item Represents the list of parameters customizing the computational flow which can affect the output of the calculations.
+\item Represents the list of parameters customizing the computational flow which can affect
+the output of the calculations.
 }
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Iodomain}{IO Domain}
 \itemize{
@@ -64,8 +69,12 @@ The object consists of the following domains:
 \item \href{https://wiki.biocomputeobject.org/index.php?title=Error-domain}{Error Domain}
 \itemize{
 \item Defines the empirical and algorithmic limits and error sources of the BCO.
+\item \strong{Note}: Use of this domain is not clearly defined.
+It is therefore always left empty in the current implementation.
+If you want to add content do so manually after creating the BCO.
 }
 }
 
-See the \href{https://www.biocomputeobject.org}{BioCompute Object Portal} and the \href{https://wiki.biocomputeobject.org}{BioCompute Objects Wiki} for more information.
+See the \href{https://www.biocomputeobject.org}{BioCompute Object Portal} and the
+\href{https://wiki.biocomputeobject.org}{BioCompute Objects Wiki} for more information.
 }

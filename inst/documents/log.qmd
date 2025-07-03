@@ -7,9 +7,8 @@ template-partials:
   - title-block.html
 params:
   title: 'dev'
-  check_approved_folder_pkgs: NULL
-  check_approved_url_pkgs: NULL
   with_library_paths: library_paths
+  approved_packages: NULL
   tmpdir: '.'
 format:
   html:
@@ -26,16 +25,58 @@ format:
 #| label: Setup
 #| echo: false
 .libPaths(c(character(), params$with_library_paths))
-```
 
+knit_print.data.frame = function(x, ...) {
+  names(x) <- gsub( # Use space instead of . or _ in columns names
+    pattern = "\\.|_",
+    replacement = " ",
+    x = names(x)
+  )
+
+  names(x) <- gsub( # Convert all column names to title case
+    pattern = "\\b([[:alpha:]])([[:alpha:]]+)", 
+    replacement = "\\U\\1\\L\\2", 
+    x = names(x), 
+    perl = TRUE
+  )
+
+  for (i in which(vapply(X = x, FUN = is.logical, FUN.VALUE = logical(1)))) {
+    x[[i]] <- ifelse(x[[i]], "Yes", "No") # Yes/No instead of TRUE/FALSE
+  }
+
+  x |> 
+    knitr::kable() |>
+    kableExtra::kable_styling(
+      bootstrap_options = "striped",
+      full_width = TRUE
+    ) |>
+  knitr::knit_print()
+}
+
+registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNamespace("knitr"))
+```
 
 ```{r}
 #| label: Status
 #| echo: false
+result <- whirl:::read_info(
+  script = file.path(params$tmpdir, "script.rds"),
+  md = file.path(params$tmpdir, "doc.md"), 
+  start = file.path(params$tmpdir, "start.rds"),
+  log = file.path(params$tmpdir, "log_msg.json"),
+  session = file.path(params$tmpdir, "session_info.rds"),
+  environment = file.path(params$tmpdir, "environment.rds"),
+  options = file.path(params$tmpdir, "options.rds"),
+  python = file.path(params$tmpdir, "python_imports.json"),
+  approved_packages = params$approved_packages
+)
 
-status <- params$tmpdir |>
-  file.path("doc.md") |>
-  whirl:::get_status()
+saveRDS(
+  object = result, 
+  file = file.path(params$tmpdir, "result.rds")
+)
+
+status <- result$status
 
 status_txt <- status[c("error", "warning")]
 status_txt <- status_txt[lapply(status_txt, length) > 0] |>
@@ -44,13 +85,13 @@ status_txt <- status_txt[lapply(status_txt, length) > 0] |>
 
 whirl:::quarto_callout(
   text = status_txt,
-  title = status$status,
-  type = switch(status$status,
+  title = status$message,
+  type = switch(status$message,
     "error" = "important",
     "warning" = "warning",
     "success" = "tip"
   ),
-  collapse = status$status != "success"
+  collapse = status$message != "success"
 )
 ```
 
@@ -58,62 +99,16 @@ whirl:::quarto_callout(
 #| label: Renv
 #| echo: false
 #| eval: !expr file.exists(file.path(params$tmpdir, "renv_status.rds"))
-
 params$tmpdir |>
   file.path("renv_status.rds") |>
-  readRDS()
+  readRDS() |> 
+  whirl:::knit_print_whirl_renv_status()
 ```
 
 ```{r}
-#| label: Track files
-#| echo: false
-log_info <- whirl:::read_from_log()
-use_log_info <- nrow(log_info) > 0
-
-if (use_log_info) {
-  log_info <- log_info |>
-    dplyr::arrange(time) |>
-    whirl:::split_log()
-}
-```
-
-```{r}
-#| echo: false
-#| results: asis
-#| eval: !expr use_log_info
-cat("## Input", "\n")
-```
-
-```{r}
-#| echo: false
-#| eval: !expr use_log_info
-log_info$read
-```
-
-```{r}
-#| echo: false
-#| results: asis
-#| eval: !expr use_log_info
-cat("## Output", "\n")
-```
-
-```{r}
-#| echo: false
-#| eval: !expr use_log_info
-log_info$write
-```
-
-```{r}
-#| echo: false
-#| results: asis
-#| eval: !expr use_log_info
-cat("## Removed", "\n")
-```
-
-```{r}
-#| echo: false
-#| eval: !expr use_log_info
-log_info$delete
+#| label: Used files
+#| child: !expr file.path(params$tmpdir, "files.qmd")
+#| eval: !expr (!is.null(result$files))
 ```
 
 # Script
@@ -125,85 +120,50 @@ log_info$delete
 # Session info
 
 ```{r}
-#| label: Session info
+#| label: Session info settings
 #| include: false
-
 knitr::opts_chunk$set(
   error = FALSE,
   warning = FALSE,
   message = FALSE,
   echo = FALSE
 )
-
-info <- params$tmpdir |>
-  file.path("session_info.rds") |>
-  readRDS()
 ```
+
+## Platform
 
 ```{r}
 #| label: Platform
-#| results: asis
-cat("\n## Platform \n")
-info$platform
-cat("\n")
+result$session$platform
 ```
 
 ```{r}
 #| label: Python
-#| results: asis
+#| child: !expr file.path(params$tmpdir, "python.qmd")
 #| eval: !expr grepl("\\.py$", params$title)
-#| fig.height: 0.5
-cat("\n## Python Packages\n")
-
-info$python_packages
 ```
 
-```{r}
-#| label: R
-#| results: asis
-#| fig.height: 0.5
-cat("\n## R Packages\n")
+## R Packages
 
-if (!is.null(params$check_approved_folder_pkgs) ||
-      !is.null(params$check_approved_url_pkgs)) {
-  whirl:::create_approval_plot(info$packages |> data.frame())
+```{r}
+#| label: R packages
+if (all(is.na(result$session$R$approved))) {
+  result$session$R[c("package", "version", "attached", "source")]
+} else {
+  result$session$R[c("package", "version", "attached", "approved", "source")]
 }
-
-cat("\n")
 ```
 
-```{r}
-#| results: asis
-#| fig.height: 0.5
-info$packages
-```
+## Environment variables
 
 ```{r}
 #| label: Environment
-#| results: asis
-cat("\n## Environment variables \n")
-info$environment
-cat("\n")
+result$session$environment
 ```
+
+## Options
 
 ```{r}
 #| label: Options
-#| results: asis
-#| eval: false
-cat("\n## Option settings\n")
-info$options
-cat("\n")
-```
-
-```{r}
-#| label: Output
-whirl_objects <- vector("list")
-
-if (exists("log_info")) {
-  whirl_objects$log_info <- log_info
-}
-if (exists("info")) {
-  whirl_objects$environment_options <- info
-}
-saveRDS(whirl_objects, file = file.path(params$tmpdir, "objects.rds"))
+result$session$options
 ```

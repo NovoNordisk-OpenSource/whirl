@@ -7,36 +7,25 @@
 #' @return A tibble summarizing the queue table data
 #' @noRd
 util_queue_summary <- function(queue_table) {
-  if (!"result" %in% names(queue_table) ||
-        !is.list(queue_table$result)) {
-    stop("queue_table must contain a list named 'result'")
-  }
-
-  if (!all(sapply(queue_table$result, function(x) {
-    all(
-      c("log_details", "status") %in% names(x)
-    )
-  }))) {
-    stop("Each result in queue_table must contain 'log_details' and 'status'")
-  }
-
-  tibble::tibble(
-    Directory = sapply(queue_table[["result"]], function(x) {
-      normalizePath(dirname(x$log_details$script), winslash = "/")
-    }),
-    Filename = sapply(queue_table[["result"]], function(x) {
-      basename(x$log_details$script)
-    }),
-    Status = sapply(queue_table[["result"]], function(x) {
-      x$status$status
-    }),
-    Hyperlink = sapply(queue_table[["result"]], function(x) {
-      x$log_details$location
-    }),
-    Information = sapply(queue_table[["result"]], function(x) {
-      paste(x$status$warning, collapse = "<br>")
-    })
-  ) |>
-    tidyr::unnest(cols = c("Information"), keep_empty = TRUE) |>
-    tidyr::replace_na(list(Information = ""))
+  queue_table |>
+    dplyr::mutate(
+      Directory = normalizePath(dirname(.data$script), winslash = "/"),
+      Filename = basename(.data$script),
+      Status = .data$status,
+      Hyperlink = vapply(
+        X = .data$result,
+        FUN = \(x) utils::head(x[["logs"]], 1),
+        FUN.VALUE = character(1)
+      ),
+      Information = vapply(
+        X = .data$result,
+        FUN = \(x) {
+          x[["status"]][c("errors", "warnings")] |>
+            unlist() |>
+            paste0(collapse = "<br>")
+        },
+        FUN.VALUE = character(1)
+      )
+    ) |>
+    dplyr::select("Directory", "Filename", "Status", "Hyperlink", "Information")
 }

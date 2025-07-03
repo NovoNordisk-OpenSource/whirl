@@ -1,10 +1,10 @@
 #' Create biocompute logs
-#' 
+#'
 #' @description
 #' BioCompute is a standard for logs of programs for for Bioinformatics Computational Analyses.
-#' 
+#'
 #' The BioCompute object is a `json` log that can be created based on the output of `run()`.
-#' 
+#'
 #' @details
 #' The object consists of the following domains:
 #'
@@ -13,59 +13,70 @@
 #'   * *object_id*: Unique project id
 #'   * *type*: Your project type
 #'   * *etag*: Your `etag` id from the BioCompute Object Portal
-#' 
+#'
 #' * [Provenance Domain](https://wiki.biocomputeobject.org/index.php?title=Provenance-domain)
 #'   * This is used to track the history of the BCO. Review and signatures go here.
-#'  
+#'
 #' * [Usability Domain](https://wiki.biocomputeobject.org/index.php?title=Usability-domain)
 #'   * This is used to improve searchability by allowing a free-text description of the BCO.
 #'   * Provide external document.
-#'  
+#'
 #' * [Extension Domain](https://wiki.biocomputeobject.org/index.php?title=Extension-domain)
 #'   * This is used to add any additional structured information that is not directly covered by the BCO.
-#'  
+#'
 #' * [Description Domain](https://wiki.biocomputeobject.org/index.php?title=Description-domain)
-#'   * Contains a structured field for the description of external references, the pipeline steps, and the relationship of I/O objects.
+#'   * Contains a structured field for the description of external references, the pipeline steps,
+#' and the relationship of I/O objects.
 #'   * Provide external document.
-#'  
+#'   * **Note**: Use of `keywords` and `External_Reference` entries are not yet implemented.
+#' To use fill out the entries manually after creating the BioCompute object.`
+#'
 #' * [Execution Domain](https://wiki.biocomputeobject.org/index.php?title=Execution-domain)
 #'   * Contains fields for the execution of the BCO.
-#'  
+#'   * **Note**: Use of `external_data_endpoints` not implemented. Fill out manually afterwards if needed.
+#'
 #'* [Parametric Domain](https://wiki.biocomputeobject.org/index.php?title=Parametric-domain)
-#'   * Represents the list of parameters customizing the computational flow which can affect the output of the calculations.
-#'  
+#'   * Represents the list of parameters customizing the computational flow which can affect
+#' the output of the calculations.
+#'
 #' * [IO Domain](https://wiki.biocomputeobject.org/index.php?title=Iodomain)
 #'   * Represents the list of global input and output files created by the computational workflow.
-#'  
+#'
 #' * [Error Domain](https://wiki.biocomputeobject.org/index.php?title=Error-domain)
 #'   * Defines the empirical and algorithmic limits and error sources of the BCO.
+#'   * **Note**: Use of this domain is not clearly defined.
+#' It is therefore always left empty in the current implementation.
+#' If you want to add content do so manually after creating the BCO.
 #'
-#' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
-#' 
+#' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the
+#' [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
+#'
 #' @param queue Result from `run()`.
 #' @param path A character string specifying the file path to write BioCompute log to.
 #' @param ... Additional arguments parsed to `jsonlite::write_json()`. Note always uses `auto_unbox = TRUE`.
 #' @return (`invisible`) `list` of the biocompute domains and their content.
 #' @export
 write_biocompute <- function(
-  queue = run("_whirl.yml"), 
-  path = "bco.json", 
+  queue = run("_whirl.yml"),
+  path = "bco.json",
   ...
 ) {
-
   config <- attr(queue, "whirl_input")
 
   if (is.null(config)) {
     cli::cli_abort("The `queue` must be created with `whirl::run()`")
-  } else if (!rlang::is_string(config) || 
-    !get_file_ext(config) %in% c("yml", "yaml") ||
-    is.null(yaml::read_yaml(config)[["biocompute"]])
-    ) {
-    cli::cli_abort("Input to `run()` must be a path to a yaml file with a biocompute entry. See `use_biocompute()`.")
+  } else if (
+    !rlang::is_string(config) ||
+      !get_file_ext(config) %in% c("yml", "yaml") ||
+      is.null(yaml::read_yaml(config)[["biocompute"]])
+  ) {
+    cli::cli_abort(
+      "Input to `run()` must be a path to a yaml file with a biocompute entry. See `?use_biocompute()`."
+    )
   }
 
   bco <- create_biocompute(queue = queue, config = config)
-  
+
   jsonlite::write_json(x = bco, path = path, auto_unbox = TRUE, ...)
 
   invisible(bco)
@@ -94,67 +105,75 @@ create_biocompute <- function(queue, config) {
     error_domain = list(
       algorithmic_error = NULL,
       empirical_error = NULL
-    ) # TODO
+    )
   )
 }
 
 # DESCRIPTION DOMAIN
 #' @noRd
 create_description_domain <- function(queue) {
-
-  pipeline_steps <- vector(mode = "list", length = length(queue$id))
-  for (step in seq_along(pipeline_steps)) {
-    pipeline_steps[[step]]$name <- basename(queue$script[[step]]) |>
-      sub(pattern = "\\.\\w+$", replacement = "") |>
-      gsub(pattern = "[-_]", replacement = " ")
-    pipeline_steps[[step]]$step_number <- queue$id[[step]]
-    pipeline_steps[[step]]$version <- NULL #TODO
-    pipeline_steps[[step]]$description <- NULL # TODO - consider taking from header?
-
-
-    pipeline_steps[[step]]$prerequisite <- queue$result[[step]]$session_info_rlist$environment_options.packages |>
-      tibble::as_tibble() |> 
-      dplyr::mutate(
-        name = paste("R package:", .data$package, "- version:", .data$ondiskversion),
-        uri = lapply(.data$package, function(x) utils::packageDescription(x)$URL)
-      ) |>
-      dplyr::select("name", "uri") |>
-      purrr::pmap(.f = list)
-
-    if (is.null(queue$result[[step]]$session_info_rlist$log_info.read)) {
-      pipeline_steps[[step]]$input_list <- list()
-    } else {
-      pipeline_steps[[step]]$input_list <- queue$result[[step]]$session_info_rlist$log_info.read |>
-        dplyr::mutate(
-          filename = basename(file),
-          time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
-        ) |>
-        dplyr::rename(uri = "file", access_time = "time") |>
-        dplyr::select("filename", "uri", "access_time") |>
-        purrr::pmap(.f = list)
-    }
-
-    if (is.null(queue$result[[step]]$session_info_rlist$log_info.write)) {
-      pipeline_steps[[step]]$output_list <- list()
-    } else {
-      pipeline_steps[[step]]$output_list <- queue$result[[step]]$session_info_rlist$log_info.write |>
-        dplyr::mutate(
-          filename = basename(.data$file),
-          time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
-        ) |>
-        dplyr::rename(uri = "file", access_time = "time") |>
-        dplyr::select("filename", "uri", "access_time") |>
-        purrr::pmap(.f = list)
-    }
-  }
+  pipeline_steps <- queue |>
+    dplyr::mutate(
+      name = .data$script |>
+        basename() |>
+        sub(pattern = "\\.\\w+$", replacement = "") |>
+        gsub(pattern = "[-_]", replacement = " "),
+      step_number = .data$id,
+      version = .data$result |>
+        purrr::map_chr(c("script", "md5sum")),
+      description = NA_character_, # TODO - use name of step from queue - implement #168
+      prerequisite = .data$result |>
+        purrr::map(c("session", "R")) |>
+        purrr::map(.f = \(x) {
+          x |>
+            dplyr::mutate(
+              name = paste(
+                "R package:",
+                .data$package,
+                "- version:",
+                .data$version
+              ),
+              uri = .data$url
+            ) |>
+            dplyr::select("name", "uri") |>
+            purrr::pmap(.f = list)
+        }),
+      input_list = .data$result |>
+        purrr::map(c("files", "read")) |>
+        purrr::map(.f = bco_file_format),
+      output_list = .data$result |>
+        purrr::map(c("files", "write")) |>
+        purrr::map(.f = bco_file_format)
+    ) |>
+    dplyr::select(
+      "name",
+      "step_number",
+      "version",
+      "description",
+      "prerequisite",
+      "input_list",
+      "output_list"
+    )
 
   description_domain <- list(
-    keywords = list(), # TODO
-    External_Reference = list(), #TODO
-    pipeline_steps = pipeline_steps
+    keywords = list(),
+    External_Reference = list(),
+    pipeline_steps = purrr::pmap(.l = pipeline_steps, .f = list)
   )
 
   return(description_domain)
+}
+
+#' @noRd
+bco_file_format <- function(x) {
+  x |>
+    dplyr::mutate(
+      filename = basename(.data$file),
+      uri = .data$file,
+      access_time = format(.data$time, format = "%Y-%m-%d %H:%M:%S %Z")
+    ) |>
+    dplyr::select("filename", "uri", "access_time") |>
+    purrr::pmap(.f = list)
 }
 
 #' @noRd
@@ -171,64 +190,72 @@ get_single_unique <- function(x) {
 #' @noRd
 get_unique_values <- function(x) {
   split(x, names(x)) |>
-    lapply(\(x) x |> unlist() |> unique() |> paste(collapse = ";"))
+    lapply(\(x) {
+      x |>
+        unlist() |>
+        unique() |>
+        paste(collapse = ";")
+    })
 }
 
 #' @noRd
 create_execution_domain <- function(queue) {
-
   envvars <- queue$result |>
-    purrr::map(c("session_info_rlist", "environment_options.environment")) |> 
-    purrr::list_rbind()
+    purrr::map(c("session", "environment")) |>
+    purrr::list_rbind() |>
+    dplyr::distinct() |>
+    dplyr::arrange("variable")
+
+  platform <- queue$result |>
+    purrr::map(c("session", "platform")) |>
+    purrr::list_rbind() |>
+    dplyr::distinct() |>
+    dplyr::filter(.data$setting %in% c("version", "pandoc", "quarto"))
+  platform <- split(x = platform$value, f = platform$setting)
 
   software_prerequisites <- list(
     list(
       name = "R",
       version = sub(
-        pattern = "R version ([0-9]+\\.[0-9]+\\.[0-9]+).*", 
-        replacement = "\\1", 
-        x = queue$result |>
-          purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
-          get_single_unique()
+        pattern = "R version ([0-9]+\\.[0-9]+\\.[0-9]+).*",
+        replacement = "\\1",
+        x = get_single_unique(platform$version)
       ),
       URI = "https://www.r-project.org/"
     ),
     list(
       name = "quarto",
-      version = queue$result |>
-        purrr::map(c("session_info_rlist", "environment_options.platform", "quarto")) |>
-        get_single_unique(),
+      version = get_single_unique(platform$quarto),
       URI = "https://quarto.org"
     ),
     list(
       name = "pandoc",
-      version = queue$result |>
-        purrr::map(c("session_info_rlist", "environment_options.platform", "pandoc")) |>
-        get_single_unique(),
+      version = get_single_unique(platform$pandoc),
       URI = "https://pandoc.org/"
     )
   )
 
   packages <- queue$result |>
-    purrr::map(c("session_info_rlist", "environment_options.packages")) |>
-    purrr::map(~ tibble::tibble(
-      name = .x$package,
-      version = .x$loadedversion,
-      uri = sapply(.x$package, function(x) utils::packageDescription(x)$URL)
-    )) |>
-    purrr::list_rbind() |> 
-    purrr::pmap(.f = list)
+    purrr::map(c("session", "R")) |>
+    purrr::list_rbind() |>
+    dplyr::distinct() |>
+    dplyr::arrange(.data$package) |>
+    dplyr::mutate(
+      name = .data$package,
+      version = .data$version,
+      uri = .data$url
+    ) |>
+    dplyr::select("name", "version", "uri") |>
+    purrr::pmap(list)
 
   software_prerequisites <- append(software_prerequisites, packages)
 
   execution_domain <- list(
     script = queue$script,
-    script_driver = queue$result |>
-      purrr::map(c("session_info_rlist", "environment_options.platform", "version")) |>
-      get_single_unique(),
+    script_driver = get_single_unique(platform$version),
     software_prerequisites = software_prerequisites,
-    external_data_endpoints = list(), # TODO
-    environment_variables = stats::setNames(envvars$Value, envvars$Setting) |>
+    external_data_endpoints = list(),
+    environment_variables = stats::setNames(envvars$value, envvars$variable) |>
       as.list() |>
       get_unique_values()
   )
@@ -238,39 +265,39 @@ create_execution_domain <- function(queue) {
 
 #' @noRd
 create_parametrics_domain <- function(config, base_path) {
-  parametric_domain = list()
-  step_number = 0
+  parametric_domain <- list()
+  step_number <- 0
   for (step in config$steps) {
     if (!("parameter_files" %in% names(step))) {
-      step_number = step_number + 1
+      step_number <- step_number + 1
       next
     }
 
     for (parameter_file in step$parameter_files) {
-      parameters <- yaml::read_yaml(normalize_with_base(parameter_file, base_path))
+      parameters <- yaml::read_yaml(normalize_with_base(
+        parameter_file,
+        base_path
+      ))
 
       parametric_domain <- append(
         parametric_domain,
         purrr::map2(
           parameters,
           names(parameters),
-          \(x,y) list(param = y, value = x, step = step_number)
+          \(x, y) list(param = y, value = x, step = step_number)
         ) |>
           unname()
       )
     }
-    step_number = step_number + 1
+    step_number <- step_number + 1
   }
   return(parametric_domain)
 }
 
-
 #' @noRd
 bco_create_outputs <- function(files) {
-
   entry <- vector(mode = "list", length = length(files))
   for (i in seq_along(entry)) {
-
     entry[[i]]$mediatype <- if (grepl("\\.html$", files[[i]])) {
       "text/html"
     } else if (grepl("\\.zip$", files[[i]])) {
@@ -294,10 +321,8 @@ bco_create_outputs <- function(files) {
 
 #' @noRd
 bco_create_inputs <- function(files) {
-
   entry <- vector(mode = "list", length = length(files))
   for (i in seq_along(entry)) {
-
     entry[[i]]$uri <- list(
       uri = files[[i]]
     )
@@ -309,17 +334,16 @@ bco_create_inputs <- function(files) {
 #' @noRd
 create_io_domain <- function(queue) {
   input <- queue$result |>
-    purrr::map(c("session_info_rlist", "log_info.read", "file")) |>
+    purrr::map(c("files", "read", "file")) |>
     unlist() |>
     unique() |>
     bco_create_inputs()
 
   output <- queue$result |>
-    purrr::map(c("session_info_rlist", "log_info.write", "file")) |>
+    purrr::map(c("files", "write", "file")) |>
     unlist() |>
     unique() |>
     bco_create_outputs()
-
 
   return(list(
     input_subdomain = input,

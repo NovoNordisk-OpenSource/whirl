@@ -77,42 +77,30 @@ read_from_log <- function(log = Sys.getenv("WHIRL_LOG_MSG")) {
 #' @noRd
 log_df <- function(type = character(), file = character()) {
   data.frame(
-    time = Sys.time()[length(file)],
+    time = rep(x = Sys.time(), times = length(file)),
     type = type,
     file = file
   )
 }
 
 #' @noRd
-split_log <- function(log_df, types = c("read", "write", "delete")) {
-  class(log_df) <- c("whirl_log_info", class(log_df))
-
+split_log <- function(x, types = c("read", "write", "delete")) {
   # Split in a tibble for each type of output
 
-  log_df <- split(log_df[c("time", "file")], log_df$type)
+  x <- split(x[c("time", "file")], x$type)
 
   # Add empty table for types not reported
 
   out <- vector(mode = "list", length = length(types)) |>
     rlang::set_names(types)
 
-  out[names(log_df)] <- log_df
+  out[names(x)] <- x
 
   i <- lapply(X = out, FUN = is.null) |>
     unlist() |>
     which()
-  dummy <- data.frame(file = "No files")
-  class(dummy) <- c("whirl_log_info", class(dummy))
-  out[i] <- list(dummy)
 
-  return(out)
-}
+  out[i] <- list(log_df()[c("time", "file")])
 
-#' @noRd
-knit_print.whirl_log_info <- function(x, ...) {
-  x |>
-    knitr::kable(
-      row.names = FALSE
-    ) |>
-    knitr::knit_print()
+  lapply(X = out, FUN = `rownames<-`, value = NULL)
 }

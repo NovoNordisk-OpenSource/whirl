@@ -1,0 +1,34 @@
+---
+---
+
+```{r}
+#| echo: false
+no_files_if_null <- function(x) {
+    if (!is.null(x) && nrow(x)) {
+        return(x)
+    }
+
+    knitr::asis_output("No files")
+}
+```
+
+## Input
+
+```{r}
+#| echo: false
+no_files_if_null(result$files$read)
+```
+
+## Output
+
+```{r}
+#| echo: false
+no_files_if_null(result$files$write)
+```
+
+## Removed
+
+```{r}
+#| echo: false
+no_files_if_null(result$files$delete)
+```
