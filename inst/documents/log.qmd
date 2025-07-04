@@ -44,13 +44,32 @@ knit_print.data.frame = function(x, ...) {
     x[[i]] <- ifelse(x[[i]], "Yes", "No") # Yes/No instead of TRUE/FALSE
   }
 
+  if("Approved" %in% colnames(x)) {
   x |> 
-    knitr::kable() |>
+    knitr::kable(format = "html") |>  
+    kableExtra::column_spec(
+      1:ncol(x), 
+      background = ifelse(grepl("Yes", x[["Approved"]]), "#ebf5f1", "#fceeef")
+     ) |>
+    kableExtra::column_spec(
+      which(names(x) == "Approved"),
+      color = ifelse(grepl("Yes", x[["Approved"]]), "green", "red")
+    ) |>   
     kableExtra::kable_styling(
       bootstrap_options = "striped",
       full_width = TRUE
     ) |>
-  knitr::knit_print()
+    knitr::knit_print()
+
+  } else {
+  x |> 
+    knitr::kable(format = "html") |>    
+    kableExtra::kable_styling(
+      bootstrap_options = "striped",
+      full_width = TRUE
+    ) |>
+    knitr::knit_print()
+  }
 }
 
 registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNamespace("knitr"))
@@ -131,12 +150,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+:::{.callout collapse = true}
 ## Platform
 
 ```{r}
 #| label: Platform
 result$session$platform
 ```
+:::
 
 ```{r}
 #| label: Python
@@ -144,27 +165,42 @@ result$session$platform
 #| eval: !expr grepl("\\.py$", params$title)
 ```
 
-## R Packages
+:::{.callout collapse = false}
+## R packages used directly
 
 ```{r}
-#| label: R packages
-if (all(is.na(result$session$R$approved))) {
-  result$session$R[c("package", "version", "attached", "source")]
+#| label: R packages used directly
+if (all(is.na(result$session$directly_used$approved))) {
+  result$session$directly_used[c("package", "version", "attached", "source")]
 } else {
-  result$session$R[c("package", "version", "attached", "approved", "source")]
-}
+  result$session$directly_used[c("package", "version", "attached", "source", "approved")]}   
 ```
+:::
 
+:::{.callout collapse = true}
+## R packages used indirectly
+
+```{r}
+#| label: R packages used indirectly
+#| collapse: true
+result$session$indirectly_used[c("package", "version", "attached", "source")]
+```
+:::
+
+:::{.callout collapse = true}
 ## Environment variables
 
 ```{r}
 #| label: Environment
 result$session$environment
 ```
+:::
 
+:::{.callout collapse = true}
 ## Options
 
 ```{r}
 #| label: Options
 result$session$options
 ```
+:::

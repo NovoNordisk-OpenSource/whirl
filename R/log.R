@@ -48,8 +48,8 @@ read_info <- function(
 #' @noRd
 read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
   info <- readRDS(file)
-  pkgs_used <- readRDS(pkgs_used)
-  browser()
+  pkgs_used <- readRDS(pkgs_used)  
+  
   platform <- info[["platform"]] |>
     unlist() |>
     tibble::enframe(name = "setting", value = "value")
@@ -60,10 +60,6 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
       package = .data$package,
       version = .data$loadedversion,
       attached = .data$attached,
-      approved = check_approved(
-        used = paste(.data$package, .data$version, sep = "@"),
-        approved = approved_packages
-      ),
       path = .data$loadedpath,
       date = vapply(
         X = .data$package,
@@ -83,20 +79,56 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
         USE.NAMES = FALSE
       )
     ) |>
-    dplyr::select(
-      "package",
-      "version",
-      "attached",
-      "approved",
-      "path",
-      "date",
-      "source",
-      "url"
+      dplyr::select(
+    "package",
+    "version",
+    "attached",
+    "path",
+    "date",
+    "source",
+    "url"
+  )
+
+  attached <- r_packages |> 
+    dplyr::filter(r_packages$attached == TRUE)
+  
+  if (!identical(pkgs_used$Package, character(0))) {
+  as_list <- lapply(
+        X = pkgs_used$Package,
+        FUN = \(x) {
+          sessioninfo::package_info(x, dependencies = FALSE) |>
+            as.data.frame() |> 
+            dplyr::select("package", "version" = "ondiskversion", "date", "source")
+        }         
+      )  
+
+  as_dat <- do.call(rbind.data.frame, as_list) |> 
+    dplyr::mutate(date = as.Date(date)) |> 
+    dplyr::mutate(attached = TRUE)
+  } else {
+      as_dat <- tibble::tibble()
+  }
+   
+  directly_used <- dplyr::bind_rows(attached, as_dat) |> 
+    dplyr::distinct(package, .keep_all = TRUE) |> 
+    dplyr::arrange(package) |> 
+    dplyr::mutate(
+     approved = check_approved(
+        used = paste(.data$package, .data$version, sep = "@"),
+        approved = approved_packages
+     )
+    ) |> 
+    dplyr::mutate(approved = dplyr::if_else(approved == TRUE, "\u2705 Yes", "\u274C No"
+      )
     )
 
+  indirectly_used <- r_packages |> 
+    dplyr::filter(r_packages$attached != TRUE & !r_packages$package %in% directly_used$package)  
+  
   list(
     platform = platform,
-    R = r_packages
+    directly_used = directly_used, 
+    indirectly_used = indirectly_used
   )
 }
 
