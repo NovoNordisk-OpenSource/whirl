@@ -44,7 +44,7 @@ knit_print.data.frame = function(x, ...) {
     x[[i]] <- ifelse(x[[i]], "Yes", "No") # Yes/No instead of TRUE/FALSE
   }
 
-  if("Approved" %in% colnames(x)) {
+  if ("Approved" %in% colnames(x)) {
   x |> 
     knitr::kable(format = "html") |>  
     kableExtra::column_spec(
@@ -60,7 +60,6 @@ knit_print.data.frame = function(x, ...) {
       full_width = TRUE
     ) |>
     knitr::knit_print()
-
   } else {
   x |> 
     knitr::kable(format = "html") |>    
@@ -150,7 +149,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 :::{.callout collapse = true}
+
 ## Platform
 
 ```{r}
@@ -164,6 +165,7 @@ result$session$platform
 #| child: !expr file.path(params$tmpdir, "python.qmd")
 #| eval: !expr grepl("\\.py$", params$title)
 ```
+
 
 :::{.callout collapse = false}
 ## R packages used directly
@@ -180,6 +182,7 @@ if (all(is.na(result$session$directly_used$approved))) {
 :::{.callout collapse = true}
 ## R packages used indirectly
 
+
 ```{r}
 #| label: R packages used indirectly
 #| collapse: true
@@ -188,6 +191,7 @@ result$session$indirectly_used[c("package", "version", "attached", "source")]
 :::
 
 :::{.callout collapse = true}
+
 ## Environment variables
 
 ```{r}
@@ -197,6 +201,8 @@ result$session$environment
 :::
 
 :::{.callout collapse = true}
+## Options
+
 ## Options
 
 ```{r}

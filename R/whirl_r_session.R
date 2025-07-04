@@ -276,7 +276,7 @@ wrs_log_script <- function(script, self, private, super) {
 
   saveRDS( # Save packages used by the script
     renv::dependencies(script),
-    file = file.path(private$wd, "pkgs_used.rds") 
+    file = file.path(private$wd, "pkgs_used.rds")
   )
 
   saveRDS( # Log script metadata
