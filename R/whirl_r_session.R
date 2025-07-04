@@ -277,7 +277,8 @@ wrs_log_script <- function(script, self, private, super) {
   saveRDS( # Log script metadata
     object = list(
       name = private$current_script,
-      sha256sum = tools::sha256sum(files = private$current_script) |>
+      md5sum = private$current_script |> 
+        tools::md5sum() |> # Devskim: ignore DS126858
         unname(),
       content = readLines(private$current_script) |>
         paste0(collapse = "\n")
