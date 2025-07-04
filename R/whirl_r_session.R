@@ -137,18 +137,19 @@ whirl_r_session <- R6::R6Class(
 )
 
 wrs_initialize <- function(
-    verbosity_level,
-    check_renv,
-    track_files,
-    out_formats,
-    track_files_discards,
-    track_files_keep,
-    approved_packages,
-    log_dir,
-    wait_timeout,
-    self,
-    private,
-    super) {
+  verbosity_level,
+  check_renv,
+  track_files,
+  out_formats,
+  track_files_discards,
+  track_files_keep,
+  approved_packages,
+  log_dir,
+  wait_timeout,
+  self,
+  private,
+  super
+) {
   super$initialize(wait_timeout = 9000) # uses callr::r_session$initialize()
 
   private$wd <- withr::local_tempdir(clean = FALSE)
@@ -228,18 +229,24 @@ wrs_print <- function(self, private, super) {
 }
 
 wrs_pb_update <- function(..., self, private, super) {
-  if (!is.null(private$pb)) private$pb$update(...)
+  if (!is.null(private$pb)) {
+    private$pb$update(...)
+  }
   return(invisible(self))
 }
 
 wrs_pb_done <- function(status, self, private, super) {
-  if (!is.null(private$pb)) private$pb$done(status)
+  if (!is.null(private$pb)) {
+    private$pb$done(status)
+  }
   return(invisible(self))
 }
 
 wrs_poll <- function(timeout, self, private, super) {
   status <- super$poll_process(timeout)
-  if (status == "timeout") self$pb_update()
+  if (status == "timeout") {
+    self$pb_update()
+  }
   return(status)
 }
 
@@ -269,15 +276,17 @@ wrs_check_status <- function(self, private, super) {
 wrs_log_script <- function(script, self, private, super) {
   private$current_script <- script
 
-  saveRDS( # Log starting time
+  saveRDS(
+    # Log starting time
     object = Sys.time(),
     file = file.path(private$wd, "start.rds")
   )
 
-  saveRDS( # Log script metadata
+  saveRDS(
+    # Log script metadata
     object = list(
       name = private$current_script,
-      md5sum = private$current_script |> 
+      md5sum = private$current_script |> # Devskim: ignore DS126858
         tools::md5sum() |> # Devskim: ignore DS126858
         unname(),
       content = readLines(private$current_script) |>
@@ -289,7 +298,8 @@ wrs_log_script <- function(script, self, private, super) {
   # Set the execute directory of the Quarto process calling the script
   quarto_execute_dir <- zephyr::get_option("execute_dir", "whirl")
   if (is.null(quarto_execute_dir)) {
-    quarto_execute_dir <- switch(get_file_ext(script),
+    quarto_execute_dir <- switch(
+      get_file_ext(script),
       "R" = normalizePath("."),
       normalizePath(dirname(script))
     )
