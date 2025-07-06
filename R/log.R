@@ -110,15 +110,15 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
   }
 
   directly_used <- dplyr::bind_rows(attached, as_dat) |>
-    dplyr::distinct(package, .keep_all = TRUE) |>
-    dplyr::arrange(package) |>
+    dplyr::distinct(.data$package, .keep_all = TRUE) |>
+    dplyr::arrange(.data$package) |>
     dplyr::mutate(
      approved = check_approved(
         used = paste(.data$package, .data$version, sep = "@"),
         approved = approved_packages
      )
     ) |>
-    dplyr::mutate(approved = dplyr::if_else(approved == TRUE, "\u2705 Yes", "\u274C No"
+    dplyr::mutate(approved = dplyr::if_else(.data$approved == TRUE, "\u2705 Yes", "\u274C No"
       )
     )
 
