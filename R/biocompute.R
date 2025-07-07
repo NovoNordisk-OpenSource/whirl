@@ -215,7 +215,7 @@ create_execution_domain <- function(queue) {
   platform <- split(x = platform$value, f = platform$setting)
 
   if (!"quarto" %in% names(platform)) {
-  platform$quarto <- get_quarto_version()
+    platform$quarto <- get_quarto_version()
   }
 
   software_prerequisites <- list(
@@ -366,4 +366,3 @@ get_quarto_version <- function() {
     paste0(ver, " @ ", path)
   }
 }
-
