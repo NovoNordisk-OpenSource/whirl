@@ -360,6 +360,7 @@ wrs_create_log <- function(self, private, super) {
         title = private$current_script,
         approved_packages = private$approved_packages,
         with_library_paths = .libPaths(),
+        track_files = private$track_files,
         tmpdir = normalizePath(private$wd)
       ),
       execute_dir = normalizePath(".")
