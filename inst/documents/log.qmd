@@ -150,8 +150,7 @@ knitr::opts_chunk$set(
 ```
 
 
-:::{.callout collapse = true}
-
+:::{.callout-note collapse=true appearance="minimal"}
 ## Platform
 
 ```{r}
@@ -160,15 +159,15 @@ result$session$platform
 ```
 :::
 
+:::{.callout-note collapse=false appearance="minimal"}
 ```{r}
 #| label: Python
 #| child: !expr file.path(params$tmpdir, "python.qmd")
 #| eval: !expr grepl("\\.py$", params$title)
 ```
+:::
 
-
-:::{.callout collapse = false}
-
+:::{.callout-note collapse=false appearance="minimal"}
 ## R packages used directly
 
 ```{r}
@@ -180,8 +179,7 @@ if (all(is.na(result$session$directly_used$approved))) {
 ```
 :::
 
-:::{.callout collapse = true}
-
+:::{.callout-note collapse=true appearance="minimal"}
 ## R packages used indirectly
 
 
@@ -192,8 +190,7 @@ result$session$indirectly_used[c("package", "version", "attached", "source")]
 ```
 :::
 
-:::{.callout collapse = true}
-
+:::{.callout-note collapse=true appearance="minimal"}
 ## Environment variables
 
 ```{r}
@@ -202,10 +199,7 @@ result$session$environment
 ```
 :::
 
-:::{.callout collapse = true}
-
-## Options
-
+:::{.callout-note collapse=true appearance="minimal"}
 ## Options
 
 ```{r}
