@@ -44,13 +44,31 @@ knit_print.data.frame = function(x, ...) {
     x[[i]] <- ifelse(x[[i]], "Yes", "No") # Yes/No instead of TRUE/FALSE
   }
 
+  if ("Approved" %in% colnames(x)) {
   x |> 
-    knitr::kable() |>
+    knitr::kable(format = "html") |>  
+    kableExtra::column_spec(
+      1:ncol(x), 
+      background = ifelse(grepl("Yes", x[["Approved"]]), "#ebf5f1", "#fceeef")
+     ) |>
+    kableExtra::column_spec(
+      which(names(x) == "Approved"),
+      color = ifelse(grepl("Yes", x[["Approved"]]), "green", "red")
+    ) |>   
     kableExtra::kable_styling(
       bootstrap_options = "striped",
       full_width = TRUE
     ) |>
-  knitr::knit_print()
+    knitr::knit_print()
+  } else {
+  x |> 
+    knitr::kable(format = "html") |>    
+    kableExtra::kable_styling(
+      bootstrap_options = "striped",
+      full_width = TRUE
+    ) |>
+    knitr::knit_print()
+  }
 }
 
 registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNamespace("knitr"))
@@ -64,6 +82,7 @@ result <- whirl:::read_info(
   md = file.path(params$tmpdir, "doc.md"), 
   start = file.path(params$tmpdir, "start.rds"),
   log = file.path(params$tmpdir, "log_msg.json"),
+  pkgs_used = file.path(params$tmpdir, "pkgs_used.rds"),
   session = file.path(params$tmpdir, "session_info.rds"),
   environment = file.path(params$tmpdir, "environment.rds"),
   options = file.path(params$tmpdir, "options.rds"),
@@ -130,12 +149,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+:::{.callout-note collapse=true appearance="minimal"}
 ## Platform
 
 ```{r}
 #| label: Platform
 result$session$platform
 ```
+:::
+
 
 ```{r}
 #| label: Python
@@ -143,27 +166,43 @@ result$session$platform
 #| eval: !expr grepl("\\.py$", params$title)
 ```
 
-## R Packages
+:::{.callout-note collapse=false appearance="minimal"}
+## R packages used directly
 
 ```{r}
-#| label: R packages
-if (all(is.na(result$session$R$approved))) {
-  result$session$R[c("package", "version", "attached", "source")]
+#| label: R packages used directly
+if (all(is.na(result$session$directly_used$approved))) {
+  result$session$directly_used[c("package", "version", "attached", "source")]
 } else {
-  result$session$R[c("package", "version", "attached", "approved", "source")]
-}
+  result$session$directly_used[c("package", "version", "attached", "source", "approved")]}   
 ```
+:::
 
+:::{.callout-note collapse=true appearance="minimal"}
+## R packages used indirectly
+
+
+```{r}
+#| label: R packages used indirectly
+#| collapse: true
+result$session$indirectly_used[c("package", "version", "attached", "source")]
+```
+:::
+
+:::{.callout-note collapse=true appearance="minimal"}
 ## Environment variables
 
 ```{r}
 #| label: Environment
 result$session$environment
 ```
+:::
 
+:::{.callout-note collapse=true appearance="minimal"}
 ## Options
 
 ```{r}
 #| label: Options
 result$session$options
 ```
+:::

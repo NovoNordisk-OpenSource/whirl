@@ -4,6 +4,7 @@
 * Calling `run()` with `track_files = TRUE` now checks if strace can be attached to the process.
 * Improved json logs and similar returned output from running a script (`result` column in return from `run()`).
 * Simplified approved packages check. Now the user supplies a character vector of packages and versions specified as `{package}@{version}`.
+* The log now differentiates between directly and indirectly used packages, and offers a visual overview of their approval status when a list of approved packages is provided.
 
 # whirl 0.2.0
 

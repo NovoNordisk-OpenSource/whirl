@@ -84,7 +84,11 @@ saveRDS(
 #| label: Session info
 #| include: false
 saveRDS(
-  object = sessioninfo::session_info(info = c("platform", "packages", "python")),
+  object = list( # Due to https://github.com/r-lib/sessioninfo/issues/96
+    platform = sessioninfo::session_info(info = "platform")[["platform"]],
+    packages = sessioninfo::session_info(info = "packages")[["packages"]],
+    python = sessioninfo::session_info(info = "python")[["python"]]
+  ),
   file = file.path(params$tmpdir, "session_info.rds")
 )
 ```
