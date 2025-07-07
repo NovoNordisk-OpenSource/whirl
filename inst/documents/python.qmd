@@ -1,9 +1,11 @@
 ---
 ---
 
+:::{.callout-note collapse=false appearance="minimal"}
 ## Python Packages
 
 ```{r}
 #| echo: false
 result$session$python
 ```
+:::

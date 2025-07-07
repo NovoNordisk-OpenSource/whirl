@@ -211,7 +211,12 @@ create_execution_domain <- function(queue) {
     purrr::list_rbind() |>
     dplyr::distinct() |>
     dplyr::filter(.data$setting %in% c("version", "pandoc", "quarto"))
+
   platform <- split(x = platform$value, f = platform$setting)
+
+  if (!"quarto" %in% names(platform)) {
+  platform$quarto <- get_quarto_version()
+  }
 
   software_prerequisites <- list(
     list(
@@ -350,3 +355,15 @@ create_io_domain <- function(queue) {
     output_subdomain = output
   ))
 }
+
+#' @noRd
+get_quarto_version <- function() {
+  path <- Sys.which("quarto")
+  if (path == "") {
+    "NA"
+  } else {
+    ver <- system("quarto -V", intern = TRUE)[1]
+    paste0(ver, " @ ", path)
+  }
+}
+

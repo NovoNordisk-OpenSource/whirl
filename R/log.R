@@ -125,8 +125,12 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
   indirectly_used <- r_packages |>
     dplyr::filter(r_packages$attached != TRUE & !r_packages$package %in% directly_used$package)
 
+
+  all <- dplyr::bind_rows(directly_used, indirectly_used)
+
   list(
     platform = platform,
+    R = all,
     directly_used = directly_used,
     indirectly_used = indirectly_used
   )

@@ -159,13 +159,12 @@ result$session$platform
 ```
 :::
 
-:::{.callout-note collapse=false appearance="minimal"}
+
 ```{r}
 #| label: Python
 #| child: !expr file.path(params$tmpdir, "python.qmd")
 #| eval: !expr grepl("\\.py$", params$title)
 ```
-:::
 
 :::{.callout-note collapse=false appearance="minimal"}
 ## R packages used directly

@@ -16,6 +16,3 @@ ggplot2::ggplot(mtcars, ggplot2::aes(mpg, cyl)) +
   ggplot2::geom_point()
 
 zephyr::msg("Test message with zephyr")
-
-
-
