@@ -166,6 +166,15 @@ create_description_domain <- function(queue) {
 
 #' @noRd
 bco_file_format <- function(x) {
+  if (is.null(x)) {
+    return(
+      dplyr::tibble(
+        filename = character(0),
+        uri = character(0),
+        access_time = character(0)
+      )
+    )
+  }
   x |>
     dplyr::mutate(
       filename = basename(.data$file),
