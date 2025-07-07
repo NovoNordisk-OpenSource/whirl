@@ -168,6 +168,7 @@ result$session$platform
 
 
 :::{.callout collapse = false}
+
 ## R packages used directly
 
 ```{r}
@@ -180,6 +181,7 @@ if (all(is.na(result$session$directly_used$approved))) {
 :::
 
 :::{.callout collapse = true}
+
 ## R packages used indirectly
 
 
@@ -201,6 +203,7 @@ result$session$environment
 :::
 
 :::{.callout collapse = true}
+
 ## Options
 
 ## Options
