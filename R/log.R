@@ -98,7 +98,7 @@ read_session_info <- function(file, approved_packages = NULL) {
   )
 }
 
-#' Read and format list of environment variabes from `Sys.getenv()`
+#' Read and format list of environment variables from `Sys.getenv()`
 #' @noRd
 read_environment <- function(file) {
   readRDS(file) |>
