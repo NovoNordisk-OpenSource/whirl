@@ -9,6 +9,7 @@
 util_queue_summary <- function(queue_table) {
   queue_table |>
     dplyr::mutate(
+      Tag = .data$tag,
       Directory = normalizePath(dirname(.data$script), winslash = "/"),
       Filename = basename(.data$script),
       Status = .data$status,
@@ -27,5 +28,5 @@ util_queue_summary <- function(queue_table) {
         FUN.VALUE = character(1)
       )
     ) |>
-    dplyr::select("Directory", "Filename", "Status", "Hyperlink", "Information")
+    dplyr::select("Tag", "Directory", "Filename", "Status", "Hyperlink", "Information")
 }
