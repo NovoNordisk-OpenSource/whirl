@@ -9,6 +9,7 @@ params:
   title: 'dev'
   with_library_paths: library_paths
   approved_packages: NULL
+  track_files: FALSE
   tmpdir: '.'
 format:
   html:
@@ -68,7 +69,8 @@ result <- whirl:::read_info(
   environment = file.path(params$tmpdir, "environment.rds"),
   options = file.path(params$tmpdir, "options.rds"),
   python = file.path(params$tmpdir, "python_imports.json"),
-  approved_packages = params$approved_packages
+  approved_packages = params$approved_packages,
+  track_files = isTRUE(as.logical(params$track_files))
 )
 
 saveRDS(
