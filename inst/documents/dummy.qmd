@@ -83,8 +83,18 @@ saveRDS(
 ```{r}
 #| label: Session info
 #| include: false
+info <- list( # Due to https://github.com/r-lib/sessioninfo/issues/96
+    platform = sessioninfo::session_info(info = "platform")[["platform"]],
+    packages = sessioninfo::session_info(info = "packages")[["packages"]],
+    python = sessioninfo::session_info(info = "python")[["python"]]
+  )
+
+if (!"quarto" %in% names(info$platform)) { # Due to older versions of sessioninfo
+  info$platform$quarto <- paste(quarto::quarto_version(), "@", quarto::quarto_path())
+}
+
 saveRDS(
-  object = sessioninfo::session_info(info = c("platform", "packages", "python")),
+  object = info,
   file = file.path(params$tmpdir, "session_info.rds")
 )
 ```
