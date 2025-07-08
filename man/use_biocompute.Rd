@@ -16,7 +16,7 @@ use_biocompute(
 }
 \description{
 Utility function to setup execution with whirl in your project suitable for
-creatuing biocompute logs with \code{write_biocompute()}:
+creating biocompute logs with \code{write_biocompute()}:
 \enumerate{
 \item Creates configuration file (default \verb{_whirl.yml}) with default values for the \code{biocompute} metadata.
 \item Updates \code{.gitignore} to not include log files
