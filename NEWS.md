@@ -1,4 +1,4 @@
-# whirl dev
+# whirl 0.3.0
 
 * Add `write_biocompute()` to create [BioCompute Objects](https://www.biocomputeobject.org/) containing the logs in a standardized JSON format.
 * Calling `run()` with `track_files = TRUE` now checks if strace can be attached to the process.
