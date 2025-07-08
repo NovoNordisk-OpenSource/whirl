@@ -49,7 +49,7 @@
 #' If you want to add content do so manually after creating the BCO.
 #'
 #' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the
-#' [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
+#' [BioCompute Objects Wiki](https://wiki.biocomputeobject.org/Main_Page) for more information.
 #'
 #' @param queue Result from `run()`.
 #' @param path A character string specifying the file path to write BioCompute log to.

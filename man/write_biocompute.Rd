@@ -76,5 +76,5 @@ If you want to add content do so manually after creating the BCO.
 }
 
 See the \href{https://www.biocomputeobject.org}{BioCompute Object Portal} and the
-\href{https://wiki.biocomputeobject.org}{BioCompute Objects Wiki} for more information.
+\href{https://wiki.biocomputeobject.org/Main_Page}{BioCompute Objects Wiki} for more information.
 }
