@@ -83,9 +83,11 @@ whirl_queue <- R6::R6Class(
     #' @description Run scripts using the queue.
     #' This is a wrapper around calling both push() and wait().
     #' @param scripts [character] with full paths for the scripts to be executed
+    #' @param tag (optional) [character] Tag for the scripts to include in
+    #' the queue
     #' @return [invisible] self
-    run = \(scripts) {
-      wq_run(scripts, self)
+    run = \(scripts, tag = NA_character_) {
+      wq_run(scripts, tag, self)
     },
 
     #' @description Print method displaying the current status of the queue
@@ -317,7 +319,7 @@ wq_next_step <- function(self, private, wid) {
   return(invisible(wid))
 }
 
-wq_run <- function(scripts, self) {
-  self$push(scripts)$wait()
+wq_run <- function(scripts, tag, self) {
+  self$push(scripts = scripts, tag = tag)$wait()
   on.exit(gc()) # finalizes used whirl_r_sessions - cleanup temp folders
 }
