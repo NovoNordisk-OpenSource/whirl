@@ -30,7 +30,7 @@ use_whirl <- function(config_file = "_whirl.yml") {
 #' @description
 #'
 #' Utility function to setup execution with whirl in your project suitable for
-#' creatuing biocompute logs with `write_biocompute()`:
+#' creating biocompute logs with `write_biocompute()`:
 #'
 #' 1. Creates configuration file (default `_whirl.yml`) with default values for the `biocompute` metadata.
 #' 1. Updates `.gitignore` to not include log files

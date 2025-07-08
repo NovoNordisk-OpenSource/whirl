@@ -8,6 +8,7 @@ strace_info <- function(path = "strace.log") {
 }
 
 test_that("strace works", {
+  skip_on_cran()
   skip_on_ci()
   skip_on_os(c("windows", "mac", "solaris"))
 
