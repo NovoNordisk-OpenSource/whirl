@@ -16,7 +16,7 @@ test_that("Summary tibble is created successfully", {
     util_queue_summary() |>
     expect_s3_class("tbl_df") |>
     expect_named(
-      c("Directory", "Filename", "Status", "Hyperlink", "Information")
+      c("Tag", "Directory", "Filename", "Status", "Hyperlink", "Information")
     ) |>
     nrow() |>
     expect_equal(2)

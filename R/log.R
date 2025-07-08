@@ -9,13 +9,14 @@ read_info <- function(
   environment,
   options,
   python = NULL,
-  approved_packages = NULL
+  approved_packages = NULL,
+  track_files = FALSE
 ) {
   info <- list(
     script = readRDS(script),
     status = get_status(md = md, start = start),
     files = log |>
-      read_from_log() |>
+      read_from_log(track_files = track_files) |>
       split_log(),
     session = read_session_info(
       file = session,
@@ -97,7 +98,7 @@ read_session_info <- function(file, approved_packages = NULL) {
   )
 }
 
-#' Read and format list of environment variabes from `Sys.getenv()`
+#' Read and format list of environment variables from `Sys.getenv()`
 #' @noRd
 read_environment <- function(file) {
   readRDS(file) |>
