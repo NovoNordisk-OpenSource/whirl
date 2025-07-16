@@ -1,0 +1,170 @@
+/* Global body styling */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Container for Summary section */
+.summary-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-left: 4px solid #28a745;
+  border-radius: 6px;
+  margin: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Container for Script section */
+.script-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
+  margin: 15px 0;
+  font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Container for Session info sections */
+.session-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-left: 4px solid #6f42c1;
+  border-radius: 6px;
+  margin: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Main heading styling */
+h1 {
+  color: #2c3e50;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Secondary heading styling */
+h2 {
+  color: #34495e;
+  border-bottom: 1px solid #ecf0f1;
+  padding-bottom: 8px;
+}
+
+/* Title Block styling */
+#title-block-header {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.quarto-title h1.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+.quarto-title .subtitle {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.quarto-title .author {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+/* Meta information headings */
+.quarto-title-meta-heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #007bff;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Meta information content boxes */
+.quarto-title-meta-contents {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.quarto-title-meta-contents p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #495057;
+}
+
+/* Date styling */
+.date, .date-modified {
+  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+  font-weight: 500;
+  color: #212529;
+}
+
+/* Script path styling */
+.abstract {
+  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+  font-size: 0.85rem;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  padding: 0.5rem;
+  word-break: break-all;
+  color: #495057;
+}
+
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  #title-block-header {
+    background-color: #212529;
+    border-color: #495057;
+  }
+
+  .quarto-title h1.title {
+    color: #f8f9fa;
+    border-bottom-color: #0d6efd;
+  }
+
+  .quarto-title .subtitle {
+    color: #adb5bd;
+  }
+
+  .quarto-title .author {
+    color: #ced4da;
+  }
+
+  .quarto-title-meta-contents {
+    background-color: #343a40;
+    border-color: #495057;
+  }
+
+  .quarto-title-meta-contents p,
+  .date, .date-modified, .abstract {
+    color: #ced4da;
+  }
+
+  .abstract {
+    background-color: #2b3035;
+    border-color: #495057;
+  }
+}

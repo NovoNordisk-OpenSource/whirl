@@ -18,10 +18,11 @@ format:
     toc-depth: 2
     toc-expand: true
     smooth-scroll: true
+    css: style.css
 ---
 
 # Summary
-
+::: {.summary-container}
 ```{r}
 #| label: Setup
 #| echo: false
@@ -106,6 +107,7 @@ params$tmpdir |>
   readRDS() |> 
   whirl:::knit_print_whirl_renv_status()
 ```
+:::
 
 ```{r}
 #| label: Used files
@@ -115,9 +117,11 @@ params$tmpdir |>
 
 # Script
 
+::: {.script-container}
 ```{r}
 #| child: !expr file.path(params$tmpdir, "doc.md")
 ```
+:::
 
 # Session info
 
@@ -133,6 +137,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Platform
+::: {.session-container}
 
 ```{r}
 #| label: Platform
@@ -144,8 +149,9 @@ result$session$platform
 #| child: !expr file.path(params$tmpdir, "python.qmd")
 #| eval: !expr grepl("\\.py$", params$title)
 ```
-
+:::
 ## R Packages
+::: {.session-container}
 
 ```{r}
 #| label: R packages
@@ -155,17 +161,20 @@ if (all(is.na(result$session$R$approved))) {
   result$session$R[c("package", "version", "attached", "approved", "source")]
 }
 ```
-
+:::
 ## Environment variables
+::: {.session-container}
 
 ```{r}
 #| label: Environment
 result$session$environment
 ```
-
+:::
 ## Options
+::: {.session-container}
 
 ```{r}
 #| label: Options
 result$session$options
 ```
+:::
