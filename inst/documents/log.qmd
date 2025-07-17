@@ -18,6 +18,7 @@ format:
     toc-depth: 2
     toc-expand: true
     smooth-scroll: true
+    css: styles.css
 ---
 
 # Summary
@@ -114,11 +115,11 @@ params$tmpdir |>
 ```
 
 # Script
-
+::: {.script-container}
 ```{r}
 #| child: !expr file.path(params$tmpdir, "doc.md")
 ```
-
+:::
 # Session info
 
 ```{r}
@@ -146,6 +147,7 @@ result$session$platform
 ```
 
 ## R Packages
+
 
 ```{r}
 #| label: R packages
