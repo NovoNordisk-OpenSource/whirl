@@ -7,7 +7,31 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
+        echo "Current ptrace_scope before change: $(cat /proc/sys/kernel/yama/ptrace_scope)"
         echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+        echo "Current ptrace_scope after change: $(cat /proc/sys/kernel/yama/ptrace_scope)"
+
+        # Alternative approaches to try
+        echo "Trying alternative permission setups..."
+
+        # Method 1: Set CAP_SYS_PTRACE capability
+        sudo setcap cap_sys_ptrace=eip /usr/bin/strace || echo "setcap failed"
+
+        # Method 2: Add to ptrace group if it exists
+        sudo usermod -a -G ptrace runner 2>/dev/null || echo "ptrace group not found"
+
+        # Method 3: Check and modify security limits
+        echo "* soft core unlimited" | sudo tee -a /etc/security/limits.conf || true
+        echo "* hard core unlimited" | sudo tee -a /etc/security/limits.conf || true
+
+        # Test if strace actually works
+        echo "Testing strace capabilities..."
+        timeout 5s strace -e trace=write echo "test" 2>&1 || echo "strace test failed"
+
+        # Check kernel capabilities
+        echo "Kernel version: $(uname -r)"
+        echo "Available capabilities:"
+        grep -i cap /proc/self/status || true
 
     - name: Install Quarto
       uses: quarto-dev/quarto-actions/setup@v2

@@ -9,9 +9,16 @@ strace_info <- function(path = "strace.log") {
 
 test_that("strace works", {
   skip_on_cran()
-  skip_on_ci()
+  #skip_on_ci()
   skip_on_os(c("windows", "mac", "solaris"))
 
+  if (Sys.getenv("CI") != "") {
+    cat("Running in CI environment\n")
+    cat("ptrace_scope:", readLines("/proc/sys/kernel/yama/ptrace_scope"), "\n")
+    cat("Kernel version:", system("uname -r", intern = TRUE), "\n")
+    cat("User ID:", Sys.getuid(), "\n")
+    cat("Effective user ID:", Sys.geteuid(), "\n")
+  }
   withr::with_tempdir(
     code = {
       cat("this is a dummy file to check strace", file = "dummy.txt")

@@ -3,6 +3,7 @@ on:
     branches:
       - main
       - master
+      - fix_strace
   pull_request:
     branches:
       - main
