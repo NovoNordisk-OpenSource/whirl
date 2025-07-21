@@ -269,7 +269,7 @@ wrs_check_status <- function(self, private, super) {
     cli::cli_abort(
       c(
         "Could not run {.file {private$current_script}}",
-        "x" = "Error from {.fn quarto::quarto_render}:",
+        "i" = "Error from {.fn quarto::quarto_render}:",
         strsplit(x = status$stdout, split = "\n") |>
           unlist()
       )

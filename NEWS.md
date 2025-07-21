@@ -1,3 +1,7 @@
+# whirl dev
+
+* Improved error handling when the log cannot be created.
+
 # whirl 0.3.0
 
 * Add `write_biocompute()` to create [BioCompute Objects](https://www.biocomputeobject.org/) containing the logs in a standardized JSON format.
