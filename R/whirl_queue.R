@@ -17,7 +17,7 @@ whirl_queue <- R6::R6Class(
     initialize = \(
       # jscpd:ignore-start
       n_workers = zephyr::get_option("n_workers", "whirl"),
-      verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
+      verbosity_level = zephyr::get_verbosity_level("whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
       out_formats = zephyr::get_option("out_formats", "whirl"),
@@ -195,7 +195,7 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
     # Check if the directory exists
     unique_folders <- unique(folder)
     if (any(!file.exists(unique_folders))) {
-      missing <- unique_folders[!file.exists(unique_folders)]  # nolint: object_usage_linter
+      missing <- unique_folders[!file.exists(unique_folders)] # nolint: object_usage_linter
       cli::cli_abort(
         "Logs cannot be saved because {.val {missing}} does not exist"
       )
@@ -258,7 +258,9 @@ wq_poll <- function(
   i_timeout <- round(timeout / length(i_active))
   for (i in i_active) {
     p <- private$.workers$session[[i]]$poll(timeout = i_timeout)
-    if (p == "ready") private$.workers$session[[i]]$read()
+    if (p == "ready") {
+      private$.workers$session[[i]]$read()
+    }
     if (private$.workers$session[[i]]$get_state() == "idle") {
       wq_next_step(self, private, i)
     }

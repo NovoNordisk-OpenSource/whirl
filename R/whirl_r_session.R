@@ -14,7 +14,7 @@ whirl_r_session <- R6::R6Class(
     #' @return A [whirl_r_session] object
     initialize = \(
       # jscpd:ignore-start
-      verbosity_level = zephyr::get_option("verbosity_level", "whirl"),
+      verbosity_level = zephyr::get_verbosity_level("whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
       out_formats = zephyr::get_option("out_formats", "whirl"),
