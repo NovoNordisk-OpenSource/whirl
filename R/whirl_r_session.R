@@ -266,9 +266,14 @@ wrs_wait <- function(timeout, self, private, super) {
 wrs_check_status <- function(self, private, super) {
   status <- super$read()
   if (!is.null(status$error)) {
-    status$error |>
-      as.character() |>
-      rlang::abort()
+    cli::cli_abort(
+      c(
+        "Could not run {.file {private$current_script}}",
+        "x" = "Error from {.fn quarto::quarto_render}:",
+        strsplit(x = status$stdout, split = "\n") |>
+          unlist()
+      )
+    )
   }
   return(invisible(status))
 }

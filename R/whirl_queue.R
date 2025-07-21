@@ -259,7 +259,7 @@ wq_poll <- function(
   for (i in i_active) {
     p <- private$.workers$session[[i]]$poll(timeout = i_timeout)
     if (p == "ready") {
-      private$.workers$session[[i]]$read()
+      private$.workers$session[[i]]$check_status()
     }
     if (private$.workers$session[[i]]$get_state() == "idle") {
       wq_next_step(self, private, i)
