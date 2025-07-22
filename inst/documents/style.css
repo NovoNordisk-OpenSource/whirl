@@ -8,39 +8,3 @@
   font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  #title-block-header {
-    background-color: #212529;
-    border-color: #495057;
-  }
-
-  .quarto-title h1.title {
-    color: #f8f9fa;
-    border-bottom-color: #0d6efd;
-  }
-
-  .quarto-title .subtitle {
-    color: #adb5bd;
-  }
-
-  .quarto-title .author {
-    color: #ced4da;
-  }
-
-  .quarto-title-meta-contents {
-    background-color: #343a40;
-    border-color: #495057;
-  }
-
-  .quarto-title-meta-contents p,
-  .date, .date-modified, .abstract {
-    color: #ced4da;
-  }
-
-  .abstract {
-    background-color: #2b3035;
-    border-color: #495057;
-  }
-}
