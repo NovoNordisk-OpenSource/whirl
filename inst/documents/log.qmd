@@ -114,11 +114,11 @@ params$tmpdir |>
 ```
 
 # Script
-
+::: {.script-container}
 ```{r}
 #| child: !expr file.path(params$tmpdir, "doc.md")
 ```
-
+:::
 # Session info
 
 ```{r}
