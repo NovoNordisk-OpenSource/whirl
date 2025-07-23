@@ -12,6 +12,8 @@ test_that("Summary tibble is created successfully", {
   test_script(c("success.R", "py_success.py")) |>
     q$run()
 
+  Sys.sleep(0.1)
+
   q$queue |>
     util_queue_summary() |>
     expect_s3_class("tbl_df") |>
