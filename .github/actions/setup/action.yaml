@@ -77,10 +77,8 @@ runs:
     - name: (macOS) Install jupyter
       if: runner.os == 'macOS'
       shell: bash
-      run: |
-        brew install jupyter
-        which jupyter
-        jupyter --version
+      run: brew install jupyter
+
 
     - name: (Windows) Install jupyter
       if: runner.os == 'Windows'
