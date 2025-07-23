@@ -384,23 +384,30 @@ wrs_create_log <- function(self, private, super) {
 wrs_log_finish <-  function(self, private, super) {
   result_file <- private$wd |> file.path("result.rds")
 
+  # Debug: List all files in the working directory
+  cat("Working directory:", private$wd, "\n")
+  cat("Files in working directory:", paste(list.files(private$wd, full.names = TRUE), collapse = ", "), "\n")
+  cat("Looking for result file:", result_file, "\n")
+
   # Retry logic for macOS file system issues
-  max_attempts <-  20  # Up to 10 seconds total
+  max_attempts <-  20
   attempt <- 1
 
   while (attempt <= max_attempts) {
     if (file.exists(result_file)) {
       tryCatch({
         private$result <- result_file |> readRDS()
-        break  # Success - exit the loop
+        break
       }, error = function(e) {
+        cat("Attempt", attempt, "- Error reading file:", e$message, "\n")
         if (attempt == max_attempts) {
           stop("Failed to read result.rds after ", max_attempts, " attempts: ", e$message)
         }
-        Sys.sleep(0.5)  # Wait 0.5 seconds before retry
+        Sys.sleep(0.5)
         attempt <<- attempt + 1
       })
     } else {
+      cat("Attempt", attempt, "- File does not exist\n")
       if (attempt == max_attempts) {
         stop("result.rds file does not exist after ", max_attempts * 0.5, " seconds")
       }
@@ -415,6 +422,7 @@ wrs_log_finish <-  function(self, private, super) {
 
   return(invisible(self))
 }
+
 wrs_create_outputs <- function(out_dir, format, self, private, super) {
   output <- private$result
   output$logs <- wrs_create_logs(out_dir, format, output, self, private, super)
