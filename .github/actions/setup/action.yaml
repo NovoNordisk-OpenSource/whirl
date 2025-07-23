@@ -20,7 +20,10 @@ runs:
     - name: (macOS) Install jupyter
       if: runner.os == 'macOS'
       shell: bash
-      run: python3 -m pip install --user jupyter
+      run: |
+        python3 -m pip install --user jupyter
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
 
     - name: (Windows) Install jupyter
       if: runner.os == 'Windows'
