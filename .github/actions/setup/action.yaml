@@ -7,31 +7,64 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        echo "Current ptrace_scope before change: $(cat /proc/sys/kernel/yama/ptrace_scope)"
-        echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-        echo "Current ptrace_scope after change: $(cat /proc/sys/kernel/yama/ptrace_scope)"
-
-        # Alternative approaches to try
-        echo "Trying alternative permission setups..."
-
-        # Method 1: Set CAP_SYS_PTRACE capability
-        sudo setcap cap_sys_ptrace=eip /usr/bin/strace || echo "setcap failed"
-
-        # Method 2: Add to ptrace group if it exists
-        sudo usermod -a -G ptrace runner 2>/dev/null || echo "ptrace group not found"
-
-        # Method 3: Check and modify security limits
-        echo "* soft core unlimited" | sudo tee -a /etc/security/limits.conf || true
-        echo "* hard core unlimited" | sudo tee -a /etc/security/limits.conf || true
-
-        # Test if strace actually works
-        echo "Testing strace capabilities..."
-        timeout 5s strace -e trace=write echo "test" 2>&1 || echo "strace test failed"
-
-        # Check kernel capabilities
+        echo "=== Initial System State ==="
+        echo "Current user: $(whoami)"
+        echo "User ID: $(id -u)"
+        echo "Group ID: $(id -g)"
+        echo "All groups: $(id)"
+        echo "Current ptrace_scope: $(cat /proc/sys/kernel/yama/ptrace_scope)"
         echo "Kernel version: $(uname -r)"
-        echo "Available capabilities:"
-        grep -i cap /proc/self/status || true
+
+        echo "=== Modifying ptrace_scope ==="
+        echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+        echo "New ptrace_scope: $(cat /proc/sys/kernel/yama/ptrace_scope)"
+
+        echo "=== Setting up strace permissions ==="
+        # Method 1: Set CAP_SYS_PTRACE capability on strace binary
+        sudo setcap cap_sys_ptrace=eip /usr/bin/strace && echo "✓ setcap succeeded" || echo "✗ setcap failed"
+
+        # Method 2: Check if we can create ptrace group and add user
+        if ! getent group ptrace > /dev/null 2>&1; then
+          sudo groupadd ptrace && echo "✓ Created ptrace group" || echo "✗ Failed to create ptrace group"
+        fi
+        sudo usermod -a -G ptrace runner && echo "✓ Added user to ptrace group" || echo "✗ Failed to add user to ptrace group"
+
+        # Method 3: Modify security limits
+        echo "runner soft core unlimited" | sudo tee -a /etc/security/limits.conf
+        echo "runner hard core unlimited" | sudo tee -a /etc/security/limits.conf
+        echo "✓ Modified security limits"
+
+        echo "=== Testing strace capabilities ==="
+        # Test 1: Simple strace on echo
+        echo "Test 1: Basic strace test"
+        if timeout 3s strace -e trace=write echo "test" > /dev/null 2>&1; then
+          echo "✓ Basic strace works"
+        else
+          echo "✗ Basic strace failed"
+        fi
+
+        # Test 2: Strace on background process
+        echo "Test 2: Strace on background process"
+        sleep 10 &
+        SLEEP_PID=$!
+        if timeout 2s strace -p $SLEEP_PID -e trace=write > /dev/null 2>&1; then
+          echo "✓ Strace on background process works"
+        else
+          echo "✗ Strace on background process failed"
+        fi
+        kill $SLEEP_PID 2>/dev/null || true
+
+        # Test 3: Check capabilities
+        echo "Test 3: Current process capabilities"
+        grep -i cap /proc/self/status || echo "No capability info available"
+
+        # Test 4: Check strace binary capabilities
+        echo "Test 4: Strace binary capabilities"
+        getcap /usr/bin/strace || echo "No capabilities set on strace binary"
+
+        echo "=== Final System State ==="
+        echo "Final ptrace_scope: $(cat /proc/sys/kernel/yama/ptrace_scope)"
+        echo "User groups: $(groups)"
 
     - name: Install Quarto
       uses: quarto-dev/quarto-actions/setup@v2
@@ -44,7 +77,10 @@ runs:
     - name: (macOS) Install jupyter
       if: runner.os == 'macOS'
       shell: bash
-      run: python3 -m pip install --break-system-packages jupyter
+      run: |
+        brew install jupyter
+        which jupyter
+        jupyter --version
 
     - name: (Windows) Install jupyter
       if: runner.os == 'Windows'
