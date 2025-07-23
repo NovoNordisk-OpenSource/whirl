@@ -31,6 +31,7 @@ Authors:
   \item Vladimir Obucina \email{vlob@novonordisk.com}
   \item Michael Svingel \email{wymz@novonordisk.com}
   \item Skander Mulder \email{sktf@novonordisk.com}
+  \item Oliver Lundsgaard \email{ovlr@novonordisk.com}
 }
 
 Other contributors:
