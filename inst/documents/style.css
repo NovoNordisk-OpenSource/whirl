@@ -1,0 +1,9 @@
+/* Container for Script section */
+.script-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
+  margin: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
