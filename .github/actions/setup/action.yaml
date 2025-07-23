@@ -20,7 +20,7 @@ runs:
     - name: (macOS) Install jupyter
       if: runner.os == 'macOS'
       shell: bash
-      run: python3 -m pip install --break-system-packages jupyter
+      run: python3 -m pip install --user jupyter
 
     - name: (Windows) Install jupyter
       if: runner.os == 'Windows'
