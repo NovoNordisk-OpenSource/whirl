@@ -381,19 +381,15 @@ wrs_create_log <- function(self, private, super) {
   return(invisible(self))
 }
 
-wrs_log_finish <- function(self, private, super) {
+wrs_log_finish <-  function(self, private, super) {
+  result_file <- private$wd |> file.path("result.rds")
 
-  if (file.exists("result.rds")) {
-    private$result <- private$wd |>
-      file.path("result.rds") |>
-      readRDS()
+  if (file.exists(result_file)) {
+    private$result <-  result_file |> readRDS()
   } else {
-    Sys.sleep(0.5)
-    private$result <- private$wd |>
-      file.path("result.rds") |>
-      readRDS()
+    Sys.sleep(1)
+    private$result <-  result_file |> readRDS()
   }
-
 
   if (!is.null(private$pb)) {
     self$pb_done(status = private$result[["status"]][["message"]])
