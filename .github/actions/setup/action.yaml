@@ -17,12 +17,13 @@ runs:
       shell: bash
       run: python3 -m pip install jupyter
 
-    - name: (macOS) Install jupyter
+    - name: (macOS) Install jupyter via Homebrew
       if: runner.os == 'macOS'
       shell: bash
       run: |
-        python3 -m pip install --user jupyter
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        brew install jupyter
+        # Verify installation
+        python3 -c "import jupyter; print('Jupyter installed successfully')"
 
 
     - name: (Windows) Install jupyter
