@@ -20,9 +20,13 @@ test_that("strace works", {
 
       start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
 
+      Sys.sleep(1)
+
       # Only save a file
 
       p$run(\() saveRDS(object = mtcars, file = "mtcars.rds"))
+
+      Sys.sleep(0.5)
 
       test <- strace_info()
 
@@ -32,7 +36,9 @@ test_that("strace works", {
       # Also read dummy.txt
 
       p$run(\() readLines("dummy.txt"))
+      Sys.sleep(0.5)
       test <- strace_info()
+
       any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
         testthat::expect_true()
       any(grepl(x = test$read$file, pattern = "dummy.txt")) |>
