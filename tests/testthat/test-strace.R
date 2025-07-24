@@ -8,8 +8,8 @@ strace_info <- function(path = "strace.log") {
 }
 
 test_that("strace works", {
-  skip_on_cran()
-  skip_on_os(c("windows", "mac", "solaris"))
+  # skip_on_cran()
+  # skip_on_os(c("windows", "mac", "solaris"))
 
   if (Sys.getenv("CI") != "") {
     cat("Running in CI environment\n")
