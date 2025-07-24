@@ -7,11 +7,6 @@ strace_info <- function(path = "strace.log") {
   )
 }
 
-#' Wait for strace condition to be met
-#' @param pattern File pattern to look for
-#' @param operation Type of operation ("read", "write", "delete")
-#' @param timeout Maximum time to wait in seconds (default: 2)
-#' @param interval Time between checks in seconds (default: 0.1)
 wait_for_condition <-  function(check_fn, timeout = 2, interval = 0.1, error_msg = NULL) {
   start_time <- Sys.time()
 
