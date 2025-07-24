@@ -42,11 +42,6 @@ check_strace_pattern <-  function(pattern, operation, path = "strace.log") {
   }
 }
 
-# Helper function for file existence
-check_file_exists <- function(file_path) {
-  function() file.exists(file_path)
-}
-
 # Then your test becomes even cleaner:
 test_that("strace works", {
   skip_on_os(c("windows", "mac", "solaris"))
@@ -60,7 +55,7 @@ test_that("strace works", {
 
       # Wait for strace to initialize
       wait_for_condition(
-        check_fn = check_file_exists("strace.log"),
+        check_fn = function() file.exists("strace.log"),
         error_msg = "strace log file was not created"
       )
 
