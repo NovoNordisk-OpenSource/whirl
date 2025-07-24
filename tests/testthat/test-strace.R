@@ -1,3 +1,12 @@
+strace_info <- function(path = "strace.log") {
+  read_strace_info(
+    path = path,
+    p_wd = getwd(),
+    strace_discards = zephyr::get_option("track_files_discards", "whirl"),
+    strace_keep = getwd()
+  )
+}
+
 # Helper function to wait for specific file pattern in strace results
 wait_for_strace_file <-  function(pattern, operation = "write", timeout = 5, interval = 0.1) {
   start_time <- Sys.time()
