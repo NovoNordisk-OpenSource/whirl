@@ -1,55 +1,59 @@
-strace_info <- function(path = "strace.log") {
-  read_strace_info(
-    path = path,
-    p_wd = getwd(),
-    strace_discards = zephyr::get_option("track_files_discards", "whirl"),
-    strace_keep = getwd()
-  )
+# Helper function to wait for specific file pattern in strace results
+wait_for_strace_file <-  function(pattern, operation = "write", timeout = 5, interval = 0.1) {
+  start_time <- Sys.time()
+
+  repeat {
+    test <- strace_info()
+
+    # Check the appropriate operation type
+    files_to_check <- switch(operation,
+                             "write" = test$write$file,
+                             "read" = test$read$file,
+                             "delete" = test$delete$file,
+                             stop("Invalid operation type. Use 'write', 'read', or 'delete'")
+    )
+
+    if (any(grepl(x = files_to_check, pattern = pattern))) {
+      return(TRUE)
+    }
+
+    if (as.numeric(Sys.time() - start_time) > timeout) {
+      return(FALSE)
+    }
+
+    Sys.sleep(interval)
+  }
 }
 
 test_that("strace works", {
-  # skip_on_cran()
-  # skip_on_ci()
-  # skip_on_os(c("windows", "mac", "solaris"))
+  skip_on_os(c("windows", "mac", "solaris"))
 
   withr::with_tempdir(
     code = {
       cat("this is a dummy file to check strace", file = "dummy.txt")
 
-      p <- callr::r_session$new()
-
+      p <-  callr::r_session$new()
       start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
 
-      Sys.sleep(1)
+      # Wait for strace to be ready
+      Sys.sleep(0.1)
 
-      # Only save a file
-
+      # Save a file and wait for it to appear in strace
       p$run(\() saveRDS(object = mtcars, file = "mtcars.rds"))
 
-      Sys.sleep(0.5)
-
-      test <- strace_info()
-
-      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
+      wait_for_strace_file(pattern = "mtcars.rds", operation = "write", timeout = 3) |>
         testthat::expect_true()
 
-      # Also read dummy.txt
-
+      # Read dummy.txt and wait for it to appear
       p$run(\() readLines("dummy.txt"))
-      Sys.sleep(0.5)
-      test <- strace_info()
 
-      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
-        testthat::expect_true()
-      any(grepl(x = test$read$file, pattern = "dummy.txt")) |>
+      wait_for_strace_file(pattern = "dummy.txt", operation = "read", timeout = 3) |>
         testthat::expect_true()
 
-      # Finally delete read dummy.txt
-
+      # Delete file and wait for deletion to be tracked
       p$run(\() file.remove("dummy.txt"))
 
-      test <- strace_info()
-      any(grepl(x = test$delete$file, pattern = "dummy.txt")) |>
+      wait_for_strace_file(pattern = "dummy.txt", operation = "delete", timeout = 3) |>
         testthat::expect_true()
 
       p$kill()
