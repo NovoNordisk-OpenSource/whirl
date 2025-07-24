@@ -9,145 +9,44 @@ strace_info <- function(path = "strace.log") {
 
 test_that("strace works", {
   # skip_on_cran()
+  # skip_on_ci()
   # skip_on_os(c("windows", "mac", "solaris"))
-
-  if (Sys.getenv("CI") != "") {
-    cat("Running in CI environment\n")
-    cat("ptrace_scope:", readLines("/proc/sys/kernel/yama/ptrace_scope"), "\n")
-    cat("Kernel version:", system("uname -r", intern = TRUE), "\n")
-
-    # Safe user info
-    tryCatch({
-      if (exists("Sys.getuid", mode = "function")) {
-        cat("User ID:", Sys.getuid(), "\n")
-      }
-      if (exists("Sys.geteuid", mode = "function")) {
-        cat("Effective user ID:", Sys.geteuid(), "\n")
-      }
-    }, error = function(e) cat("Error getting user info:", e$message, "\n"))
-  }
 
   withr::with_tempdir(
     code = {
-      cat("=== Test Setup ===\n")
-      cat("Working directory:", getwd(), "\n")
       cat("this is a dummy file to check strace", file = "dummy.txt")
-      cat("Created dummy.txt\n")
 
-      p <-  callr::r_session$new()
-      cat("Created R session with PID:", p$get_pid(), "\n")
+      p <- callr::r_session$new()
 
-      # Start strace
-      strace_file <- file.path(getwd(), "strace.log")
-      cat("Starting strace, output file:", strace_file, "\n")
-      start_strace(pid = p$get_pid(), file = strace_file)
+      start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
 
-      # Check if strace file was created
-      Sys.sleep(1)  # Give strace time to start
-      if (file.exists(strace_file)) {
-        cat("✓ Strace log file created\n")
-      } else {
-        cat("✗ Strace log file NOT created\n")
-      }
+      # Only save a file
 
-      cat("\n=== Test 1: Save mtcars.rds ===\n")
-      p$run(\() {
-        cat("About to save mtcars.rds in:", getwd(), "\n")
-        saveRDS(object = mtcars, file = "mtcars.rds")
-        cat("Saved mtcars.rds, file exists:", file.exists("mtcars.rds"), "\n")
-        return(getwd())
-      })
+      p$run(\() saveRDS(object = mtcars, file = "mtcars.rds"))
 
-      Sys.sleep(1)  # Give strace time to capture
-
-      # Check what strace captured
-      if (file.exists(strace_file)) {
-        strace_content <- readLines(strace_file)
-        cat("Strace log has", length(strace_content), "lines\n")
-        if (length(strace_content) > 0) {
-          cat("First few lines of strace:\n")
-          cat(paste(head(strace_content, 10), collapse = "\n"), "\n")
-        }
-      }
-
-      test <-  strace_info()
-      cat("strace_info() returned:\n")
-      cat("- write operations:", length(test$write$file), "\n")
-      cat("- read operations:", length(test$read$file), "\n")
-      cat("- delete operations:", length(test$delete$file), "\n")
-
-      if (length(test$write$file) > 0) {
-        cat("Write files found:\n")
-        cat(paste(test$write$file, collapse = "\n"), "\n")
-      }
-
-      # Test the assertion
-      mtcars_found <-  any(grepl(x = test$write$file, pattern = "mtcars.rds"))
-      cat("mtcars.rds found in write operations:", mtcars_found, "\n")
-
-      if (!mtcars_found) {
-        cat("DEBUG: Looking for any RDS-related activity:\n")
-        if (file.exists(strace_file)) {
-          rds_lines <- grep("rds", readLines(strace_file), ignore.case = TRUE, value = TRUE)
-          if (length(rds_lines) > 0) {
-            cat("RDS-related lines in strace:\n")
-            cat(paste(head(rds_lines, 5), collapse = "\n"), "\n")
-          } else {
-            cat("No RDS-related lines found in strace\n")
-          }
-        }
-      }
-
-      testthat::expect_true(mtcars_found)
-
-      cat("\n=== Test 2: Read dummy.txt ===\n")
-      p$run(\() {
-        content <-  readLines("dummy.txt")
-        cat("Read dummy.txt, content:", content, "\n")
-        return(content)
-      })
-
-      Sys.sleep(1)
       test <- strace_info()
 
-      cat("After reading dummy.txt:\n")
-      cat("- read operations:", length(test$read$file), "\n")
-      if (length(test$read$file) > 0) {
-        cat("Read files found:\n")
-        cat(paste(test$read$file, collapse = "\n"), "\n")
-      }
+      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
+        testthat::expect_true()
 
-      dummy_read_found <-  any(grepl(x = test$read$file, pattern = "dummy.txt"))
-      cat("dummy.txt found in read operations:", dummy_read_found, "\n")
+      # Also read dummy.txt
 
-      testthat::expect_true(any(grepl(x = test$write$file, pattern = "mtcars.rds")))
-      testthat::expect_true(dummy_read_found)
-
-      cat("\n=== Test 3: Delete dummy.txt ===\n")
-      p$run(\() {
-        result <- file.remove("dummy.txt")
-        cat("Removed dummy.txt, success:", result, "\n")
-        return(result)
-      })
-
-      Sys.sleep(1)
+      p$run(\() readLines("dummy.txt"))
       test <- strace_info()
+      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
+        testthat::expect_true()
+      any(grepl(x = test$read$file, pattern = "dummy.txt")) |>
+        testthat::expect_true()
 
-      cat("After deleting dummy.txt:\n")
-      cat("- delete operations:", length(test$delete$file), "\n")
-      if (length(test$delete$file) > 0) {
-        cat("Delete files found:\n")
-        cat(paste(test$delete$file, collapse = "\n"), "\n")
-      }
+      # Finally delete read dummy.txt
 
-      dummy_delete_found <- any(grepl(x = test$delete$file, pattern = "dummy.txt"))
-      cat("dummy.txt found in delete operations:", dummy_delete_found, "\n")
+      p$run(\() file.remove("dummy.txt"))
 
-      testthat::expect_true(dummy_delete_found)
+      test <- strace_info()
+      any(grepl(x = test$delete$file, pattern = "dummy.txt")) |>
+        testthat::expect_true()
 
-      cat("\n=== Cleanup ===\n")
       p$kill()
-      cat("Killed R session\n")
     }
   )
 })
