@@ -7,18 +7,48 @@ strace_info <- function(path = "strace.log") {
   )
 }
 
-strace_info <- function(path = "strace.log") {
-  read_strace_info(
-    path = path,
-    p_wd = getwd(),
-    strace_discards = zephyr::get_option("track_files_discards", "whirl"),
-    strace_keep = getwd()
-  )
+#' Wait for strace condition to be met
+#' @param pattern File pattern to look for
+#' @param operation Type of operation ("read", "write", "delete")
+#' @param timeout Maximum time to wait in seconds (default: 2)
+#' @param interval Time between checks in seconds (default: 0.1)
+wait_for_condition <-  function(check_fn, timeout = 2, interval = 0.1, error_msg = NULL) {
+  start_time <- Sys.time()
+
+  while (as.numeric(Sys.time() - start_time) < timeout) {
+    tryCatch({
+      if (check_fn()) {
+        return(TRUE)
+      }
+    }, error = function(e) {
+      # Continue waiting if check_fn() fails
+    })
+
+    Sys.sleep(interval)
+  }
+
+  # If we get here, the condition was never met
+  if (is.null(error_msg)) {
+    error_msg <- paste("Condition not met within", timeout, "seconds")
+  }
+
+  stop(error_msg, call. = FALSE)
 }
 
+check_strace_pattern <-  function(pattern, operation, path = "strace.log") {
+  function() {
+    test <- strace_info(path = path)
+    any(grepl(x = test[[operation]]$file, pattern = pattern))
+  }
+}
+
+# Helper function for file existence
+check_file_exists <- function(file_path) {
+  function() file.exists(file_path)
+}
+
+# Then your test becomes even cleaner:
 test_that("strace works", {
-  # skip_on_cran() #nolint
-  # skip_on_ci() #nolint
   skip_on_os(c("windows", "mac", "solaris"))
 
   withr::with_tempdir(
@@ -26,46 +56,37 @@ test_that("strace works", {
       cat("this is a dummy file to check strace", file = "dummy.txt")
 
       p <- callr::r_session$new()
-
       start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
 
-      Sys.sleep(1)
+      # Wait for strace to initialize
+      wait_for_condition(
+        check_fn = check_file_exists("strace.log"),
+        error_msg = "strace log file was not created"
+      )
 
-      # Only save a file
-
+      # Test operations
       p$run(\() saveRDS(object = mtcars, file = "mtcars.rds"))
-
-      Sys.sleep(0.5)
-
-      test <- strace_info()
-
-      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
-        testthat::expect_true()
-
-      # Also read dummy.txt
+      wait_for_condition(
+        check_fn = check_strace_pattern("mtcars.rds", "write"),
+        error_msg = "mtcars.rds write operation not detected"
+      ) |> testthat::expect_true()
 
       p$run(\() readLines("dummy.txt"))
-      Sys.sleep(0.5)
-      test <- strace_info()
-
-      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
-        testthat::expect_true()
-      any(grepl(x = test$read$file, pattern = "dummy.txt")) |>
-        testthat::expect_true()
-
-      # Finally delete read dummy.txt
+      wait_for_condition(
+        check_fn = check_strace_pattern("dummy.txt", "read"),
+        error_msg = "dummy.txt read operation not detected"
+      ) |> testthat::expect_true()
 
       p$run(\() file.remove("dummy.txt"))
-
-      test <- strace_info()
-      any(grepl(x = test$delete$file, pattern = "dummy.txt")) |>
-        testthat::expect_true()
+      wait_for_condition(
+        check_fn = check_strace_pattern("dummy.txt", "delete"),
+        error_msg = "dummy.txt delete operation not detected"
+      ) |> testthat::expect_true()
 
       p$kill()
     }
   )
 })
-
 test_that("strace fails gracefully OS error handling", {
   skip_on_os("linux")
 
