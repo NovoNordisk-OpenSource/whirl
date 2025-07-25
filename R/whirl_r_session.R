@@ -229,16 +229,19 @@ wrs_print <- function(self, private, super) {
 }
 
 wrs_pb_update <- function(..., self, private, super) {
-  if (!is.null(private$pb)) {
-    private$pb$update(...)
+  args <- list(...)
+  if (!is.null(args$status)) {
+    script_name <- basename(private$current_script %||% "unknown")
+    timestamp <- format(Sys.time(), "%H:%M:%S")
+    message(sprintf("%s: %s (%s)", script_name, args$status, timestamp))
   }
   return(invisible(self))
 }
 
 wrs_pb_done <- function(status, self, private, super) {
-  if (!is.null(private$pb)) {
-    private$pb$done(status)
-  }
+  script_name <- basename(private$current_script %||% "unknown")
+  timestamp <- format(Sys.time(), "%H:%M:%S")
+  message(sprintf("%s: %s (%s)", script_name, status, timestamp))
   return(invisible(self))
 }
 
@@ -312,13 +315,10 @@ wrs_log_script <- function(script, self, private, super) {
       "Script {.val {script}} cannot be run because execute directory {.val {quarto_execute_dir}} does not exist" # nolint: line_length_linter
     )
   }
-
+  # remvoed progress bar
   # Execute the script
   if (private$verbosity_level != "quiet") {
-    private$pb <- pb_script$new(
-      script = private$current_script,
-      use_progress = private$verbosity_level == "verbose"
-    )
+    private$pb <- NULL
   }
 
   self$pb_update(status = "Running script")
