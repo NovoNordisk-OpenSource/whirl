@@ -4,6 +4,7 @@ test_that("fails with invalid input", {
     expect_error()
 })
 
+
 test_that("Summary tibble is created successfully", {
   skip_if_no_quarto()
 

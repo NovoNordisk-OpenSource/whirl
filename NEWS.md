@@ -1,4 +1,4 @@
-# whirl 0.3.0.9000
+# whirl 0.3.0.9002
 * Added style.css to store designs for the log
 * Added deign from style.css to the script part og log.html
 * Fixed test-strace.R permission issue
