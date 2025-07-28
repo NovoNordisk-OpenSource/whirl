@@ -23,6 +23,7 @@ runs:
       shell: bash
       run: brew install jupyter
 
+
     - name: (Windows) Install jupyter
       if: runner.os == 'Windows'
       shell: bash
