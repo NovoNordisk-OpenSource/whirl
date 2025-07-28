@@ -1,9 +1,11 @@
 # whirl 0.3.0.9002
-* Added style.css to store designs for the log
-* Added deign from style.css to the script part og log.html
 * Fixed test-strace.R permission issue
 * Altered permissions in action.yaml
 * Added timing function for test-strace.R 
+
+# whirl 0.3.0.9000
+* Added style.css to store designs for the log
+* Added deign from style.css to the script part og log.html
 
 # whirl 0.3.0
 
