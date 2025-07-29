@@ -212,19 +212,66 @@ test_that("strace fails during execution handling", {
 
 
 test_that("refine_strace filters out discarded files", {
-  skip_on_os(c("windows", "mac", "solaris"))
-  skip_on_cran()
-  # Test data with required seq column
-  test_df <- tibble::tibble(
-    seq = c(1, 2),
-    time = as.POSIXct(c("2023-01-01 10:00:01", "2023-01-01 10:00:02")),
-    file = c("/tmp/cache.txt", "/home/important.R"),
-    type = c("read", "write")
+  withr::with_tempdir(
+    code = {
+      # Test data with required seq column
+      test_df <- tibble::tibble(
+        seq = c(1, 2),
+        time = as.POSIXct(c("2023-01-01 10:00:01", "2023-01-01 10:00:02")),
+        file = c("/tmp/cache.txt", "/home/important.R"),
+        type = c("read", "write")
+      )
+
+      # Test: only discards provided (triggers the else if branch)
+      result <- refine_strace(test_df, strace_discards = c("tmp"), strace_keep = character())
+
+      expect_equal(result$file, "/home/important.R")
+      expect_equal(nrow(result), 1)
+    }
   )
-
-  # Test: only discards provided (triggers the else if branch)
-  result <- refine_strace(test_df, strace_discards = c("tmp"), strace_keep = character())
-
-  expect_equal(result$file, "/home/important.R")
-  expect_equal(nrow(result), 1)
 })
+
+test_that("read_strace returns empty tibble when file does not exist", {
+  withr::with_tempdir(
+    code = {
+      # Test with non-existent file path
+      result <- read_strace("nonexistent_file.log", getwd())
+
+      # Check structure matches expected empty tibble
+      expect_s3_class(result, "tbl_df")
+      expect_equal(names(result), c("seq", "time", "file", "type"))
+      expect_equal(nrow(result), 0)
+      expect_equal(ncol(result), 4)
+
+      # Check column types
+      expect_type(result$seq, "integer")
+      expect_s3_class(result$time, "POSIXct")
+      expect_type(result$file, "character")
+      expect_type(result$type, "character")
+    }
+  )
+})
+
+test_that("read_strace returns empty tibble when file has no relevant content", {
+  withr::with_tempdir(
+    code = {
+      # Create a file with content that gets filtered out (no openat|unlink|chdir)
+      cat("some irrelevant log content\nanother line without the required patterns\nyet another line", file = "empty_strace.log")
+
+      result <- read_strace("empty_strace.log", getwd())
+
+      # Check structure matches expected empty tibble
+      expect_s3_class(result, "tbl_df")
+      expect_equal(names(result), c("seq", "time", "file", "type"))
+      expect_equal(nrow(result), 0)
+      expect_equal(ncol(result), 4)
+
+      # Check column types
+      expect_type(result$seq, "integer")
+      expect_s3_class(result$time, "POSIXct")
+      expect_type(result$file, "character")
+      expect_type(result$type, "character")
+    }
+  )
+})
+
