@@ -223,7 +223,9 @@ test_that("refine_strace filters out discarded files", {
       )
 
       # Test: only discards provided (triggers the else if branch)
-      result <- refine_strace(test_df, strace_discards = c("tmp"), strace_keep = character())
+      result <- refine_strace(test_df,
+                              strace_discards = c("tmp"),
+                              strace_keep = character())
 
       expect_equal(result$file, "/home/important.R")
       expect_equal(nrow(result), 1)
@@ -237,13 +239,13 @@ test_that("read_strace returns empty tibble when file does not exist", {
       # Test with non-existent file path
       result <- read_strace("nonexistent_file.log", getwd())
 
-      # Check structure matches expected empty tibble
+      # Verify empty tibble structure
       expect_s3_class(result, "tbl_df")
-      expect_equal(names(result), c("seq", "time", "file", "type"))
+      expect_named(result, c("seq", "time", "file", "type"))
       expect_equal(nrow(result), 0)
       expect_equal(ncol(result), 4)
 
-      # Check column types
+      # Verify column classes
       expect_type(result$seq, "integer")
       expect_s3_class(result$time, "POSIXct")
       expect_type(result$file, "character")
@@ -256,22 +258,22 @@ test_that("read_strace returns empty tibble when file has no relevant content", 
   withr::with_tempdir(
     code = {
       # Create a file with content that gets filtered out (no openat|unlink|chdir)
-      cat("some irrelevant log content\nanother line without the required patterns\nyet another line", file = "empty_strace.log")
+      cat("some irrelevant log content\nanother line without the required patterns\nyet another line",
+          file = "empty_strace.log")
 
-      result <- read_strace("empty_strace.log", getwd())
+      strace_result <- read_strace("empty_strace.log", getwd())
 
-      # Check structure matches expected empty tibble
-      expect_s3_class(result, "tbl_df")
-      expect_equal(names(result), c("seq", "time", "file", "type"))
-      expect_equal(nrow(result), 0)
-      expect_equal(ncol(result), 4)
+      # Test the returned data frame structure
+      expect_true(tibble::is_tibble(strace_result))
+      expect_identical(colnames(strace_result), c("seq", "time", "file", "type"))
+      expect_true(nrow(strace_result) == 0)
+      expect_true(ncol(strace_result) == 4)
 
-      # Check column types
-      expect_type(result$seq, "integer")
-      expect_s3_class(result$time, "POSIXct")
-      expect_type(result$file, "character")
-      expect_type(result$type, "character")
+      # Test column data types
+      expect_true(is.integer(strace_result$seq))
+      expect_true(inherits(strace_result$time, "POSIXct"))
+      expect_true(is.character(strace_result$file))
+      expect_true(is.character(strace_result$type))
     }
   )
 })
-
