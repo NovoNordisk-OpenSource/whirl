@@ -37,8 +37,9 @@ check_strace_pattern <-  function(pattern, operation, path = "strace.log") {
   }
 }
 
-# Then your test becomes even cleaner:
+
 test_that("strace works", {
+  skip_on_cran()
   skip_on_os(c("windows", "mac", "solaris"))
 
   withr::with_tempdir(
@@ -207,4 +208,27 @@ test_that("strace fails during execution handling", {
       case$expected
     )
   }
+})
+
+
+test_that("refine_strace filtering works", {
+  # Simple test data
+  test_df <- tibble::tibble(
+    time = as.POSIXct(c("2023-01-01 10:00:01", "2023-01-01 10:00:02", "2023-01-01 10:00:03")),
+    file = c("/tmp/cache.txt", "/home/important.R", "/var/log/system.log"),
+    type = c("read", "write", "read")
+  )
+
+  # Test: both discards and keep provided
+  result1 <- refine_strace(test_df, strace_discards = c("tmp", "log"), strace_keep = c("important"))
+  expect_equal(result1$file, "/home/important.R")  # Only important.R should remain
+
+  # Test: only discards provided
+  result2 <- refine_strace(test_df, strace_discards = c("tmp"), strace_keep = character())
+  expected_files <- c("/home/important.R", "/var/log/system.log")
+  expect_true(all(result2$file %in% expected_files))
+
+  # Test: no filtering
+  result3 <- refine_strace(test_df, strace_discards = character(), strace_keep = character())
+  expect_equal(nrow(result3), 3)  # All files should remain
 })
