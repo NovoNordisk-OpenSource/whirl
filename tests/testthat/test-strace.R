@@ -7,9 +7,39 @@ strace_info <- function(path = "strace.log") {
   )
 }
 
+wait_for_condition <-  function(check_fn, timeout = 2, interval = 0.1, error_msg = NULL) {
+  start_time <- Sys.time()
+
+  while (as.numeric(Sys.time() - start_time) < timeout) {
+    tryCatch({
+      if (check_fn()) {
+        return(TRUE)
+      }
+    }, error = function(e) {
+      # Continue waiting if check_fn() fails
+    })
+
+    Sys.sleep(interval)
+  }
+
+  # If we get here, the condition was never met
+  if (is.null(error_msg)) {
+    error_msg <- paste("Condition not met within", timeout, "seconds")
+  }
+
+  stop(error_msg, call. = FALSE)
+}
+
+check_strace_pattern <-  function(pattern, operation, path = "strace.log") {
+  function() {
+    test <- strace_info(path = path)
+    any(grepl(x = test[[operation]]$file, pattern = pattern))
+  }
+}
+
+
 test_that("strace works", {
   skip_on_cran()
-  skip_on_ci()
   skip_on_os(c("windows", "mac", "solaris"))
 
   withr::with_tempdir(
@@ -17,40 +47,37 @@ test_that("strace works", {
       cat("this is a dummy file to check strace", file = "dummy.txt")
 
       p <- callr::r_session$new()
-
       start_strace(pid = p$get_pid(), file = file.path(getwd(), "strace.log"))
 
-      # Only save a file
+      # Wait for strace to initialize
+      wait_for_condition(
+        check_fn = function() file.exists("strace.log"),
+        error_msg = "strace log file was not created"
+      )
 
+      # Test operations
       p$run(\() saveRDS(object = mtcars, file = "mtcars.rds"))
-
-      test <- strace_info()
-
-      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
-        testthat::expect_true()
-
-      # Also read dummy.txt
+      wait_for_condition(
+        check_fn = check_strace_pattern("mtcars.rds", "write"),
+        error_msg = "mtcars.rds write operation not detected"
+      ) |> testthat::expect_true()
 
       p$run(\() readLines("dummy.txt"))
-      test <- strace_info()
-      any(grepl(x = test$write$file, pattern = "mtcars.rds")) |>
-        testthat::expect_true()
-      any(grepl(x = test$read$file, pattern = "dummy.txt")) |>
-        testthat::expect_true()
-
-      # Finally delete read dummy.txt
+      wait_for_condition(
+        check_fn = check_strace_pattern("dummy.txt", "read"),
+        error_msg = "dummy.txt read operation not detected"
+      ) |> testthat::expect_true()
 
       p$run(\() file.remove("dummy.txt"))
-
-      test <- strace_info()
-      any(grepl(x = test$delete$file, pattern = "dummy.txt")) |>
-        testthat::expect_true()
+      wait_for_condition(
+        check_fn = check_strace_pattern("dummy.txt", "delete"),
+        error_msg = "dummy.txt delete operation not detected"
+      ) |> testthat::expect_true()
 
       p$kill()
     }
   )
 })
-
 test_that("strace fails gracefully OS error handling", {
   skip_on_os("linux")
 
@@ -181,4 +208,72 @@ test_that("strace fails during execution handling", {
       case$expected
     )
   }
+})
+
+
+test_that("refine_strace filters out discarded files", {
+  withr::with_tempdir(
+    code = {
+      # Test data with required seq column
+      test_df <- tibble::tibble(
+        seq = c(1, 2),
+        time = as.POSIXct(c("2023-01-01 10:00:01", "2023-01-01 10:00:02")),
+        file = c("/tmp/cache.txt", "/home/important.R"),
+        type = c("read", "write")
+      )
+
+      # Test: only discards provided (triggers the else if branch)
+      result <- refine_strace(test_df,
+                              strace_discards = c("tmp"),
+                              strace_keep = character())
+
+      expect_equal(result$file, "/home/important.R")
+      expect_equal(nrow(result), 1)
+    }
+  )
+})
+
+test_that("read_strace returns empty tibble when file does not exist", {
+  withr::with_tempdir(
+    code = {
+      # Test with non-existent file path
+      result <- read_strace("nonexistent_file.log", getwd())
+
+      # Verify empty tibble structure
+      expect_s3_class(result, "tbl_df")
+      expect_named(result, c("seq", "time", "file", "type"))
+      expect_equal(nrow(result), 0)
+      expect_equal(ncol(result), 4)
+
+      # Verify column classes
+      expect_type(result$seq, "integer")
+      expect_s3_class(result$time, "POSIXct")
+      expect_type(result$file, "character")
+      expect_type(result$type, "character")
+    }
+  )
+})
+
+test_that("read_strace returns empty tibble when file has no relevant content", {
+  withr::with_tempdir(
+    code = {
+      # Create a file with content that gets filtered out (no openat|unlink|chdir)
+      cat("some irrelevant log content\nanother line without the required patterns\nyet another line",
+          file = "empty_strace.log")
+
+      strace_result <- read_strace("empty_strace.log", getwd())
+
+      # Test the returned data frame structure
+      expect_true(tibble::is_tibble(strace_result))
+      expect_identical(colnames(strace_result), c("seq", "time", "file", "type"))
+      expect_true(nrow(strace_result) == 0)
+      expect_true(ncol(strace_result) == 4)
+
+      # Test column data types
+      expect_true(is.integer(strace_result$seq))
+      expect_true(inherits(strace_result$time, "POSIXct"))
+      expect_true(is.character(strace_result$file))
+      expect_true(is.character(strace_result$type))
+    }
+  )
 })
