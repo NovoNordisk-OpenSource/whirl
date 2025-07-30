@@ -146,8 +146,8 @@ logging for your needs see the following:
   advanced usage.
 - `vignette("articles/example")`: With a simple example, including the
   created log.
-- [whirl-options](https://novonordisk-opensource.github.io/whirl/reference/whirl-options.html):
-  On how to change the default behavior of whirl.
+- `help("whirl-options")`: On how to change the default behavior of
+  whirl.
 - [NovoNordisk-OpenSource/R-packages](https://novonordisk-opensource.github.io/R-packages/)
   for an overview of connector and other R packages published by Novo
   Nordisk.
