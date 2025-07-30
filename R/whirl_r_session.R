@@ -279,6 +279,7 @@ wrs_check_status <- function(self, private, super) {
 }
 
 wrs_log_script <- function(script, self, private, super) {
+  zephyr::msg_verbose("Running script {.file {script}}")
   private$current_script <- script
 
   saveRDS(
