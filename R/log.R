@@ -108,25 +108,13 @@ read_environment <- function(file) {
     dplyr::filter(
       stringr::str_detect(
         string = .data$variable,
-        pattern = paste0(r_secrets(), collapse = "|"),
+        pattern = paste0(
+          zephyr::get_option("environment_secrets", "whirl"),
+          collapse = "|"
+        ),
         negate = TRUE
       )
     )
-}
-
-#' List of patterns naming a secret environment variable
-#' any match will not be included in the log
-#' @noRd
-r_secrets <- function() {
-  c(
-    "BASH_FUNC",
-    "_SSL_CERT",
-    "_KEY",
-    "_KEY",
-    "_KEY",
-    "_PAT",
-    "_TOKEN"
-  )
 }
 
 #' Read and format options output from `options()`
