@@ -1,11 +1,3 @@
----
-name: PR Template
-about: Template for PRs.
-title: "[PR] PR name"
-labels: ''
-assignees: ''
----
-
 ## Summary
 (Summary of made changes with explanation of what and why)
 
