@@ -6,6 +6,7 @@
 * Added style.css to store designs for the log
 * Added deign from style.css to the script part og log.html
 * Improved error handling when the log cannot be created.
+* Added new option `environment_secrets` to control which secret environment veriables not to include in the log.
 
 # whirl 0.3.0
 
