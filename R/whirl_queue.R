@@ -17,7 +17,6 @@ whirl_queue <- R6::R6Class(
     initialize = \(
       # jscpd:ignore-start
       n_workers = zephyr::get_option("n_workers", "whirl"),
-      verbosity_level = zephyr::get_verbosity_level("whirl"),
       check_renv = zephyr::get_option("check_renv", "whirl"),
       track_files = zephyr::get_option("track_files", "whirl"),
       out_formats = zephyr::get_option("out_formats", "whirl"),
@@ -34,7 +33,6 @@ whirl_queue <- R6::R6Class(
         self,
         private,
         n_workers,
-        verbosity_level,
         check_renv,
         track_files,
         out_formats,
@@ -87,7 +85,7 @@ whirl_queue <- R6::R6Class(
     #' the queue
     #' @return [invisible] self
     run = \(scripts, tag = NA_character_) {
-      wq_run(scripts, tag, self)
+      wq_run(scripts, tag, self, private)
     },
 
     #' @description Print method displaying the current status of the queue
@@ -129,14 +127,14 @@ whirl_queue <- R6::R6Class(
     .queue = NULL,
     .workers = NULL,
     .n_workers = NULL,
-    verbosity_level = NULL,
     check_renv = NULL,
     track_files = NULL,
     out_formats = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
     approved_packages = NULL,
-    log_dir = NULL
+    log_dir = NULL,
+    progress_bar = NULL
   )
 )
 
@@ -144,7 +142,6 @@ wq_initialise <- function(
   self,
   private,
   n_workers,
-  verbosity_level,
   check_renv,
   track_files,
   out_formats,
@@ -154,7 +151,6 @@ wq_initialise <- function(
   log_dir
 ) {
   private$check_renv <- check_renv
-  private$verbosity_level <- verbosity_level
   private$track_files <- track_files
   private$out_formats <- out_formats
   private$track_files_discards <- track_files_discards
@@ -273,6 +269,7 @@ wq_wait <- function(self, private, timeout) {
   timeout <- timeout / 1000 # Convert to secs
   go <- TRUE
   while (go) {
+    pb_update(id = private$progress_bar, queue = self$queue)
     self$poll(50)
     go <- any(self$queue$status %in% c("waiting", "running"))
     if (timeout >= 0 && difftime(Sys.time(), start, units = "secs") > timeout) {
@@ -320,7 +317,11 @@ wq_next_step <- function(self, private, wid) {
   return(invisible(wid))
 }
 
-wq_run <- function(scripts, tag, self) {
+wq_run <- function(scripts, tag, self, private) {
+  private$progress_bar <- pb_start()
+  on.exit({
+    pb_done(id = private$progress_bar)
+    gc() # finalizes used whirl_r_sessions - cleanup temp folders
+  })
   self$push(scripts = scripts, tag = tag)$wait()
-  on.exit(gc()) # finalizes used whirl_r_sessions - cleanup temp folders
 }
