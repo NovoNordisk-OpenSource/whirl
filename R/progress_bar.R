@@ -7,6 +7,10 @@ pb_start <- function() {
     return(invisible())
   }
 
+  withr::local_options(
+    cli.progress_show_after = 0
+  )
+
   cli::cli_progress_bar(
     type = "custom",
     format = "{cli::pb_spin} Running {cli::pb_extra$running} [{cli::pb_elapsed}]",
