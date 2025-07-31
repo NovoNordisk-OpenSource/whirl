@@ -33,3 +33,12 @@ test_that("interactive whirl R session components not tested in run", {
 
   expect_false(dir.exists(dir))
 })
+
+test_that("additional error testing", {
+  wrs_report_status(
+    status = "unknown",
+    script = "myscript.R",
+    logs = "mylog.html"
+  ) |>
+    expect_error()
+})
