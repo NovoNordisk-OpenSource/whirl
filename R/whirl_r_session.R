@@ -359,8 +359,9 @@ wrs_report_status <- function(status, script, logs) {
     success = zephyr::msg_success(
       "{script_msg}: Completed succesfully. See {cli::qty(logs_msg)}log{?s} {logs_msg}."
     ),
-    warning = zephyr::msg_warning(
-      "{script_msg}: Completed with warnings. See {cli::qty(logs_msg)}log{?s} {logs_msg}."
+    warning = zephyr::msg(
+      "{script_msg}: Completed with warnings. See {cli::qty(logs_msg)}log{?s} {logs_msg}.",
+      msg_fun = cli::cli_alert_warning # Since zephyr::msg_warning only shows when verbose
     ),
     error = zephyr::msg_danger(
       "{script_msg}: Completed with errors. See {cli::qty(logs_msg)}log{?s} {logs_msg}."
