@@ -1,6 +1,6 @@
 test_that("interactive whirl R session components not tested in run", {
   skip_if_no_quarto()
-  p <- whirl_r_session$new(verbosity_level = "minimal")
+  p <- whirl_r_session$new()
 
   p$print() |>
     expect_message() |>

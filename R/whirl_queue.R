@@ -236,7 +236,6 @@ wq_poll <- function(
       n = length(wid),
       expr = whirl_r_session$new(
         check_renv = private$check_renv,
-        verbosity_level = private$verbosity_level,
         track_files = private$track_files,
         out_formats = private$out_formats,
         track_files_discards = private$track_files_discards,
@@ -303,7 +302,7 @@ wq_next_step <- function(self, private, wid) {
     # Step 3: Finish log and create outputs
     "3" = {
       private$.queue$result[[id_script]] <-
-        session$log_finish()$create_outputs(
+        session$log_finish(
           out_dir = private$.queue$log_dir[[id_script]],
           format = private$out_formats
         )
