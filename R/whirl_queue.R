@@ -320,7 +320,7 @@ wq_next_step <- function(self, private, wid) {
 wq_run <- function(scripts, tag, self, private) {
   private$progress_bar <- pb_start()
   on.exit({
-    pb_done(id = private$progress_bar)
+    private$progress_bar <- pb_done(id = private$progress_bar)
     gc() # finalizes used whirl_r_sessions - cleanup temp folders
   })
   self$push(scripts = scripts, tag = tag)$wait()

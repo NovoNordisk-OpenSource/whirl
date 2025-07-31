@@ -41,4 +41,5 @@ pb_done <- function(id) {
     return(invisible())
   }
   cli::cli_progress_done(id = id)
+  invisible()
 }
