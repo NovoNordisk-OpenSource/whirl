@@ -34,7 +34,7 @@ pb_update <- function(id, queue) {
   )
 }
 
-#' Convinience wrapper to end progress bar
+#' Convenience wrapper to end progress bar
 #' @noRd
 pb_done <- function(id) {
   if (is.null(id)) {
