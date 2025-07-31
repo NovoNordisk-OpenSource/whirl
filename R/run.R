@@ -68,7 +68,6 @@ run <- function(
   summary_file = "summary.html",
   n_workers = zephyr::get_option("n_workers", "whirl"),
   check_renv = zephyr::get_option("check_renv", "whirl"),
-  verbosity_level = zephyr::get_verbosity_level("whirl"),
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
   log_dir = zephyr::get_option("log_dir", "whirl")

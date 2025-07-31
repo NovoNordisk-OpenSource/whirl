@@ -7,6 +7,7 @@
 * Added deign from style.css to the script part og log.html
 * Improved error handling when the log cannot be created.
 * Improved progress bar to show all currently running scripts.
+* Removed `verbosity_level` argument to `run()` since it is now completely controlled by zephyr options (`help("whirl-options")`).
 
 # whirl 0.3.0
 

@@ -10,7 +10,6 @@ run(
   summary_file = "summary.html",
   n_workers = zephyr::get_option("n_workers", "whirl"),
   check_renv = zephyr::get_option("check_renv", "whirl"),
-  verbosity_level = zephyr::get_verbosity_level("whirl"),
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
   log_dir = zephyr::get_option("log_dir", "whirl")
@@ -35,9 +34,6 @@ summary log will be stored.}
 A maximum of 128 workers is allowed.. Default: \code{1}.}
 
 \item{check_renv}{Should the projects renv status be checked?. Default: \code{FALSE}.}
-
-\item{verbosity_level}{Verbosity level for functions in whirl.
-See \link[zephyr:verbosity_level]{zephyr::verbosity_level} for details.. Default: \code{NA_character_}.}
 
 \item{track_files}{Should files read and written be tracked?
 Currently only supported on Linux.. Default: \code{FALSE}.}
