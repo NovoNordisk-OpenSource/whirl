@@ -125,7 +125,7 @@ wrs_initialize <- function(
   private,
   super
 ) {
-  super$initialize(wait_timeout = 9000) # uses callr::r_session$initialize()
+  super$initialize(wait_timeout = wait_timeout) # uses callr::r_session$initialize()
 
   private$wd <- withr::local_tempdir(clean = FALSE)
   private$check_renv <- check_renv
