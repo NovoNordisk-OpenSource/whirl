@@ -1,5 +1,4 @@
 test_that("get_file_ext()", {
-
   get_file_ext("file.txt") |>
     expect_equal("txt")
 
@@ -47,4 +46,19 @@ test_that("path_rel()", {
 
   path_rel("a/b/d", "a/b/c") |>
     expect_equal("../d")
+})
+
+test_that("create_cli_links()", {
+  text <- create_cli_links("mytext", "my_link") |>
+    expect_type("character")
+
+  grep(pattern = "my_link", x = text) |>
+    expect_length(0)
+
+  withr::with_options(
+    new = list(cli.dynamic = TRUE),
+    code = create_cli_links("mytext", "my_link") |>
+      expect_type("character") |>
+      expect_match("my_link")
+  )
 })

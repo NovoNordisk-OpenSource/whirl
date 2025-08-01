@@ -1,6 +1,6 @@
 test_that("interactive whirl R session components not tested in run", {
   skip_if_no_quarto()
-  p <- whirl_r_session$new(verbosity_level = "minimal")
+  p <- whirl_r_session$new()
 
   p$print() |>
     expect_message() |>
@@ -32,4 +32,13 @@ test_that("interactive whirl R session components not tested in run", {
   gc()
 
   expect_false(dir.exists(dir))
+})
+
+test_that("additional error testing", {
+  wrs_report_status(
+    status = "unknown",
+    script = "my_script.R",
+    logs = "my_log.html"
+  ) |>
+    expect_error()
 })

@@ -18,9 +18,15 @@ test_that("Run single R script", {
 
   expect_single_script(res)
 
-  test_script("success.R") |>
-    run(summary_file = NULL, verbosity_level = "verbose") |>
-    expect_message()
+  withr::with_options(
+    new = list(whirl.verbosity_level = "verbose"),
+    code = {
+      test_script("success.R") |>
+        run(summary_file = NULL) |>
+        expect_message() |>
+        suppressMessages()
+    }
+  )
 })
 
 test_that("Run single python script", {
@@ -113,11 +119,9 @@ test_that("Change the log_dir with a function", {
 
   # Execute run() with log_dir as a function
   res <- file.path(custom_path, "warning.R") |>
-    run(summary_file = NULL,
-      log_dir = function(x) {
-        paste0(dirname(x), "/logs")
-      }
-    ) |>
+    run(summary_file = NULL, log_dir = function(x) {
+      paste0(dirname(x), "/logs")
+    }) |>
     expect_no_error()
 
   # Check if the log file is created in the correct folder

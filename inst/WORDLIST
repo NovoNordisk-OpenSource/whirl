@@ -30,6 +30,7 @@ dir
 dontrun
 dplyr
 dset
+emph
 ENOENT
 ENOTDIR
 envir
@@ -68,6 +69,7 @@ lintr
 loadedpath
 loadedversion
 Lovemore
+Lundsgaard
 lvgk
 markua
 md
@@ -86,6 +88,7 @@ novonordisk
 NovoNordisk
 nrow
 Obucina
+Oliver
 ondiskversion
 openat
 opensource
@@ -160,5 +163,3 @@ winslash
 withr
 WORDLIST
 yaml
-Oliver
-Lundsgaard

@@ -16,7 +16,6 @@ test_that("whirl_queue edge cases not covered in test-run etc.", {
   q$push(c("a/new.R", "b/also_new.R")) |>
     expect_error("Logs cannot be saved because \"a\" and \"b\" does not exist")
 
-  whirl_queue$new(log_dir = "fake_folder")$
-    push("fake_script.R") |>
+  whirl_queue$new(log_dir = "fake_folder")$push("fake_script.R") |>
     expect_error("Logs cannot be saved because \"fake_folder\" does not exist")
 })
