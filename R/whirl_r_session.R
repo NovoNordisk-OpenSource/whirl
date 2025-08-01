@@ -179,6 +179,11 @@ wrs_initialize <- function(
     args = list(WHIRL_LOG_MSG = file.path(private$wd, private$track_files_log))
   )
 
+  saveRDS(
+    object = options(),
+    file = file.path(private$wd, "parent_options.rds")
+  )
+
   environment_file <- file.path(private$wd, "_environment")
   # Add whirl log file to environment file
   cat(

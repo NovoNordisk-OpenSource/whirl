@@ -29,6 +29,10 @@ format:
 #| echo: false
 .libPaths(c(character(), params$with_library_paths))
 
+file.path(params$tmpdir, "parent_options.rds") |> 
+  readRDS() |> 
+  options()
+
 knit_print.data.frame = function(x, ...) {
   names(x) <- gsub( # Use space instead of . or _ in columns names
     pattern = "\\.|_",

@@ -126,4 +126,15 @@ start, in milliseconds.
 \item Environment: \code{R_WHIRL_WAIT_TIMEOUT}
 }
 }
+
+\subsection{environment_secrets}{
+
+Secret environment variable patterns.
+Any variables matching will not be included in the logs.
+\itemize{
+\item Default: \code{c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")}
+\item Option: \code{whirl.environment_secrets}
+\item Environment: \code{R_WHIRL_ENVIRONMENT_SECRETS}
+}
+}
 }
