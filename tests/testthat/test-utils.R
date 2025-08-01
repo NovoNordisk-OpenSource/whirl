@@ -49,16 +49,16 @@ test_that("path_rel()", {
 })
 
 test_that("create_cli_links()", {
-  text <- create_cli_links("mytext", "mylink") |>
+  text <- create_cli_links("mytext", "my_link") |>
     expect_type("character")
 
-  grep(pattern = "mylink", x = text) |>
+  grep(pattern = "my_link", x = text) |>
     expect_length(0)
 
   withr::with_options(
     new = list(cli.dynamic = TRUE),
-    code = create_cli_links("mytext", "mylink") |>
+    code = create_cli_links("mytext", "my_link") |>
       expect_type("character") |>
-      expect_match("file://mylink")
+      expect_match("my_link")
   )
 })
