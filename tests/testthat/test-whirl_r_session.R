@@ -37,8 +37,8 @@ test_that("interactive whirl R session components not tested in run", {
 test_that("additional error testing", {
   wrs_report_status(
     status = "unknown",
-    script = "myscript.R",
-    logs = "mylog.html"
+    script = "my_script.R",
+    logs = "my_log.html"
   ) |>
     expect_error()
 })

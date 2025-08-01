@@ -8,7 +8,7 @@ test_that("progress bar is visible", {
     expect_type("character")
 
   queue <- data.frame(
-    script = "myscript.R",
+    script = "my_script.R",
     status = "running"
   )
 
@@ -25,7 +25,7 @@ test_that("progress bar is not visible", {
     expect_null()
 
   queue <- data.frame(
-    script = "myscript.R",
+    script = "my_script.R",
     status = "running"
   )
 
