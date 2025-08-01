@@ -144,6 +144,19 @@ Environment: R_WHIRL_WAIT_TIMEOUT
 
 
 
+
+
+environment_secrets
+
+
+Secret environment variable patterns.
+Any variables matching will not be included in the logs.
+Default: c(&quot;BASH_FUNC&quot;, &quot;_SSL_CERT&quot;, &quot;_KEY&quot;, &quot;_PAT&quot;, &quot;_TOKEN&quot;)
+Option: whirl.environment_secrets
+Environment: R_WHIRL_ENVIRONMENT_SECRETS
+
+
+
 "><meta property="og:description" content="
 
 verbosity_level
@@ -289,6 +302,19 @@ Environment: R_WHIRL_WAIT_TIMEOUT
 
 
 
+
+
+environment_secrets
+
+
+Secret environment variable patterns.
+Any variables matching will not be included in the logs.
+Default: c(&quot;BASH_FUNC&quot;, &quot;_SSL_CERT&quot;, &quot;_KEY&quot;, &quot;_PAT&quot;, &quot;_TOKEN&quot;)
+Option: whirl.environment_secrets
+Environment: R_WHIRL_ENVIRONMENT_SECRETS
+
+
+
 "><meta property="og:image" content="https://novonordisk-opensource.github.io/whirl/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -297,7 +323,7 @@ Environment: R_WHIRL_WAIT_TIMEOUT
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -439,6 +465,16 @@ as input and returns the execution directory.</p><ul><li><p>Default: <code>NULL<
 start, in milliseconds.</p><ul><li><p>Default: <code>9000</code></p></li>
 <li><p>Option: <code>whirl.wait_timeout</code></p></li>
 <li><p>Environment: <code>R_WHIRL_WAIT_TIMEOUT</code></p></li>
+</ul></div>
+
+<div class="section">
+<h3 id="environment-secrets">environment_secrets<a class="anchor" aria-label="anchor" href="#environment-secrets"></a></h3>
+
+
+<p>Secret environment variable patterns.
+Any variables matching will not be included in the logs.</p><ul><li><p>Default: <code>c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")</code></p></li>
+<li><p>Option: <code>whirl.environment_secrets</code></p></li>
+<li><p>Environment: <code>R_WHIRL_ENVIRONMENT_SECRETS</code></p></li>
 </ul></div>
 
     </div>

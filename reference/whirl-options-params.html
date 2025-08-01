@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,6 +101,11 @@ as input and returns the execution directory.. Default: <code>NULL</code>.</p></
 <dt id="arg-wait-timeout">wait_timeout<a class="anchor" aria-label="anchor" href="#arg-wait-timeout"></a></dt>
 <dd><p>Timeout for waiting for the R process from callr::r_session to
 start, in milliseconds.. Default: <code>9000</code>.</p></dd>
+
+
+<dt id="arg-environment-secrets">environment_secrets<a class="anchor" aria-label="anchor" href="#arg-environment-secrets"></a></dt>
+<dd><p>Secret environment variable patterns.
+Any variables matching will not be included in the logs.. Default: <code>c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
