@@ -63,15 +63,15 @@
 #'
 #' @export
 run <- function(
-    input = "_whirl.yml",
-    steps = NULL,
-    summary_file = "summary.html",
-    n_workers = zephyr::get_option("n_workers", "whirl"),
-    check_renv = zephyr::get_option("check_renv", "whirl"),
-    verbosity_level = zephyr::get_verbosity_level("whirl"),
-    track_files = zephyr::get_option("track_files", "whirl"),
-    out_formats = zephyr::get_option("out_formats", "whirl"),
-    log_dir = zephyr::get_option("log_dir", "whirl")) {
+  input = "_whirl.yml",
+  steps = NULL,
+  summary_file = "summary.html",
+  n_workers = zephyr::get_option("n_workers", "whirl"),
+  check_renv = zephyr::get_option("check_renv", "whirl"),
+  track_files = zephyr::get_option("track_files", "whirl"),
+  out_formats = zephyr::get_option("out_formats", "whirl"),
+  log_dir = zephyr::get_option("log_dir", "whirl")
+) {
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths
@@ -79,7 +79,9 @@ run <- function(
   approved_packages <- zephyr::get_option("approved_packages")
 
   # Check suggest imports if they are needed
-  if (check_renv) rlang::check_installed("renv")
+  if (check_renv) {
+    rlang::check_installed("renv")
+  }
 
   # Message when initiating
   d <- NULL
@@ -117,7 +119,6 @@ run <- function(
   queue <- whirl_queue$new(
     n_workers = n_workers,
     check_renv = check_renv,
-    verbosity_level = verbosity_level,
     track_files = track_files,
     out_formats = out_formats,
     track_files_discards = track_files_discards,

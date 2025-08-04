@@ -82,3 +82,20 @@ path_rel <- function(path, start = ".") {
 
   return(relative_path)
 }
+
+# Easily create cli links (only when possible)
+create_cli_links <- function(text, href, .envir = parent.frame()) {
+  if (!cli::is_dynamic_tty()) {
+    return(
+      cli::format_message(message = text, .envir = .envir)
+    )
+  }
+
+  vapply(
+    X = paste0("{.href [", text, "](file://", href, ")}"),
+    FUN = cli::format_message,
+    FUN.VALUE = character(1),
+    .envir = .envir,
+    USE.NAMES = FALSE
+  )
+}
