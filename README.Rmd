@@ -125,5 +125,5 @@ For more information about how to customize the the execution and the logging fo
 * `run()`: For further information on how to call it.
 * `vignette("whirl")`: For a more in depth explanation, and more advanced usage.
 * `vignette("articles/example")`: With a simple example, including the created log.
-* [whirl-options](https://novonordisk-opensource.github.io/whirl/reference/whirl-options.html): On how to change the default behavior of whirl.
+* `help("whirl-options")`: On how to change the default behavior of whirl.
 * [NovoNordisk-OpenSource/R-packages](https://novonordisk-opensource.github.io/R-packages/) for an overview of connector and other R packages published by Novo Nordisk.

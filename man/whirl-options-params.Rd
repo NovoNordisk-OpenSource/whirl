@@ -38,6 +38,9 @@ as input and returns the execution directory.. Default: \code{NULL}.}
 
 \item{wait_timeout}{Timeout for waiting for the R process from callr::r_session to
 start, in milliseconds.. Default: \code{9000}.}
+
+\item{environment_secrets}{Secret environment variable patterns.
+Any variables matching will not be included in the logs.. Default: \code{c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")}.}
 }
 \description{
 Internal parameters for reuse in functions

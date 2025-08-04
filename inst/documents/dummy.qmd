@@ -17,6 +17,10 @@ knitr::opts_chunk$set(
 )
 
 .libPaths(c(character(), params$with_library_paths))
+
+file.path(params$tmpdir, "parent_options.rds") |> 
+  readRDS() |> 
+  options()
 ```
 
 ```{r}
