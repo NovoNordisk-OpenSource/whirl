@@ -11,7 +11,7 @@ test_that("pandoc works", {
 
   tmpdir <- withr::local_tempdir()
 
-  # Different pandoc isntallations support different formats
+  # Different pandoc installations support different formats
   # for testing purposes we only use the supported ones here.
   # Error handling tested in new test below.
   mdfmt <- c("gfm", "commonmark", "markua") |>
