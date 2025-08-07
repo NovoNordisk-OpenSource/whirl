@@ -1,4 +1,6 @@
 test_that("Biocompute object created correctly", {
+  skip_if_no_quarto()
+
   input_yml <- test_script("_whirl_biocompute.yaml")
   queue <- whirl::run(
     input = input_yml,
