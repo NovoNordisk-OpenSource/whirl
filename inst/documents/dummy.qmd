@@ -4,6 +4,7 @@ params:
   with_library_paths: library_paths
   renv: TRUE
   tmpdir: "."
+  converted_qmd: "temp_script.qmd"
 ---
 
 ```{r}
@@ -24,10 +25,26 @@ file.path(params$tmpdir, "parent_options.rds") |>
 ```
 
 ```{r}
-#| label: Log R
+#| label: Convert R script to qmd
 #| eval: !expr base::grepl("\\.R$", params$script)
 #| echo: false
-knitr::spin_child(params$script)
+# Conversion is done to avoid problems caused by the warnings thrown
+# by knitr::knit(), see e.g. issue #151
+knitr::spin(
+  text = readLines(params$script),
+  knit = FALSE,
+  format = "qmd"
+) |> 
+  writeLines(
+    con = file.path(params$tmpdir, params$converted_qmd)
+  )
+```
+
+```{r}
+#| label: Log R
+#| child: !expr file.path(params$tmpdir, params$converted_qmd)
+#| eval: !expr file.exists(file.path(params$tmpdir, params$converted_qmd))
+#| include: !expr file.exists(file.path(params$tmpdir, params$converted_qmd))
 ```
 
 ```{r}

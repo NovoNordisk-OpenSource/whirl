@@ -9,6 +9,7 @@
 * Added new option `environment_secrets` to control which secret environment variables not to include in the log.
 * Improved progress bar to show all currently running scripts.
 * Removed `verbosity_level` argument to `run()` since it is now completely controlled by zephyr options (`help("whirl-options")`).
+* Fixed bug where a script would not execute if using `options(warn = 2)` (#151)
 
 # whirl 0.3.0
 
