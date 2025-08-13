@@ -44,18 +44,40 @@ knitr::spin_child(params$script)
 #| include: !expr base::grepl("\\.Rmd$", params$script)
 ```
 
-```{python}
-#| label: Log Python
-#| file: !expr params$script
-#| eval: !expr base::grepl("\\.py$", params$script)
-#| include: !expr base::grepl("\\.py$", params$script)
+```{r, eval = FALSE}
+library(reticulate)
+# Force consistent Python session
+use_python(Sys.which("python3"))
 ```
 
 ```{python}
+#| label: Setup Python tracking
+#| label: Log Python
+
+from inst.documents.python_module2 import get_package_status
+pkg1_status = get_package_status('old_status.json')
+
+#| file: !expr params$script
+#| eval: !expr base::grepl("\\.py$", params$script)
+#| include: !expr base::grepl("\\.py$", params$script)
+
+pkg2_status = get_package_status('new_status.json')
+```
+
+
+```{r}
 #| label: Python modules
-#| file: !expr file.path(params$tmpdir, "python_modules.py")
 #| eval: !expr base::grepl("\\.py$", params$script)
 #| echo: false
+
+library(jsonlite)
+pip_data <- read.table(text = paste(system('python3 -m pip list -v', intern = TRUE)[-(1:2)], collapse = "\n"),
+                      col.names = c("Package", "Version", "Location", "Installer"), stringsAsFactors = FALSE)
+tmp_old <- fromJSON("old_status.json"); unlink("old_status.json")
+tmp_new <- fromJSON("new_status.json"); unlink("new_status.json")
+pip_data$is_namespace <- pip_data$Package %in% setdiff(tmp_new$namespaced, tmp_old$namespaced)
+pip_data$is_installed <- pip_data$Package %in% setdiff(tmp_new$loaded, tmp_old$loaded)
+
 ```
 
 ```{r}
