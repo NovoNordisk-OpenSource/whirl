@@ -29,11 +29,11 @@ format:
 #| echo: false
 .libPaths(c(character(), params$with_library_paths))
 
-file.path(params$tmpdir, "parent_options.rds") |> 
-  readRDS() |> 
+file.path(params$tmpdir, "parent_options.rds") |>
+  readRDS() |>
   options()
 
-knit_print.data.frame = function(x, ...) {
+knit_print.data.frame <- function(x, ...) {
   names(x) <- gsub( # Use space instead of . or _ in columns names
     pattern = "\\.|_",
     replacement = " ",
@@ -41,9 +41,9 @@ knit_print.data.frame = function(x, ...) {
   )
 
   names(x) <- gsub( # Convert all column names to title case
-    pattern = "\\b([[:alpha:]])([[:alpha:]]+)", 
-    replacement = "\\U\\1\\L\\2", 
-    x = names(x), 
+    pattern = "\\b([[:alpha:]])([[:alpha:]]+)",
+    replacement = "\\U\\1\\L\\2",
+    x = names(x),
     perl = TRUE
   )
 
@@ -52,30 +52,30 @@ knit_print.data.frame = function(x, ...) {
   }
 
   if ("Approved" %in% colnames(x)) {
-  x |> 
-    knitr::kable(format = "html") |>  
-    kableExtra::column_spec(
-      1:ncol(x), 
-      background = ifelse(grepl("Yes", x[["Approved"]]), "#ebf5f1", "#fceeef")
-     ) |>
-    kableExtra::column_spec(
-      which(names(x) == "Approved"),
-      color = ifelse(grepl("Yes", x[["Approved"]]), "green", "red")
-    ) |>   
-    kableExtra::kable_styling(
-      bootstrap_options = "striped",
-      full_width = TRUE
-    ) |>
-    knitr::knit_print()
-  } else {
-  x |> 
-    knitr::kable(format = "html") |>    
-    kableExtra::kable_styling(
-      bootstrap_options = "striped",
-      full_width = TRUE
-    ) |>
-    knitr::knit_print()
-  }
+    x |> 
+      knitr::kable(format = "html") |>  
+      kableExtra::column_spec(
+        1:ncol(x), 
+        background = ifelse(grepl("Yes", x[["Approved"]]), "#ebf5f1", "#fceeef")
+       ) |>
+      kableExtra::column_spec(
+        which(names(x) == "Approved"),
+        color = ifelse(grepl("Yes", x[["Approved"]]), "green", "red")
+      ) |>   
+      kableExtra::kable_styling(
+        bootstrap_options = "striped",
+        full_width = TRUE
+      ) |>
+      knitr::knit_print()
+    } else {
+    x |> 
+      knitr::kable(format = "html") |>    
+      kableExtra::kable_styling(
+        bootstrap_options = "striped",
+        full_width = TRUE
+      ) |>
+      knitr::knit_print()
+    }
 }
 
 registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNamespace("knitr"))
