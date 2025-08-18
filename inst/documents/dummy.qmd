@@ -45,14 +45,17 @@ knitr::spin_child(params$script)
 ```
 
 ```{r, eval = FALSE}
+#| include: false
 library(reticulate)
 # Force consistent Python session
+# TODO: why this?
 use_python(Sys.which("python3"))
 ```
 
 ```{python}
 #| label: Setup Python tracking
 #| eval: !expr base::grepl("\\.py$", params$script)
+#| include: false
 from inst.documents.python_module2 import get_package_status
 pkg1_status = get_package_status('old_status.json')
 ```
@@ -67,13 +70,14 @@ pkg1_status = get_package_status('old_status.json')
 ```{python}
 #| label: Log Python modules
 #| eval: !expr base::grepl("\\.py$", params$script)
+#| include: false
 pkg2_status = get_package_status('new_status.json')
 ```
 
 ```{r}
 #| label: Python modules
 #| eval: !expr base::grepl("\\.py$", params$script)
-#| echo: false
+#| include: false
 
 library(jsonlite)
 pip_data <- read.table(text = paste(system('python3 -m pip list -v', intern = TRUE)[-(1:2)], collapse = "\n"),
