@@ -1,7 +1,8 @@
 steps:
-  - name: "Pylog"
-    paths:
-      - "prg2.py"
-  - name: "Rlog"
+  - name: "First step"
     paths:
       - "success.R"
+  - name: "Second step"
+    paths:
+      - "warning.R"
+      - "error.R"
