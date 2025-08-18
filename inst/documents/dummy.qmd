@@ -81,7 +81,7 @@ knitr::spin(
 if (is.character(params$renv) && params$renv == "yes" ||
       is.logical(params$renv) && params$renv) {
   saveRDS(
-    object = whirl:::renv_status(),
+    object = renv::status(),
     file = file.path(params$tmpdir, "renv_status.rds")
   )
 }
