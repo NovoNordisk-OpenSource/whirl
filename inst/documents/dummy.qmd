@@ -51,7 +51,7 @@ knitr::spin_child(params$script)
 #| error: false
 import sys
 sys.path.append(r.params["tmpdir"])
-from python_module import get_package_status
+from python_modules import get_package_status
 get_package_status(r.params["tmpdir"]+"/"+'py_old_status.json')
 ```
 

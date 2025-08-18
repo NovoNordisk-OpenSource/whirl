@@ -8,7 +8,9 @@ read_info <- function(
   session,
   environment,
   options,
-  python = NULL,
+  python_pip_list = NULL,
+  python_new_status = NULL,
+  python_old_status = NULL,
   approved_packages = NULL,
   track_files = FALSE
 ) {
@@ -27,7 +29,7 @@ read_info <- function(
   info$session$environment <- read_environment(environment)
   info$session$options <- read_options(options)
 
-  if (!is.null(python) && file.exists(python)) {
+  if (!is.null(python_pip_list) && file.exists(python_pip_list)) {
     info$session$platform <- info$session$platform |>
       dplyr::bind_rows(
         data.frame(
@@ -35,7 +37,13 @@ read_info <- function(
           value = python_version()
         )
       )
-    info$session$python <- read_python(python)
+
+    info$session$python <- read_python(
+      old_status = python_old_status,
+      new_status = python_new_status,
+      pip_list = python_pip_list
+    )
+
     info$session <-
       info$session[c("platform", "R", "python", "environment", "options")]
   }
@@ -136,26 +144,48 @@ python_version <- function() {
 }
 
 #' Read and format python packages information from a JSON file
-#' JSON file created in `inst/documents/python_modules.py`
+#' JSON files created in `inst/documents/python_modules.py`.
+#' Pip list is created in `ìnst/documents/dummy.qmd`.
 #' @noRd
-read_python <- function(json) {
-  json <- jsonlite::fromJSON(json)
+read_python <- function(old_status, new_status, pip_list) {
+  old <- old_status |>
+    jsonlite::read_json() |>
+    lapply(FUN = unlist, use.names = FALSE)
 
-  if (!length(json)) {
+  new <- new_status |>
+    jsonlite::read_json() |>
+    lapply(FUN = unlist, use.names = FALSE)
+
+  pip <- pip_list |>
+    readRDS() |>
+    read.table(
+      text = _,
+      col.names = c("package", "version", "path", "installer")
+    ) |>
+    tail(-2) |>
+    tibble::as_tibble()
+
+  if (!nrow(pip)) {
     return(
       tibble::tibble(
-        Package = character(0),
-        Version = character(0),
-        Path = character(0)
+        package = character(0),
+        version = character(0),
+        path = character(0),
+        namespaced = logical(0)
       )
     )
   }
 
-  json |>
-    tibble::enframe(name = "Package") |>
-    tidyr::unnest_wider(col = "value") |>
-    dplyr::rename(
-      Version = "version",
-      Path = "installation_path"
+  pip |>
+    dplyr::select(-installer) |>
+    dplyr::filter(
+      package %in%
+        c(
+          setdiff(new$namespaced, old$namespaced),
+          setdiff(new$loaded, old$loaded)
+        )
+    ) |>
+    dplyr::mutate(
+      namespaced = package %in% new$namespaced
     )
 }

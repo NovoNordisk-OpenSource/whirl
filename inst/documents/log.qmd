@@ -74,7 +74,9 @@ result <- whirl:::read_info(
   session = file.path(params$tmpdir, "session_info.rds"),
   environment = file.path(params$tmpdir, "environment.rds"),
   options = file.path(params$tmpdir, "options.rds"),
-  python = file.path(params$tmpdir, "python_imports.json"),
+  python_pip_list = file.path(params$tmpdir, "py_pip_list.rds"),
+  python_old_status = file.path(params$tmpdir, "py_old_status.json"),
+  python_new_status = file.path(params$tmpdir, "py_new_status.json"),
   approved_packages = params$approved_packages,
   track_files = isTRUE(as.logical(params$track_files))
 )
