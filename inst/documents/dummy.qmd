@@ -6,11 +6,6 @@ params:
   tmpdir: "."
 ---
 
-```{python}
-#| tags: [parameters]
-tmpdir = "."
-```
-
 ```{r}
 #| label: Setup
 #| include: false
@@ -52,14 +47,11 @@ knitr::spin_child(params$script)
 ```{python}
 #| label: Setup Python tracking
 #| eval: !expr base::grepl("\\.py$", params$script)
-#| include: true
-tmpdir = "inst/documents"
-print(tmpdir)
-print(globals())
+#| include: false
 import sys
-sys.path.append(tmpdir)
+sys.path.append(r.params["tmpdir"])
 from python_module2 import get_package_status
-get_package_status(tmpdir+"/"+'old_status.json')
+get_package_status(r.params["tmpdir"]+"/"+'py_old_status.json')
 ```
 
 ```{python}
@@ -73,27 +65,17 @@ get_package_status(tmpdir+"/"+'old_status.json')
 #| label: Log Python modules
 #| eval: !expr base::grepl("\\.py$", params$script)
 #| include: false
-get_package_status('new_status.json')
+get_package_status(r.params["tmpdir"]+"/"+'py_new_status.json')
 ```
 
 ```{r}
 #| label: Python modules
-#| eval: false
+#| eval: !expr base::grepl("\\.py$", params$script)
 #| include: false
   saveRDS(
     object =system('python3 -m pip list -v', intern = TRUE),
-    file = file.path(params$tmpdir, "pip_list.rds")
+    file = file.path(params$tmpdir, "py_pip_list.rds")
   )
-
-# system('python3 -m pip list -v', intern = TRUE)
-# library(jsonlite)
-# pip_data <- read.table(text = paste(system('python3 -m pip list -v', intern = TRUE)[-(1:2)], collapse = "\n"),
-#                       col.names = c("Package", "Version", "Location", "Installer"), stringsAsFactors = FALSE)
-# tmp_old <- fromJSON("old_status.json"); unlink("old_status.json")
-# tmp_new <- fromJSON("new_status.json"); unlink("new_status.json")
-# pip_data$is_namespace <- pip_data$Package %in% setdiff(tmp_new$namespaced, tmp_old$namespaced)
-# pip_data$is_installed <- pip_data$Package %in% setdiff(tmp_new$loaded, tmp_old$loaded)
-
 ```
 
 ```{r}
