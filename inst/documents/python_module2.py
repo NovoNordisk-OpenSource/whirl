@@ -44,7 +44,7 @@ def get_package_status(tmpfile=''):
     
     return status
 
-
+# TODO: What is this? A unit test?
 if __name__ == "__main__":
     pkg1_status = get_package_status('old_status.json')
     
