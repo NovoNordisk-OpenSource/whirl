@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9008</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,14 @@
       <small>Source: <a href="https://github.com/NovoNordisk-OpenSource/whirl/blob/approved_pkgs/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="whirl-030">whirl 0.3.0<a class="anchor" aria-label="anchor" href="#whirl-030"></a></h2><p class="text-muted">CRAN release: 2025-07-08</p>
+<ul><li>Add <code><a href="../reference/write_biocompute.html">write_biocompute()</a></code> to create <a href="https://www.biocomputeobject.org/" class="external-link">BioCompute Objects</a> containing the logs in a standardized JSON format.</li>
+<li>Calling <code><a href="../reference/run.html">run()</a></code> with <code>track_files = TRUE</code> now checks if strace can be attached to the process.</li>
+<li>Improved json logs and similar returned output from running a script (<code>result</code> column in return from <code><a href="../reference/run.html">run()</a></code>).</li>
+<li>Simplified approved packages check. Now the user supplies a character vector of packages and versions specified as <code>{package}@{version}</code>.</li>
+<li>Implement use of <code>tag</code> in the returned output. Each script is now tagged with the step name in the summary report.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="whirl-020">whirl 0.2.0<a class="anchor" aria-label="anchor" href="#whirl-020"></a></h2><p class="text-muted">CRAN release: 2025-04-15</p>
 <ul><li>Initial CRAN release.</li>
@@ -110,7 +118,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard, Kristian Troejelsgaard, Steffen Falgreen Larsen, Vladimir Obucina, Michael Svingel, Skander Mulder.</p>
+  <p>Developed by Aksel Thomsen, Lovemore Gakava, Cervan Girard, Kristian Troejelsgaard, Steffen Falgreen Larsen, Vladimir Obucina, Michael Svingel, Skander Mulder, Oliver Lundsgaard.</p>
 </div>
 
 <div class="pkgdown-footer-right">
