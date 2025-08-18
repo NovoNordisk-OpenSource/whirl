@@ -52,18 +52,23 @@ use_python(Sys.which("python3"))
 
 ```{python}
 #| label: Setup Python tracking
-#| label: Log Python
-
+#| eval: !expr base::grepl("\\.py$", params$script)
 from inst.documents.python_module2 import get_package_status
 pkg1_status = get_package_status('old_status.json')
+```
 
+```{python}
+#| label: Log Python
 #| file: !expr params$script
 #| eval: !expr base::grepl("\\.py$", params$script)
 #| include: !expr base::grepl("\\.py$", params$script)
-
-pkg2_status = get_package_status('new_status.json')
 ```
 
+```{python}
+#| label: Log Python modules
+#| eval: !expr base::grepl("\\.py$", params$script)
+pkg2_status = get_package_status('new_status.json')
+```
 
 ```{r}
 #| label: Python modules
