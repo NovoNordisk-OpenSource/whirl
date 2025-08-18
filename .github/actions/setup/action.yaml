@@ -8,6 +8,7 @@ runs:
       shell: bash
       run: |
         echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+        sudo setcap cap_sys_ptrace=eip /usr/bin/strace
 
     - name: Install Quarto
       uses: quarto-dev/quarto-actions/setup@v2
@@ -17,10 +18,10 @@ runs:
       shell: bash
       run: python3 -m pip install jupyter
 
-    - name: (macOS) Install jupyter
+    - name: (macOS) Install jupyter via Homebrew
       if: runner.os == 'macOS'
       shell: bash
-      run: python3 -m pip install --break-system-packages jupyter
+      run: brew install jupyter
 
     - name: (Windows) Install jupyter
       if: runner.os == 'Windows'

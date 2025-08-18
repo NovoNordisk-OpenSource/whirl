@@ -1,10 +1,24 @@
 # whirl dev
 
+* Fixed test-strace.R permission issue
+* Altered permissions in action.yaml
+* Added timing function for test-strace.R 
+* Added style.css to store designs for the log
+* Added deign from style.css to the script part og log.html
+* Improved error handling when the log cannot be created.
+* Added new option `environment_secrets` to control which secret environment variables not to include in the log.
+* Improved progress bar to show all currently running scripts.
+* Removed `verbosity_level` argument to `run()` since it is now completely controlled by zephyr options (`help("whirl-options")`).
+* Fixed bug where a script would not execute if using `options(warn = 2)` (#151)
+* The log now differentiates between directly and indirectly used packages, and offers a visual overview of their approval status when a list of approved packages is provided.
+
+# whirl 0.3.0
+
 * Add `write_biocompute()` to create [BioCompute Objects](https://www.biocomputeobject.org/) containing the logs in a standardized JSON format.
 * Calling `run()` with `track_files = TRUE` now checks if strace can be attached to the process.
 * Improved json logs and similar returned output from running a script (`result` column in return from `run()`).
 * Simplified approved packages check. Now the user supplies a character vector of packages and versions specified as `{package}@{version}`.
-* The log now differentiates between directly and indirectly used packages, and offers a visual overview of their approval status when a list of approved packages is provided.
+* Implement use of `tag` in the returned output. Each script is now tagged with the step name in the summary report.
 
 # whirl 0.2.0
 

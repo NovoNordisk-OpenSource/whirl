@@ -9,6 +9,7 @@ params:
   title: 'dev'
   with_library_paths: library_paths
   approved_packages: NULL
+  track_files: FALSE
   tmpdir: '.'
 format:
   html:
@@ -17,14 +18,20 @@ format:
     toc-depth: 2
     toc-expand: true
     smooth-scroll: true
+    css: style.css
 ---
 
 # Summary
+
 
 ```{r}
 #| label: Setup
 #| echo: false
 .libPaths(c(character(), params$with_library_paths))
+
+file.path(params$tmpdir, "parent_options.rds") |> 
+  readRDS() |> 
+  options()
 
 knit_print.data.frame = function(x, ...) {
   names(x) <- gsub( # Use space instead of . or _ in columns names
@@ -87,7 +94,8 @@ result <- whirl:::read_info(
   environment = file.path(params$tmpdir, "environment.rds"),
   options = file.path(params$tmpdir, "options.rds"),
   python = file.path(params$tmpdir, "python_imports.json"),
-  approved_packages = params$approved_packages
+  approved_packages = params$approved_packages,
+  track_files = isTRUE(as.logical(params$track_files))
 )
 
 saveRDS(
@@ -131,11 +139,11 @@ params$tmpdir |>
 ```
 
 # Script
-
+::: {.script-container}
 ```{r}
 #| child: !expr file.path(params$tmpdir, "doc.md")
 ```
-
+::: 
 # Session info
 
 ```{r}

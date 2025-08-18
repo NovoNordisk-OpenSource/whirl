@@ -62,8 +62,11 @@ write_to_log <- function(
 }
 
 #' @noRd
-read_from_log <- function(log = Sys.getenv("WHIRL_LOG_MSG")) {
+read_from_log <- function(log = Sys.getenv("WHIRL_LOG_MSG"), track_files) {
   if (log == "" || !file.exists(log)) {
+    if (!track_files) {
+      return(NULL)
+    }
     return(log_df())
   }
 
@@ -85,12 +88,14 @@ log_df <- function(type = character(), file = character()) {
 
 #' @noRd
 split_log <- function(x, types = c("read", "write", "delete")) {
-  # Split in a tibble for each type of output
+  if (is.null(x)) {
+    return(NULL)
+  }
 
+  # Split in a tibble for each type of output
   x <- split(x[c("time", "file")], x$type)
 
   # Add empty table for types not reported
-
   out <- vector(mode = "list", length = length(types)) |>
     rlang::set_names(types)
 

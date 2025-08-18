@@ -49,7 +49,7 @@
 #' If you want to add content do so manually after creating the BCO.
 #'
 #' See the [BioCompute Object Portal](https://www.biocomputeobject.org) and the
-#' [BioCompute Objects Wiki](https://wiki.biocomputeobject.org) for more information.
+#' [BioCompute Objects Wiki](https://wiki.biocomputeobject.org/Main_Page) for more information.
 #'
 #' @param queue Result from `run()`.
 #' @param path A character string specifying the file path to write BioCompute log to.
@@ -120,8 +120,8 @@ create_description_domain <- function(queue) {
         gsub(pattern = "[-_]", replacement = " "),
       step_number = .data$id,
       version = .data$result |>
-        purrr::map_chr(c("script", "md5sum")),
-      description = NA_character_, # TODO - use name of step from queue - implement #168
+        purrr::map_chr(c("script", "md5sum")),  # Devskim: ignore DS126858
+      description = .data$tag,
       prerequisite = .data$result |>
         purrr::map(c("session", "R")) |>
         purrr::map(.f = \(x) {
@@ -166,6 +166,15 @@ create_description_domain <- function(queue) {
 
 #' @noRd
 bco_file_format <- function(x) {
+  if (is.null(x)) {
+    return(
+      dplyr::tibble(
+        filename = character(0),
+        uri = character(0),
+        access_time = character(0)
+      )
+    )
+  }
   x |>
     dplyr::mutate(
       filename = basename(.data$file),

@@ -87,10 +87,10 @@ the script execution similar to the content of the summary above:
 ``` r
 print(result)
 #> # A tibble: 2 × 6
-#>      id tag   script                                 status result       log_dir
-#>   <dbl> <chr> <chr>                                  <chr>  <list>       <chr>  
-#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5… succe… <named list> /priva…
-#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5… warni… <named list> /priva…
+#>      id tag    script                                status result       log_dir
+#>   <dbl> <chr>  <chr>                                 <chr>  <list>       <chr>  
+#> 1     1 Step 1 /private/var/folders/fx/71by3f551qzb… succe… <named list> /priva…
+#> 2     2 Step 1 /private/var/folders/fx/71by3f551qzb… warni… <named list> /priva…
 ```
 
 ## Config files
@@ -129,11 +129,11 @@ result <- run("_whirl.yaml", n_workers = 2)
 ``` r
 print(result)
 #> # A tibble: 3 × 6
-#>      id tag   script                                 status result       log_dir
-#>   <dbl> <chr> <chr>                                  <chr>  <list>       <chr>  
-#> 1     1 <NA>  /private/var/folders/fx/71by3f551qzb5… succe… <named list> /priva…
-#> 2     2 <NA>  /private/var/folders/fx/71by3f551qzb5… warni… <named list> /priva…
-#> 3     3 <NA>  /private/var/folders/fx/71by3f551qzb5… error  <named list> /priva…
+#>      id tag         script                           status result       log_dir
+#>   <dbl> <chr>       <chr>                            <chr>  <list>       <chr>  
+#> 1     1 First step  /private/var/folders/fx/71by3f5… succe… <named list> /priva…
+#> 2     2 Second step /private/var/folders/fx/71by3f5… warni… <named list> /priva…
+#> 3     3 Second step /private/var/folders/fx/71by3f5… error  <named list> /priva…
 ```
 
 ## Useful links
@@ -146,8 +146,8 @@ logging for your needs see the following:
   advanced usage.
 - `vignette("articles/example")`: With a simple example, including the
   created log.
-- [whirl-options](https://novonordisk-opensource.github.io/whirl/reference/whirl-options.html):
-  On how to change the default behavior of whirl.
+- `help("whirl-options")`: On how to change the default behavior of
+  whirl.
 - [NovoNordisk-OpenSource/R-packages](https://novonordisk-opensource.github.io/R-packages/)
   for an overview of connector and other R packages published by Novo
   Nordisk.

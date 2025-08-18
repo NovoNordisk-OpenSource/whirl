@@ -14,12 +14,15 @@ run_current_script <- function() {
 
   # Run file
   script_info <- rstudioapi::getSourceEditorContext()
-  file <- gsub(paste0(normalizePath(getwd()), .Platform$file.sep),
-               "", normalizePath(script_info$path))
+  file <- gsub(
+    paste0(normalizePath(getwd()), .Platform$file.sep),
+    "",
+    normalizePath(script_info$path)
+  )
 
-  run_result <- run(input = list(list(names = basename(file),
-                                      paths = file)),
-                    verbosity_level = "minimal")
+  withr::local_options(list(whirl.verbosity_level = "minimal"))
+
+  run_result <- run(input = list(list(names = basename(file), paths = file)))
 
   log_file <- run_result[["result"]][[1]][["log_details"]][["location"]][[1]]
   if (file.exists(log_file)) {

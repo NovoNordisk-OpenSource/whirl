@@ -10,6 +10,7 @@ Authors@R: c(
     person("Vladimir", "Obucina", , "vlob@novonordisk.com", role = "aut"),
     person("Michael", "Svingel", , "wymz@novonordisk.com", role = "aut"),
     person("Skander", "Mulder", , "sktf@novonordisk.com", role = "aut"),
+    person("Oliver", "Lundsgaard", , "ovlr@novonordisk.com", role = "aut"),
     person("Novo Nordisk A/S", role = "cph")
   )
 Description: Logging of scripts suitable for clinical trials using

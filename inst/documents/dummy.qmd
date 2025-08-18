@@ -4,6 +4,7 @@ params:
   with_library_paths: library_paths
   renv: TRUE
   tmpdir: "."
+  converted_qmd: "temp_script.qmd"
 ---
 
 ```{r}
@@ -17,13 +18,33 @@ knitr::opts_chunk$set(
 )
 
 .libPaths(c(character(), params$with_library_paths))
+
+file.path(params$tmpdir, "parent_options.rds") |> 
+  readRDS() |> 
+  options()
+```
+
+```{r}
+#| label: Convert R script to qmd
+#| eval: !expr base::grepl("\\.R$", params$script)
+#| echo: false
+# Conversion is done to avoid problems caused by the warnings thrown
+# by knitr::knit(), see e.g. issue #151
+knitr::spin(
+  text = readLines(params$script),
+  knit = FALSE,
+  format = "qmd"
+) |> 
+  writeLines(
+    con = file.path(params$tmpdir, params$converted_qmd)
+  )
 ```
 
 ```{r}
 #| label: Log R
-#| eval: !expr base::grepl("\\.R$", params$script)
-#| echo: false
-knitr::spin_child(params$script)
+#| child: !expr file.path(params$tmpdir, params$converted_qmd)
+#| eval: !expr file.exists(file.path(params$tmpdir, params$converted_qmd))
+#| include: !expr file.exists(file.path(params$tmpdir, params$converted_qmd))
 ```
 
 ```{r}
@@ -83,12 +104,18 @@ saveRDS(
 ```{r}
 #| label: Session info
 #| include: false
-saveRDS(
-  object = list( # Due to https://github.com/r-lib/sessioninfo/issues/96
+info <- list( # Due to https://github.com/r-lib/sessioninfo/issues/96
     platform = sessioninfo::session_info(info = "platform")[["platform"]],
     packages = sessioninfo::session_info(info = "packages")[["packages"]],
     python = sessioninfo::session_info(info = "python")[["python"]]
-  ),
+  )
+
+if (!"quarto" %in% names(info$platform)) { # Due to older versions of sessioninfo
+  info$platform$quarto <- paste(quarto::quarto_version(), "@", quarto::quarto_path())
+}
+
+saveRDS(
+  object = info,
   file = file.path(params$tmpdir, "session_info.rds")
 )
 ```

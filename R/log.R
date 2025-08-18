@@ -10,13 +10,14 @@ read_info <- function(
   environment,
   options,
   python = NULL,
-  approved_packages = NULL
+  approved_packages = NULL,
+  track_files = FALSE
 ) {
   info <- list(
     script = readRDS(script),
     status = get_status(md = md, start = start),
     files = log |>
-      read_from_log() |>
+      read_from_log(track_files = track_files) |>
       split_log(),
     session = read_session_info(
       file = session,
@@ -145,25 +146,13 @@ read_environment <- function(file) {
     dplyr::filter(
       stringr::str_detect(
         string = .data$variable,
-        pattern = paste0(r_secrets(), collapse = "|"),
+        pattern = paste0(
+          zephyr::get_option("environment_secrets", "whirl"),
+          collapse = "|"
+        ),
         negate = TRUE
       )
     )
-}
-
-#' List of patterns naming a secret environment variable
-#' any match will not be included in the log
-#' @noRd
-r_secrets <- function() {
-  c(
-    "BASH_FUNC",
-    "_SSL_CERT",
-    "_KEY",
-    "_KEY",
-    "_KEY",
-    "_PAT",
-    "_TOKEN"
-  )
 }
 
 #' Read and format options output from `options()`

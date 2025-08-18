@@ -1,6 +1,6 @@
 biocompute:
   object_id: "urn:uuid:1234567890"
-  spec_version: "https://w3id.org/ieee/ieee-2791-schema/2791object.json%22"
+  spec_version: "https://w3id.org/ieee/ieee-2791-schema/2791object.json"
   etag: "c69asgs797agfka"
   usability: |
     This is an example of a biocompute project.

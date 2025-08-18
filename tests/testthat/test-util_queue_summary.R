@@ -4,11 +4,12 @@ test_that("fails with invalid input", {
     expect_error()
 })
 
+
 test_that("Summary tibble is created successfully", {
   skip_if_no_quarto()
   skip_if_no_python()
 
-  q <- whirl_queue$new(n_workers = 2, verbosity_level = "quiet")
+  q <- whirl_queue$new(n_workers = 2)
 
   test_script(c("success.R", "py_success.py")) |>
     q$run()
@@ -17,7 +18,7 @@ test_that("Summary tibble is created successfully", {
     util_queue_summary() |>
     expect_s3_class("tbl_df") |>
     expect_named(
-      c("Directory", "Filename", "Status", "Hyperlink", "Information")
+      c("Tag", "Directory", "Filename", "Status", "Hyperlink", "Information")
     ) |>
     nrow() |>
     expect_equal(2)

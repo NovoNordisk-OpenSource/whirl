@@ -26,10 +26,12 @@ CRAN
 cre
 cyclocomp
 dev
+Devskim
 dir
 dontrun
 dplyr
 dset
+emph
 ENOENT
 ENOTDIR
 envir
@@ -68,6 +70,7 @@ lintr
 loadedpath
 loadedversion
 Lovemore
+Lundsgaard
 lvgk
 markua
 md
@@ -79,6 +82,7 @@ nchars
 ncol
 newname
 nocov
+nodename
 Nordisk
 notangle
 Novo
@@ -86,6 +90,7 @@ novonordisk
 NovoNordisk
 nrow
 Obucina
+Oliver
 ondiskversion
 openat
 opensource
@@ -124,15 +129,19 @@ seealso
 sessioninfo
 setenv
 sffl
+Skander
 skyblue
 Steffen
 stopifnot
 stringr
 succes
 succesfully
+Svingel
 Sweave
 Sys
+sysname
 testthat
+testuser
 Thomsen
 tibble
 tidyr
@@ -156,8 +165,4 @@ winslash
 withr
 WORDLIST
 yaml
-sysname
-nodename
-testuser
-Skander
-Svingel
+
