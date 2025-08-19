@@ -139,7 +139,7 @@ params$tmpdir |>
 ```
 
 # Script
-::: {.script-container}
+:::{.callout-note collapse=false appearance="minimal"}
 ```{r}
 #| child: !expr file.path(params$tmpdir, "doc.md")
 ```
