@@ -16,7 +16,10 @@ runs:
     - name: (Linux) Install jupyter
       if: runner.os == 'Linux'
       shell: bash
-      run: python3 -m pip install jupyter
+      run: |
+        python3 -m pip install jupyter
+        python3 -m pip install pandas
+        python3 -m pip install numpy
 
     - name: (macOS) Install jupyter via Homebrew
       if: runner.os == 'macOS'
