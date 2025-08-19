@@ -39,7 +39,6 @@ Imports:
     sessioninfo,
     stringr,
     tibble,
-    tidyr,
     unglue,
     utils,
     withr,

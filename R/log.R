@@ -156,13 +156,12 @@ read_python <- function(old_status, new_status, pip_list) {
     jsonlite::read_json() |>
     lapply(FUN = unlist, use.names = FALSE)
 
-  pip <- pip_list |>
-    readRDS() |>
-    read.table(
-      text = _,
-      col.names = c("package", "version", "path", "installer")
-    ) |>
-    tail(-2) |>
+  pip <- utils::read.table(
+    text = pip_list |>
+      readRDS(),
+    col.names = c("package", "version", "path", "installer")
+  ) |>
+    utils::tail(-2) |>
     tibble::as_tibble()
 
   if (!nrow(pip)) {
@@ -177,15 +176,15 @@ read_python <- function(old_status, new_status, pip_list) {
   }
 
   pip |>
-    dplyr::select(-installer) |>
+    dplyr::select(-.data$installer) |>
     dplyr::filter(
-      package %in%
+      .data$package %in%
         c(
           setdiff(new$namespaced, old$namespaced),
           setdiff(new$loaded, old$loaded)
         )
     ) |>
     dplyr::mutate(
-      namespaced = package %in% new$namespaced
+      namespaced = .data$package %in% new$namespaced
     )
 }
