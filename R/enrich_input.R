@@ -6,8 +6,10 @@
 #'   executed
 #' @return A list
 #' @noRd
-enrich_input <- function(input, # nolint: cyclocomp_linter
-                         steps = NULL) {
+enrich_input <- function(
+  input, # nolint: cyclocomp_linter
+  steps = NULL
+) {
   # Characterize the input
   is_config_file <-
     !is.list(input) &&
@@ -53,32 +55,23 @@ enrich_input <- function(input, # nolint: cyclocomp_linter
   }
 
   # Normalizing the paths and read regexp
-  for (j in seq_along(paths)) {
-    normalized <- unlist(lapply(
-      X = paths[[j]],
-      FUN = normalize_with_base,
-      base = root_dir
-    ))
-    paths[[j]] <- read_glob(normalized)
-  }
+  paths <- read_glob(
+    input = paths,
+    root_dir = root_dir
+  )
 
   # If input include one or more directories
-  if (any(unlist(lapply(paths, dir.exists)))) {
-    show <- vector()
-    for (i in seq_along(paths)) {
-      show <- c(show, paths[[i]][unlist(lapply(paths[[i]], dir.exists))])
-    }
-    show <- unlist(show)
-    cli::cli_abort("The input argument in run() does not accept directories,
-        please specify which file(s) in {.val {show}} that should be executed")
+  paths_is_dir <- unlist(paths)
+  paths_is_dir <- paths_is_dir[dir.exists(paths_is_dir)]
+  if (length(paths_is_dir)) {
+    cli::cli_abort(
+      "The input argument in run() does not accept directories,
+        please specify which file(s) in {.val {paths_is_dir}} that should be executed"
+    )
   }
 
   # Merge the names and paths into a list
-  out <- mapply(list,
-    "name" = names,
-    "paths" = paths,
-    SIMPLIFY = FALSE
-  )
+  out <- mapply(list, "name" = names, "paths" = paths, SIMPLIFY = FALSE)
 
   # Get the step names
   step_names <- unlist(out)[grepl("name", names(unlist(out)))]
