@@ -11,7 +11,8 @@ def get_namespaced_packages():
     """Get all the stuff that exposed via namespacing (i.e. attached, like import pandas)"""
     namespaced = set()
     
-    # Use __main__.__dict__ to find all imported modules in the current script needed for things like reticulate
+    # Use __main__.__dict__ to find all imported modules in the current script
+    # needed for things like reticulate
     import __main__
     if hasattr(__main__, '__dict__'):
         globals_dict = __main__.__dict__
@@ -43,17 +44,3 @@ def get_package_status(tmpfile=''):
             json.dump(status, f, indent=2)
     
     return status
-
-# TODO: What is this? A unit test?
-if __name__ == "__main__":
-    pkg1_status = get_package_status('old_status.json')
-    
-    import pandas as pds
-    
-    pkg2_status = get_package_status('new_status.json')
-    
-    new_loaded = set(pkg2_status['loaded']) - set(pkg1_status['loaded'])
-    new_namespaced = set(pkg2_status['namespaced']) - set(pkg1_status['namespaced'])
-    
-    print("New loaded packages:", new_loaded)
-    print("New namespaced items:", new_namespaced)

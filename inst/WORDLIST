@@ -41,6 +41,7 @@ Finalise
 funct
 Gakava
 getenv
+getframe
 getOption
 getwd
 gfm
@@ -57,6 +58,7 @@ hjust
 https
 httr
 initialise
+ìnst
 io
 jsonlite
 kable
@@ -77,6 +79,7 @@ mdfmt
 mdformats
 mediatype
 multiarch
+namespacing
 nchars
 newname
 nocov
@@ -87,6 +90,7 @@ Novo
 novonordisk
 NovoNordisk
 nrow
+numpy
 Obucina
 Oliver
 ondiskversion
