@@ -8,7 +8,7 @@ def get_loaded_packages():
     return loaded
 
 def get_namespaced_packages():
-    """Get all the stuff that exposed via namespacing (i.e. attached, like import pandas)"""
+    """Get all the stuff that exposed via namespacing (i.e. attached)"""
     namespaced = set()
     
     # Use __main__.__dict__ to find all imported modules in the current script
