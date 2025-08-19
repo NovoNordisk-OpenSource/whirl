@@ -21,7 +21,7 @@ read_info <- function(
       split_log(),
     session = read_session_info(
       file = session,
-      pkgs_used,
+      pkgs_used = pkgs_used,
       approved_packages = approved_packages
     )
   )
@@ -117,22 +117,20 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
       approved = check_approved(
         used = paste(.data$package, .data$version, sep = "@"),
         approved = approved_packages
-      )
-    ) |>
-    dplyr::mutate(approved = dplyr::if_else(.data$approved == TRUE, "\u2705 Yes", "\u274C No")
+      ),
+      directly_used = TRUE
     )
 
   indirectly_used <- r_packages |>
-    dplyr::filter(r_packages$attached != TRUE & !r_packages$package %in% directly_used$package)
+    dplyr::filter(r_packages$attached != TRUE & !r_packages$package %in% directly_used$package) |>
+    dplyr::mutate(directly_used = FALSE)
 
 
   all <- dplyr::bind_rows(directly_used, indirectly_used)
 
   list(
     platform = platform,
-    R = all,
-    directly_used = directly_used,
-    indirectly_used = indirectly_used
+    R = all
   )
 }
 

@@ -57,7 +57,7 @@ knit_print.data.frame <- function(x, ...) {
       kableExtra::column_spec(
         1:ncol(x),
         background = ifelse(grepl("Yes", x[["Approved"]]), "#ebf5f1", "#fceeef")
-       ) |>
+      ) |>
       kableExtra::column_spec(
         which(names(x) == "Approved"),
         color = ifelse(grepl("Yes", x[["Approved"]]), "green", "red")
@@ -67,7 +67,7 @@ knit_print.data.frame <- function(x, ...) {
         full_width = TRUE
       ) |>
       knitr::knit_print()
-    } else {
+  } else {
     x |>
       knitr::kable(format = "html") |>
       kableExtra::kable_styling(
@@ -75,7 +75,7 @@ knit_print.data.frame <- function(x, ...) {
         full_width = TRUE
       ) |>
       knitr::knit_print()
-    }
+  }
 }
 
 registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNamespace("knitr"))
@@ -179,10 +179,17 @@ result$session$platform
 
 ```{r}
 #| label: R packages used directly
-if (all(is.na(result$session$directly_used$approved))) {
-  result$session$directly_used[c("package", "version", "attached", "source")]
+fetch <- result$session$R |>
+  dplyr::filter(directly_used == TRUE) |>
+  dplyr::select(dplyr::all_of(c("package", "version", "attached", "source", "approved")))
+
+if (all(is.na(fetch$approved))) {
+  fetch[c("package", "version", "attached", "source")]
 } else {
-  result$session$directly_used[c("package", "version", "attached", "source", "approved")]}   
+  fetch[c("package", "version", "attached", "source", "approved")] |>
+    dplyr::mutate(approved = dplyr::if_else(approved == TRUE, "\u2705 Yes", "\u274C No"))
+}
+
 ```
 :::
 
@@ -193,7 +200,9 @@ if (all(is.na(result$session$directly_used$approved))) {
 ```{r}
 #| label: R packages used indirectly
 #| collapse: true
-result$session$indirectly_used[c("package", "version", "attached", "source")]
+result$session$R |>
+  dplyr::filter(directly_used != TRUE) |>
+  dplyr::select(dplyr::all_of(c("package", "version", "attached", "source")))
 ```
 :::
 
