@@ -13,7 +13,7 @@ runs:
     - name: Install Quarto
       uses: quarto-dev/quarto-actions/setup@v2
 
-    - name: (Linux) Install jupyter
+    - name: (Linux) Install Python requirements and dependencies
       if: runner.os == 'Linux'
       shell: bash
       run: |
@@ -21,12 +21,18 @@ runs:
         python3 -m pip install pandas
         python3 -m pip install numpy
 
-    - name: (macOS) Install jupyter via Homebrew
+    - name: (macOS) Install Python requirements and dependencies
       if: runner.os == 'macOS'
       shell: bash
-      run: brew install jupyter
+      run: |
+        brew install jupyter
+        python3 -m pip install pandas
+        python3 -m pip install numpy
 
-    - name: (Windows) Install jupyter
+    - name: (Windows) Install Python requirements and dependencies
       if: runner.os == 'Windows'
       shell: bash
-      run: py -m pip install jupyter
+      run: |
+        py -m pip install jupyter
+        py -m pip install pandas
+        py -m pip install numpy
