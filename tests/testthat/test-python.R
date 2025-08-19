@@ -3,7 +3,6 @@ test_that("python dependencies found correctly", {
   skip_if_no_quarto()
   skip_if_no_python()
 
-  reticulate::use_virtualenv()
   reticulate::py_require("pandas")
   reticulate::py_require("numpy")
 
