@@ -52,24 +52,24 @@ knit_print.data.frame <- function(x, ...) {
   }
 
   if ("Approved" %in% colnames(x)) {
-    x |> 
-      knitr::kable(format = "html") |>  
+    x |>
+      knitr::kable(format = "html") |>
       kableExtra::column_spec(
-        1:ncol(x), 
+        1:ncol(x),
         background = ifelse(grepl("Yes", x[["Approved"]]), "#ebf5f1", "#fceeef")
        ) |>
       kableExtra::column_spec(
         which(names(x) == "Approved"),
         color = ifelse(grepl("Yes", x[["Approved"]]), "green", "red")
-      ) |>   
+      ) |>
       kableExtra::kable_styling(
         bootstrap_options = "striped",
         full_width = TRUE
       ) |>
       knitr::knit_print()
     } else {
-    x |> 
-      knitr::kable(format = "html") |>    
+    x |>
+      knitr::kable(format = "html") |>
       kableExtra::kable_styling(
         bootstrap_options = "striped",
         full_width = TRUE
@@ -86,7 +86,7 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNa
 #| echo: false
 result <- whirl:::read_info(
   script = file.path(params$tmpdir, "script.rds"),
-  md = file.path(params$tmpdir, "doc.md"), 
+  md = file.path(params$tmpdir, "doc.md"),
   start = file.path(params$tmpdir, "start.rds"),
   log = file.path(params$tmpdir, "log_msg.json"),
   pkgs_used = file.path(params$tmpdir, "pkgs_used.rds"),
@@ -99,7 +99,7 @@ result <- whirl:::read_info(
 )
 
 saveRDS(
-  object = result, 
+  object = result,
   file = file.path(params$tmpdir, "result.rds")
 )
 
@@ -128,7 +128,7 @@ whirl:::quarto_callout(
 #| eval: !expr file.exists(file.path(params$tmpdir, "renv_status.rds"))
 params$tmpdir |>
   file.path("renv_status.rds") |>
-  readRDS() |> 
+  readRDS() |>
   whirl:::knit_print_whirl_renv_status()
 ```
 
@@ -158,7 +158,7 @@ knitr::opts_chunk$set(
 ```
 
 
-:::{.callout-note collapse=true appearance="minimal"}
+:::{.callout-note collapse=false appearance="minimal"}
 ## Platform
 
 ```{r}
