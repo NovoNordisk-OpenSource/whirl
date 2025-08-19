@@ -12,7 +12,7 @@ read_glob <- function(input, root_dir) {
   )
 
   for (i in seq_along(files)) {
-    if (length(input[[i]]) > 1) {
+    if (length(input[[i]]) > 1 || is.list(input[[i]])) {
       files[[i]] <- read_glob(
         input = input[[i]],
         root_dir = root_dir
