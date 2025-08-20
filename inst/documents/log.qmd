@@ -18,7 +18,6 @@ format:
     toc-depth: 2
     toc-expand: true
     smooth-scroll: true
-    css: style.css
 ---
 
 # Summary
