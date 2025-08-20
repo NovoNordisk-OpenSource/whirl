@@ -223,10 +223,6 @@ create_execution_domain <- function(queue) {
 
   platform <- split(x = platform$value, f = platform$setting)
 
-  if (!"quarto" %in% names(platform)) {
-    platform$quarto <- get_quarto_version()
-  }
-
   software_prerequisites <- list(
     list(
       name = "R",
@@ -363,15 +359,4 @@ create_io_domain <- function(queue) {
     input_subdomain = input,
     output_subdomain = output
   ))
-}
-
-#' @noRd
-get_quarto_version <- function() {
-  path <- Sys.which("quarto")
-  if (path == "") {
-    "NA"
-  } else {
-    ver <- system("quarto -V", intern = TRUE)[1]
-    paste0(ver, " @ ", path)
-  }
 }
