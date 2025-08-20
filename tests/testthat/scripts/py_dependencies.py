@@ -1,5 +1,5 @@
-import pandas as pd # pylint: disable=import-error # pyright: ignore[reportMissingImports]
-import numpy as np # pylint: disable=import-error # pyright: ignore[reportMissingImports]
+import pandas as pd # pylint: disable=import-error # pyright: ignore[reportMissingImports] # noqa: F501
+import numpy as np # pylint: disable=import-error # pyright: ignore[reportMissingImports] # noqa: F501
 
 def main():
     df = pd.DataFrame({
