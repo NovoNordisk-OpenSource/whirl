@@ -15,6 +15,7 @@ cgid
 chdir
 cli
 colour
+colnames
 commonmark
 compats
 Compats
@@ -81,6 +82,7 @@ mediatype
 multiarch
 namespacing
 nchars
+ncol
 newname
 nocov
 nodename
@@ -167,3 +169,4 @@ winslash
 withr
 WORDLIST
 yaml
+

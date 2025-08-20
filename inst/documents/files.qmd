@@ -4,11 +4,11 @@
 ```{r}
 #| echo: false
 no_files_if_null <- function(x) {
-    if (!is.null(x) && nrow(x)) {
-        return(x)
-    }
+  if (!is.null(x) && nrow(x)) {
+    return(x)
+  }
 
-    knitr::asis_output("No files")
+  knitr::asis_output("No files")
 }
 ```
 
