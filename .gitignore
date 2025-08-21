@@ -60,6 +60,7 @@ plot1.png
 from_python.txt
 summary.html
 *_log.html
+*_log.json
 
 inst/doc
 whirl.Rcheck/
