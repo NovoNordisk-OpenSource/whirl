@@ -6,12 +6,6 @@ test_that("python dependencies found correctly", {
   reticulate::py_require("pandas")
   reticulate::py_require("numpy")
 
-  withr::local_envvar(
-    .new = list(
-      QUARTO_PYTHON = reticulate::py_config()[["python"]]
-    )
-  )
-
   res <- test_script(
     script = c("py_success.py", "py_dependencies.py")
   ) |>
