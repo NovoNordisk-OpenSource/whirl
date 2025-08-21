@@ -220,6 +220,7 @@ create_execution_domain <- function(queue) {
     purrr::list_rbind() |>
     dplyr::distinct() |>
     dplyr::filter(.data$setting %in% c("version", "pandoc", "quarto"))
+
   platform <- split(x = platform$value, f = platform$setting)
 
   software_prerequisites <- list(
