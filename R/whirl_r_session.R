@@ -22,7 +22,6 @@ whirl_r_session <- R6::R6Class(
         "whirl"
       ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
-      approved_packages = zephyr::get_option("approved_packages", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl"),
       wait_timeout = zephyr::get_option("wait_timeout", "whirl")
       # jscpd:ignore-end
@@ -33,7 +32,6 @@ whirl_r_session <- R6::R6Class(
         out_formats,
         track_files_discards,
         track_files_keep,
-        approved_packages,
         log_dir,
         wait_timeout,
         self,
@@ -103,7 +101,6 @@ whirl_r_session <- R6::R6Class(
     log_dir = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
-    approved_packages = NULL,
     check_renv = NULL,
     current_script = NULL,
     track_files_log = "log_msg.json",
@@ -118,7 +115,6 @@ wrs_initialize <- function(
   out_formats,
   track_files_discards,
   track_files_keep,
-  approved_packages,
   log_dir,
   wait_timeout,
   self,
@@ -133,7 +129,6 @@ wrs_initialize <- function(
   private$out_formats <- out_formats
   private$track_files_discards <- track_files_discards
   private$track_files_keep <- track_files_keep
-  private$approved_packages <- approved_packages
   private$log_dir <- log_dir
 
   super$run(func = setwd, args = list(dir = private$wd))
@@ -248,9 +243,13 @@ wrs_log_script <- function(script, self, private, super) {
     unique(
       rbind(
         renv::dependencies(
-          system.file("documents", "dummy.qmd", package = "whirl")
+          path = system.file("documents", "dummy.qmd", package = "whirl"),
+          quiet = TRUE
         ),
-        renv::dependencies(script)
+        renv::dependencies(
+          path = script,
+          quiet = TRUE
+        )
       )
     ),
     file = file.path(private$wd, "pkgs_used.rds")
@@ -333,7 +332,6 @@ wrs_create_log <- function(self, private, super) {
       output_file = "log.html",
       execute_params = list(
         title = private$current_script,
-        approved_packages = private$approved_packages,
         with_library_paths = .libPaths(),
         track_files = private$track_files,
         tmpdir = normalizePath(private$wd)

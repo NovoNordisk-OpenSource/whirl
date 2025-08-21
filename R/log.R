@@ -12,7 +12,6 @@ read_info <- function(
   python_pip_list = NULL,
   python_new_status = NULL,
   python_old_status = NULL,
-  approved_packages = NULL,
   track_files = FALSE
 ) {
   info <- list(
@@ -23,8 +22,7 @@ read_info <- function(
       split_log(),
     session = read_session_info(
       file = session,
-      pkgs_used = pkgs_used,
-      approved_packages = approved_packages
+      pkgs_used = pkgs_used
     )
   )
 
@@ -55,7 +53,7 @@ read_info <- function(
 
 #' Read and format session info output from `sessioninfo::session_info()`
 #' @noRd
-read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
+read_session_info <- function(file, pkgs_used) {
   info <- readRDS(file)
   pkgs_used <- readRDS(pkgs_used)
 
@@ -86,66 +84,28 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
         },
         FUN.VALUE = character(1),
         USE.NAMES = FALSE
-      )
+      ),
+      directly_used = .data$package %in% pkgs_used[["Package"]],
+      approved = check_approved(
+        used = paste(.data$package, .data$version, sep = "@"),
+        approved = zephyr::get_option("approved_packages")
+      ),
     ) |>
     dplyr::select(
       "package",
       "version",
       "attached",
+      "directly_used",
+      "approved",
       "path",
       "date",
       "source",
       "url"
     )
 
-  attached <- r_packages |>
-    dplyr::filter(r_packages$attached == TRUE)
-
-  if (!identical(pkgs_used$Package, character(0))) {
-    as_list <- lapply(
-      X = pkgs_used$Package,
-      FUN = \(x) {
-        sessioninfo::package_info(x, dependencies = FALSE) |>
-          as.data.frame() |>
-          dplyr::select(
-            "package",
-            "version" = "ondiskversion",
-            "date",
-            "source"
-          )
-      }
-    )
-
-    as_dat <- do.call(rbind.data.frame, as_list) |>
-      dplyr::mutate(date = as.Date(date)) |>
-      dplyr::mutate(attached = TRUE)
-  } else {
-    as_dat <- tibble::tibble()
-  }
-
-  directly_used <- dplyr::bind_rows(attached, as_dat) |>
-    dplyr::distinct(.data$package, .keep_all = TRUE) |>
-    dplyr::arrange(.data$package) |>
-    dplyr::mutate(
-      approved = check_approved(
-        used = paste(.data$package, .data$version, sep = "@"),
-        approved = approved_packages
-      ),
-      directly_used = TRUE
-    )
-
-  indirectly_used <- r_packages |>
-    dplyr::filter(
-      r_packages$attached != TRUE &
-        !r_packages$package %in% directly_used$package
-    ) |>
-    dplyr::mutate(directly_used = FALSE)
-
-  all <- dplyr::bind_rows(directly_used, indirectly_used)
-
   list(
     platform = platform,
-    R = all
+    R = r_packages
   )
 }
 
@@ -212,8 +172,8 @@ read_python <- function(old_status, new_status, pip_list) {
       tibble::tibble(
         package = character(0),
         version = character(0),
-        approved = logical(0),
         directly_used = logical(0),
+        approved = logical(0),
         path = character(0)
       )
     )
@@ -234,5 +194,5 @@ read_python <- function(old_status, new_status, pip_list) {
         approved = zephyr::get_option("approved_python_packages")
       )
     ) |>
-    dplyr::select("package", "version", "approved", "directly_used", "path")
+    dplyr::select("package", "version", "directly_used", "approved", "path")
 }
