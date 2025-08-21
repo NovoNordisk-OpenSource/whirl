@@ -190,7 +190,7 @@ read_python <- function(old_status, new_status, pip_list) {
     dplyr::mutate(
       directly_used = .data$package %in% new$namespaced,
       approved = check_approved(
-        used = paste(package, version, sep = "@"),
+        used = paste(.data$package, .data$version, sep = "@"),
         approved = zephyr::get_option("approved_python_packages")
       )
     ) |>

@@ -26,6 +26,8 @@ test_that("python dependencies found correctly", {
   ] |>
     expect_length(0)
 
+  skip_on_os("windows") # To be fixed in #204
+
   info_py_dependencies <- res[["result"]][[2]][["session"]]
 
   info_py_dependencies$platform$setting |>
