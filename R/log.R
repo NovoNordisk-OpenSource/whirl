@@ -107,7 +107,12 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
       FUN = \(x) {
         sessioninfo::package_info(x, dependencies = FALSE) |>
           as.data.frame() |>
-          dplyr::select("package", "version" = "ondiskversion", "date", "source")
+          dplyr::select(
+            "package",
+            "version" = "ondiskversion",
+            "date",
+            "source"
+          )
       }
     )
 
@@ -130,9 +135,11 @@ read_session_info <- function(file, pkgs_used, approved_packages = NULL) {
     )
 
   indirectly_used <- r_packages |>
-    dplyr::filter(r_packages$attached != TRUE & !r_packages$package %in% directly_used$package) |>
+    dplyr::filter(
+      r_packages$attached != TRUE &
+        !r_packages$package %in% directly_used$package
+    ) |>
     dplyr::mutate(directly_used = FALSE)
-
 
   all <- dplyr::bind_rows(directly_used, indirectly_used)
 
@@ -205,14 +212,14 @@ read_python <- function(old_status, new_status, pip_list) {
       tibble::tibble(
         package = character(0),
         version = character(0),
-        path = character(0),
-        namespaced = logical(0)
+        approved = logical(0),
+        directly_used = logical(0),
+        path = character(0)
       )
     )
   }
 
   pip |>
-    dplyr::select(-.data$installer) |>
     dplyr::filter(
       .data$package %in%
         c(
@@ -221,6 +228,11 @@ read_python <- function(old_status, new_status, pip_list) {
         )
     ) |>
     dplyr::mutate(
-      namespaced = .data$package %in% new$namespaced
-    )
+      directly_used = .data$package %in% new$namespaced,
+      approved = check_approved(
+        used = paste(package, version, sep = "@"),
+        approved = zephyr::get_option("approved_python_packages")
+      )
+    ) |>
+    dplyr::select("package", "version", "approved", "directly_used", "path")
 }
