@@ -9,6 +9,8 @@
 * Removed `verbosity_level` argument to `run()` since it is now completely controlled by zephyr options (`help("whirl-options")`).
 * Fixed bug where a script would not execute if using `options(warn = 2)` (#151)
 * The log now distinguishes between directly and indirectly used packages, and visually highlights their approval status if a list of approved packages is provided.
+* Added check for approved Python packages with the `approved_python_packages` option similar to for R.
+* Improved how to find used Python packages, so it now only lists the packages actually used in the script.
 
 # whirl 0.3.0
 
