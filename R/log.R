@@ -159,13 +159,9 @@ read_python <- function(old_status, new_status, pip_list) {
     jsonlite::read_json() |>
     lapply(FUN = unlist, use.names = FALSE)
 
-  pip <- utils::read.table(
-    text = pip_list |>
-      readRDS(),
-    col.names = c("package", "version", "path", "installer")
-  ) |>
-    utils::tail(-2) |>
-    tibble::as_tibble()
+  pip <- pip_list |>
+    readRDS() |>
+    parse_pip_list()
 
   if (!nrow(pip)) {
     return(
@@ -195,4 +191,18 @@ read_python <- function(old_status, new_status, pip_list) {
       )
     ) |>
     dplyr::select("package", "version", "directly_used", "approved", "path")
+}
+
+#' @noRd
+parse_pip_list <- function(x) {
+  x <- utils::read.table(text = x)
+
+  nm <- tolower(x[1, ])
+  nm[which(nm == "location")] <- "path"
+
+  names(x) <- nm
+
+  x |>
+    utils::tail(-2) |>
+    tibble::as_tibble()
 }
