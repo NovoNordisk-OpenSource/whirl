@@ -102,12 +102,12 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://novonordisk-opensource.github.io/whirl/">whirl</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="st">"success.R"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ success.R: Completed succesfully</span></span></code></pre></div>
+<span><span class="co">#&gt; ✔ success.R: Completed succesfully. See log html.</span></span></code></pre></div>
 <p>It is also possible to run several scripts simultaneously:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"success.R"</span>, <span class="st">"warning.R"</span><span class="op">)</span>, n_workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ success.R: Completed succesfully</span></span>
-<span><span class="co">#&gt; ⚠ warning.R: Completed with warnings</span></span></code></pre></div>
+<span><span class="co">#&gt; ✔ success.R: Completed succesfully. See log html.</span></span>
+<span><span class="co">#&gt; ! warning.R: Completed with warnings. See log html.</span></span></code></pre></div>
 <p>Here we are specifying that <code><a href="reference/run.html">run()</a></code> can use up to two simultaneous workers to execute the scripts, meaning that they will be executed in parallel.</p>
 <p>When using <code><a href="reference/run.html">run()</a></code> the following files are created:</p>
 <ol style="list-style-type: decimal">
@@ -139,9 +139,9 @@
 <p>Here we are specifying that in the first step we run <code>succes.R</code>. And then when this step has been completed we continue to running the scripts in the second steps.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="st">"_whirl.yaml"</span>, n_workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ success.R: Completed succesfully</span></span>
-<span><span class="co">#&gt; ✖ error.R: Completed with errors</span></span>
-<span><span class="co">#&gt; ⚠ warning.R: Completed with warnings</span></span></code></pre></div>
+<span><span class="co">#&gt; ✔ success.R: Completed succesfully. See log html.</span></span>
+<span><span class="co">#&gt; ! warning.R: Completed with warnings. See log html.</span></span>
+<span><span class="co">#&gt; ✖ error.R: Completed with errors. See log html.</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
