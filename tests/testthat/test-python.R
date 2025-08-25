@@ -44,7 +44,7 @@ test_that("parse_pip_list() is consistent", {
   skip_on_cran()
   skip_if_no_python()
 
-  system('python3 -m pip list -v', intern = TRUE) |>
+  system("python3 -m pip list -v", intern = TRUE) |>
     parse_pip_list() |>
     expect_s3_class("data.frame") |>
     expect_named(c("package", "version", "path", "installer")) |>
