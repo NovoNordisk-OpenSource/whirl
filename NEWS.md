@@ -1,12 +1,9 @@
-# whirl dev
+# whirl 0.3.1
 
-* Fixed test-strace.R permission issue
-* Altered permissions in action.yaml
-* Added timing function for test-strace.R 
 * Improved error handling when the log cannot be created.
 * Added new option `environment_secrets` to control which secret environment variables not to include in the log.
-* Improved progress bar to show all currently running scripts.
-* Removed `verbosity_level` argument to `run()` since it is now completely controlled by zephyr options (`help("whirl-options")`).
+* Improved progress bar of `run()` to show all currently running scripts.
+* Removed `verbosity_level` argument to `run()` since it is now completely controlled by zephyr options (see `help("whirl-options")`).
 * Fixed bug where a script would not execute if using `options(warn = 2)` (#151)
 * The log now distinguishes between directly and indirectly used packages, and visually highlights their approval status if a list of approved packages is provided.
 * Added check for approved Python packages with the `approved_python_packages` option similar to for R.
