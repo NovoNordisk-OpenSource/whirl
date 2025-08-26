@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,17 @@
       <small>Source: <a href="https://github.com/NovoNordisk-OpenSource/whirl/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.1" id="whirl-031">whirl 0.3.1<a class="anchor" aria-label="anchor" href="#whirl-031"></a></h2><p class="text-muted">CRAN release: 2025-08-25</p>
+<ul><li>Improved error handling when the log cannot be created.</li>
+<li>Added new option <code>environment_secrets</code> to control which secret environment variables not to include in the log.</li>
+<li>Improved progress bar of <code><a href="../reference/run.html">run()</a></code> to show all currently running scripts.</li>
+<li>Removed <code>verbosity_level</code> argument to <code><a href="../reference/run.html">run()</a></code> since it is now completely controlled by zephyr options (see <code><a href="../reference/whirl-options.html">help("whirl-options")</a></code>).</li>
+<li>Fixed bug where a script would not execute if using <code>options(warn = 2)</code> (<a href="https://github.com/NovoNordisk-OpenSource/whirl/issues/151" class="external-link">#151</a>)</li>
+<li>The log now distinguishes between directly and indirectly used packages, and visually highlights their approval status if a list of approved packages is provided.</li>
+<li>Added check for approved Python packages with the <code>approved_python_packages</code> option similar to for R.</li>
+<li>Improved how to find used Python packages, so it now only lists the packages actually used in the script.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="whirl-030">whirl 0.3.0<a class="anchor" aria-label="anchor" href="#whirl-030"></a></h2><p class="text-muted">CRAN release: 2025-07-08</p>
 <ul><li>Add <code><a href="../reference/write_biocompute.html">write_biocompute()</a></code> to create <a href="https://www.biocomputeobject.org/" class="external-link">BioCompute Objects</a> containing the logs in a standardized JSON format.</li>
