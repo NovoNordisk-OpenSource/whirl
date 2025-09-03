@@ -262,7 +262,7 @@ wrs_log_script <- function(script, self, private, super) {
       md5sum = private$current_script |> # Devskim: ignore DS126858
         tools::md5sum() |> # Devskim: ignore DS126858
         unname(),
-      content = readLines(private$current_script) |>
+      content = readLines(con = private$current_script, warn = FALSE) |>
         paste0(collapse = "\n")
     ),
     file = file.path(private$wd, "script.rds")

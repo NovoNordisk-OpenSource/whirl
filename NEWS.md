@@ -1,3 +1,7 @@
+# whirl dev
+
+* Fixed so no warnings are given when scripts are missing a final EOL ([#206](https://github.com/NovoNordisk-OpenSource/whirl/issues/206))
+
 # whirl 0.3.1
 
 * Improved error handling when the log cannot be created.
