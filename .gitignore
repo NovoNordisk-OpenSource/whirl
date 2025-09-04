@@ -71,3 +71,4 @@ bco.json
 *_log.(html|json|md)
 _parametrics.yml
 _whirl.yml
+.DS_Store
