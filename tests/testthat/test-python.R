@@ -60,6 +60,20 @@ test_that("python dependencies found correctly", {
   } else {
     cat("No packages marked as directly used!\n")
   }
+  cat("\n=== FULL OBJECT STRUCTURE ===\n")
+  cat("Names in info_py_dependencies:\n")
+  print(names(info_py_dependencies))
+
+  if ("python" %in% names(info_py_dependencies)) {
+    cat("Names in python section:\n")
+    print(names(info_py_dependencies$python))
+
+    cat("Full python object structure:\n")
+    str(info_py_dependencies$python)
+  } else {
+    cat("No 'python' section found!\n")
+  }
+  cat("=== END FULL OBJECT STRUCTURE ===\n\n")
 
   cat("Expected packages: pandas, numpy\n")
   cat("Length of directly used packages:", length(directly_used_packages), "\n")
