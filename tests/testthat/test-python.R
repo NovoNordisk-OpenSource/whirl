@@ -3,6 +3,11 @@ test_that("python dependencies found correctly", {
   skip_if_no_quarto()
   skip_if_no_python()
 
+  # Add diagnostic information
+  cat("Python executable:", reticulate::py_config()$python, "\n")
+  cat("Python version:", reticulate::py_config()$version, "\n")
+  cat("Python packages location:", reticulate::py_config()$libpaths, "\n")
+
   reticulate::py_require("pandas")
   reticulate::py_require("numpy")
 
