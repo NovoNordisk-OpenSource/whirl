@@ -1,3 +1,41 @@
+# Before calling whirl, add debugging
+cat("=== WHIRL DEBUG INFO ===\n")
+cat("Working directory:", getwd(), "\n")
+cat("Files in current directory:\n")
+print(list.files(".", recursive = TRUE, pattern = "\\.py$"))
+
+# Check if the Python script exists and is readable
+py_script_path <- "py_dependencies.py"  # or whatever the actual path is
+cat("Python script path:", py_script_path, "\n")
+cat("Script exists:", file.exists(py_script_path), "\n")
+if (file.exists(py_script_path)) {
+  cat("Script size:", file.size(py_script_path), "bytes\n")
+  cat("Script permissions:", file.access(py_script_path, mode = 4), "\n")  # 4 = read permission
+}
+
+# Check what Python executable whirl would use
+cat("Python executable from reticulate:", reticulate::py_config()$python, "\n")
+
+# Try to run the Python script manually to see if it works
+cat("=== MANUAL PYTHON SCRIPT TEST ===\n")
+if (file.exists(py_script_path)) {
+  tryCatch({
+    result <- system2(reticulate::py_config()$python, py_script_path,
+                      stdout = TRUE, stderr = TRUE)
+    cat("Manual script execution result:\n")
+    cat("STDOUT:\n", paste(result, collapse = "\n"), "\n")
+    if (!is.null(attr(result, "status"))) {
+      cat("Exit status:", attr(result, "status"), "\n")
+    }
+  }, error = function(e) {
+    cat("Manual script execution failed:", e$message, "\n")
+  })
+}
+
+cat("=== END WHIRL DEBUG INFO ===\n")
+
+
+
 test_that("python dependencies found correctly", {
   skip_on_cran()
   skip_if_no_quarto()
