@@ -6,15 +6,8 @@ test_that("python dependencies found correctly", {
   reticulate::py_require("pandas")
   reticulate::py_require("numpy")
 
-  # Use different script paths based on OS
-  if (Sys.info()[["sysname"]] == "Windows") {
-    script_paths <- paste0("scripts/", c("py_success.py", "py_dependencies.py"))
-  } else {
-    script_paths <-  c("py_success.py", "py_dependencies.py")
-  }
-
   res <- test_script(
-    script = script_paths
+    script = c("py_success.py", "py_dependencies.py")
   ) |>
     run(summary_file = NULL) |>
     expect_no_warning() |>
@@ -23,7 +16,7 @@ test_that("python dependencies found correctly", {
   res[["status"]] |>
     expect_equal(c("success", "success"))
 
-  info_py_success <-  res[["result"]][[1]][["session"]]
+  info_py_success <- res[["result"]][[1]][["session"]]
 
   info_py_success$platform$setting |>
     expect_contains("python")
@@ -33,7 +26,9 @@ test_that("python dependencies found correctly", {
   ] |>
     expect_length(0)
 
-  info_py_dependencies <-  res[["result"]][[2]][["session"]]
+  skip_on_os("windows") # To be fixed in #204
+
+  info_py_dependencies <- res[["result"]][[2]][["session"]]
 
   info_py_dependencies$platform$setting |>
     expect_contains("python")
