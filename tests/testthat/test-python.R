@@ -7,7 +7,8 @@ test_that("python dependencies found correctly", {
   reticulate::py_require("numpy")
 
   res <- test_script(
-    script = paste0("scripts/", c("py_success.py", "py_dependencies.py"))
+    #script = paste0("scripts/", c("py_success.py", "py_dependencies.py"))
+    script = c("py_success.py", "py_dependencies.py")
   ) |>
     run(summary_file = NULL) |>
     expect_no_warning() |>
