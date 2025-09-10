@@ -1,3 +1,5 @@
+print("SCRIPT STARTED - This should appear if the script runs at all")
+
 import sys
 import subprocess
 import os
@@ -38,12 +40,17 @@ import numpy as np  # noqa: E501 # pylint: disable=import-error # pyright: ignor
 
 
 def main():
+    print("MAIN FUNCTION STARTED")
     df = pd.DataFrame({
         'A': [np.sum([1, 2])]
     })
 
+    print("DataFrame created:")
     print(df)
+    print("MAIN FUNCTION COMPLETED")
 
 
 if __name__ == "__main__":
+    print("SCRIPT RUNNING AS MAIN")
     main()
+    print("SCRIPT COMPLETED")
