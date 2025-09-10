@@ -5,7 +5,6 @@ test_that("python dependencies found correctly", {
 
   # Add diagnostic information
   cat("Python executable:", reticulate::py_config()$python, "\n")
-  cat("Python version:", reticulate::py_config()$version, "\n")
   cat("Python packages location:", reticulate::py_config()$libpaths, "\n")
 
   reticulate::py_require("pandas")
