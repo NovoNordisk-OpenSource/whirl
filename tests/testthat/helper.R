@@ -1,13 +1,8 @@
 # Helper function to select test scripts
 
-test_script <- function(script) {
-  if (Sys.info()[["sysname"]] == "Windows") {
-    script <- testthat::test_path("scripts", script) |>
-      normalizePath(winslash = "\\", mustWork = TRUE)
-  } else {
-    script <-  testthat::test_path("scripts", script) |>
-      normalizePath(winslash = "/", mustWork = TRUE)
-  }
+test_script <-  function(script) {
+  script <- testthat::test_path("scripts", script) |>
+    normalizePath(winslash = "/", mustWork = TRUE)
   return(script)
 }
 
