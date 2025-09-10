@@ -10,27 +10,35 @@ test_that("python dependencies found correctly", {
   cat("=== PYTHON ENVIRONMENT DEBUG ===\n")
   cat("Python executable:", reticulate::py_config()$python, "\n")
 
-  # Try different pip commands
+  # Try different pip commands and show their output
   tryCatch({
     pip_output1 <-  system("python -m pip list", intern = TRUE)
-    cat("python -m pip list works, found", length(pip_output1), "lines\n")
+    cat("python -m pip list output:\n")
+    cat(paste(pip_output1, collapse = "\n"), "\n")
+    cat("---\n")
   }, error = function(e) cat("python -m pip list failed:", e$message, "\n"))
 
   tryCatch({
     pip_output2 <- system("python3 -m pip list", intern = TRUE)
-    cat("python3 -m pip list works, found", length(pip_output2), "lines\n")
+    cat("python3 -m pip list output:\n")
+    cat(paste(pip_output2, collapse = "\n"), "\n")
+    cat("---\n")
   }, error = function(e) cat("python3 -m pip list failed:", e$message, "\n"))
 
-  # Check reticulate
+  # Test whirl's parse_pip_list function directly
   tryCatch({
-    py_pandas <- reticulate::py_module_available("pandas")
-    py_numpy <- reticulate::py_module_available("numpy")
-    cat("reticulate sees pandas:", py_pandas, "numpy:", py_numpy, "\n")
-  }, error = function(e) cat("reticulate check failed:", e$message, "\n"))
+    parsed_pip <- system("python -m pip list", intern = TRUE) |> parse_pip_list()
+    cat("parse_pip_list() result:\n")
+    print(parsed_pip)
+    cat("Packages found:", nrow(parsed_pip), "\n")
+    if (nrow(parsed_pip) > 0) {
+      cat("Package names:", paste(parsed_pip$package, collapse = ", "), "\n")
+    }
+  }, error = function(e) cat("parse_pip_list() failed:", e$message, "\n"))
 
   cat("================================\n")
 
-  res <- test_script(
+  res <-  test_script(
     script = c("py_success.py", "py_dependencies.py")
   ) |>
     run(summary_file = NULL) |>
@@ -54,6 +62,16 @@ test_that("python dependencies found correctly", {
 
   info_py_dependencies$platform$setting |>
     expect_contains("python")
+
+  # DEBUG: Show what whirl actually found
+  cat("=== WHIRL DETECTION RESULTS ===\n")
+  cat("All python packages found by whirl:\n")
+  print(info_py_dependencies$python$package)
+  cat("Directly used packages:\n")
+  print(info_py_dependencies$python$package[info_py_dependencies$python$directly_used])
+  cat("directly_used flags:\n")
+  print(info_py_dependencies$python$directly_used)
+  cat("===============================\n")
 
   info_py_dependencies$python$package[
     info_py_dependencies$python$directly_used
