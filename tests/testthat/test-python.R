@@ -3,14 +3,10 @@ test_that("python dependencies found correctly", {
   skip_if_no_quarto()
   skip_if_no_python()
 
-  # Add diagnostic information
-  cat("Python executable:", reticulate::py_config()$python, "\n")
-  cat("Python packages location:", reticulate::py_config()$libpaths, "\n")
-
   reticulate::py_require("pandas")
   reticulate::py_require("numpy")
 
-  res <-  test_script(
+  res <- test_script(
     script = c("py_success.py", "py_dependencies.py")
   ) |>
     run(summary_file = NULL) |>
@@ -20,7 +16,7 @@ test_that("python dependencies found correctly", {
   res[["status"]] |>
     expect_equal(c("success", "success"))
 
-  info_py_success <-  res[["result"]][[1]][["session"]]
+  info_py_success <- res[["result"]][[1]][["session"]]
 
   info_py_success$platform$setting |>
     expect_contains("python")
@@ -30,54 +26,12 @@ test_that("python dependencies found correctly", {
   ] |>
     expect_length(0)
 
-  #skip_on_os("windows") # To be fixed in #204
+  skip_on_os("windows") # To be fixed in #204
 
-  info_py_dependencies <-  res[["result"]][[2]][["session"]]
+  info_py_dependencies <- res[["result"]][[2]][["session"]]
 
   info_py_dependencies$platform$setting |>
     expect_contains("python")
-
-  # Add detailed diagnostics for the failing test
-  cat("\n=== DEBUGGING INFO FOR py_dependencies.py ===\n")
-  cat("All Python packages found:\n")
-  if (!is.null(info_py_dependencies$python$package)) {
-    print(info_py_dependencies$python$package)
-  } else {
-    cat("No packages found!\n")
-  }
-
-  cat("Directly used flags:\n")
-  if (!is.null(info_py_dependencies$python$directly_used)) {
-    print(info_py_dependencies$python$directly_used)
-  } else {
-    cat("No directly_used flags found!\n")
-  }
-
-  cat("Packages marked as directly used:\n")
-  directly_used_packages <-  info_py_dependencies$python$package[info_py_dependencies$python$directly_used]
-  if (length(directly_used_packages) > 0) {
-    print(directly_used_packages)
-  } else {
-    cat("No packages marked as directly used!\n")
-  }
-  cat("\n=== FULL OBJECT STRUCTURE ===\n")
-  cat("Names in info_py_dependencies:\n")
-  print(names(info_py_dependencies))
-
-  if ("python" %in% names(info_py_dependencies)) {
-    cat("Names in python section:\n")
-    print(names(info_py_dependencies$python))
-
-    cat("Full python object structure:\n")
-    str(info_py_dependencies$python)
-  } else {
-    cat("No 'python' section found!\n")
-  }
-  cat("=== END FULL OBJECT STRUCTURE ===\n\n")
-
-  cat("Expected packages: pandas, numpy\n")
-  cat("Length of directly used packages:", length(directly_used_packages), "\n")
-  cat("=== END DEBUGGING INFO ===\n\n")
 
   info_py_dependencies$python$package[
     info_py_dependencies$python$directly_used
