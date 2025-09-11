@@ -93,44 +93,9 @@ get_package_status(r.params["tmpdir"]+"/"+'py_new_status.json')
 #| include: false
 #| error: false
 
-# Cross-platform Python pip list function
-get_python_pip_list <- function() {
-  # Try python3 first (Linux/Mac standard)
-  python_cmd <- "python3"
-  
-  # Test if python3 command exists
-  python3_test <- tryCatch({
-    system2(python_cmd, args = "--version", stdout = TRUE, stderr = TRUE)
-    TRUE
-  }, error = function(e) FALSE, warning = function(w) FALSE)
-  
-  # If python3 doesn't work, try python (Windows standard)  
-  if (!python3_test) {
-    python_cmd <- "python"
-    
-    # Test if python command exists
-    python_test <- tryCatch({
-      system2(python_cmd, args = "--version", stdout = TRUE, stderr = TRUE)
-      TRUE
-    }, error = function(e) FALSE, warning = function(w) FALSE)
-    
-    if (!python_test) {
-      warning("Neither 'python3' nor 'python' command found")
-      return(character(0))
-    }
-  }
-  
-  # Run pip list with the working python command
-  tryCatch({
-    system2(python_cmd, args = c("-m", "pip", "list", "-v"), stdout = TRUE, stderr = TRUE)
-  }, error = function(e) {
-    warning("Failed to run pip list: ", e$message)
-    character(0)
-  })
-}
 
 saveRDS(
-  object = get_python_pip_list(),
+  object = system('python -m pip list -v', intern = TRUE),
   file = file.path(params$tmpdir, "py_pip_list.rds")
 )
 ```
