@@ -2,6 +2,7 @@ test_that("python dependencies found correctly", {
   skip_on_cran()
   skip_if_no_quarto()
   skip_if_no_python()
+  skip_if_not_installed(pkg = "reticulate", minimum_version = "1.41.0")
 
   reticulate::py_require("pandas")
   reticulate::py_require("numpy")
@@ -42,7 +43,7 @@ test_that("parse_pip_list() is consistent", {
   skip_on_cran()
   skip_if_no_python()
 
-  system("python3 -m pip list -v", intern = TRUE) |>
+  system("python -m pip list -v", intern = TRUE) |>
     parse_pip_list() |>
     expect_s3_class("data.frame") |>
     expect_named(c("package", "version", "path", "installer")) |>
