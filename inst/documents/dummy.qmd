@@ -93,7 +93,7 @@ get_package_status(r.params["tmpdir"]+"/"+'py_new_status.json')
 #| include: false
 #| error: false
   saveRDS(
-    object =system('python3 -m pip list -v', intern = TRUE),
+    object = system('python -m pip list -v', intern = TRUE),
     file = file.path(params$tmpdir, "py_pip_list.rds")
   )
 ```
