@@ -142,9 +142,27 @@ wrs_initialize <- function(
     args = list(WHIRL_LOG_MSG = file.path(private$wd, private$track_files_log))
   )
 
-  saveRDS(
-    object = options(),
-    file = file.path(private$wd, "parent_options.rds")
+  withCallingHandlers(
+    # Silence Rstudio specific warning when saving options.
+    # See https://github.com/rstudio/rstudio/issues/7001#issue-627302035.
+    # Code is a variation of suppressWarnings().
+    expr = {
+      saveRDS(
+        object = options(),
+        file = file.path(private$wd, "parent_options.rds")
+      )
+    },
+    warning = function(w) {
+      if (
+        inherits(x = w, what = "warning") &&
+          grepl(
+            pattern = "'package:.+' may not be available when loading",
+            x = w
+          )
+      ) {
+        tryInvokeRestart(r = "muffleWarning")
+      }
+    }
   )
 
   environment_file <- file.path(private$wd, "_environment")
