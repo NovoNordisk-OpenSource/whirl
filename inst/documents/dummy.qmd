@@ -115,28 +115,10 @@ if (is.character(params$renv) && params$renv == "yes" ||
 #| label: Log options and environment
 #| include: false
 #| error: false
-withCallingHandlers(
-  # Silence Rstudio specific warning when saving options.
-  # See https://github.com/rstudio/rstudio/issues/7001#issue-627302035.
-  # Code is a variation of suppressWarnings().
-  expr = {
-    saveRDS(
+saveRDS(
       object = options(),
       file = file.path(params$tmpdir, "options.rds")
     )
-  },
-  warning = function(w) {
-    if (
-      inherits(x = w, what = "warning") &&
-        grepl(
-          pattern = "'package:.+' may not be available when loading",
-          x = w
-        )
-    ) {
-      tryInvokeRestart(r = "muffleWarning")
-    }
-  }
-)
 
 saveRDS(
   object = Sys.getenv(),
