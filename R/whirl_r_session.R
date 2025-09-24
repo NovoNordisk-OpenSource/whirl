@@ -90,12 +90,16 @@ whirl_r_session <- R6::R6Class(
       wrs_log_finish(out_dir, format, self, private, super)
     }
   ),
+  active = list(
+    #' @field tmpdir Path to used temporary folder
+    tmpdir = \() private$.tmpdir
+  ),
   private = list(
     #' @description Finalize the whirl R session
     finalize = \() {
       wrs_finalize(self, private, super)
     },
-    tmpdir = NULL,
+    .tmpdir = NULL,
     track_files = NULL,
     out_formats = NULL,
     log_dir = NULL,
@@ -123,7 +127,7 @@ wrs_initialize <- function(
 ) {
   super$initialize(wait_timeout = wait_timeout) # uses callr::r_session$initialize()
 
-  private$tmpdir <- withr::local_tempdir(clean = FALSE)
+  private$.tmpdir <- withr::local_tempdir(clean = FALSE)
   private$check_renv <- check_renv
   private$track_files <- track_files
   private$out_formats <- out_formats
@@ -133,26 +137,26 @@ wrs_initialize <- function(
 
   system.file("documents", package = "whirl") |>
     list.files(full.names = TRUE) |>
-    file.copy(to = private$tmpdir)
+    file.copy(to = self$tmpdir)
 
   super$run(
     func = Sys.setenv,
     args = list(
-      WHIRL_LOG_MSG = file.path(private$tmpdir, private$track_files_log)
+      WHIRL_LOG_MSG = file.path(self$tmpdir, private$track_files_log)
     )
   )
 
   saveRDS(
     object = options(),
-    file = file.path(private$tmpdir, "parent_options.rds")
+    file = file.path(self$tmpdir, "parent_options.rds")
   )
 
-  environment_file <- file.path(private$tmpdir, "_environment")
+  environment_file <- file.path(self$tmpdir, "_environment")
   # Add whirl log file to environment file
   cat(
     sprintf(
       "WHIRL_LOG_MSG='%s'",
-      file.path(private$tmpdir, private$track_files_log)
+      file.path(self$tmpdir, private$track_files_log)
     ),
     file = environment_file,
     append = TRUE
@@ -161,28 +165,28 @@ wrs_initialize <- function(
   if (track_files) {
     start_strace(
       pid = super$get_pid(),
-      file = file.path(private$tmpdir, "strace.log")
+      file = file.path(self$tmpdir, "strace.log")
     )
   }
 
   zephyr::msg_debug(
-    "Started session with pid={.field {self$get_pid()}} and tmpdir={.file {private$tmpdir}}" # nolint: line_length_linter
+    "Started session with pid={.field {self$get_pid()}} and tmpdir={.file {self$tmpdir}}" # nolint: line_length_linter
   )
 }
 
 wrs_finalize <- function(self, private, super) {
   zephyr::msg_debug(
-    "Finalizing session with pid={.field {self$get_pid()}} and tmpdir={.file {private$tmpdir}}" # nolint: line_length_linter
+    "Finalizing session with pid={.field {self$get_pid()}} and tmpdir={.file {self$tmpdir}}" # nolint: line_length_linter
   )
   super$run(func = setwd, args = list(dir = getwd()))
-  unlink(private$tmpdir, recursive = TRUE)
+  unlink(self$tmpdir, recursive = TRUE)
   super$finalize()
 }
 
 wrs_print <- function(self, private, super) {
   msg <- c(
     utils::capture.output(super$print()),
-    "Temporary Directory: {private$tmpdir}"
+    "Temporary Directory: {self$tmpdir}"
   )
 
   cli::cli_bullets(
@@ -235,7 +239,7 @@ wrs_log_script <- function(script, self, private, super) {
   saveRDS(
     # Log starting time
     object = Sys.time(),
-    file = file.path(private$tmpdir, "start.rds")
+    file = file.path(self$tmpdir, "start.rds")
   )
 
   saveRDS(
@@ -252,7 +256,7 @@ wrs_log_script <- function(script, self, private, super) {
         )
       )
     ),
-    file = file.path(private$tmpdir, "pkgs_used.rds")
+    file = file.path(self$tmpdir, "pkgs_used.rds")
   )
 
   saveRDS(
@@ -265,7 +269,7 @@ wrs_log_script <- function(script, self, private, super) {
       content = readLines(con = private$current_script, warn = FALSE) |>
         paste0(collapse = "\n")
     ),
-    file = file.path(private$tmpdir, "script.rds")
+    file = file.path(self$tmpdir, "script.rds")
   )
 
   # Set the execute directory of the Quarto process calling the script
@@ -289,12 +293,12 @@ wrs_log_script <- function(script, self, private, super) {
   self$call(
     func = \(...) quarto::quarto_render(...),
     args = list(
-      input = normalizePath(file.path(private$tmpdir, "dummy.qmd")),
+      input = normalizePath(file.path(self$tmpdir, "dummy.qmd")),
       output_format = "markdown",
       execute_params = list(
         script = normalizePath(script),
         renv = private$check_renv,
-        tmpdir = normalizePath(private$tmpdir)
+        tmpdir = normalizePath(self$tmpdir)
       ),
       execute_dir = quarto_execute_dir
     )
@@ -307,9 +311,9 @@ wrs_create_log <- function(self, private, super) {
   zephyr::msg_debug("Creating log for {.file {private$current_script}}")
 
   if (private$track_files) {
-    strace_msg <- private$tmpdir |>
+    strace_msg <- self$tmpdir |>
       file.path("strace.log") |>
-      read_strace(p_wd = private$tmpdir) |>
+      read_strace(p_wd = self$tmpdir) |>
       refine_strace(
         strace_keep = private$track_files_keep,
         strace_discards = private$track_files_discards
@@ -326,11 +330,11 @@ wrs_create_log <- function(self, private, super) {
   self$call(
     func = \(...) quarto::quarto_render(...),
     args = list(
-      input = file.path(private$tmpdir, "log.qmd"),
+      input = file.path(self$tmpdir, "log.qmd"),
       execute_params = list(
         title = private$current_script,
         track_files = private$track_files,
-        tmpdir = normalizePath(private$tmpdir)
+        tmpdir = normalizePath(self$tmpdir)
       ),
       execute_dir = normalizePath(".")
     )
@@ -340,7 +344,7 @@ wrs_create_log <- function(self, private, super) {
 }
 
 wrs_log_finish <- function(out_dir, format, self, private, super) {
-  private$result <- private$tmpdir |>
+  private$result <- self$tmpdir |>
     file.path("result.rds") |>
     readRDS()
 
@@ -403,7 +407,7 @@ wrs_create_logs <- function(out_dir, format, output, self, private, super) {
       )
     )
     file.copy(
-      from = file.path(private$tmpdir, "log.html"),
+      from = file.path(self$tmpdir, "log.html"),
       to = html_log,
       overwrite = TRUE
     )
@@ -413,7 +417,7 @@ wrs_create_logs <- function(out_dir, format, output, self, private, super) {
   if (any(c("gfm", "commonmark", "markua") %in% format)) {
     logs_md <- mdformats(
       script = private$current_script,
-      log_html = file.path(private$tmpdir, "log.html"),
+      log_html = file.path(self$tmpdir, "log.html"),
       mdfmt = format[format %in% c("gfm", "commonmark", "markua")],
       out_dir = out_dir,
       self = self

@@ -5,7 +5,7 @@ test_that("pandoc works", {
 
   file.copy(
     from = test_script("test-mdformats.html"),
-    to = file.path(x$get_wd(), "log.html")
+    to = file.path(x$tmpdir, "log.html")
   ) |>
     expect_true()
 
@@ -19,7 +19,7 @@ test_that("pandoc works", {
 
   mdformats(
     script = "test1.R",
-    log_html = file.path(x$get_wd(), "log.html"),
+    log_html = file.path(x$tmpdir, "log.html"),
     mdfmt = mdfmt,
     out_dir = tmpdir,
     self = x
