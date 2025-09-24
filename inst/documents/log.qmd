@@ -7,7 +7,6 @@ template-partials:
   - title-block.html
 params:
   title: 'dev'
-  with_library_paths: library_paths
   track_files: FALSE
   tmpdir: '.'
 format:
@@ -25,8 +24,6 @@ format:
 ```{r}
 #| label: Setup
 #| echo: false
-.libPaths(c(character(), params$with_library_paths))
-
 file.path(params$tmpdir, "parent_options.rds") |>
   readRDS() |>
   options()
@@ -84,7 +81,7 @@ registerS3method(
 #| echo: false
 result <- whirl:::read_info(
   script = file.path(params$tmpdir, "script.rds"),
-  md = file.path(params$tmpdir, "doc.md"),
+  md = file.path(params$tmpdir, "dummy.md"),
   start = file.path(params$tmpdir, "start.rds"),
   log = file.path(params$tmpdir, "log_msg.json"),
   pkgs_used = file.path(params$tmpdir, "pkgs_used.rds"),
@@ -141,7 +138,7 @@ params$tmpdir |>
 ::: {.script-container}
 
 ```{r}
-#| child: !expr file.path(params$tmpdir, "doc.md")
+#| child: !expr file.path(params$tmpdir, "dummy.md")
 ```
 
 :::
