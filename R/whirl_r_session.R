@@ -153,7 +153,7 @@ wrs_initialize <- function(
     expr = {
       saveRDS(
         object = options(),
-        file = file.path(private$wd, "parent_options.rds")
+        file = file.path(self$tmpdir, "parent_options.rds")
       )
     },
     warning = function(w) {
