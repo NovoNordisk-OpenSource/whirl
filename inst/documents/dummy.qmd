@@ -89,10 +89,10 @@ get_package_status(r.params["tmpdir"]+"/"+'py_new_status.json')
 #| eval: !expr base::grepl("\\.py$", params$script)
 #| include: false
 #| error: false
-  saveRDS(
-    object = system('python -m pip list -v', intern = TRUE),
-    file = file.path(params$tmpdir, "py_pip_list.rds")
-  )
+saveRDS(
+  object = system('python -m pip list -v', intern = TRUE),
+  file = file.path(params$tmpdir, "py_pip_list.rds")
+)
 ```
 
 ```{r}
@@ -113,8 +113,8 @@ if (is.character(params$renv) && params$renv == "yes" ||
 #| include: false
 #| error: false
 saveRDS(
-  object = options(),
-  file = file.path(params$tmpdir, "options.rds")
+      object = options(),
+      file = file.path(params$tmpdir, "options.rds")
 )
 
 saveRDS(

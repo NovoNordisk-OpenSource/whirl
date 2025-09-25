@@ -78,7 +78,7 @@ registerS3method(
 
 ```{r}
 #| label: Status
-#| echo: false
+#| include: false
 result <- whirl:::read_info(
   script = file.path(params$tmpdir, "script.rds"),
   md = file.path(params$tmpdir, "dummy.md"),
@@ -98,7 +98,11 @@ saveRDS(
   object = result,
   file = file.path(params$tmpdir, "result.rds")
 )
+```
 
+```{r}
+#| label: Report status
+#| echo: false
 status <- result$status
 
 status_txt <- status[c("error", "warning")]
