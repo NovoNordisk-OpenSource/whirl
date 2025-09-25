@@ -28,7 +28,7 @@ mdformats <- function(script, log_html, mdfmt, self, out_dir) {
     )
 
     file.copy(
-      from = file.path(self$get_wd(), "log.md"),
+      from = file.path(self$tmpdir, "log.md"),
       to = file.path(
         out_dir,
         newname[[i]]

@@ -1,7 +1,6 @@
 ---
 params:
   script: 'dev'
-  with_library_paths: library_paths
   renv: TRUE
   tmpdir: "."
   converted_qmd: "temp_script.qmd"
@@ -16,8 +15,6 @@ knitr::opts_chunk$set(
   message = TRUE,
   echo = TRUE
 )
-
-.libPaths(c(character(), params$with_library_paths))
 
 file.path(params$tmpdir, "parent_options.rds") |>
   readRDS() |>

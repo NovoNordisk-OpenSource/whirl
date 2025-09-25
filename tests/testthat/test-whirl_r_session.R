@@ -6,11 +6,11 @@ test_that("interactive whirl R session components not tested in run", {
     expect_message() |>
     suppressMessages()
 
-  p$get_wd() |>
+  p$tmpdir |>
     dir.exists() |>
     expect_true()
 
-  p$get_wd() |>
+  p$tmpdir |>
     list.files() |>
     sort() |>
     expect_contains(c("dummy.qmd", "log.qmd", "summary.qmd"))
@@ -27,7 +27,7 @@ test_that("interactive whirl R session components not tested in run", {
   expect_error(p$wait()$check_status())
 
   # Test temp dir is deleted correctly
-  dir <- p$get_wd()
+  dir <- p$tmpdir
   rm(p)
   gc()
 
