@@ -6,6 +6,16 @@ params:
   converted_qmd: "temp_script.qmd"
 ---
 
+```{r debug}
+cli::cli_abort(
+  c(
+  "Debug information",
+  "version: {packageVersion('whirl')}",
+  "libpaths: { .libPaths()}"
+  )
+)
+```
+
 ```{r}
 #| label: Setup
 #| include: false
