@@ -2,7 +2,7 @@
 title: "Log example"
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include = FALSE, message = NA}}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -12,6 +12,15 @@ knitr::opts_chunk$set(
 
 wd <- normalizePath(".")
 tmp <- withr::local_tempdir()
+
+
+cli::cli_warn(
+  c(
+  "Debug information",
+  "version: {packageVersion('whirl')}",
+  "libpaths: { .libPaths()}"
+  )
+)
 
 system.file("examples/prg1.R", package = "whirl") |>
   file.copy(to = file.path(tmp, "example.R"))
