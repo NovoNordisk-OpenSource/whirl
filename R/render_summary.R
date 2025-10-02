@@ -1,26 +1,27 @@
-#' Render data.frame into a summary.html file
+#' Render data.frame into a html summary file
 #'
-#' @param input The input data.frame that should be rendered into a summary.html
-#' file
+#' @param input An input data.frame that should be rendered into the specified
+#' `summary_file` file. Typically the output of {run()}.
 #' @param summary_file A character string specifying the path where the summary
 #' HTML file should be saved. Defaults to `"summary.html"`.
 #'
 #' @return Takes a data.frame as input and returns a log in html format
 #' @noRd
 render_summary <- function(input, summary_file = "summary.html") {
-  summary_qmd <- withr::local_tempfile(
+  summary_qmd <- withr::local_tempfile( # Full path to qmd
     lines = readLines(system.file("documents/summary.qmd", package = "whirl")),
     fileext = ".qmd"
   )
 
-  summary_log_html <- gsub(
-    pattern = "qmd",
-    replacement = "html",
+  summary_log_html <- gsub( # Replace qmd extension with html
+    pattern = "\\.qmd$",
+    replacement = ".html",
     x = basename(summary_qmd)
   )
 
   summary_dir_f <- normalizePath(dirname(summary_file), winslash = "/")
   my_summaries <- knit_print_whirl_summary_info(input, summary_dir_f)
+
   withr::with_dir(
     tempdir(),
     {
@@ -72,7 +73,8 @@ knit_print_whirl_summary_info <- function(x, path_rel_start, ...) {
   if (grepl("rstudio_cloud", Sys.getenv("R_CONFIG_ACTIVE"))) {
     formatted <- file.path("/file_show?path=", hold$"Hyperlink")
   } else {
-    formatted <- lapply(hold$"Hyperlink", path_rel, start = path_rel_start) |>
+    formatted <-
+      lapply(hold$"Hyperlink", path_rel, start = path_rel_start) |>
       unlist() |>
       file.path()
   }

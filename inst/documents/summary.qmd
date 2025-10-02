@@ -40,7 +40,6 @@ knitr::opts_chunk$set(
 ```{r}
 #| label: Summary
 #| echo: false
-
 my_df <- structure(params$summary_df, format = "html", class = "knitr_kable")
 my_df
 ```

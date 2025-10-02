@@ -11,7 +11,8 @@ expect_single_script <- function(res) {
 
 test_that("Run single R script", {
   skip_if_no_quarto()
-  res <- test_script("success.R") |>
+  res <-
+    test_script("success.R") |>
     run() |>
     expect_no_warning() |>
     expect_no_error()

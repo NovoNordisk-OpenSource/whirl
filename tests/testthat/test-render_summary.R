@@ -1,5 +1,4 @@
-test_that("warning when summary cant be created", {
-
+test_that("warning an error when summary cant be created", {
   tempdir <- withr::local_tempdir()
 
   summary_file <- file.path(tempdir, "folder_not_exists", "summary.html")
