@@ -2,7 +2,7 @@
 title: "Log example"
 ---
 
-```{r setup, include = FALSE, message = NA}}
+```{r setup, include = FALSE, message = NA}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
