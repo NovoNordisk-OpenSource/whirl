@@ -10,6 +10,8 @@ params:
 cli::cli_abort(
   c(
   "Debug information",
+  "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
+  "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}"
   )

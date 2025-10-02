@@ -2,7 +2,7 @@
 title: "Log example"
 ---
 
-```{r setup, include = FALSE, message = NA}
+```{r setup, include = FALSE, message = NA, warning = NA}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -13,10 +13,11 @@ knitr::opts_chunk$set(
 wd <- normalizePath(".")
 tmp <- withr::local_tempdir()
 
-
 cli::cli_warn(
   c(
   "Debug information",
+  "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
+  "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}"
   )
