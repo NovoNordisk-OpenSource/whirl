@@ -25,7 +25,9 @@ cli::cli_warn(
 
 system.file("examples/prg1.R", package = "whirl") |>
   file.copy(to = file.path(tmp, "example.R"))
-
+if (file.exists(".Renviron")) {
+  file.copy(".Renviron", to = tmp)
+}
 knitr::opts_knit$set(root.dir = tmp)
 ```
 
