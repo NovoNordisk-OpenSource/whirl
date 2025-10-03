@@ -15,8 +15,8 @@ tmp <- Sys.getenv("AGENT_TEMPDIRECTORY")
 if (tmp == "") {
   tmp <- withr::local_tempdir()
 } else {
-  tmp <- basename(tempdir())
-  dir.create(tmp, showWarnings = FALSE)
+  tmp <- file.path(tmp, basename(tempdir())) # use a subfolder /agent/temp/
+  dir.create(tmp, recursive = TRUE)
 }
 renviron <- normalizePath("../../.Renviron")
 
@@ -37,8 +37,10 @@ cli::cli_warn(
   )
 )
 
-system.file("examples/prg1.R", package = "whirl") |>
-  file.copy(to = file.path(tmp, "example.R"))
+file.copy(
+  from = system.file("examples/prg1.R", package = "whirl"),
+  to = file.path(tmp, "example.R")
+)
 
 if (file.exists(renviron)) {
   cli::cli_warn(c("Copying",  renviron, "to", tmp, "\n"))
