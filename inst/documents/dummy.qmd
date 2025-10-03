@@ -9,12 +9,14 @@ params:
 ```{r debug}
 cli::cli_abort(
   c(
-  "Debug information",
+  "Debug information DUM ---------------",
+  "getwd(): {getwd()}",
   "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
-  "files in wd: {list.files(all.files = TRUE)}"
+  "files in getwd(): {list.files(all.files = TRUE)}",
+  "Debug information DUM end ---------------"
   )
 )
 ```

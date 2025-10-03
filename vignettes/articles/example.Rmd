@@ -11,7 +11,13 @@ knitr::opts_chunk$set(
 # Use a temporary directory as working directory with the example program
 
 wd <- normalizePath(".")
-tmp <- withr::local_tempdir()
+tmp <- Sys.getenv("AGENT.TEMPDIRECTORY")
+if (tmp == "") {
+  tmp <- withr::local_tempdir()
+} else {
+  tmp <- basename(tempdir())
+  dir.create(tmp, showWarnings = FALSE)
+}
 renviron <- normalizePath("../../.Renviron")
 
 cli::cli_warn(
@@ -22,6 +28,7 @@ cli::cli_warn(
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
+  "Sys.getenv('AGENT.TEMPDIRECTORY'): {Sys.getenv('AGENT.TEMPDIRECTORY')}",
   "wd: {wd}",
   "tmp: {tmp}",
   "renviron: {renviron}",
@@ -35,8 +42,10 @@ system.file("examples/prg1.R", package = "whirl") |>
 
 if (file.exists(renviron)) {
   cli::cli_warn(c("Copying",  renviron, "to", tmp, "\n"))
-  file.copy(from = renviron, 
-            to = file.path(tmp, basename(renviron)))
+  file.copy(
+    from = renviron,
+    to = file.path(tmp, basename(renviron))
+  )
 }
 
 knitr::opts_knit$set(root.dir = tmp)
@@ -51,6 +60,7 @@ cli::cli_warn(
   "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
+  "Sys.getenv('AGENT.TEMPDIRECTORY'): {Sys.getenv('AGENT.TEMPDIRECTORY')}",
   "libpaths: { .libPaths()}",
   "wd: {wd}",
   "files in getwd(): {list.files(all.files = TRUE)}",
