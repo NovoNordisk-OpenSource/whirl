@@ -15,7 +15,17 @@ cli::cli_abort(
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
-  "files in getwd(): {list.files(all.files = TRUE)}",
+  "",
+  sprintf("Initial wd (from .First): %s", Sys.getenv("PWD")),
+  sprintf("R_ENVIRON_USER: %s", Sys.getenv("R_ENVIRON_USER")),
+  sprintf("R_ENVIRON: %s", Sys.getenv("R_ENVIRON")),
+  "",
+  sprintf("files in getwd(): %s", 
+          paste(list.files(getwd(), all.files = TRUE), collapse = ", ")),
+  "",
+  sprintf(".Renviron exists: %s", file.exists(".Renviron")),
+  sprintf(".Renviron readable: %s", file.access(".Renviron", 4) == 0),
+  "",
   "Debug information DUM end ---------------"
   )
 )
