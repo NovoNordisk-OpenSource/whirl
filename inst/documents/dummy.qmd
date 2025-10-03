@@ -7,7 +7,9 @@ params:
 ---
 
 ```{r debug}
-cli::cli_abort(
+#| warning: NA
+
+cli::cli_warn(
   c(
   "Debug information DUM ---------------",
   "getwd(): {getwd()}",
@@ -44,6 +46,32 @@ knitr::opts_chunk$set(
 file.path(params$tmpdir, "parent_options.rds") |>
   readRDS() |>
   options()
+```
+
+```{r debug}
+
+cli::cli_abort(
+  c(
+  "Debug information DUM ---------------",
+  "getwd(): {getwd()}",
+  "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
+  "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
+  "version: {packageVersion('whirl')}",
+  "libpaths: { .libPaths()}",
+  "",
+  sprintf("Initial wd (from .First): %s", Sys.getenv("PWD")),
+  sprintf("R_ENVIRON_USER: %s", Sys.getenv("R_ENVIRON_USER")),
+  sprintf("R_ENVIRON: %s", Sys.getenv("R_ENVIRON")),
+  "",
+  sprintf("files in getwd(): %s", 
+          paste(list.files(getwd(), all.files = TRUE), collapse = ", ")),
+  "",
+  sprintf(".Renviron exists: %s", file.exists(".Renviron")),
+  sprintf(".Renviron readable: %s", file.access(".Renviron", 4) == 0),
+  "",
+  "Debug information DUM end ---------------"
+  )
+)
 ```
 
 ```{r}
