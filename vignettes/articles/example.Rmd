@@ -33,8 +33,8 @@ system.file("examples/prg1.R", package = "whirl") |>
 #   file.copy(".Renviron", to = tmp)
 # }
 if (file.exists("../../.Renviron")) {
-  cat("Copying",  normalizePath("../../.Renviron"), "to", tmp, "\n")
-  file.copy("../../.Renviron", to = tmp)
+  cli::cli_alert("Copying",  normalizePath("../../.Renviron"), "to", tmp, "\n")
+  file.copy(normalizePath("../../.Renviron"), to = file.path(tmp, ".Renviron"))
 }
 knitr::opts_knit$set(root.dir = tmp)
 
