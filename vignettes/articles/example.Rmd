@@ -51,7 +51,6 @@ if (file.exists(renviron)) {
 }
 
 knitr::opts_knit$set(root.dir = tmp)
-
 ```
 
 ```{r debug, include = FALSE, message = NA, warning = NA}
@@ -66,6 +65,8 @@ cli::cli_warn(
   "libpaths: { .libPaths()}",
   "wd: {wd}",
   "files in getwd(): {list.files(all.files = TRUE)}",
+  "Debug information 3 mid ---------------",
+  paste(names(callr::r_session_options()), ": ", callr::r_session_options()),
   "Debug information 3 end ---------------"
   )
 )
