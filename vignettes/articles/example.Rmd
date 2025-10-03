@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 # Use a temporary directory as working directory with the example program
 
 wd <- normalizePath(".")
-tmp <- Sys.getenv("AGENT.TEMPDIRECTORY")
+tmp <- Sys.getenv("AGENT_TEMPDIRECTORY")
 if (tmp == "") {
   tmp <- withr::local_tempdir()
 } else {
@@ -28,7 +28,7 @@ cli::cli_warn(
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
-  "Sys.getenv('AGENT.TEMPDIRECTORY'): {Sys.getenv('AGENT.TEMPDIRECTORY')}",
+  "Sys.getenv('AGENT_TEMPDIRECTORY'): {Sys.getenv('AGENT_TEMPDIRECTORY')}",
   "wd: {wd}",
   "tmp: {tmp}",
   "renviron: {renviron}",
@@ -60,7 +60,7 @@ cli::cli_warn(
   "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
-  "Sys.getenv('AGENT.TEMPDIRECTORY'): {Sys.getenv('AGENT.TEMPDIRECTORY')}",
+  "Sys.getenv('AGENT_TEMPDIRECTORY'): {Sys.getenv('AGENT_TEMPDIRECTORY')}",
   "libpaths: { .libPaths()}",
   "wd: {wd}",
   "files in getwd(): {list.files(all.files = TRUE)}",
