@@ -44,7 +44,7 @@ cli::cli_warn(
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
   "files in wd: {list.files(all.files = TRUE)}",
-    "Debug information 2 end ---------------",
+    "Debug information 2 end ---------------"
   )
 )
 ```
