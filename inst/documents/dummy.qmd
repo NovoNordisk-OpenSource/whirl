@@ -48,7 +48,7 @@ file.path(params$tmpdir, "parent_options.rds") |>
   options()
 ```
 
-```{r debug}
+```{r debug2}
 
 cli::cli_abort(
   c(
