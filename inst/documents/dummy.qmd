@@ -13,7 +13,8 @@ cli::cli_abort(
   "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
-  "libpaths: { .libPaths()}"
+  "libpaths: { .libPaths()}",
+  "files in wd: {list.files(all.files = TRUE)}"
   )
 )
 ```

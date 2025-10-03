@@ -16,10 +16,12 @@ tmp <- withr::local_tempdir()
 cli::cli_warn(
   c(
   "Debug information",
+  "getwd(): {getwd()}",
   "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
-  "libpaths: { .libPaths()}"
+  "libpaths: { .libPaths()}",
+  "files in wd: {list.files(all.files = TRUE)}"
   )
 )
 
@@ -29,6 +31,19 @@ if (file.exists(".Renviron")) {
   file.copy(".Renviron", to = tmp)
 }
 knitr::opts_knit$set(root.dir = tmp)
+
+
+cli::cli_warn(
+  c(
+  "Debug information 2",
+  "getwd(): {getwd()}",
+  "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
+  "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
+  "version: {packageVersion('whirl')}",
+  "libpaths: { .libPaths()}",
+  "files in wd: {list.files(all.files = TRUE)}"
+  )
+)
 ```
 
 In this example we are going to execute the following script and create a log of it's execution:
