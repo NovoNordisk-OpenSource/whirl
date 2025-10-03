@@ -15,13 +15,15 @@ tmp <- withr::local_tempdir()
 
 cli::cli_warn(
   c(
-  "Debug information",
+  "Debug information 1 ---------------",
   "getwd(): {getwd()}",
   "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
-  "files in wd: {list.files(all.files = TRUE)}"
+  "wd: {wd}",
+  "files in getwd(): {list.files(all.files = TRUE)}",
+  "Debug information 1 end ---------------"
   )
 )
 
@@ -35,13 +37,29 @@ knitr::opts_knit$set(root.dir = tmp)
 
 cli::cli_warn(
   c(
-  "Debug information 2",
+  "Debug information 2 ---------------",
   "getwd(): {getwd()}",
   "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
-  "files in wd: {list.files(all.files = TRUE)}"
+  "files in wd: {list.files(all.files = TRUE)}",
+    "Debug information 2 end ---------------",
+  )
+)
+```
+
+```{r debug, include = FALSE, message = NA, warning = NA}
+cli::cli_warn(
+  c(
+  "Debug information 3 ---------------",
+  "getwd(): {getwd()}",
+  "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
+  "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
+  "version: {packageVersion('whirl')}",
+  "libpaths: { .libPaths()}",
+  "files in wd: {list.files(all.files = TRUE)}",
+  "Debug information 3 end ---------------"
   )
 )
 ```
