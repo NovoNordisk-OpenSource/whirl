@@ -180,6 +180,15 @@ wrs_initialize <- function(
     append = TRUE
   )
 
+  cat(
+    sprintf(
+      "R_LIBS_USER='%s'",
+      Sys.getenv('R_LIBS')
+    ),
+    file = environment_file,
+    append = TRUE
+  )
+
   if (track_files) {
     start_strace(
       pid = super$get_pid(),
