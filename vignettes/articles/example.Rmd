@@ -18,7 +18,7 @@ if (tmp == "") {
   tmp <- file.path(tmp, basename(tempdir())) # use a subfolder /agent/temp/
   dir.create(tmp, recursive = TRUE)
 }
-renviron <- normalizePath("../../.Renviron")
+renviron <- normalizePath("../../.Renviron") # Get project .Renviron
 
 cli::cli_warn(
   c(
@@ -28,6 +28,8 @@ cli::cli_warn(
   "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
   "version: {packageVersion('whirl')}",
   "libpaths: { .libPaths()}",
+  ".Library: { .Library }",
+  ".Library.site: { .Library.site }",
   "Sys.getenv('AGENT_TEMPDIRECTORY'): {Sys.getenv('AGENT_TEMPDIRECTORY')}",
   "wd: {wd}",
   "tmp: {tmp}",
@@ -63,6 +65,8 @@ cli::cli_warn(
   "version: {packageVersion('whirl')}",
   "Sys.getenv('AGENT_TEMPDIRECTORY'): {Sys.getenv('AGENT_TEMPDIRECTORY')}",
   "libpaths: { .libPaths()}",
+  ".Library: { .Library }",
+  ".Library.site: { .Library.site }",
   "wd: {wd}",
   "files in getwd(): {list.files(all.files = TRUE)}",
   "Debug information 3 mid ---------------",
