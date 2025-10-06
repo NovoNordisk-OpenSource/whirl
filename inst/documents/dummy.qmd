@@ -7,28 +7,31 @@ params:
 ---
 
 ```{r debug, warning=NA}
+Sys.setenv("R_LIBS_USER" = Sys.getenv('R_LIBS'))
 cli::cli_abort(
   c(
-  "Debug information DUM ---------------",
-  "getwd(): {getwd()}",
-  "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
-  "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
-  "version: {packageVersion('whirl')}",
-  "libpaths: { .libPaths()}",
-  ".Library: { .Library }",
-  ".Library.site: { .Library.site }",
-  "",
-  sprintf("Initial wd (from .First): %s", Sys.getenv("PWD")),
-  sprintf("R_ENVIRON_USER: %s", Sys.getenv("R_ENVIRON_USER")),
-  sprintf("R_ENVIRON: %s", Sys.getenv("R_ENVIRON")),
-  "",
-  sprintf("files in getwd(): %s", 
-          paste(list.files(getwd(), all.files = TRUE), collapse = ", ")),
-  "",
-  sprintf(".Renviron exists: %s", file.exists(".Renviron")),
-  sprintf(".Renviron readable: %s", file.access(".Renviron", 4) == 0),
-  "",
-  "Debug information DUM end ---------------"
+    "Debug information DUM ---------------",
+    "getwd(): {getwd()}",
+    "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
+    "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
+    "version: {packageVersion('whirl')}",
+    "libpaths: { .libPaths()}",
+    ".Library: { .Library }",
+    ".Library.site: { .Library.site }",
+    "",
+    sprintf("Initial wd (from .First): %s", Sys.getenv("PWD")),
+    sprintf("R_ENVIRON_USER: %s", Sys.getenv("R_ENVIRON_USER")),
+    sprintf("R_ENVIRON: %s", Sys.getenv("R_ENVIRON")),
+    "",
+    sprintf(
+      "files in getwd(): %s",
+      paste(list.files(getwd(), all.files = TRUE), collapse = ", ")
+    ),
+    "",
+    sprintf(".Renviron exists: %s", file.exists(".Renviron")),
+    sprintf(".Renviron readable: %s", file.access(".Renviron", 4) == 0),
+    "",
+    "Debug information DUM end ---------------"
   )
 )
 ```
@@ -126,8 +129,11 @@ saveRDS(
 #| label: renv status
 #| include: false
 #| error: false
-if (is.character(params$renv) && params$renv == "yes" ||
-      is.logical(params$renv) && params$renv) {
+if (
+  is.character(params$renv) &&
+    params$renv == "yes" ||
+    is.logical(params$renv) && params$renv
+) {
   saveRDS(
     object = whirl:::renv_status(),
     file = file.path(params$tmpdir, "renv_status.rds")
@@ -140,8 +146,8 @@ if (is.character(params$renv) && params$renv == "yes" ||
 #| include: false
 #| error: false
 saveRDS(
-      object = options(),
-      file = file.path(params$tmpdir, "options.rds")
+  object = options(),
+  file = file.path(params$tmpdir, "options.rds")
 )
 
 saveRDS(
@@ -154,14 +160,20 @@ saveRDS(
 #| label: Session info
 #| include: false
 #| error: false
-info <- list( # Due to https://github.com/r-lib/sessioninfo/issues/96
+info <- list(
+  # Due to https://github.com/r-lib/sessioninfo/issues/96
   platform = sessioninfo::session_info(info = "platform")[["platform"]],
   packages = sessioninfo::session_info(info = "packages")[["packages"]],
   python = sessioninfo::session_info(info = "python")[["python"]]
 )
 
-if (!"quarto" %in% names(info$platform)) { # Due to older versions of sessioninfo
-  info$platform$quarto <- paste(quarto::quarto_version(), "@", quarto::quarto_path())
+if (!"quarto" %in% names(info$platform)) {
+  # Due to older versions of sessioninfo
+  info$platform$quarto <- paste(
+    quarto::quarto_version(),
+    "@",
+    quarto::quarto_path()
+  )
 }
 
 saveRDS(
