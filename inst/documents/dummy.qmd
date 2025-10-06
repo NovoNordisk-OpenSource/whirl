@@ -7,7 +7,7 @@ params:
 ---
 
 ```{r debug, warning=NA}
-cli::cli_about(
+cli::cli_abort(
   c(
   "Debug information DUM ---------------",
   "getwd(): {getwd()}",
