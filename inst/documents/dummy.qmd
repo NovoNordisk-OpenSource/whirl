@@ -6,8 +6,7 @@ params:
   converted_qmd: "temp_script.qmd"
 ---
 
-```{r debug}
-#| warning: NA
+```{r debug, warning=NA}
 
 cli::cli_warn(
   c(
@@ -48,7 +47,7 @@ file.path(params$tmpdir, "parent_options.rds") |>
   options()
 ```
 
-```{r debug2}
+```{r debug2, warning=NA}
 
 cli::cli_abort(
   c(
