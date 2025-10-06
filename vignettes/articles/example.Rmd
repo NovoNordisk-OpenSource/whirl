@@ -9,7 +9,6 @@ knitr::opts_chunk$set(
 )
 
 # Use a temporary directory as working directory with the example program
-
 wd <- normalizePath(".")
 tmp <- Sys.getenv("AGENT_TEMPDIRECTORY")
 if (tmp == "") {
@@ -44,13 +43,13 @@ file.copy(
   to = file.path(tmp, "example.R")
 )
 
-if (file.exists(renviron)) {
-  cli::cli_warn(c("Copying",  renviron, "to", tmp, "\n"))
-  file.copy(
-    from = renviron,
-    to = file.path(tmp, basename(renviron))
-  )
-}
+# if (file.exists(renviron)) {
+#   cli::cli_warn(c("Copying",  renviron, "to", tmp, "\n"))
+#   file.copy(
+#     from = renviron,
+#     to = file.path(tmp, basename(renviron))
+#   )
+# }
 
 knitr::opts_knit$set(root.dir = tmp)
 ```
