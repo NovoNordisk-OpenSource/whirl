@@ -23,7 +23,8 @@ whirl_r_session <- R6::R6Class(
       ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl"),
-      wait_timeout = zephyr::get_option("wait_timeout", "whirl")
+      wait_timeout = zephyr::get_option("wait_timeout", "whirl"),
+      libpath = .libPaths()
       # jscpd:ignore-end
     ) {
       wrs_initialize(
@@ -36,7 +37,8 @@ whirl_r_session <- R6::R6Class(
         wait_timeout,
         self,
         private,
-        super
+        super,
+        libpath = libpath
       )
     },
 
@@ -123,10 +125,11 @@ wrs_initialize <- function(
   wait_timeout,
   self,
   private,
-  super
+  super,
+  libpath = libpath
 ) {
   options_called <- callr::r_session_options()
-  options_called$libpath <- .libPaths()
+  options_called$libpath <- libpath
   super$initialize(wait_timeout = wait_timeout, options = options_called) # uses callr::r_session$initialize()
 
   private$.tmpdir <- withr::local_tempdir(clean = FALSE)

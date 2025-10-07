@@ -122,7 +122,8 @@ run <- function(
     out_formats = out_formats,
     track_files_discards = track_files_discards,
     track_files_keep = track_files_keep,
-    log_dir = log_dir
+    log_dir = log_dir,
+    libpath = .libPaths()
   )
 
   result <- internal_run(
