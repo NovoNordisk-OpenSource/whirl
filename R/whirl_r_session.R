@@ -125,6 +125,9 @@ wrs_initialize <- function(
   private,
   super
 ) {
+  options_called <- callr::r_session_options()
+  options_called$libpath <- .libPaths()
+  super$initialize(wait_timeout = wait_timeout, options = options_called)
   super$initialize(wait_timeout = wait_timeout) # uses callr::r_session$initialize()
 
   private$.tmpdir <- withr::local_tempdir(clean = FALSE)
