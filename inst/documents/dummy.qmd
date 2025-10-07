@@ -8,9 +8,14 @@ params:
 
 ```{r debug, warning=NA}
 Sys.setenv("R_LIBS_USER" = Sys.getenv('R_LIBS'))
+# .libPaths(c(
+#   "/__w/6/library/4.4.1/2024-08-06"
+# ))
+
 cli::cli_abort(
   c(
     "Debug information DUM ---------------",
+    "options callr: {callr::r_session_options()}",
     "getwd(): {getwd()}",
     "R_LIBS envvar: {Sys.getenv('R_LIBS')}",
     "R_LIBS_USER envvar: {Sys.getenv('R_LIBS_USER')}",
