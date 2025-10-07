@@ -7,6 +7,7 @@ template-partials:
   - title-block.html
 params:
   title: 'dev'
+  with_library_paths: library_paths
   track_files: FALSE
   tmpdir: '.'
 format:
@@ -24,6 +25,8 @@ format:
 ```{r}
 #| label: Setup
 #| echo: false
+.libPaths(c(character(), params$with_library_paths))
+
 file.path(params$tmpdir, "parent_options.rds") |>
   readRDS() |>
   options()
@@ -113,7 +116,8 @@ status_txt <- status_txt[lapply(status_txt, length) > 0] |>
 whirl:::quarto_callout(
   text = status_txt,
   title = status$message,
-  type = switch(status$message,
+  type = switch(
+    status$message,
     "error" = "important",
     "warning" = "warning",
     "success" = "tip"
@@ -183,7 +187,7 @@ result$session$platform
 #| label: R packages used directly
 result$session$R |>
   dplyr::filter(directly_used) |>
-  dplyr::select("package", "version", "approved", "source") |> 
+  dplyr::select("package", "version", "approved", "source") |>
   format_approved()
 ```
 

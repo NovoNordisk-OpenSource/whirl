@@ -354,6 +354,7 @@ wrs_create_log <- function(self, private, super) {
       input = file.path(self$tmpdir, "log.qmd"),
       execute_params = list(
         title = private$current_script,
+        with_library_paths = .libPaths(),
         track_files = private$track_files,
         tmpdir = normalizePath(self$tmpdir)
       ),
