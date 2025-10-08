@@ -359,7 +359,8 @@ wrs_create_log <- function(self, private, super) {
         tmpdir = normalizePath(self$tmpdir)
       ),
       execute_dir = normalizePath(".")
-    )
+    ),
+    package = TRUE
   )
 
   return(invisible(self))
