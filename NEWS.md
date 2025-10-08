@@ -3,6 +3,7 @@
 * Fixed bug where warnings were given when scripts are missing a final EOL (#206)
 * Fixed bug so no warning is shown when saving `options()` to the temp folder used by whirl (#206)
 * Fixed so Quarto is started with the right renv library paths when using renv (#215)
+* Refactored log.qmd to remove read_log.
 
 # whirl 0.3.1
 
