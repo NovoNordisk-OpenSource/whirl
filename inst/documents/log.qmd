@@ -6,8 +6,8 @@ abstract: "`r params$title`"
 template-partials:
   - title-block.html
 params:
+  result: NULL
   title: 'dev'
-  track_files: FALSE
   tmpdir: '.'
 format:
   html:
@@ -80,25 +80,7 @@ registerS3method(
 ```{r}
 #| label: Status
 #| include: false
-result <- whirl:::read_info(
-  script = file.path(params$tmpdir, "script.rds"),
-  md = file.path(params$tmpdir, "dummy.md"),
-  start = file.path(params$tmpdir, "start.rds"),
-  log = file.path(params$tmpdir, "log_msg.json"),
-  pkgs_used = file.path(params$tmpdir, "pkgs_used.rds"),
-  session = file.path(params$tmpdir, "session_info.rds"),
-  environment = file.path(params$tmpdir, "environment.rds"),
-  options = file.path(params$tmpdir, "options.rds"),
-  python_pip_list = file.path(params$tmpdir, "py_pip_list.rds"),
-  python_old_status = file.path(params$tmpdir, "py_old_status.json"),
-  python_new_status = file.path(params$tmpdir, "py_new_status.json"),
-  track_files = isTRUE(as.logical(params$track_files))
-)
-
-saveRDS(
-  object = result,
-  file = file.path(params$tmpdir, "result.rds")
-)
+result <- readRDS(params$result)
 ```
 
 ```{r}
