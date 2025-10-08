@@ -7,7 +7,6 @@ template-partials:
   - title-block.html
 params:
   title: 'dev'
-  with_library_paths: library_paths
   track_files: FALSE
   tmpdir: '.'
 format:
@@ -25,7 +24,6 @@ format:
 ```{r}
 #| label: Setup
 #| echo: false
-.libPaths(c(character(), params$with_library_paths))
 
 file.path(params$tmpdir, "parent_options.rds") |>
   readRDS() |>

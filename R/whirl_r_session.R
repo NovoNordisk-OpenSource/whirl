@@ -125,10 +125,11 @@ wrs_initialize <- function(
   private,
   super
 ) {
-  options_called <- callr::r_session_options()
-  options_called$libpath <- .libPaths()
-  super$initialize(wait_timeout = wait_timeout, options = options_called)
-  super$initialize(wait_timeout = wait_timeout) # uses callr::r_session$initialize()
+  print("Initializing whirl R session")
+  print(.libPaths())
+  options_called <- callr::r_session_options(libpath = .libPaths())
+
+  super$initialize(wait_timeout = wait_timeout, options = options_called) # uses callr::r_session$initialize()
 
   private$.tmpdir <- withr::local_tempdir(clean = FALSE)
   private$check_renv <- check_renv
@@ -354,7 +355,6 @@ wrs_create_log <- function(self, private, super) {
       input = file.path(self$tmpdir, "log.qmd"),
       execute_params = list(
         title = private$current_script,
-        with_library_paths = .libPaths(),
         track_files = private$track_files,
         tmpdir = normalizePath(self$tmpdir)
       ),
