@@ -1,0 +1,202 @@
+# Execute Scripts
+
+## Introduction
+
+The whirl package provides functionalities for executing scripts in
+batch while simultaneously getting logs from the individual executions.
+In the following sections, we will go through how to use the package.
+
+## Ways to call the `run()` function
+
+### Single and multiple files, and wild cards
+
+The `input` argument in the
+[`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md)
+function can in the most simple case point to a single file for which an
+execution and log-generation is required.
+
+``` r
+library(whirl)
+run(input = "path/to/script.R")
+```
+
+The `input` argument can also point to multiple files in a directory
+using wildcard (or globbing) patterns. In this case, all scripts in the
+directory will be executed in parallel and a log will be generated for
+each script. The number of workers can be specified through the
+`n_workers` argument (default is set to one). A summary log file will
+also be provided as a fast way to get an overview of the execution. The
+location of the summary file can be controlled with the `summary_file`
+argument.
+
+``` r
+# Execution of all R files in a specific directory
+run(
+  input = "path/to/directory/*.R",
+  n_workers = 4,
+  summary_file = "path/to/summary"
+)
+
+# Execution of all R files starting with "2_" in a specific directory
+run(
+  input = "path/to/directory/2_*.R",
+  n_workers = 8,
+  summary_file = "path/to/summary"
+)
+```
+
+More information on how the wildcards are interpreted see
+[`Sys.glob()`](https://rdrr.io/r/base/Sys.glob.html).
+
+It is also possible to provide a character vector of several paths
+(either single files or glob expression) that should be executed. Note
+that whenever the `input` argument in is supplied with a character
+vector (e.g. `c("path/to/script1.R", "path/to/script2.R")`) it assumes
+that these can be executed independently and in parallel. If the
+elements needs to be executed sequentially this can be achieved by using
+a [`list()`](https://rdrr.io/r/base/list.html) instead (see below).
+
+### Using `list()` as input
+
+If the scripts have to be executed in a specific order, the `input`
+argument can be supplied as a list. The scripts will then be executed in
+the order they are listed in the list, with scripts listed in the same
+element being executed in parallel (if `n_workers` \> 1).
+
+``` r
+# In the below example, script1.R and script2.R will be executed in parallel
+run(
+  input = c(
+    "path/to/script1.R",
+    "path/to/script2.R"
+  ),
+  n_workers = 2
+)
+
+# In the below example, script1.R and script2.R will be executed in parallel,
+# and all R files in the directory will subsequently be executed in parallel
+run(
+  input = list(
+    c("path/to/script1.R", "path/to/script2.R"),
+    "path/to/directory/*.R"
+  ),
+  n_workers = 2
+)
+
+# In the below example, script1.R and script2.R will be executed in parallel,
+# and subsequently script3.R and script4.R will be executed in parallel
+run(
+  input = list(
+    c("path/to/script1.R", "path/to/script2.R"),
+    c("path/to/script3.R", "path/to/script4.R")
+  ),
+  n_workers = 2
+)
+```
+
+The list can also be supplied with names list elements. This can be
+useful during execution as some of these ‘name’ will be printed to the
+console.
+
+E.g.
+
+``` r
+run(
+  input = list(
+    list(
+      name = "Step 1",
+      paths = c("path/to/script1.R", "path/to/script2.R")
+    ),
+    list(
+      name = "Step 2",
+      paths = c("path/to/script3.R", "path/to/script4.R")
+    )
+  ),
+  n_workers = 2
+)
+```
+
+### Using a configuration file as input
+
+The execution order can also be pre-specified in a configuration file
+(config file for short). The config file could have the following
+structure.
+
+``` yaml
+steps:
+  - name: "Step 1"    
+    paths:    
+      - "path/to/script1.R"
+      - "path/to/script2.R"
+  - name: "Step 2"  
+    paths:    
+      - "path/to/script3.R"
+      - "path/to/script4.R"
+```
+
+In this case, the `input` argument in the
+[`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md)
+function should point to the config file. Assuming the config file is
+called `config.yaml`, the execution can be initiated as follows:
+
+``` r
+run(input = "path/to/config.yaml", n_workers = 4)
+```
+
+Each steps in the config file will be executed independently while
+scrips within each step will be executed in parallel using the number of
+workers specified with the `n_workers` argument.
+
+## Adjusting the log directory
+
+### How to use the `log_dir` argument to specify where to store the logs
+
+When executing
+[`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md)
+the default is to store logs in the directory where the individual
+scripts are located. For example, if we apply
+[`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md)
+to a a vector of scripts with the following paths
+`c(path/to/dir1/script1.R, path/to/dir2/script2.R)`, the log of
+script1.R and script2.R will be stored in **path/to/dir1** and
+**path/to/dir2**, respectively.
+
+If the logs should be stored in a different directory, the `log_dir`
+argument can be used. This argument can be supplied with a character
+string or a function. Note that in either case the directory that
+`log_dir` points to must exist before the execution is initiated.
+
+If the `log_dir` is supplied with a character pointing to a specific
+path the call could look like:
+
+``` r
+run(input = "path/to/script.R", log_dir = "path/to/logs")
+```
+
+In this example the log of script.R will be stored in
+**path/to/logs**.  
+Note that if multiple scripts are executed and `log_dir` is a character
+to a path, then every log will be redirected to the same directory - in
+this case **path/to/logs**.
+
+If a more dynamic approach is needed the `log_dir` argument can also be
+supplied with a function that will be applied to the individual path of
+every script.  
+For example, if multiple script are executed and the logs needs to be
+stored in a sub-folder within the script directories this could be
+achieved by:
+
+``` r
+run(
+  input = c("path/to/dir1/script1.R", "path/to/dir2/script2.R"),
+  log_dir = function(x) {
+    paste0(dirname(x), "/logs")
+  }
+)
+```
+
+In this example the log of script1.R will be stored in
+**path/to/dir1/logs** and the log of script2.R will be stored in
+**path/to/dir2/logs**.
+
+Note that **x** refer to the path of the script that is being executed.
