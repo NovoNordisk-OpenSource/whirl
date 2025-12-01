@@ -343,14 +343,34 @@ wrs_create_log <- function(self, private, super) {
     jsonlite::stream_out(x = strace_msg, con = con, verbose = FALSE)
     close(con)
   }
+  # Read all info collected
+  results <- read_info(
+    script = file.path(self$tmpdir, "script.rds"),
+    md = file.path(self$tmpdir, "dummy.md"),
+    start = file.path(self$tmpdir, "start.rds"),
+    log = file.path(self$tmpdir, "log_msg.json"),
+    pkgs_used = file.path(self$tmpdir, "pkgs_used.rds"),
+    session = file.path(self$tmpdir, "session_info.rds"),
+    environment = file.path(self$tmpdir, "environment.rds"),
+    options = file.path(self$tmpdir, "options.rds"),
+    python_pip_list = file.path(self$tmpdir, "py_pip_list.rds"),
+    python_old_status = file.path(self$tmpdir, "py_old_status.json"),
+    python_new_status = file.path(self$tmpdir, "py_new_status.json"),
+    track_files = isTRUE(as.logical(private$track_files))
+  )
+
+  saveRDS(
+    object = results,
+    file = file.path(self$tmpdir, "result.rds")
+  )
 
   self$call(
     func = \(...) quarto::quarto_render(...),
     args = list(
       input = file.path(self$tmpdir, "log.qmd"),
       execute_params = list(
+        result = file.path(self$tmpdir, "result.rds"),
         title = private$current_script,
-        track_files = private$track_files,
         tmpdir = normalizePath(self$tmpdir)
       ),
       execute_dir = normalizePath(".")
