@@ -156,3 +156,20 @@ test_that("Change the execute_dir to a function", {
     run(summary_file = NULL) |>
     expect_no_error()
 })
+
+test_that("Use with_options", {
+  skip_on_cran()
+  skip_if_no_quarto()
+
+  getOption("hello") |>
+    expect_null()
+
+  res <- test_script("success.R") |>
+    run(summary_file = NULL, with_options = list(hello = "world")) |>
+    expect_no_error()
+
+  opt <- res$result[[1]]$session$options
+  opt$value[opt$option == "hello"] |>
+    unlist() |>
+    expect_equal("world")
+})

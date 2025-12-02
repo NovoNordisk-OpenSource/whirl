@@ -147,4 +147,14 @@ Any variables matching will not be included in the logs.
 \item Environment: \code{R_WHIRL_ENVIRONMENT_SECRETS}
 }
 }
+
+\subsection{with_options}{
+
+List of options to set in the child sessions executing the scripts.
+\itemize{
+\item Default: \code{list()}
+\item Option: \code{whirl.with_options}
+\item Environment: \code{R_WHIRL_WITH_OPTIONS}
+}
+}
 }
