@@ -15,3 +15,8 @@ runs:
 
     - name: Install the latest version of uv
       uses: astral-sh/setup-uv@v7
+
+    - name: Install python packages
+      shell: bash
+      run: |
+        uv pip install -r pyproject.toml
