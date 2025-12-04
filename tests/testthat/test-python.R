@@ -4,9 +4,6 @@ test_that("python dependencies found correctly", {
   skip_if_no_python()
   skip_if_not_installed(pkg = "reticulate", minimum_version = "1.41.0")
 
-  reticulate::py_require("pandas")
-  reticulate::py_require("numpy")
-
   res <- test_script(
     script = c("py_success.py", "py_dependencies.py")
   ) |>
