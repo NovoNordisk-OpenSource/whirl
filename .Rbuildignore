@@ -22,4 +22,5 @@ summary.html
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^inst/documents/.quarto$
-^uv.lock^
+^uv.lock$
+^pyproject.toml^
