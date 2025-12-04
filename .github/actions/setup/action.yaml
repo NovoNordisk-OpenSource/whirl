@@ -18,4 +18,4 @@ runs:
 
     - name: Install jupyter
       shell: bash
-      run: uvx tool install jupyter-core
+      run: uv tool install jupyter-core
