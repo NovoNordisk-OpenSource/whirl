@@ -34,7 +34,7 @@ Imports:
     purrr,
     quarto,
     R6 (>= 2.4.0),
-    reticulate,
+    reticulate (>= 1.23),
     rlang,
     sessioninfo,
     stringr,
