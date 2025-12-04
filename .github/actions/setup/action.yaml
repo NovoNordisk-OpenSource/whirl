@@ -19,4 +19,6 @@ runs:
     - name: Install python packages
       shell: bash
       run: |
+        uv venv
+        uv python install
         uv pip install -r pyproject.toml
