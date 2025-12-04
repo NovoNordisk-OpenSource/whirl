@@ -24,3 +24,4 @@ summary.html
 ^inst/documents/.quarto$
 ^uv.lock$
 ^pyproject.toml^
+^.venv

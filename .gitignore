@@ -72,3 +72,4 @@ bco.json
 _parametrics.yml
 _whirl.yml
 .DS_Store
+.venv
