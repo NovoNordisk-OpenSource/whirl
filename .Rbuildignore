@@ -22,3 +22,4 @@ summary.html
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^inst/documents/.quarto$
+^uv.lock^

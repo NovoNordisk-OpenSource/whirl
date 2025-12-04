@@ -15,7 +15,3 @@ runs:
 
     - name: Install the latest version of uv
       uses: astral-sh/setup-uv@v7
-
-    - name: Install jupyter
-      shell: bash
-      run: uv tool install jupyter-core
