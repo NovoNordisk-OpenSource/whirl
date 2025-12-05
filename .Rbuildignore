@@ -23,5 +23,5 @@ summary.html
 ^CRAN-SUBMISSION$
 ^inst/documents/.quarto$
 ^uv.lock$
-^pyproject.toml^
+^pyproject.toml$
 ^.venv
