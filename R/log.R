@@ -9,7 +9,7 @@ read_info <- function(
   session,
   environment,
   options,
-  python_pip_list = NULL,
+  python_pkg_list = NULL,
   python_new_status = NULL,
   python_old_status = NULL,
   track_files = FALSE
@@ -29,7 +29,7 @@ read_info <- function(
   info$session$environment <- read_environment(environment)
   info$session$options <- read_options(options)
 
-  if (!is.null(python_pip_list) && file.exists(python_pip_list)) {
+  if (!is.null(python_pkg_list) && file.exists(python_pkg_list)) {
     info$session$platform <- info$session$platform |>
       dplyr::bind_rows(
         data.frame(
@@ -41,7 +41,7 @@ read_info <- function(
     info$session$python <- read_python(
       old_status = python_old_status,
       new_status = python_new_status,
-      pip_list = python_pip_list
+      pkg_list = python_pkg_list
     )
 
     info$session <-
@@ -148,9 +148,9 @@ python_version <- function() {
 
 #' Read and format python packages information from a JSON file
 #' JSON files created in `inst/documents/python_modules.py`.
-#' Pip list is created in `ìnst/documents/dummy.qmd`.
+#' List of installed packages is created in `ìnst/documents/dummy.qmd`.
 #' @noRd
-read_python <- function(old_status, new_status, pip_list) {
+read_python <- function(old_status, new_status, pkg_list) {
   old <- old_status |>
     jsonlite::read_json() |>
     lapply(FUN = unlist, use.names = FALSE)
@@ -159,11 +159,9 @@ read_python <- function(old_status, new_status, pip_list) {
     jsonlite::read_json() |>
     lapply(FUN = unlist, use.names = FALSE)
 
-  pip <- pip_list |>
-    readRDS() |>
-    parse_pip_list()
+  pkg <- readRDS(pkg_list)
 
-  if (!nrow(pip)) {
+  if (!nrow(pkg)) {
     return(
       tibble::tibble(
         package = character(0),
@@ -175,7 +173,7 @@ read_python <- function(old_status, new_status, pip_list) {
     )
   }
 
-  pip |>
+  pkg |>
     dplyr::filter(
       .data$package %in%
         c(
@@ -190,19 +188,5 @@ read_python <- function(old_status, new_status, pip_list) {
         approved = zephyr::get_option("approved_python_packages")
       )
     ) |>
-    dplyr::select("package", "version", "directly_used", "approved", "path")
-}
-
-#' @noRd
-parse_pip_list <- function(x) {
-  x <- utils::read.table(text = x)
-
-  nm <- tolower(x[1, ])
-  nm[which(nm == "location")] <- "path"
-
-  names(x) <- nm
-
-  x |>
-    utils::tail(-2) |>
-    tibble::as_tibble()
+    dplyr::select("package", "version", "directly_used", "approved")
 }

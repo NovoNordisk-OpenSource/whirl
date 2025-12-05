@@ -1,0 +1,12 @@
+[project]
+name = "whirl_python_testing"
+version = "6.6.6"
+description = "Files used for consistent unit testing for python"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "jupyter-core>=5.9.1",
+    "numpy>=2.3.5",
+    "pandas>=2.3.3",
+    "pip>=25.3",
+]
