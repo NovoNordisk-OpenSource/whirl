@@ -77,11 +77,6 @@ run <- function(
     c(.libPaths()) # Don't track the library paths
   track_files_keep <- zephyr::get_option("track_files_keep")
 
-  # Check suggest imports if they are needed
-  if (check_renv) {
-    rlang::check_installed("renv")
-  }
-
   # Message when initiating
   d <- NULL
   zephyr::msg_verbose(
