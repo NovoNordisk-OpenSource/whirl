@@ -50,7 +50,7 @@ print(result)
 #> # A tibble: 1 × 6
 #>      id tag    script                                status result       log_dir
 #>   <dbl> <chr>  <chr>                                 <chr>  <list>       <chr>  
-#> 1     1 Step 1 /tmp/RtmpmDOufv/file1fc6443ace96/exa… succe… <named list> /tmp/R…
+#> 1     1 Step 1 /tmp/Rtmpyr6TZH/file1d9a692b74ad/exa… succe… <named list> /tmp/R…
 ```
 
 The script is now executed and you can access the logs below:
