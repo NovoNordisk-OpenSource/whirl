@@ -29,7 +29,7 @@ runs:
 
     - name: Set virtual env for reticulate (windows)
       if: runner.os == 'Windows'
-      shell: bash
+      shell: pwsh
       run: |
         echo "VIRTUAL_ENV=$PWD/.venv" | Out-File -FilePath $env:GITHUB_ENV -Append
 
