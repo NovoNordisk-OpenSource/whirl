@@ -16,9 +16,20 @@ runs:
     - name: Install the latest version of uv
       uses: astral-sh/setup-uv@v7
 
-    - name: Install python packages and set virtual env for reticulate
+    - name: Install python packages based on pyproject.toml
       shell: bash
       run: |
         uv sync
+
+    - name: Set virtual env for reticulate (not windows)
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
         echo "VIRTUAL_ENV=$PWD/.venv" >> $GITHUB_ENV
-        echo "RETICULATE_PYTHON=$PWD/.venv/bin" >> $GITHUB_ENV
+
+    - name: Set virtual env for reticulate (windows)
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        echo "VIRTUAL_ENV=$PWD/.venv" | Out-File -FilePath $env:GITHUB_ENV -Append
+
