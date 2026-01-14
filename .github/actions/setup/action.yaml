@@ -21,3 +21,4 @@ runs:
       run: |
         uv sync
         echo "VIRTUAL_ENV=$PWD/.venv" >> $GITHUB_ENV
+        echo "RETICULATE_PYTHON=$PWD/.venv/bin" >> $GITHUB_ENV
