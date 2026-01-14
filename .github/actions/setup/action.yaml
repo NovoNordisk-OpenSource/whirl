@@ -16,7 +16,7 @@ runs:
     - name: Install the latest version of uv
       uses: astral-sh/setup-uv@v7
 
-    - name: Install python packages
+    - name: Install python packages and set virtual env for reticulate
       shell: bash
       run: |
         uv sync
