@@ -60,6 +60,7 @@ plot1.png
 from_python.txt
 summary.html
 *_log.html
+*_log.json
 
 inst/doc
 whirl.Rcheck/
@@ -70,3 +71,4 @@ bco.json
 *_log.(html|json|md)
 _parametrics.yml
 _whirl.yml
+.DS_Store

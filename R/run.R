@@ -76,7 +76,6 @@ run <- function(
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths
   track_files_keep <- zephyr::get_option("track_files_keep")
-  approved_packages <- zephyr::get_option("approved_packages")
 
   # Check suggest imports if they are needed
   if (check_renv) {
@@ -123,7 +122,6 @@ run <- function(
     out_formats = out_formats,
     track_files_discards = track_files_discards,
     track_files_keep = track_files_keep,
-    approved_packages = approved_packages,
     log_dir = log_dir
   )
 

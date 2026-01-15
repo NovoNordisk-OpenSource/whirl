@@ -8,6 +8,7 @@ test_that("fails with invalid input", {
 test_that("Summary tibble is created successfully", {
   skip_if_no_quarto()
   skip_if_no_python()
+  skip_on_cran()
 
   q <- whirl_queue$new(n_workers = 2)
 

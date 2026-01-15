@@ -70,11 +70,21 @@ track_files = TRUE
 
 \subsection{approved_packages}{
 
-List of approved packages and their version in the format: \{name\}@\{version\}
+List of approved R packages and their version in the format: \{name\}@\{version\}
 \itemize{
 \item Default: \code{NULL}
 \item Option: \code{whirl.approved_packages}
 \item Environment: \code{R_WHIRL_APPROVED_PACKAGES}
+}
+}
+
+\subsection{approved_python_packages}{
+
+List of approved Python packages and their version in the format: \{name\}@\{version\}
+\itemize{
+\item Default: \code{NULL}
+\item Option: \code{whirl.approved_python_packages}
+\item Environment: \code{R_WHIRL_APPROVED_PYTHON_PACKAGES}
 }
 }
 

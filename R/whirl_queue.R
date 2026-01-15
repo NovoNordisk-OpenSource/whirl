@@ -25,7 +25,6 @@ whirl_queue <- R6::R6Class(
         "whirl"
       ),
       track_files_keep = zephyr::get_option("track_files_keep", "whirl"),
-      approved_packages = zephyr::get_option("approved_packages", "whirl"),
       log_dir = zephyr::get_option("log_dir", "whirl")
       # jscpd:ignore-end
     ) {
@@ -38,7 +37,6 @@ whirl_queue <- R6::R6Class(
         out_formats,
         track_files_discards,
         track_files_keep,
-        approved_packages,
         log_dir
       )
     },
@@ -132,7 +130,6 @@ whirl_queue <- R6::R6Class(
     out_formats = NULL,
     track_files_discards = NULL,
     track_files_keep = NULL,
-    approved_packages = NULL,
     log_dir = NULL,
     progress_bar = NULL
   )
@@ -147,7 +144,6 @@ wq_initialise <- function(
   out_formats,
   track_files_discards,
   track_files_keep,
-  approved_packages,
   log_dir
 ) {
   private$check_renv <- check_renv
@@ -155,7 +151,6 @@ wq_initialise <- function(
   private$out_formats <- out_formats
   private$track_files_discards <- track_files_discards
   private$track_files_keep <- track_files_keep
-  private$approved_packages <- approved_packages
   private$log_dir <- log_dir
 
   private$.queue <- tibble::tibble(
@@ -236,7 +231,6 @@ wq_poll <- function(
         out_formats = private$out_formats,
         track_files_discards = private$track_files_discards,
         track_files_keep = private$track_files_keep,
-        approved_packages = private$approved_packages,
         log_dir = private$log_dir
       ),
       simplify = FALSE

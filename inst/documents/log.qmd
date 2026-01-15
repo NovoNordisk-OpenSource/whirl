@@ -6,10 +6,8 @@ abstract: "`r params$title`"
 template-partials:
   - title-block.html
 params:
+  result: NULL
   title: 'dev'
-  with_library_paths: library_paths
-  approved_packages: NULL
-  track_files: FALSE
   tmpdir: '.'
 format:
   html:
@@ -18,28 +16,40 @@ format:
     toc-depth: 2
     toc-expand: true
     smooth-scroll: true
+    css: style.css
 ---
 
 # Summary
 
-
 ```{r}
 #| label: Setup
 #| echo: false
-.libPaths(c(character(), params$with_library_paths))
 
 file.path(params$tmpdir, "parent_options.rds") |>
   readRDS() |>
   options()
 
+format_approved <- function(x) {
+  if (all(is.na(x$approved))) {
+    x$approved <- NULL
+    return(x)
+  }
+
+  x$approved = ifelse(x$approved == TRUE, "\u2705 Yes", "\u274C No")
+
+  x
+}
+
 knit_print.data.frame <- function(x, ...) {
-  names(x) <- gsub( # Use space instead of . or _ in columns names
+  names(x) <- gsub(
+    # Use space instead of . or _ in columns names
     pattern = "\\.|_",
     replacement = " ",
     x = names(x)
   )
 
-  names(x) <- gsub( # Convert all column names to title case
+  names(x) <- gsub(
+    # Convert all column names to title case
     pattern = "\\b([[:alpha:]])([[:alpha:]]+)",
     replacement = "\\U\\1\\L\\2",
     x = names(x),
@@ -50,58 +60,32 @@ knit_print.data.frame <- function(x, ...) {
     x[[i]] <- ifelse(x[[i]], "Yes", "No") # Yes/No instead of TRUE/FALSE
   }
 
-  if ("Approved" %in% colnames(x)) {
-    x |>
-      knitr::kable(format = "html") |>
-      kableExtra::column_spec(
-        1:ncol(x),
-        background = ifelse(grepl("Yes", x[["Approved"]]), "#ebf5f1", "#fceeef")
-      ) |>
-      kableExtra::column_spec(
-        which(names(x) == "Approved"),
-        color = ifelse(grepl("Yes", x[["Approved"]]), "green", "red")
-      ) |>
-      kableExtra::kable_styling(
-        bootstrap_options = "striped",
-        full_width = TRUE
-      ) |>
-      knitr::knit_print()
-  } else {
-    x |>
-      knitr::kable(format = "html") |>
-      kableExtra::kable_styling(
-        bootstrap_options = "striped",
-        full_width = TRUE
-      ) |>
-      knitr::knit_print()
-  }
+  x |>
+    knitr::kable(format = "html") |>
+    kableExtra::kable_styling(
+      bootstrap_options = "striped",
+      full_width = TRUE
+    ) |>
+    knitr::knit_print()
 }
 
-registerS3method("knit_print", "data.frame", knit_print.data.frame, envir = asNamespace("knitr"))
+registerS3method(
+  "knit_print",
+  "data.frame",
+  knit_print.data.frame,
+  envir = asNamespace("knitr")
+)
 ```
 
 ```{r}
 #| label: Status
+#| include: false
+result <- readRDS(params$result)
+```
+
+```{r}
+#| label: Report status
 #| echo: false
-result <- whirl:::read_info(
-  script = file.path(params$tmpdir, "script.rds"),
-  md = file.path(params$tmpdir, "doc.md"),
-  start = file.path(params$tmpdir, "start.rds"),
-  log = file.path(params$tmpdir, "log_msg.json"),
-  pkgs_used = file.path(params$tmpdir, "pkgs_used.rds"),
-  session = file.path(params$tmpdir, "session_info.rds"),
-  environment = file.path(params$tmpdir, "environment.rds"),
-  options = file.path(params$tmpdir, "options.rds"),
-  python = file.path(params$tmpdir, "python_imports.json"),
-  approved_packages = params$approved_packages,
-  track_files = isTRUE(as.logical(params$track_files))
-)
-
-saveRDS(
-  object = result,
-  file = file.path(params$tmpdir, "result.rds")
-)
-
 status <- result$status
 
 status_txt <- status[c("error", "warning")]
@@ -112,7 +96,8 @@ status_txt <- status_txt[lapply(status_txt, length) > 0] |>
 whirl:::quarto_callout(
   text = status_txt,
   title = status$message,
-  type = switch(status$message,
+  type = switch(
+    status$message,
     "error" = "important",
     "warning" = "warning",
     "success" = "tip"
@@ -138,11 +123,14 @@ params$tmpdir |>
 ```
 
 # Script
-:::{.callout-note collapse=false appearance="minimal"}
+::: {.script-container}
+
 ```{r}
-#| child: !expr file.path(params$tmpdir, "doc.md")
+#| child: !expr file.path(params$tmpdir, "dummy.md")
 ```
-::: 
+
+:::
+
 # Session info
 
 ```{r}
@@ -156,7 +144,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 :::{.callout-note collapse=false appearance="minimal"}
 ## Platform
 
@@ -164,8 +151,8 @@ knitr::opts_chunk$set(
 #| label: Platform
 result$session$platform
 ```
-:::
 
+:::
 
 ```{r}
 #| label: Python
@@ -178,31 +165,24 @@ result$session$platform
 
 ```{r}
 #| label: R packages used directly
-fetch <- result$session$R |>
-  dplyr::filter(directly_used == TRUE) |>
-  dplyr::select(dplyr::all_of(c("package", "version", "attached", "source", "approved")))
-
-if (all(is.na(fetch$approved))) {
-  fetch[c("package", "version", "attached", "source")]
-} else {
-  fetch[c("package", "version", "attached", "source", "approved")] |>
-    dplyr::mutate(approved = dplyr::if_else(approved == TRUE, "\u2705 Yes", "\u274C No"))
-}
-
+result$session$R |>
+  dplyr::filter(directly_used) |>
+  dplyr::select("package", "version", "approved", "source") |>
+  format_approved()
 ```
+
 :::
 
 :::{.callout-note collapse=true appearance="minimal"}
 ## R packages used indirectly
 
-
 ```{r}
 #| label: R packages used indirectly
-#| collapse: true
 result$session$R |>
-  dplyr::filter(directly_used != TRUE) |>
-  dplyr::select(dplyr::all_of(c("package", "version", "attached", "source")))
+  dplyr::filter(!directly_used) |>
+  dplyr::select("package", "version", "source")
 ```
+
 :::
 
 :::{.callout-note collapse=true appearance="minimal"}
@@ -212,6 +192,7 @@ result$session$R |>
 #| label: Environment
 result$session$environment
 ```
+
 :::
 
 :::{.callout-note collapse=true appearance="minimal"}
@@ -221,4 +202,5 @@ result$session$environment
 #| label: Options
 result$session$options
 ```
+
 :::

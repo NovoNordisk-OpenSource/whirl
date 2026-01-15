@@ -1,7 +1,6 @@
 ---
 params:
   script: 'dev'
-  with_library_paths: library_paths
   renv: TRUE
   tmpdir: "."
   converted_qmd: "temp_script.qmd"
@@ -17,8 +16,6 @@ knitr::opts_chunk$set(
   echo = TRUE
 )
 
-.libPaths(c(character(), params$with_library_paths))
-
 file.path(params$tmpdir, "parent_options.rds") |>
   readRDS() |>
   options()
@@ -31,7 +28,7 @@ file.path(params$tmpdir, "parent_options.rds") |>
 # Conversion is done to avoid problems caused by the warnings thrown
 # by knitr::knit(), see e.g. issue #151
 knitr::spin(
-  text = readLines(params$script),
+  text = readLines(con = params$script, warn = FALSE),
   knit = FALSE,
   format = "qmd"
 ) |>
@@ -62,6 +59,17 @@ knitr::spin(
 ```
 
 ```{python}
+#| label: Setup Python tracking
+#| eval: !expr base::grepl("\\.py$", params$script)
+#| include: false
+#| error: false
+import sys
+sys.path.append(r.params["tmpdir"])
+from python_modules import get_package_status
+get_package_status(r.params["tmpdir"]+"/"+'py_old_status.json')
+```
+
+```{python}
 #| label: Log Python
 #| file: !expr params$script
 #| eval: !expr base::grepl("\\.py$", params$script)
@@ -69,15 +77,28 @@ knitr::spin(
 ```
 
 ```{python}
-#| label: Python modules
-#| file: !expr file.path(params$tmpdir, "python_modules.py")
+#| label: Log Python modules
 #| eval: !expr base::grepl("\\.py$", params$script)
-#| echo: false
+#| include: false
+#| error: false
+get_package_status(r.params["tmpdir"]+"/"+'py_new_status.json')
+```
+
+```{r}
+#| label: Python modules
+#| eval: !expr base::grepl("\\.py$", params$script)
+#| include: false
+#| error: false
+saveRDS(
+  object = system('python -m pip list -v', intern = TRUE),
+  file = file.path(params$tmpdir, "py_pip_list.rds")
+)
 ```
 
 ```{r}
 #| label: renv status
 #| include: false
+#| error: false
 if (is.character(params$renv) && params$renv == "yes" ||
       is.logical(params$renv) && params$renv) {
   saveRDS(
@@ -90,9 +111,10 @@ if (is.character(params$renv) && params$renv == "yes" ||
 ```{r}
 #| label: Log options and environment
 #| include: false
+#| error: false
 saveRDS(
-  object = options(),
-  file = file.path(params$tmpdir, "options.rds")
+      object = options(),
+      file = file.path(params$tmpdir, "options.rds")
 )
 
 saveRDS(
@@ -104,6 +126,7 @@ saveRDS(
 ```{r}
 #| label: Session info
 #| include: false
+#| error: false
 info <- list( # Due to https://github.com/r-lib/sessioninfo/issues/96
   platform = sessioninfo::session_info(info = "platform")[["platform"]],
   packages = sessioninfo::session_info(info = "packages")[["packages"]],
