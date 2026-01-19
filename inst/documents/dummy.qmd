@@ -90,8 +90,8 @@ get_package_status(r.params["tmpdir"]+"/"+'py_new_status.json')
 #| include: false
 #| error: false
 saveRDS(
-  object = system('python -m pip list -v', intern = TRUE),
-  file = file.path(params$tmpdir, "py_pip_list.rds")
+  object = reticulate::py_list_packages(),
+  file = file.path(params$tmpdir, "py_pkg_list.rds")
 )
 ```
 
