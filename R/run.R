@@ -81,11 +81,6 @@ run <- function(
   # Overwrite options locally if supplied directly
   withr::local_options(.new = list(whirl.with_options = with_options))
 
-  # Check suggest imports if they are needed
-  if (check_renv) {
-    rlang::check_installed("renv")
-  }
-
   # Message when initiating
   d <- NULL
   zephyr::msg_verbose(
