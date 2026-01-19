@@ -1,6 +1,6 @@
 Package: whirl
 Title: Log Execution of Scripts
-Version: 0.3.1.9002
+Version: 0.3.1.9003
 Authors@R: c(
     person("Aksel", "Thomsen", , "oath@novonordisk.com", role = c("aut", "cre")),
     person("Lovemore", "Gakava", , "lvgk@novonordisk.com", role = "aut"),
@@ -34,6 +34,7 @@ Imports:
     purrr,
     quarto,
     R6 (>= 2.4.0),
+    renv,
     reticulate (>= 1.23),
     rlang,
     sessioninfo,
@@ -46,7 +47,6 @@ Imports:
     zephyr (>= 0.1.1)
 Suggests: 
     ggplot2,
-    renv,
     rstudioapi,
     testthat (>= 3.0.0),
     usethis

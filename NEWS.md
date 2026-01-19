@@ -1,4 +1,4 @@
-# whirl dev
+# whirl (development version)
 
 * Fixed bug where warnings were given when scripts are missing a final EOL (#206)
 * Fixed bug so no warning is shown when saving `options()` to the temp folder used by whirl (#206)
