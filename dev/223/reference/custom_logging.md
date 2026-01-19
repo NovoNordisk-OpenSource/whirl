@@ -41,9 +41,9 @@ the console.
 ``` r
 # Stream logs to console since `WHIRL_LOG_MSG` is not set:
 log_read("my/folder/input.txt")
-#> {"time":"2025-12-02 16:15:59","type":"read","file":"my/folder/input.txt"}
+#> {"time":"2026-01-19 10:12:16","type":"read","file":"my/folder/input.txt"}
 log_write("my/folder/output.txt")
-#> {"time":"2025-12-02 16:15:59","type":"write","file":"my/folder/output.txt"}
+#> {"time":"2026-01-19 10:12:16","type":"write","file":"my/folder/output.txt"}
 log_delete("my/folder/old_output.txt")
-#> {"time":"2025-12-02 16:15:59","type":"delete","file":"my/folder/old_output.txt"}
+#> {"time":"2026-01-19 10:12:16","type":"delete","file":"my/folder/old_output.txt"}
 ```
