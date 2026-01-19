@@ -9,7 +9,7 @@ that are not automatically captured."><meta property="og:image" content="https:/
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,11 +78,11 @@ unset, the operations are streamed to <code><a href="https://rdrr.io/r/base/show
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Stream logs to console since `WHIRL_LOG_MSG` is not set:</span></span></span>
 <span class="r-in"><span><span class="fu">log_read</span><span class="op">(</span><span class="st">"my/folder/input.txt"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"time":"2025-12-15 14:03:51","type":"read","file":"my/folder/input.txt"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"time":"2026-01-19 08:49:49","type":"read","file":"my/folder/input.txt"}</span>
 <span class="r-in"><span><span class="fu">log_write</span><span class="op">(</span><span class="st">"my/folder/output.txt"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"time":"2025-12-15 14:03:51","type":"write","file":"my/folder/output.txt"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"time":"2026-01-19 08:49:49","type":"write","file":"my/folder/output.txt"}</span>
 <span class="r-in"><span><span class="fu">log_delete</span><span class="op">(</span><span class="st">"my/folder/old_output.txt"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"time":"2025-12-15 14:03:51","type":"delete","file":"my/folder/old_output.txt"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"time":"2026-01-19 08:49:50","type":"delete","file":"my/folder/old_output.txt"}</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
