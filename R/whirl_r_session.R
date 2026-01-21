@@ -152,8 +152,8 @@ wrs_initialize <- function(
     # Code is a variation of suppressWarnings().
     expr = {
       saveRDS(
-        object = options(),
-        file = file.path(self$tmpdir, "parent_options.rds")
+        object = zephyr::get_option("with_options", "whirl"),
+        file = file.path(self$tmpdir, "with_options.rds")
       )
     },
     warning = function(w) {
@@ -353,7 +353,7 @@ wrs_create_log <- function(self, private, super) {
     session = file.path(self$tmpdir, "session_info.rds"),
     environment = file.path(self$tmpdir, "environment.rds"),
     options = file.path(self$tmpdir, "options.rds"),
-    python_pip_list = file.path(self$tmpdir, "py_pip_list.rds"),
+    python_pkg_list = file.path(self$tmpdir, "py_pkg_list.rds"),
     python_old_status = file.path(self$tmpdir, "py_old_status.json"),
     python_new_status = file.path(self$tmpdir, "py_new_status.json"),
     track_files = isTRUE(as.logical(private$track_files))

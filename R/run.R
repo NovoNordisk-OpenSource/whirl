@@ -70,17 +70,16 @@ run <- function(
   check_renv = zephyr::get_option("check_renv", "whirl"),
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
-  log_dir = zephyr::get_option("log_dir", "whirl")
+  log_dir = zephyr::get_option("log_dir", "whirl"),
+  with_options = zephyr::get_option("with_options", "whirl")
 ) {
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths
   track_files_keep <- zephyr::get_option("track_files_keep")
 
-  # Check suggest imports if they are needed
-  if (check_renv) {
-    rlang::check_installed("renv")
-  }
+  # Overwrite options locally if supplied directly
+  withr::local_options(.new = list(whirl.with_options = with_options))
 
   # Message when initiating
   d <- NULL
