@@ -4,19 +4,17 @@
 
 - Fixed bug where warnings were given when scripts are missing a final
   EOL
-  ([\#206](https://github.com/NovoNordisk-OpenSource/whirl/issues/206))
-- Fixed bug so no warning is shown when saving
-  [`options()`](https://rdrr.io/r/base/options.html) to the temp folder
-  used by whirl
-  ([\#206](https://github.com/NovoNordisk-OpenSource/whirl/issues/206))
+  ([\#206](https://github.com/NovoNordisk-OpenSource/whirl/issues/206)).
+- Fixed bug so no warning is shown when saving options to the temp
+  folder used by whirl
+  ([\#206](https://github.com/NovoNordisk-OpenSource/whirl/issues/206)).
 - Fixed so Quarto is started with the right renv library paths when
   using renv
-  ([\#215](https://github.com/NovoNordisk-OpenSource/whirl/issues/215))
-- Refactored log.qmd to remove read_log.
+  ([\#215](https://github.com/NovoNordisk-OpenSource/whirl/issues/215)).
 - Added new `with_options` argument to
   [`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md).
   This is the only options being set in the child sessions now.
-  ([\#187](https://github.com/NovoNordisk-OpenSource/whirl/issues/187))
+  ([\#187](https://github.com/NovoNordisk-OpenSource/whirl/issues/187)).
 
 ## whirl 0.3.1
 
