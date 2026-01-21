@@ -169,6 +169,18 @@ Environment: R_WHIRL_ENVIRONMENT_SECRETS
 
 
 
+
+
+with_options
+
+
+List of options to set in the child sessions executing the scripts.
+Default: list()
+Option: whirl.with_options
+Environment: R_WHIRL_WITH_OPTIONS
+
+
+
 "><meta property="og:description" content="
 
 verbosity_level
@@ -336,6 +348,18 @@ Any variables matching will not be included in the logs.
 Default: c(&quot;BASH_FUNC&quot;, &quot;_SSL_CERT&quot;, &quot;_KEY&quot;, &quot;_PAT&quot;, &quot;_TOKEN&quot;)
 Option: whirl.environment_secrets
 Environment: R_WHIRL_ENVIRONMENT_SECRETS
+
+
+
+
+
+with_options
+
+
+List of options to set in the child sessions executing the scripts.
+Default: list()
+Option: whirl.with_options
+Environment: R_WHIRL_WITH_OPTIONS
 
 
 
@@ -508,6 +532,15 @@ start, in milliseconds.</p><ul><li><p>Default: <code>9000</code></p></li>
 Any variables matching will not be included in the logs.</p><ul><li><p>Default: <code>c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")</code></p></li>
 <li><p>Option: <code>whirl.environment_secrets</code></p></li>
 <li><p>Environment: <code>R_WHIRL_ENVIRONMENT_SECRETS</code></p></li>
+</ul></div>
+
+<div class="section">
+<h3 id="with-options">with_options<a class="anchor" aria-label="anchor" href="#with-options"></a></h3>
+
+
+<p>List of options to set in the child sessions executing the scripts.</p><ul><li><p>Default: <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code></p></li>
+<li><p>Option: <code>whirl.with_options</code></p></li>
+<li><p>Environment: <code>R_WHIRL_WITH_OPTIONS</code></p></li>
 </ul></div>
 
     </div>
