@@ -152,8 +152,8 @@ wrs_initialize <- function(
     # Code is a variation of suppressWarnings().
     expr = {
       saveRDS(
-        object = options(),
-        file = file.path(self$tmpdir, "parent_options.rds")
+        object = zephyr::get_option("with_options", "whirl"),
+        file = file.path(self$tmpdir, "with_options.rds")
       )
     },
     warning = function(w) {
