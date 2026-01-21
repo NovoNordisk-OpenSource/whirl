@@ -19,7 +19,8 @@ run(
   check_renv = zephyr::get_option("check_renv", "whirl"),
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
-  log_dir = zephyr::get_option("log_dir", "whirl")
+  log_dir = zephyr::get_option("log_dir", "whirl"),
+  with_options = zephyr::get_option("with_options", "whirl")
 )
 ```
 
@@ -73,6 +74,11 @@ run(
   directory. For more information see the examples of `run()` or
   [`vignette('whirl')`](https://novonordisk-opensource.github.io/whirl/articles/whirl.md)..
   Default: `function (x) dirname(x)`.
+
+- with_options:
+
+  List of options to set in the child sessions executing the scripts..
+  Default: [`list()`](https://rdrr.io/r/base/list.html).
 
 ## Value
 

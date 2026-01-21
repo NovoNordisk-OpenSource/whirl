@@ -13,6 +13,10 @@
   using renv
   ([\#215](https://github.com/NovoNordisk-OpenSource/whirl/issues/215))
 - Refactored log.qmd to remove read_log.
+- Added new `with_options` argument to
+  [`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md).
+  This is the only options being set in the child sessions now.
+  ([\#187](https://github.com/NovoNordisk-OpenSource/whirl/issues/187))
 
 ## whirl 0.3.1
 
