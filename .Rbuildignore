@@ -25,3 +25,4 @@ summary.html
 ^uv.lock$
 ^pyproject.toml$
 ^.venv
+^.claude
