@@ -1,0 +1,95 @@
+# Internal parameters for reuse in functions
+
+Internal parameters for reuse in functions
+
+## Arguments
+
+- verbosity_level:
+
+  Verbosity level for functions in whirl. See
+  [zephyr::verbosity_level](https://novonordisk-opensource.github.io/zephyr/reference/verbosity_level.html)
+  for details.. Default: `NA_character_`.
+
+- out_formats:
+
+  Which log format(s) to produce. Possibilities are `html`, `json`, and
+  markdown formats: `gfm`, `commonmark`, and `markua`.. Default:
+  `"html"`.
+
+- track_files:
+
+  Should files read and written be tracked? Currently only supported on
+  Linux.. Default: `FALSE`.
+
+- check_renv:
+
+  Should the projects renv status be checked?. Default: `FALSE`.
+
+- track_files_discards:
+
+  List of file naming patterns not be tracked when track_files = TRUE.
+  Default:
+  `c("^/lib", "^/etc", "^/lib64", "^/usr", "^/var", "^/opt", "^/sys", "^/proc", "^/tmp", "^/null", "^/urandom", "^/.cache")`.
+
+- track_files_keep:
+
+  List of file naming patterns always to be tracked when track_files =
+  TRUE. Default: `NULL`.
+
+- approved_packages:
+
+  List of approved R packages and their version in the format:
+  {name}@{version}. Default: `NULL`.
+
+- approved_python_packages:
+
+  List of approved Python packages and their version in the format:
+  {name}@{version}. Default: `NULL`.
+
+- n_workers:
+
+  Number of simultaneous workers used in the run function. A maximum of
+  128 workers is allowed.. Default: `1`.
+
+- log_dir:
+
+  The output directory of the log files. Default is the folder of the
+  executed script. log_dir can be a path as a character or it can be a
+  function that takes the script path as input and returns the log
+  directory. For more information see the examples of
+  [`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md)
+  or
+  [`vignette('whirl')`](https://novonordisk-opensource.github.io/whirl/articles/whirl.md)..
+  Default: `function (x) dirname(x)`.
+
+- execute_dir:
+
+  The working directory of the process executing each script. Default us
+  to execute R files from the working directory when calling
+  [`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md)
+  and all other functions from the directory of the script. To change
+  provide a character path (used for all scripts) or a function that
+  takes the script as input and returns the execution directory..
+  Default: `NULL`.
+
+- wait_timeout:
+
+  Timeout for waiting for the R process from callr::r_session to start,
+  in milliseconds.. Default: `9000`.
+
+- environment_secrets:
+
+  Secret environment variable patterns. Any variables matching will not
+  be included in the logs.. Default:
+  `c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")`.
+
+- with_options:
+
+  List of options to set in the child sessions executing the scripts..
+  Default: [`list()`](https://rdrr.io/r/base/list.html).
+
+## Details
+
+See
+[whirl-options](https://novonordisk-opensource.github.io/whirl/reference/whirl-options.md)
+for more information.
