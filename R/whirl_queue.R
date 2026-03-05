@@ -185,7 +185,7 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
     folder <- private$log_dir(scripts)
     # Check if the directory exists
     unique_folders <- unique(folder)
-    if (any(!file.exists(unique_folders))) {
+    if (!all(file.exists(unique_folders))) {
       missing <- unique_folders[!file.exists(unique_folders)] # nolint: object_usage_linter
       cli::cli_abort(
         "Logs cannot be saved because {.val {missing}} does not exist"
