@@ -11,7 +11,7 @@ whirl_r_session <- R6::R6Class(
   public = list(
     #' @description Initialize the new whirl R session
     #' @inheritParams options_params
-    #' @return A [whirl_r_session] object
+    #' @return A `whirl_r_session` object
     initialize = \(
       # jscpd:ignore-start
       check_renv = zephyr::get_option("check_renv", "whirl"),

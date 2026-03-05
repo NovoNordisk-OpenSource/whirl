@@ -13,7 +13,7 @@ whirl_queue <- R6::R6Class(
   public = list(
     #' @inheritParams options_params
     #' @description Initialize the new whirl_queue
-    #' @return A [whirl_queue] object
+    #' @return A `whirl_queue` object
     initialize = \(
       # jscpd:ignore-start
       n_workers = zephyr::get_option("n_workers", "whirl"),
