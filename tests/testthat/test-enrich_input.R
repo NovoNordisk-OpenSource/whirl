@@ -74,3 +74,36 @@ test_that("Enrich input works as expected", {
     vapply(FUN = \(x) x$name, FUN.VALUE = character(1)) |>
     expect_match(regexp = format(Sys.Date()))
 })
+
+test_that("Named list syntax sets step names", {
+  success <- test_script("success.R")
+  error <- test_script("error.R")
+
+  # Named character element
+  enriched <- enrich_input(list("Step A" = success))
+  expect_equal(enriched[[1]]$name, "Step A")
+  expect_equal(enriched[[1]]$paths, success)
+
+  # Named list with unnamed elements
+  enriched <- enrich_input(list("Step B" = list(success)))
+  expect_equal(enriched[[1]]$name, "Step B")
+  expect_equal(enriched[[1]]$paths, success)
+
+  # Named list with named sub-elements (sub-names stripped by read_glob)
+  enriched <- enrich_input(
+    list("Step C" = list("Sub A" = success, "Sub B" = error))
+  )
+  expect_equal(enriched[[1]]$name, "Step C")
+  expect_equal(enriched[[1]]$paths, c(success, error))
+
+  # Mixed old and new syntax
+  enriched <- enrich_input(list(
+    "New Style" = success,
+    list(name = "Old Style", paths = error)
+  ))
+  expect_length(enriched, 2)
+  expect_equal(enriched[[1]]$name, "New Style")
+  expect_equal(enriched[[1]]$paths, success)
+  expect_equal(enriched[[2]]$name, "Old Style")
+  expect_equal(enriched[[2]]$paths, error)
+})

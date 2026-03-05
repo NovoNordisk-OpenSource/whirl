@@ -38,9 +38,12 @@ enrich_input <- function(
   paths <- list()
   for (i in seq_along(got)) {
     # Identify the step names - if none, then create a default name
-    check_name <- any(grepl("name", names(got[[i]])))
-    if (check_name) {
-      names[[i]] <- got[[i]][[which(grepl("name", names(got[[i]])))]]
+    outer_name <- names(got)[i]
+
+    if (!is.null(outer_name) && nzchar(outer_name)) {
+      names[[i]] <- outer_name
+    } else if (any(grepl("name", names(got[[i]])))) {
+      names[[i]] <- got[[i]][[grep("name", names(got[[i]]))]]
     } else {
       names[[i]] <- paste0("Step ", i)
     }
@@ -48,7 +51,7 @@ enrich_input <- function(
     # Identify the paths
     check_path <- any(grepl("path", names(got[[i]])))
     if (check_path) {
-      paths[[i]] <- got[[i]][[which(grepl("path", names(got[[i]])))]]
+      paths[[i]] <- got[[i]][[grep("path", names(got[[i]]))]]
     } else {
       paths[[i]] <- got[[i]]
     }
@@ -59,6 +62,9 @@ enrich_input <- function(
     input = paths,
     root_dir = root_dir
   )
+
+  # Flatten nested lists to character vectors
+  paths <- lapply(paths, function(x) unlist(x, use.names = FALSE))
 
   # If input include one or more directories
   paths_is_dir <- unlist(paths)
