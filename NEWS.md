@@ -1,5 +1,7 @@
 # whirl (development version)
 
+* Added support for named list syntax to specify step names in `run()` (#201).
+
 # whirl 0.3.2
 
 * Fixed bug where warnings were given when scripts are missing a final EOL (#206).
