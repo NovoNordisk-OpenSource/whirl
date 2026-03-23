@@ -20,7 +20,7 @@ enrich_input <- function(
   if (is_config_file && length(input) == 1) {
     root_dir <- dirname(input)
     config_whirl <- yaml::read_yaml(file = input, eval.expr = TRUE)
-    got <- config_whirl$"steps"
+    got <- config_whirl[["steps"]]
   } else {
     root_dir <- getwd()
   }
@@ -42,16 +42,15 @@ enrich_input <- function(
 
     if (!is.null(outer_name) && nzchar(outer_name)) {
       names[[i]] <- outer_name
-    } else if (any(grepl("name", names(got[[i]])))) {
-      names[[i]] <- got[[i]][[grep("name", names(got[[i]]))]]
+    } else if ("name" %in% names(got[[i]])) {
+      names[[i]] <- got[[i]][["name"]]
     } else {
       names[[i]] <- paste0("Step ", i)
     }
 
     # Identify the paths
-    check_path <- any(grepl("path", names(got[[i]])))
-    if (check_path) {
-      paths[[i]] <- got[[i]][[grep("path", names(got[[i]]))]]
+    if ("paths" %in% names(got[[i]])) {
+      paths[[i]] <- got[[i]][["paths"]]
     } else {
       paths[[i]] <- got[[i]]
     }
