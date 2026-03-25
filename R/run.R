@@ -12,7 +12,8 @@
 #'   scripts, or files in a folder using regular expression, or to to a whirl
 #'   config file. The input can also be structured in a list where each element
 #'   will be executed sequentially, while scripts within each element can be
-#'   executed in parallel.
+#'   executed in parallel. Named list elements set step names shown during
+#'   execution (e.g. `list("Step 1" = "script.R")`).
 #' @param steps An optional argument that can be used if only certain steps
 #'   within a config files (or list) is to be executed. Should be equivalent to
 #'   the names of the steps found in the config file. If kept as NULL (default)
@@ -45,6 +46,14 @@
 #'   list(
 #'     file.path(tempdir(), c("success.R", "warning.R")),
 #'     file.path(tempdir(), "error.R")
+#'   )
+#' )
+#'
+#' # Name the steps using named list syntax:
+#' run(
+#'   list(
+#'     "Step 1" = file.path(tempdir(), c("success.R", "warning.R")),
+#'     "Step 2" = file.path(tempdir(), "error.R")
 #'   )
 #' )
 #'

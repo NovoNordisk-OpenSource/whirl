@@ -20,7 +20,7 @@ enrich_input <- function(
   if (is_config_file && length(input) == 1) {
     root_dir <- dirname(input)
     config_whirl <- yaml::read_yaml(file = input, eval.expr = TRUE)
-    got <- config_whirl$"steps"
+    got <- config_whirl[["steps"]]
   } else {
     root_dir <- getwd()
   }
@@ -38,17 +38,19 @@ enrich_input <- function(
   paths <- list()
   for (i in seq_along(got)) {
     # Identify the step names - if none, then create a default name
-    check_name <- any(grepl("name", names(got[[i]])))
-    if (check_name) {
-      names[[i]] <- got[[i]][[which(grepl("name", names(got[[i]])))]]
+    outer_name <- names(got)[i]
+
+    if (!is.null(outer_name) && nzchar(outer_name)) {
+      names[[i]] <- outer_name
+    } else if ("name" %in% names(got[[i]])) {
+      names[[i]] <- got[[i]][["name"]]
     } else {
       names[[i]] <- paste0("Step ", i)
     }
 
     # Identify the paths
-    check_path <- any(grepl("path", names(got[[i]])))
-    if (check_path) {
-      paths[[i]] <- got[[i]][[which(grepl("path", names(got[[i]])))]]
+    if ("paths" %in% names(got[[i]])) {
+      paths[[i]] <- got[[i]][["paths"]]
     } else {
       paths[[i]] <- got[[i]]
     }
@@ -59,6 +61,9 @@ enrich_input <- function(
     input = paths,
     root_dir = root_dir
   )
+
+  # Flatten nested lists to character vectors
+  paths <- lapply(paths, function(x) unlist(x, use.names = FALSE))
 
   # If input include one or more directories
   paths_is_dir <- unlist(paths)

@@ -21,7 +21,8 @@ run(
 scripts, or files in a folder using regular expression, or to to a whirl
 config file. The input can also be structured in a list where each element
 will be executed sequentially, while scripts within each element can be
-executed in parallel.}
+executed in parallel. Named list elements set step names shown during
+execution (e.g. \code{list("Step 1" = "script.R")}).}
 
 \item{steps}{An optional argument that can be used if only certain steps
 within a config files (or list) is to be executed. Should be equivalent to
@@ -61,7 +62,7 @@ e.g. the verbosity of the logs.
 See \link{whirl-options} on how to configure these.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 # Copy example scripts:
 file.copy(
   from = system.file("examples", c("success.R", "warning.R", "error.R"),
@@ -84,6 +85,14 @@ run(
   list(
     file.path(tempdir(), c("success.R", "warning.R")),
     file.path(tempdir(), "error.R")
+  )
+)
+
+# Name the steps using named list syntax:
+run(
+  list(
+    "Step 1" = file.path(tempdir(), c("success.R", "warning.R")),
+    "Step 2" = file.path(tempdir(), "error.R")
   )
 )
 
