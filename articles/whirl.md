@@ -94,23 +94,16 @@ run(
 )
 ```
 
-The list can also be supplied with names list elements. This can be
-useful during execution as some of these ‘name’ will be printed to the
-console.
+The list can also be supplied with named elements to label each step.
+These names will be printed to the console during execution.
 
 E.g.
 
 ``` r
 run(
   input = list(
-    list(
-      name = "Step 1",
-      paths = c("path/to/script1.R", "path/to/script2.R")
-    ),
-    list(
-      name = "Step 2",
-      paths = c("path/to/script3.R", "path/to/script4.R")
-    )
+    "Step 1" = c("path/to/script1.R", "path/to/script2.R"),
+    "Step 2" = c("path/to/script3.R", "path/to/script4.R")
   ),
   n_workers = 2
 )

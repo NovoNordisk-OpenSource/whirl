@@ -1,5 +1,11 @@
 # Changelog
 
+## whirl (development version)
+
+- Added support for named list syntax to specify step names in
+  [`run()`](https://novonordisk-opensource.github.io/whirl/reference/run.md)
+  ([\#201](https://github.com/NovoNordisk-OpenSource/whirl/issues/201)).
+
 ## whirl 0.3.2
 
 CRAN release: 2026-01-21
