@@ -130,7 +130,7 @@ zephyr::create_option(
 )
 
 zephyr::create_option(
-  name = "stop_on",
+  name = "skip_after",
   default = "never",
   description = "When to stop running more scripts.
   If `error` or `warning` no more steps will be executed after the first error or warning respectively.

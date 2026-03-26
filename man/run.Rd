@@ -14,7 +14,7 @@ run(
   out_formats = zephyr::get_option("out_formats", "whirl"),
   log_dir = zephyr::get_option("log_dir", "whirl"),
   with_options = zephyr::get_option("with_options", "whirl"),
-  stop_on = zephyr::get_option("stop_on", "whirl")
+  skip_after = zephyr::get_option("skip_after", "whirl")
 )
 }
 \arguments{
@@ -51,7 +51,7 @@ For more information see the examples of \code{run()} or \code{vignette('whirl')
 
 \item{with_options}{List of options to set in the child sessions executing the scripts.. Default: \code{list()}.}
 
-\item{stop_on}{When to stop running more scripts.
+\item{skip_after}{When to stop running more scripts.
 If \code{error} or \code{warning} no more steps will be executed after the first error or warning respectively.
 Default \code{never} continues executing all scripts.. Default: \code{"never"}.}
 }

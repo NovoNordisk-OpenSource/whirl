@@ -36,8 +36,8 @@ internal_run <- function(input, steps, queue, level) {
         level = level + 1
       )
     } else if (
-      zephyr::get_option("stop_on") != "never" &&
-        any(queue$queue$status %in% zephyr::get_option("stop_on"))
+      !identical(zephyr::get_option("skip_after", "whirl"), "never") &&
+        any(queue$queue$status %in% zephyr::get_option("skip_after", "whirl"))
     ) {
       queue$skip(scripts = files, tag = name)
       zephyr::msg_verbose(message = "\n", msg_fun = cli::cli_verbatim)
