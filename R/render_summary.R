@@ -77,11 +77,11 @@ knit_print_whirl_summary_info <- function(x, path_rel_start, ...) {
       file.path()
   }
 
-  hold$Hyperlink <- paste0(sprintf(
-    '<a href="%s" target="_blank">%s</a>',
-    formatted,
-    "HTML Log"
-  ))
+  hold$Hyperlink <- ifelse(
+    hold$Hyperlink == "",
+    "",
+    sprintf('<a href="%s" target="_blank">%s</a>', formatted, "HTML Log")
+  )
 
   knitr::kable(hold, format = "html", escape = FALSE) |>
     kableExtra::column_spec(

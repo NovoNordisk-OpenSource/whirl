@@ -178,13 +178,16 @@ test_that("skip_after works", {
   skip_on_cran()
   skip_if_no_quarto()
 
-  res <- test_script(c("success.R", "warning.R", "error.R")) |>
+  res <- test_script(c("success.R", "warning.R", "error.R", "success.R")) |>
     as.list() |>
     run(skip_after = "warning")
 
   res$status |>
-    expect_equal(c("success", "warning", "skipped"))
+    expect_equal(c("success", "warning", "skipped", "skipped"))
 
   res$result[[3]] |>
+    expect_null()
+
+  res$result[[4]] |>
     expect_null()
 })

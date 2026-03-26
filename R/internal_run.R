@@ -39,6 +39,13 @@ internal_run <- function(input, steps, queue, level) {
       !identical(zephyr::get_option("skip_after", "whirl"), "never") &&
         any(queue$queue$status %in% zephyr::get_option("skip_after", "whirl"))
     ) {
+      for (file in files) {
+        wrs_report_status(
+          status = "skipped",
+          script = file,
+          logs = character(0)
+        )
+      }
       queue$skip(scripts = files, tag = name)
       zephyr::msg_verbose(message = "\n", msg_fun = cli::cli_verbatim)
     } else {
