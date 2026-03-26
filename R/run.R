@@ -80,7 +80,8 @@ run <- function(
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
   log_dir = zephyr::get_option("log_dir", "whirl"),
-  with_options = zephyr::get_option("with_options", "whirl")
+  with_options = zephyr::get_option("with_options", "whirl"),
+  stop_on = zephyr::get_option("stop_on", "whirl")
 ) {
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
