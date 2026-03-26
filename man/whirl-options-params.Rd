@@ -45,6 +45,10 @@ start, in milliseconds.. Default: \code{9000}.}
 Any variables matching will not be included in the logs.. Default: \code{c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")}.}
 
 \item{with_options}{List of options to set in the child sessions executing the scripts.. Default: \code{list()}.}
+
+\item{stop_on}{When to stop running more scripts.
+If \code{error} or \code{warning} no more steps will be executed after the first error or warning respectively.
+Default \code{never} continues executing all scripts.. Default: \code{"never"}.}
 }
 \description{
 Internal parameters for reuse in functions
