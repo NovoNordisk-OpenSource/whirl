@@ -173,3 +173,18 @@ test_that("Use with_options", {
     unlist() |>
     expect_equal("world")
 })
+
+test_that("skip_after works", {
+  skip_on_cran()
+  skip_if_no_quarto()
+
+  res <- test_script(c("success.R", "warning.R", "error.R")) |>
+    as.list() |>
+    run(skip_after = "warning")
+
+  res$status |>
+    expect_equal(c("success", "warning", "skipped"))
+
+  res$result[[3]] |>
+    expect_null()
+})
