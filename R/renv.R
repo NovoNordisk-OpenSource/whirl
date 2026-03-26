@@ -2,8 +2,6 @@
 #' @noRd
 
 renv_status <- function() {
-  rlang::check_installed("renv")
-
   msg <- utils::capture.output(status <- renv::status())
 
   structure(

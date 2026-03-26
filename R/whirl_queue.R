@@ -13,7 +13,7 @@ whirl_queue <- R6::R6Class(
   public = list(
     #' @inheritParams options_params
     #' @description Initialize the new whirl_queue
-    #' @return A [whirl_queue] object
+    #' @return A `whirl_queue` object
     initialize = \(
       # jscpd:ignore-start
       n_workers = zephyr::get_option("n_workers", "whirl"),
@@ -185,7 +185,7 @@ wq_add_queue <- function(self, private, scripts, tag, status) {
     folder <- private$log_dir(scripts)
     # Check if the directory exists
     unique_folders <- unique(folder)
-    if (any(!file.exists(unique_folders))) {
+    if (!all(file.exists(unique_folders))) {
       missing <- unique_folders[!file.exists(unique_folders)] # nolint: object_usage_linter
       cli::cli_abort(
         "Logs cannot be saved because {.val {missing}} does not exist"

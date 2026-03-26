@@ -7,7 +7,8 @@
 ```{r}
 #| echo: false
 result$session$python |> 
-    dplyr::filter(directly_used) |> 
+    dplyr::filter(.data$directly_used) |> 
+    dplyr::select("package", "version") |> 
     format_approved()
 ```
 
@@ -20,7 +21,7 @@ result$session$python |>
 #| echo: false
 result$session$python |> 
     dplyr::filter(!.data$directly_used) |> 
-    dplyr::select("package", "version", "path")
+    dplyr::select("package", "version")
 ```
 
 :::

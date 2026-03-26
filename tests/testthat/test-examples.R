@@ -1,4 +1,5 @@
 test_that("All example scripts run with consistent output", {
+  skip_on_cran()
   skip_if_no_quarto()
 
   tmpdir <- withr::local_tempdir()

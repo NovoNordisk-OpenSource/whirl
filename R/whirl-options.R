@@ -122,3 +122,9 @@ zephyr::create_option(
   description = "Secret environment variable patterns. 
   Any variables matching will not be included in the logs."
 )
+
+zephyr::create_option(
+  name = "with_options",
+  default = list(),
+  description = "List of options to set in the child sessions executing the scripts."
+)

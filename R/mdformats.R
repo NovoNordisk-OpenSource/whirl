@@ -8,7 +8,7 @@ mdformats <- function(script, log_html, mdfmt, self, out_dir) {
 
   supported_formats <- list_pandoc_output_formats()
   unsupported_formats <- setdiff(mdfmt, supported_formats)
-  if (any(!mdfmt %in% supported_formats)) {
+  if (!all(mdfmt %in% supported_formats)) {
     cli::cli_abort(
       "Output format{?s} {.code {unsupported_formats}} not supported by your pandoc installation"
     )

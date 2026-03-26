@@ -12,7 +12,8 @@
 #'   scripts, or files in a folder using regular expression, or to to a whirl
 #'   config file. The input can also be structured in a list where each element
 #'   will be executed sequentially, while scripts within each element can be
-#'   executed in parallel.
+#'   executed in parallel. Named list elements set step names shown during
+#'   execution (e.g. `list("Step 1" = "script.R")`).
 #' @param steps An optional argument that can be used if only certain steps
 #'   within a config files (or list) is to be executed. Should be equivalent to
 #'   the names of the steps found in the config file. If kept as NULL (default)
@@ -48,6 +49,14 @@
 #'   )
 #' )
 #'
+#' # Name the steps using named list syntax:
+#' run(
+#'   list(
+#'     "Step 1" = file.path(tempdir(), c("success.R", "warning.R")),
+#'     "Step 2" = file.path(tempdir(), "error.R")
+#'   )
+#' )
+#'
 #' # Re-directing the logs to a sub-folder by utilizing the log_dir argument in
 #' # run(). This will require that the sub-folder exists.
 #'
@@ -70,17 +79,16 @@ run <- function(
   check_renv = zephyr::get_option("check_renv", "whirl"),
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
-  log_dir = zephyr::get_option("log_dir", "whirl")
+  log_dir = zephyr::get_option("log_dir", "whirl"),
+  with_options = zephyr::get_option("with_options", "whirl")
 ) {
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
     c(.libPaths()) # Don't track the library paths
   track_files_keep <- zephyr::get_option("track_files_keep")
 
-  # Check suggest imports if they are needed
-  if (check_renv) {
-    rlang::check_installed("renv")
-  }
+  # Overwrite options locally if supplied directly
+  withr::local_options(.new = list(whirl.with_options = with_options))
 
   # Message when initiating
   d <- NULL
