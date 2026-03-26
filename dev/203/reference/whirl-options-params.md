@@ -83,6 +83,11 @@ Internal parameters for reuse in functions
   be included in the logs.. Default:
   `c("BASH_FUNC", "_SSL_CERT", "_KEY", "_PAT", "_TOKEN")`.
 
+- with_options:
+
+  List of options to set in the child sessions executing the scripts..
+  Default: [`list()`](https://rdrr.io/r/base/list.html).
+
 ## Details
 
 See

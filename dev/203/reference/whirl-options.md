@@ -151,3 +151,13 @@ included in the logs.
 - Option: `whirl.environment_secrets`
 
 - Environment: `R_WHIRL_ENVIRONMENT_SECRETS`
+
+### with_options
+
+List of options to set in the child sessions executing the scripts.
+
+- Default: [`list()`](https://rdrr.io/r/base/list.html)
+
+- Option: `whirl.with_options`
+
+- Environment: `R_WHIRL_WITH_OPTIONS`

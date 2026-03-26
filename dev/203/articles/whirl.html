@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -160,21 +160,14 @@ listed in the same element being executed in parallel (if
 <span>  <span class="op">)</span>,</span>
 <span>  n_workers <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>The list can also be supplied with names list elements. This can be
-useful during execution as some of these ‘name’ will be printed to the
-console.</p>
+<p>The list can also be supplied with named elements to label each step.
+These names will be printed to the console during execution.</p>
 <p>E.g.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span></span>
 <span>  input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"Step 1"</span>,</span>
-<span>      paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>, <span class="st">"path/to/script2.R"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"Step 2"</span>,</span>
-<span>      paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script3.R"</span>, <span class="st">"path/to/script4.R"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
+<span>    <span class="st">"Step 1"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script1.R"</span>, <span class="st">"path/to/script2.R"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"Step 2"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"path/to/script3.R"</span>, <span class="st">"path/to/script4.R"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  n_workers <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
