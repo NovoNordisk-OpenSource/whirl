@@ -90,6 +90,7 @@ run <- function(
 
   # Overwrite options locally if supplied directly
   withr::local_options(.new = list(whirl.with_options = with_options))
+  withr::local_options(.new = list(whirl.stop_on = stop_on))
 
   # Message when initiating
   d <- NULL
