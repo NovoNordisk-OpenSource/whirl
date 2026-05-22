@@ -52,7 +52,8 @@ For more information see the examples of \code{run()} or \code{vignette('whirl')
 \item{with_options}{List of options to set in the child sessions executing the scripts.. Default: \code{list()}.}
 
 \item{skip_after}{When to stop running more scripts.
-If \code{error} or \code{warning} no more steps will be executed after the first error or warning respectively.
+The levels are hierarchical: \code{warning} stops on both warnings and errors,
+while \code{error} stops only on errors (warnings will not trigger skipping).
 Default \code{never} continues executing all scripts.. Default: \code{"never"}.}
 }
 \value{
