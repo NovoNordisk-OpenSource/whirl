@@ -95,7 +95,7 @@ knit_print_whirl_summary_info <- function(x, path_rel_start, ...) {
           ifelse(
             hold[["Status"]] == "success",
             "#ebf5f1",
-            ifelse(hold[["Status"]] == "skip", "#94CBFF", "white")
+            ifelse(hold[["Status"]] == "skipped", "#94CBFF", "white")
           )
         )
       )
