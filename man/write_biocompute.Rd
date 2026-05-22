@@ -31,20 +31,20 @@ The object consists of the following domains:
 \item \emph{type}: Your project type
 \item \emph{etag}: Your \code{etag} id from the BioCompute Object Portal
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Provenance-domain}{Provenance Domain}
+\item \href{https://wiki.biocomputeobject.org/Provenance_Domain}{Provenance Domain}
 \itemize{
 \item This is used to track the history of the BCO. Review and signatures go here.
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Usability-domain}{Usability Domain}
+\item \href{https://wiki.biocomputeobject.org/Usability_Domain}{Usability Domain}
 \itemize{
 \item This is used to improve searchability by allowing a free-text description of the BCO.
 \item Provide external document.
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Extension-domain}{Extension Domain}
+\item \href{https://wiki.biocomputeobject.org/Extension_Domain}{Extension Domain}
 \itemize{
 \item This is used to add any additional structured information that is not directly covered by the BCO.
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Description-domain}{Description Domain}
+\item \href{https://wiki.biocomputeobject.org/Description_Domain}{Description Domain}
 \itemize{
 \item Contains a structured field for the description of external references, the pipeline steps,
 and the relationship of I/O objects.
@@ -52,21 +52,21 @@ and the relationship of I/O objects.
 \item \strong{Note}: Use of \code{keywords} and \code{External_Reference} entries are not yet implemented.
 To use fill out the entries manually after creating the BioCompute object.`
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Execution-domain}{Execution Domain}
+\item \href{https://wiki.biocomputeobject.org/Execution_Domain}{Execution Domain}
 \itemize{
 \item Contains fields for the execution of the BCO.
 \item \strong{Note}: Use of \code{external_data_endpoints} not implemented. Fill out manually afterwards if needed.
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Parametric-domain}{Parametric Domain}
+\item \href{https://wiki.biocomputeobject.org/Parametric_Domain}{Parametric Domain}
 \itemize{
 \item Represents the list of parameters customizing the computational flow which can affect
 the output of the calculations.
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Iodomain}{IO Domain}
+\item \href{https://wiki.biocomputeobject.org/Input_and_Output_Domain}{IO Domain}
 \itemize{
 \item Represents the list of global input and output files created by the computational workflow.
 }
-\item \href{https://wiki.biocomputeobject.org/index.php?title=Error-domain}{Error Domain}
+\item \href{https://wiki.biocomputeobject.org/Error_Domain}{Error Domain}
 \itemize{
 \item Defines the empirical and algorithmic limits and error sources of the BCO.
 \item \strong{Note}: Use of this domain is not clearly defined.
