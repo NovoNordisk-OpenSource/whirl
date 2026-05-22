@@ -21,6 +21,7 @@ easy to navigate.
 ## Installation
 
 ``` r
+
 # Install the released version from CRAN:
 install.packages("whirl")
 # Install the development version from GitHub:
@@ -36,6 +37,7 @@ which takes an `input` argument that defines the scripts to be executed.
 The simplest way is to provide the path to a single script:
 
 ``` r
+
 library(whirl)
 
 run("success.R")
@@ -45,6 +47,7 @@ run("success.R")
 It is also possible to run several scripts simultaneously:
 
 ``` r
+
 result <- run(c("success.R", "warning.R"), n_workers = 2)
 #> ✔ success.R: Completed succesfully. See log html.
 #> ! warning.R: Completed with warnings. See log html.
@@ -72,6 +75,7 @@ Apart from this the function also returns a `tibble` with the status of
 the script execution similar to the content of the summary above:
 
 ``` r
+
 print(result)
 #> # A tibble: 2 × 6
 #>      id tag    script                                status result       log_dir
@@ -108,6 +112,7 @@ then when this step has been completed we continue to running the
 scripts in the second steps.
 
 ``` r
+
 result <- run("_whirl.yaml", n_workers = 2)
 #> ✔ success.R: Completed succesfully. See log html.
 #> ! warning.R: Completed with warnings. See log html.
@@ -115,6 +120,7 @@ result <- run("_whirl.yaml", n_workers = 2)
 ```
 
 ``` r
+
 print(result)
 #> # A tibble: 3 × 6
 #>      id tag         script                           status result       log_dir
