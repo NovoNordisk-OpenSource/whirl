@@ -133,6 +133,7 @@ zephyr::create_option(
   name = "skip_after",
   default = "never",
   description = "When to stop running more scripts.
-  If `error` or `warning` no more steps will be executed after the first error or warning respectively.
+  The levels are hierarchical: `warning` stops on both warnings and errors,
+  while `error` stops only on errors (warnings will not trigger skipping).
   Default `never` continues executing all scripts."
 )
