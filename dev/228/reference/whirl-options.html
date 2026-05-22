@@ -187,7 +187,8 @@ skip_after
 
 
 When to stop running more scripts.
-If error or warning no more steps will be executed after the first error or warning respectively.
+The levels are hierarchical: warning stops on both warnings and errors,
+while error stops only on errors (warnings will not trigger skipping).
 Default never continues executing all scripts.
 Default: &quot;never&quot;
 Option: whirl.skip_after
@@ -383,7 +384,8 @@ skip_after
 
 
 When to stop running more scripts.
-If error or warning no more steps will be executed after the first error or warning respectively.
+The levels are hierarchical: warning stops on both warnings and errors,
+while error stops only on errors (warnings will not trigger skipping).
 Default never continues executing all scripts.
 Default: &quot;never&quot;
 Option: whirl.skip_after
@@ -576,7 +578,8 @@ Any variables matching will not be included in the logs.</p><ul><li><p>Default: 
 
 
 <p>When to stop running more scripts.
-If <code>error</code> or <code>warning</code> no more steps will be executed after the first error or warning respectively.
+The levels are hierarchical: <code>warning</code> stops on both warnings and errors,
+while <code>error</code> stops only on errors (warnings will not trigger skipping).
 Default <code>never</code> continues executing all scripts.</p><ul><li><p>Default: <code>"never"</code></p></li>
 <li><p>Option: <code>whirl.skip_after</code></p></li>
 <li><p>Environment: <code>R_WHIRL_SKIP_AFTER</code></p></li>

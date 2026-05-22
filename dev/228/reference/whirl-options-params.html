@@ -118,7 +118,8 @@ Any variables matching will not be included in the logs.. Default: <code>c("BASH
 
 <dt id="arg-skip-after">skip_after<a class="anchor" aria-label="anchor" href="#arg-skip-after"></a></dt>
 <dd><p>When to stop running more scripts.
-If <code>error</code> or <code>warning</code> no more steps will be executed after the first error or warning respectively.
+The levels are hierarchical: <code>warning</code> stops on both warnings and errors,
+while <code>error</code> stops only on errors (warnings will not trigger skipping).
 Default <code>never</code> continues executing all scripts.. Default: <code>"never"</code>.</p></dd>
 
 </dl></div>
