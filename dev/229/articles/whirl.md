@@ -16,6 +16,7 @@ function can in the most simple case point to a single file for which an
 execution and log-generation is required.
 
 ``` r
+
 library(whirl)
 run(input = "path/to/script.R")
 ```
@@ -30,6 +31,7 @@ location of the summary file can be controlled with the `summary_file`
 argument.
 
 ``` r
+
 # Execution of all R files in a specific directory
 run(
   input = "path/to/directory/*.R",
@@ -64,6 +66,7 @@ the order they are listed in the list, with scripts listed in the same
 element being executed in parallel (if `n_workers` \> 1).
 
 ``` r
+
 # In the below example, script1.R and script2.R will be executed in parallel
 run(
   input = c(
@@ -100,6 +103,7 @@ These names will be printed to the console during execution.
 E.g.
 
 ``` r
+
 run(
   input = list(
     "Step 1" = c("path/to/script1.R", "path/to/script2.R"),
@@ -133,6 +137,7 @@ function should point to the config file. Assuming the config file is
 called `config.yaml`, the execution can be initiated as follows:
 
 ``` r
+
 run(input = "path/to/config.yaml", n_workers = 4)
 ```
 
@@ -163,6 +168,7 @@ If the `log_dir` is supplied with a character pointing to a specific
 path the call could look like:
 
 ``` r
+
 run(input = "path/to/script.R", log_dir = "path/to/logs")
 ```
 
@@ -180,6 +186,7 @@ stored in a sub-folder within the script directories this could be
 achieved by:
 
 ``` r
+
 run(
   input = c("path/to/dir1/script1.R", "path/to/dir2/script2.R"),
   log_dir = function(x) {
