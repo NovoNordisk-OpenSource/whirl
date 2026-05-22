@@ -14,35 +14,35 @@
 #'   * *type*: Your project type
 #'   * *etag*: Your `etag` id from the BioCompute Object Portal
 #'
-#' * [Provenance Domain](https://wiki.biocomputeobject.org/Provenance-domain)
+#' * [Provenance Domain](https://wiki.biocomputeobject.org/Provenance_Domain)
 #'   * This is used to track the history of the BCO. Review and signatures go here.
 #'
-#' * [Usability Domain](https://wiki.biocomputeobject.org/Usability-domain)
+#' * [Usability Domain](https://wiki.biocomputeobject.org/Usability_Domain)
 #'   * This is used to improve searchability by allowing a free-text description of the BCO.
 #'   * Provide external document.
 #'
-#' * [Extension Domain](https://wiki.biocomputeobject.org/Extension-domain)
+#' * [Extension Domain](https://wiki.biocomputeobject.org/Extension_Domain)
 #'   * This is used to add any additional structured information that is not directly covered by the BCO.
 #'
-#' * [Description Domain](https://wiki.biocomputeobject.org/Description-domain)
+#' * [Description Domain](https://wiki.biocomputeobject.org/Description_Domain)
 #'   * Contains a structured field for the description of external references, the pipeline steps,
 #' and the relationship of I/O objects.
 #'   * Provide external document.
 #'   * **Note**: Use of `keywords` and `External_Reference` entries are not yet implemented.
 #' To use fill out the entries manually after creating the BioCompute object.`
 #'
-#' * [Execution Domain](https://wiki.biocomputeobject.org/Execution-domain)
+#' * [Execution Domain](https://wiki.biocomputeobject.org/Execution_Domain)
 #'   * Contains fields for the execution of the BCO.
 #'   * **Note**: Use of `external_data_endpoints` not implemented. Fill out manually afterwards if needed.
 #'
-#'* [Parametric Domain](https://wiki.biocomputeobject.org/Parametric-domain)
+#'* [Parametric Domain](https://wiki.biocomputeobject.org/Parametric_Domain)
 #'   * Represents the list of parameters customizing the computational flow which can affect
 #' the output of the calculations.
 #'
 #' * [IO Domain](https://wiki.biocomputeobject.org/Input_and_Output_Domain)
 #'   * Represents the list of global input and output files created by the computational workflow.
 #'
-#' * [Error Domain](https://wiki.biocomputeobject.org/Error-domain)
+#' * [Error Domain](https://wiki.biocomputeobject.org/Error_Domain)
 #'   * Defines the empirical and algorithmic limits and error sources of the BCO.
 #'   * **Note**: Use of this domain is not clearly defined.
 #' It is therefore always left empty in the current implementation.
