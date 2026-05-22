@@ -4,11 +4,11 @@
 
 Execution end time
 
-2026-03-26T15:51:36 Coordinated Universal Time
+2026-05-22T07:59:25 Coordinated Universal Time
 
 Path to script
 
-/tmp/Rtmp10fWtT/file1e321e7c39f7/example.R
+/tmp/RtmpoyZd01/file1c987804dc66/example.R
 
 # Summary
 
@@ -18,17 +18,17 @@ Tipsuccess
 
 | Time                | File                   |
 |:--------------------|:-----------------------|
-| 2026-03-26 15:51:26 | /dev/urandom           |
-| 2026-03-26 15:51:27 | /home/runner/.Rprofile |
+| 2026-05-22 07:59:14 | /dev/urandom           |
+| 2026-05-22 07:59:15 | /home/runner/.Rprofile |
 
 ## Output
 
-| Time                | File                                                                                                                      |
-|:--------------------|:--------------------------------------------------------------------------------------------------------------------------|
-| 2026-03-26 15:51:26 | /dev/null                                                                                                                 |
-| 2026-03-26 15:51:27 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage     |
-| 2026-03-26 15:51:27 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-wal |
-| 2026-03-26 15:51:27 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-shm |
+| Time | File |
+|:---|:---|
+| 2026-05-22 07:59:14 | /dev/null |
+| 2026-05-22 07:59:14 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage |
+| 2026-05-22 07:59:14 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-wal |
+| 2026-05-22 07:59:14 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-shm |
 
 ## Removed
 
@@ -99,324 +99,325 @@ ggsave("plot1.png")
 
 NotePlatform
 
-| Setting  | Value                                                            |
-|:---------|:-----------------------------------------------------------------|
-| version  | R version 4.5.3 (2026-03-11)                                     |
-| os       | Ubuntu 24.04.3 LTS                                               |
-| system   | x86_64, linux-gnu                                                |
-| ui       | X11                                                              |
-| language | en                                                               |
-| collate  | C.UTF-8                                                          |
-| ctype    | C.UTF-8                                                          |
-| tz       | UTC                                                              |
-| date     | 2026-03-26                                                       |
-| pandoc   | 3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown) |
-| quarto   | 1.9.36 @ /usr/local/bin/quarto                                   |
+| Setting  | Value                                                          |
+|:---------|:---------------------------------------------------------------|
+| version  | R version 4.6.0 (2026-04-24)                                   |
+| os       | Ubuntu 24.04.4 LTS                                             |
+| system   | x86_64, linux-gnu                                              |
+| ui       | X11                                                            |
+| language | en                                                             |
+| collate  | C.UTF-8                                                        |
+| ctype    | C.UTF-8                                                        |
+| tz       | UTC                                                            |
+| date     | 2026-05-22                                                     |
+| pandoc   | 3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown) |
+| quarto   | 1.9.37 @ /usr/local/bin/quarto                                 |
 
 NoteR packages used directly
 
 | Package     | Version | Source |
 |:------------|:--------|:-------|
-| dplyr       | 1.2.0   | RSPM   |
-| ggplot2     | 4.0.2   | RSPM   |
+| dplyr       | 1.2.1   | RSPM   |
+| ggplot2     | 4.0.3   | RSPM   |
 | knitr       | 1.51    | RSPM   |
-| reticulate  | 1.45.0  | RSPM   |
-| rmarkdown   | 2.30    | RSPM   |
+| reticulate  | 1.46.0  | RSPM   |
+| rmarkdown   | 2.31    | RSPM   |
 | sessioninfo | 1.2.3   | RSPM   |
 
 NoteR packages used indirectly
 
-| Package      | Version | Source         |
-|:-------------|:--------|:---------------|
-| cli          | 3.6.5   | RSPM           |
-| digest       | 0.6.39  | RSPM           |
-| evaluate     | 1.0.5   | RSPM           |
-| farver       | 2.1.2   | RSPM           |
-| fastmap      | 1.2.0   | RSPM           |
-| generics     | 0.1.4   | RSPM           |
-| glue         | 1.8.0   | RSPM           |
-| gtable       | 0.3.6   | RSPM           |
-| htmltools    | 0.5.9   | RSPM           |
-| jsonlite     | 2.0.0   | RSPM           |
-| labeling     | 0.4.3   | RSPM           |
-| lattice      | 0.22-9  | CRAN (R 4.5.3) |
-| lifecycle    | 1.0.5   | RSPM           |
-| magrittr     | 2.0.4   | RSPM           |
-| Matrix       | 1.7-4   | CRAN (R 4.5.3) |
-| pillar       | 1.11.1  | RSPM           |
-| pkgconfig    | 2.0.3   | RSPM           |
-| png          | 0.1-9   | RSPM           |
-| R6           | 2.6.1   | RSPM           |
-| ragg         | 1.5.2   | RSPM           |
-| RColorBrewer | 1.1-3   | RSPM           |
-| Rcpp         | 1.1.1   | RSPM           |
-| rlang        | 1.1.7   | RSPM           |
-| S7           | 0.2.1   | RSPM           |
-| scales       | 1.4.0   | RSPM           |
-| systemfonts  | 1.3.2   | RSPM           |
-| textshaping  | 1.0.5   | RSPM           |
-| tibble       | 3.3.1   | RSPM           |
-| tidyselect   | 1.2.1   | RSPM           |
-| utf8         | 1.2.6   | RSPM           |
-| vctrs        | 0.7.2   | RSPM           |
-| withr        | 3.0.2   | RSPM           |
-| xfun         | 0.57    | RSPM           |
-| yaml         | 2.3.12  | RSPM           |
+| Package      | Version   | Source         |
+|:-------------|:----------|:---------------|
+| cli          | 3.6.6     | RSPM           |
+| digest       | 0.6.39    | RSPM           |
+| evaluate     | 1.0.5     | RSPM           |
+| farver       | 2.1.2     | RSPM           |
+| fastmap      | 1.2.0     | RSPM           |
+| generics     | 0.1.4     | RSPM           |
+| glue         | 1.8.1     | RSPM           |
+| gtable       | 0.3.6     | RSPM           |
+| htmltools    | 0.5.9     | RSPM           |
+| jsonlite     | 2.0.0     | RSPM           |
+| labeling     | 0.4.3     | RSPM           |
+| lattice      | 0.22-9    | CRAN (R 4.6.0) |
+| lifecycle    | 1.0.5     | RSPM           |
+| magrittr     | 2.0.5     | RSPM           |
+| Matrix       | 1.7-5     | CRAN (R 4.6.0) |
+| pillar       | 1.11.1    | RSPM           |
+| pkgconfig    | 2.0.3     | RSPM           |
+| png          | 0.1-9     | RSPM           |
+| R6           | 2.6.1     | RSPM           |
+| ragg         | 1.5.2     | RSPM           |
+| RColorBrewer | 1.1-3     | RSPM           |
+| Rcpp         | 1.1.1-1.1 | RSPM           |
+| rlang        | 1.2.0     | RSPM           |
+| S7           | 0.2.2     | RSPM           |
+| scales       | 1.4.0     | RSPM           |
+| systemfonts  | 1.3.2     | RSPM           |
+| textshaping  | 1.0.5     | RSPM           |
+| tibble       | 3.3.1     | RSPM           |
+| tidyselect   | 1.2.1     | RSPM           |
+| utf8         | 1.2.6     | RSPM           |
+| vctrs        | 0.7.3     | RSPM           |
+| withr        | 3.0.2     | RSPM           |
+| xfun         | 0.57      | RSPM           |
+| yaml         | 2.3.12    | RSPM           |
 
 NoteEnvironment variables
 
-| Variable                            | Value                                                                                                                                                                                                                                                                                                                                                                                                            |
-|:------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| \_R_CHECK_SYSTEM_CLOCK\_            | FALSE                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ACCEPT_EULA                         | Y                                                                                                                                                                                                                                                                                                                                                                                                                |
-| ACTIONS_ORCHESTRATION_ID            | e45cc844-98e8-4725-a872-f0522dd225d3.pkgdown.pkgdown.\_\_default                                                                                                                                                                                                                                                                                                                                                 |
-| ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE | /opt/actionarchivecache                                                                                                                                                                                                                                                                                                                                                                                          |
-| AGENT_TOOLSDIRECTORY                | /opt/hostedtoolcache                                                                                                                                                                                                                                                                                                                                                                                             |
-| ANDROID_HOME                        | /usr/local/lib/android/sdk                                                                                                                                                                                                                                                                                                                                                                                       |
-| ANDROID_NDK                         | /usr/local/lib/android/sdk/ndk/27.3.13750724                                                                                                                                                                                                                                                                                                                                                                     |
-| ANDROID_NDK_HOME                    | /usr/local/lib/android/sdk/ndk/27.3.13750724                                                                                                                                                                                                                                                                                                                                                                     |
-| ANDROID_NDK_LATEST_HOME             | /usr/local/lib/android/sdk/ndk/29.0.14206865                                                                                                                                                                                                                                                                                                                                                                     |
-| ANDROID_NDK_ROOT                    | /usr/local/lib/android/sdk/ndk/27.3.13750724                                                                                                                                                                                                                                                                                                                                                                     |
-| ANDROID_SDK_ROOT                    | /usr/local/lib/android/sdk                                                                                                                                                                                                                                                                                                                                                                                       |
-| ANT_HOME                            | /usr/share/ant                                                                                                                                                                                                                                                                                                                                                                                                   |
-| AZURE_EXTENSION_DIR                 | /opt/az/azcliextensions                                                                                                                                                                                                                                                                                                                                                                                          |
-| BIBINPUTS                           | ::/home/runner/work/whirl/whirl/vignettes/articles:/opt/R/4.5.3/lib/R/share/texmf/tex/latex                                                                                                                                                                                                                                                                                                                      |
-| BOOTSTRAP_HASKELL_NONINTERACTIVE    | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| BSTINPUTS                           | :/home/runner/work/whirl/whirl/vignettes/articles:/opt/R/4.5.3/lib/R/share/texmf/bibtex/bst                                                                                                                                                                                                                                                                                                                      |
-| BUNDLE_EXT                          | linux-amd64.deb                                                                                                                                                                                                                                                                                                                                                                                                  |
-| CALLR_IS_RUNNING                    | true                                                                                                                                                                                                                                                                                                                                                                                                             |
-| CHROME_BIN                          | /usr/bin/google-chrome                                                                                                                                                                                                                                                                                                                                                                                           |
-| CHROMEWEBDRIVER                     | /usr/local/share/chromedriver-linux64                                                                                                                                                                                                                                                                                                                                                                            |
-| CI                                  | true                                                                                                                                                                                                                                                                                                                                                                                                             |
-| CONDA                               | /usr/share/miniconda                                                                                                                                                                                                                                                                                                                                                                                             |
-| CYGWIN                              | nodosfilewarning                                                                                                                                                                                                                                                                                                                                                                                                 |
-| DEBIAN_FRONTEND                     | noninteractive                                                                                                                                                                                                                                                                                                                                                                                                   |
-| DENO_DOM_PLUGIN                     | /opt/quarto/bin/tools/x86_64/deno_dom/libplugin.so                                                                                                                                                                                                                                                                                                                                                               |
-| DENO_NO_UPDATE_CHECK                | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| DENO_TLS_CA_STORE                   | system,mozilla                                                                                                                                                                                                                                                                                                                                                                                                   |
-| DOTNET_MULTILEVEL_LOOKUP            | 0                                                                                                                                                                                                                                                                                                                                                                                                                |
-| DOTNET_NOLOGO                       | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| DOTNET_SKIP_FIRST_TIME_EXPERIENCE   | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| EDGEWEBDRIVER                       | /usr/local/share/edge_driver                                                                                                                                                                                                                                                                                                                                                                                     |
-| EDITOR                              | vi                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ENABLE_RUNNER_TRACING               | true                                                                                                                                                                                                                                                                                                                                                                                                             |
-| GECKOWEBDRIVER                      | /usr/local/share/gecko_driver                                                                                                                                                                                                                                                                                                                                                                                    |
-| GHCUP_INSTALL_BASE_PREFIX           | /usr/local                                                                                                                                                                                                                                                                                                                                                                                                       |
-| GITHUB_ACTION                       | \_\_run                                                                                                                                                                                                                                                                                                                                                                                                          |
-| GITHUB_ACTION_REF                   |                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| GITHUB_ACTION_REPOSITORY            |                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| GITHUB_ACTIONS                      | true                                                                                                                                                                                                                                                                                                                                                                                                             |
-| GITHUB_ACTOR                        | akselthomsen                                                                                                                                                                                                                                                                                                                                                                                                     |
-| GITHUB_ACTOR_ID                     | 14150030                                                                                                                                                                                                                                                                                                                                                                                                         |
-| GITHUB_API_URL                      | https://api.github.com                                                                                                                                                                                                                                                                                                                                                                                           |
-| GITHUB_BASE_REF                     | main                                                                                                                                                                                                                                                                                                                                                                                                             |
-| GITHUB_ENV                          | /home/runner/work/\_temp/\_runner_file_commands/set_env_022c68b2-d634-4a48-9e30-edc63caa24b3                                                                                                                                                                                                                                                                                                                     |
-| GITHUB_EVENT_NAME                   | pull_request                                                                                                                                                                                                                                                                                                                                                                                                     |
-| GITHUB_GRAPHQL_URL                  | https://api.github.com/graphql                                                                                                                                                                                                                                                                                                                                                                                   |
-| GITHUB_HEAD_REF                     | feat/stop-on-error                                                                                                                                                                                                                                                                                                                                                                                               |
-| GITHUB_JOB                          | pkgdown                                                                                                                                                                                                                                                                                                                                                                                                          |
-| GITHUB_OUTPUT                       | /home/runner/work/\_temp/\_runner_file_commands/set_output_022c68b2-d634-4a48-9e30-edc63caa24b3                                                                                                                                                                                                                                                                                                                  |
-| GITHUB_REF                          | refs/pull/228/merge                                                                                                                                                                                                                                                                                                                                                                                              |
-| GITHUB_REF_NAME                     | 228/merge                                                                                                                                                                                                                                                                                                                                                                                                        |
-| GITHUB_REF_PROTECTED                | false                                                                                                                                                                                                                                                                                                                                                                                                            |
-| GITHUB_REF_TYPE                     | branch                                                                                                                                                                                                                                                                                                                                                                                                           |
-| GITHUB_REPOSITORY                   | NovoNordisk-OpenSource/whirl                                                                                                                                                                                                                                                                                                                                                                                     |
-| GITHUB_REPOSITORY_ID                | 865991741                                                                                                                                                                                                                                                                                                                                                                                                        |
-| GITHUB_REPOSITORY_OWNER             | NovoNordisk-OpenSource                                                                                                                                                                                                                                                                                                                                                                                           |
-| GITHUB_REPOSITORY_OWNER_ID          | 129066790                                                                                                                                                                                                                                                                                                                                                                                                        |
-| GITHUB_RETENTION_DAYS               | 90                                                                                                                                                                                                                                                                                                                                                                                                               |
-| GITHUB_RUN_ATTEMPT                  | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| GITHUB_RUN_ID                       | 23603878030                                                                                                                                                                                                                                                                                                                                                                                                      |
-| GITHUB_RUN_NUMBER                   | 532                                                                                                                                                                                                                                                                                                                                                                                                              |
-| GITHUB_SERVER_URL                   | https://github.com                                                                                                                                                                                                                                                                                                                                                                                               |
-| GITHUB_SHA                          | 81fd6522e0eef90e7a1e30fa2eeba591a5498bfc                                                                                                                                                                                                                                                                                                                                                                         |
-| GITHUB_STATE                        | /home/runner/work/\_temp/\_runner_file_commands/save_state_022c68b2-d634-4a48-9e30-edc63caa24b3                                                                                                                                                                                                                                                                                                                  |
-| GITHUB_STEP_SUMMARY                 | /home/runner/work/\_temp/\_runner_file_commands/step_summary_022c68b2-d634-4a48-9e30-edc63caa24b3                                                                                                                                                                                                                                                                                                                |
-| GITHUB_TRIGGERING_ACTOR             | akselthomsen                                                                                                                                                                                                                                                                                                                                                                                                     |
-| GITHUB_WORKFLOW                     | All actions                                                                                                                                                                                                                                                                                                                                                                                                      |
-| GITHUB_WORKFLOW_REF                 | NovoNordisk-OpenSource/whirl/.github/workflows/check_and_co.yaml@refs/pull/228/merge                                                                                                                                                                                                                                                                                                                             |
-| GITHUB_WORKFLOW_SHA                 | 81fd6522e0eef90e7a1e30fa2eeba591a5498bfc                                                                                                                                                                                                                                                                                                                                                                         |
-| GITHUB_WORKSPACE                    | /home/runner/work/whirl/whirl                                                                                                                                                                                                                                                                                                                                                                                    |
-| GOROOT_1_22_X64                     | /opt/hostedtoolcache/go/1.22.12/x64                                                                                                                                                                                                                                                                                                                                                                              |
-| GOROOT_1_23_X64                     | /opt/hostedtoolcache/go/1.23.12/x64                                                                                                                                                                                                                                                                                                                                                                              |
-| GOROOT_1_24_X64                     | /opt/hostedtoolcache/go/1.24.13/x64                                                                                                                                                                                                                                                                                                                                                                              |
-| GOROOT_1_25_X64                     | /opt/hostedtoolcache/go/1.25.8/x64                                                                                                                                                                                                                                                                                                                                                                               |
-| GRADLE_HOME                         | /usr/share/gradle-9.4.0                                                                                                                                                                                                                                                                                                                                                                                          |
-| HOME                                | /home/runner                                                                                                                                                                                                                                                                                                                                                                                                     |
-| HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS | 3650                                                                                                                                                                                                                                                                                                                                                                                                             |
-| HOMEBREW_NO_AUTO_UPDATE             | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| ImageOS                             | ubuntu24                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ImageVersion                        | 20260309.50.1                                                                                                                                                                                                                                                                                                                                                                                                    |
-| IN_PKGDOWN                          | true                                                                                                                                                                                                                                                                                                                                                                                                             |
-| INVOCATION_ID                       | 02a0cea1802649d593a1b4c1b01e77c3                                                                                                                                                                                                                                                                                                                                                                                 |
-| JAVA_HOME                           | /usr/lib/jvm/temurin-17-jdk-amd64                                                                                                                                                                                                                                                                                                                                                                                |
-| JAVA_HOME_11_X64                    | /usr/lib/jvm/temurin-11-jdk-amd64                                                                                                                                                                                                                                                                                                                                                                                |
-| JAVA_HOME_17_X64                    | /usr/lib/jvm/temurin-17-jdk-amd64                                                                                                                                                                                                                                                                                                                                                                                |
-| JAVA_HOME_21_X64                    | /usr/lib/jvm/temurin-21-jdk-amd64                                                                                                                                                                                                                                                                                                                                                                                |
-| JAVA_HOME_25_X64                    | /usr/lib/jvm/temurin-25-jdk-amd64                                                                                                                                                                                                                                                                                                                                                                                |
-| JAVA_HOME_8_X64                     | /usr/lib/jvm/temurin-8-jdk-amd64                                                                                                                                                                                                                                                                                                                                                                                 |
-| JOURNAL_STREAM                      | 9:16836                                                                                                                                                                                                                                                                                                                                                                                                          |
-| LANG                                | C.UTF-8                                                                                                                                                                                                                                                                                                                                                                                                          |
-| LANGUAGE                            | en                                                                                                                                                                                                                                                                                                                                                                                                               |
-| LN_S                                | ln -s                                                                                                                                                                                                                                                                                                                                                                                                            |
-| LOGNAME                             | runner                                                                                                                                                                                                                                                                                                                                                                                                           |
-| MAKE                                | make                                                                                                                                                                                                                                                                                                                                                                                                             |
-| MEMORY_PRESSURE_WATCH               | /sys/fs/cgroup/system.slice/hosted-compute-agent.service/memory.pressure                                                                                                                                                                                                                                                                                                                                         |
-| MEMORY_PRESSURE_WRITE               | c29tZSAyMDAwMDAgMjAwMDAwMAA=                                                                                                                                                                                                                                                                                                                                                                                     |
-| NOT_CRAN                            | true                                                                                                                                                                                                                                                                                                                                                                                                             |
-| NVM_DIR                             | /home/runner/.nvm                                                                                                                                                                                                                                                                                                                                                                                                |
-| PAGER                               | /usr/bin/pager                                                                                                                                                                                                                                                                                                                                                                                                   |
-| PATH                                | /opt/hostedtoolcache/pandoc/3.1.11/x64:/home/runner/work/\_temp/uv-python-dir:/opt/hostedtoolcache/uv/0.11.1/x86_64:/home/runner/.local/bin:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin |
-| PIPX_BIN_DIR                        | /opt/pipx_bin                                                                                                                                                                                                                                                                                                                                                                                                    |
-| PIPX_HOME                           | /opt/pipx                                                                                                                                                                                                                                                                                                                                                                                                        |
-| PKGCACHE_HTTP_VERSION               | 2                                                                                                                                                                                                                                                                                                                                                                                                                |
-| POWERSHELL_DISTRIBUTION_CHANNEL     | GitHub-Actions-ubuntu24                                                                                                                                                                                                                                                                                                                                                                                          |
-| PROCESSX_PS1d2c4cf1040e_1774540284  | YES                                                                                                                                                                                                                                                                                                                                                                                                              |
-| PROCESSX_PS1e32c7ded82_1774540285   | YES                                                                                                                                                                                                                                                                                                                                                                                                              |
-| PROCESSX_PS1e504a94acaf_1774540286  | YES                                                                                                                                                                                                                                                                                                                                                                                                              |
-| PSModulePath                        | /root/.local/share/powershell/Modules:/usr/local/share/powershell/Modules:/opt/microsoft/powershell/7/Modules:/usr/share/az_14.6.0                                                                                                                                                                                                                                                                               |
-| PWD                                 | /tmp/Rtmp10fWtT/file1e324f78e016                                                                                                                                                                                                                                                                                                                                                                                 |
-| QUARTO_DENO                         | /opt/quarto/bin/tools/x86_64/deno                                                                                                                                                                                                                                                                                                                                                                                |
-| QUARTO_DOCUMENT_FILE                | dummy.qmd                                                                                                                                                                                                                                                                                                                                                                                                        |
-| QUARTO_EXECUTE_INFO                 | /tmp/Rtmp10fWtT/file1e324f78e016/.quarto/quarto-session-tempa379386d727dbbc6/bfaaa8c5b3c7a5c1                                                                                                                                                                                                                                                                                                                    |
-| QUARTO_PROFILE                      |                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| QUARTO_PROJECT_DIR                  | /tmp/Rtmp10fWtT/file1e324f78e016                                                                                                                                                                                                                                                                                                                                                                                 |
-| QUARTO_PROJECT_ROOT                 | /tmp/Rtmp10fWtT/file1e324f78e016                                                                                                                                                                                                                                                                                                                                                                                 |
-| QUARTO_ROOT                         | /                                                                                                                                                                                                                                                                                                                                                                                                                |
-| R_ARCH                              |                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| R_BROWSER                           | false                                                                                                                                                                                                                                                                                                                                                                                                            |
-| R_BZIPCMD                           | /usr/bin/bzip2                                                                                                                                                                                                                                                                                                                                                                                                   |
-| R_CLI_NUM_COLORS                    | 256                                                                                                                                                                                                                                                                                                                                                                                                              |
-| R_DOC_DIR                           | /opt/R/4.5.3/lib/R/doc                                                                                                                                                                                                                                                                                                                                                                                           |
-| R_GZIPCMD                           | /usr/bin/gzip                                                                                                                                                                                                                                                                                                                                                                                                    |
-| R_HOME                              | /opt/R/4.5.3/lib/R                                                                                                                                                                                                                                                                                                                                                                                               |
-| R_INCLUDE_DIR                       | /opt/R/4.5.3/lib/R/include                                                                                                                                                                                                                                                                                                                                                                                       |
-| R_LIB_FOR_PAK                       | /opt/R/4.5.3/lib/R/site-library                                                                                                                                                                                                                                                                                                                                                                                  |
-| R_LIBS_SITE                         | /opt/R/4.5.3/lib/R/site-library                                                                                                                                                                                                                                                                                                                                                                                  |
-| R_LIBS_USER                         | /home/runner/work/\_temp/Library                                                                                                                                                                                                                                                                                                                                                                                 |
-| R_PAPERSIZE                         | letter                                                                                                                                                                                                                                                                                                                                                                                                           |
-| R_PAPERSIZE_USER                    | letter                                                                                                                                                                                                                                                                                                                                                                                                           |
-| R_PDFVIEWER                         | false                                                                                                                                                                                                                                                                                                                                                                                                            |
-| R_PLATFORM                          | x86_64-pc-linux-gnu                                                                                                                                                                                                                                                                                                                                                                                              |
-| R_PRINTCMD                          | /usr/bin/lpr                                                                                                                                                                                                                                                                                                                                                                                                     |
-| R_RD4PDF                            | times,inconsolata,hyper                                                                                                                                                                                                                                                                                                                                                                                          |
-| R_SESSION_TMPDIR                    | /tmp/RtmptaHBfP                                                                                                                                                                                                                                                                                                                                                                                                  |
-| R_SHARE_DIR                         | /opt/R/4.5.3/lib/R/share                                                                                                                                                                                                                                                                                                                                                                                         |
-| R_STRIP_SHARED_LIB                  | strip --strip-unneeded                                                                                                                                                                                                                                                                                                                                                                                           |
-| R_STRIP_STATIC_LIB                  | strip --strip-debug                                                                                                                                                                                                                                                                                                                                                                                              |
-| R_TESTS                             |                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| R_TEXI2DVICMD                       | /usr/bin/texi2dvi                                                                                                                                                                                                                                                                                                                                                                                                |
-| R_UNZIPCMD                          | /usr/bin/unzip                                                                                                                                                                                                                                                                                                                                                                                                   |
-| R_ZIPCMD                            | /usr/bin/zip                                                                                                                                                                                                                                                                                                                                                                                                     |
-| RENV_CONFIG_REPOS_OVERRIDE          | https://packagemanager.posit.co/cran/\_\_linux\_\_/noble/latest                                                                                                                                                                                                                                                                                                                                                  |
-| RSPM                                | https://packagemanager.posit.co/cran/\_\_linux\_\_/noble/latest                                                                                                                                                                                                                                                                                                                                                  |
-| RUNNER_ARCH                         | X64                                                                                                                                                                                                                                                                                                                                                                                                              |
-| RUNNER_ENVIRONMENT                  | github-hosted                                                                                                                                                                                                                                                                                                                                                                                                    |
-| RUNNER_NAME                         | GitHub Actions 1000017336                                                                                                                                                                                                                                                                                                                                                                                        |
-| RUNNER_OS                           | Linux                                                                                                                                                                                                                                                                                                                                                                                                            |
-| RUNNER_TEMP                         | /home/runner/work/\_temp                                                                                                                                                                                                                                                                                                                                                                                         |
-| RUNNER_TOOL_CACHE                   | /opt/hostedtoolcache                                                                                                                                                                                                                                                                                                                                                                                             |
-| RUNNER_TRACKING_ID                  | github_87698ee4-604b-4aa4-a6ca-76bab1e8707b                                                                                                                                                                                                                                                                                                                                                                      |
-| RUNNER_WORKSPACE                    | /home/runner/work/whirl                                                                                                                                                                                                                                                                                                                                                                                          |
-| SED                                 | /usr/bin/sed                                                                                                                                                                                                                                                                                                                                                                                                     |
-| SGX_AESM_ADDR                       | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| SHELL                               | /bin/bash                                                                                                                                                                                                                                                                                                                                                                                                        |
-| SHLVL                               | 1                                                                                                                                                                                                                                                                                                                                                                                                                |
-| SYSTEMD_EXEC_PID                    | 2034                                                                                                                                                                                                                                                                                                                                                                                                             |
-| TAR                                 | /usr/bin/tar                                                                                                                                                                                                                                                                                                                                                                                                     |
-| TERM                                | dumb                                                                                                                                                                                                                                                                                                                                                                                                             |
-| TEXINPUTS                           | :/home/runner/work/whirl/whirl/vignettes/articles:/opt/R/4.5.3/lib/R/share/texmf/tex/latex                                                                                                                                                                                                                                                                                                                       |
-| TZ                                  | UTC                                                                                                                                                                                                                                                                                                                                                                                                              |
-| USE_BAZEL_FALLBACK_VERSION          | silent:                                                                                                                                                                                                                                                                                                                                                                                                          |
-| USER                                | runner                                                                                                                                                                                                                                                                                                                                                                                                           |
-| UV_CACHE_DIR                        | /home/runner/work/\_temp/setup-uv-cache                                                                                                                                                                                                                                                                                                                                                                          |
-| UV_PYTHON_INSTALL_DIR               | /home/runner/work/\_temp/uv-python-dir                                                                                                                                                                                                                                                                                                                                                                           |
-| VCPKG_INSTALLATION_ROOT             | /usr/local/share/vcpkg                                                                                                                                                                                                                                                                                                                                                                                           |
-| VIRTUAL_ENV                         | /home/runner/work/whirl/whirl/.venv                                                                                                                                                                                                                                                                                                                                                                              |
-| WHIRL_LOG_MSG                       | /tmp/Rtmp10fWtT/file1e324f78e016/log_msg.json                                                                                                                                                                                                                                                                                                                                                                    |
-| XDG_CONFIG_HOME                     | /home/runner/.config                                                                                                                                                                                                                                                                                                                                                                                             |
-| XDG_RUNTIME_DIR                     | /run/user/1001                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Variable | Value |
+|:---|:---|
+| \_R_CHECK_SYSTEM_CLOCK\_ | FALSE |
+| ACCEPT_EULA | Y |
+| ACTIONS_ORCHESTRATION_ID | 1cd1a733-5f70-448d-b8a0-81eeb63de09d.pkgdown.pkgdown.\_\_default |
+| ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE | /opt/actionarchivecache |
+| AGENT_TOOLSDIRECTORY | /opt/hostedtoolcache |
+| ANDROID_HOME | /usr/local/lib/android/sdk |
+| ANDROID_NDK | /usr/local/lib/android/sdk/ndk/27.3.13750724 |
+| ANDROID_NDK_HOME | /usr/local/lib/android/sdk/ndk/27.3.13750724 |
+| ANDROID_NDK_LATEST_HOME | /usr/local/lib/android/sdk/ndk/29.0.14206865 |
+| ANDROID_NDK_ROOT | /usr/local/lib/android/sdk/ndk/27.3.13750724 |
+| ANDROID_SDK_ROOT | /usr/local/lib/android/sdk |
+| ANT_HOME | /usr/share/ant |
+| AZURE_EXTENSION_DIR | /opt/az/azcliextensions |
+| BIBINPUTS | ::/home/runner/work/whirl/whirl/vignettes/articles:/opt/R/4.6.0/lib/R/share/texmf/tex/latex |
+| BOOTSTRAP_HASKELL_NONINTERACTIVE | 1 |
+| BSTINPUTS | :/home/runner/work/whirl/whirl/vignettes/articles:/opt/R/4.6.0/lib/R/share/texmf/bibtex/bst |
+| BUNDLE_EXT | linux-amd64.deb |
+| CALLR_IS_RUNNING | true |
+| CHROME_BIN | /usr/bin/google-chrome |
+| CHROMEWEBDRIVER | /usr/local/share/chromedriver-linux64 |
+| CI | true |
+| CONDA | /usr/share/miniconda |
+| CYGWIN | nodosfilewarning |
+| DEBIAN_FRONTEND | noninteractive |
+| DENO_DOM_PLUGIN | /opt/quarto/bin/tools/x86_64/deno_dom/libplugin.so |
+| DENO_NO_UPDATE_CHECK | 1 |
+| DENO_TLS_CA_STORE | system,mozilla |
+| DOTNET_MULTILEVEL_LOOKUP | 0 |
+| DOTNET_NOLOGO | 1 |
+| DOTNET_SKIP_FIRST_TIME_EXPERIENCE | 1 |
+| EDGEWEBDRIVER | /usr/local/share/edge_driver |
+| EDITOR | vi |
+| ENABLE_RUNNER_TRACING | true |
+| GECKOWEBDRIVER | /usr/local/share/gecko_driver |
+| GHCUP_INSTALL_BASE_PREFIX | /usr/local |
+| GITHUB_ACTION | \_\_run |
+| GITHUB_ACTION_REF |  |
+| GITHUB_ACTION_REPOSITORY |  |
+| GITHUB_ACTIONS | true |
+| GITHUB_ACTOR | akselthomsen |
+| GITHUB_ACTOR_ID | 14150030 |
+| GITHUB_API_URL | https://api.github.com |
+| GITHUB_BASE_REF | main |
+| GITHUB_ENV | /home/runner/work/\_temp/\_runner_file_commands/set_env_1083017a-3fac-4d2a-895e-82c74daa07a4 |
+| GITHUB_EVENT_NAME | pull_request |
+| GITHUB_GRAPHQL_URL | https://api.github.com/graphql |
+| GITHUB_HEAD_REF | feat/stop-on-error |
+| GITHUB_JOB | pkgdown |
+| GITHUB_OUTPUT | /home/runner/work/\_temp/\_runner_file_commands/set_output_1083017a-3fac-4d2a-895e-82c74daa07a4 |
+| GITHUB_REF | refs/pull/228/merge |
+| GITHUB_REF_NAME | 228/merge |
+| GITHUB_REF_PROTECTED | false |
+| GITHUB_REF_TYPE | branch |
+| GITHUB_REPOSITORY | NovoNordisk-OpenSource/whirl |
+| GITHUB_REPOSITORY_ID | 865991741 |
+| GITHUB_REPOSITORY_OWNER | NovoNordisk-OpenSource |
+| GITHUB_REPOSITORY_OWNER_ID | 129066790 |
+| GITHUB_RETENTION_DAYS | 90 |
+| GITHUB_RUN_ATTEMPT | 1 |
+| GITHUB_RUN_ID | 26275713357 |
+| GITHUB_RUN_NUMBER | 534 |
+| GITHUB_SERVER_URL | https://github.com |
+| GITHUB_SHA | c60fab0e34911be90bbe7d4a9aa4ddd5327e3e0e |
+| GITHUB_STATE | /home/runner/work/\_temp/\_runner_file_commands/save_state_1083017a-3fac-4d2a-895e-82c74daa07a4 |
+| GITHUB_STEP_SUMMARY | /home/runner/work/\_temp/\_runner_file_commands/step_summary_1083017a-3fac-4d2a-895e-82c74daa07a4 |
+| GITHUB_TRIGGERING_ACTOR | akselthomsen |
+| GITHUB_WORKFLOW | All actions |
+| GITHUB_WORKFLOW_REF | NovoNordisk-OpenSource/whirl/.github/workflows/check_and_co.yaml@refs/pull/228/merge |
+| GITHUB_WORKFLOW_SHA | c60fab0e34911be90bbe7d4a9aa4ddd5327e3e0e |
+| GITHUB_WORKSPACE | /home/runner/work/whirl/whirl |
+| GOROOT_1_22_X64 | /opt/hostedtoolcache/go/1.22.12/x64 |
+| GOROOT_1_23_X64 | /opt/hostedtoolcache/go/1.23.12/x64 |
+| GOROOT_1_24_X64 | /opt/hostedtoolcache/go/1.24.13/x64 |
+| GOROOT_1_25_X64 | /opt/hostedtoolcache/go/1.25.10/x64 |
+| GRADLE_HOME | /usr/share/gradle-9.5.1 |
+| HOME | /home/runner |
+| HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS | 3650 |
+| HOMEBREW_NO_AUTO_UPDATE | 1 |
+| ImageOS | ubuntu24 |
+| ImageVersion | 20260518.149.1 |
+| IN_PKGDOWN | true |
+| INVOCATION_ID | eeafc4cb06234bb493e54422ec1e2d37 |
+| JAVA_HOME | /usr/lib/jvm/temurin-17-jdk-amd64 |
+| JAVA_HOME_11_X64 | /usr/lib/jvm/temurin-11-jdk-amd64 |
+| JAVA_HOME_17_X64 | /usr/lib/jvm/temurin-17-jdk-amd64 |
+| JAVA_HOME_21_X64 | /usr/lib/jvm/temurin-21-jdk-amd64 |
+| JAVA_HOME_25_X64 | /usr/lib/jvm/temurin-25-jdk-amd64 |
+| JAVA_HOME_8_X64 | /usr/lib/jvm/temurin-8-jdk-amd64 |
+| JOURNAL_STREAM | 9:17457 |
+| LANG | C.UTF-8 |
+| LANGUAGE | en |
+| LN_S | ln -s |
+| LOGNAME | runner |
+| MAKE | make |
+| MEMORY_PRESSURE_WATCH | /sys/fs/cgroup/system.slice/hosted-compute-agent.service/memory.pressure |
+| MEMORY_PRESSURE_WRITE | c29tZSAyMDAwMDAgMjAwMDAwMAA= |
+| NOT_CRAN | true |
+| NVM_DIR | /home/runner/.nvm |
+| PAGER | /usr/bin/pager |
+| PATH | /opt/hostedtoolcache/pandoc/3.8.3/x64:/home/runner/work/\_temp/uv-python-dir:/opt/hostedtoolcache/uv/0.11.16/x86_64:/home/runner/.local/bin:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin |
+| PIPX_BIN_DIR | /opt/pipx_bin |
+| PIPX_HOME | /opt/pipx |
+| PKGCACHE_HTTP_VERSION | 2 |
+| POWERSHELL_DISTRIBUTION_CHANNEL | GitHub-Actions-Linux |
+| PROCESSX_PS1b8fc21d20a_1779436751 | YES |
+| PROCESSX_PS1c9834e18985_1779436753 | YES |
+| PROCESSX_PS1cb633af0090_1779436754 | YES |
+| PSModulePath | /root/.local/share/powershell/Modules:/usr/local/share/powershell/Modules:/opt/microsoft/powershell/7/Modules:/usr/share/az_14.6.0 |
+| PWD | /tmp/RtmpoyZd01/file1c984eee40bb |
+| QUARTO_DENO | /opt/quarto/bin/tools/x86_64/deno |
+| QUARTO_DOCUMENT_FILE | dummy.qmd |
+| QUARTO_EXECUTE_INFO | /tmp/RtmpoyZd01/file1c984eee40bb/.quarto/quarto-session-tempea668a1709fbb813/3ccefd9ecd080877 |
+| QUARTO_PROFILE |  |
+| QUARTO_PROJECT_DIR | /tmp/RtmpoyZd01/file1c984eee40bb |
+| QUARTO_PROJECT_ROOT | /tmp/RtmpoyZd01/file1c984eee40bb |
+| QUARTO_ROOT | / |
+| R_ARCH |  |
+| R_BROWSER | false |
+| R_BZIPCMD | /usr/bin/bzip2 |
+| R_CLI_NUM_COLORS | 256 |
+| R_DOC_DIR | /opt/R/4.6.0/lib/R/doc |
+| R_GZIPCMD | /usr/bin/gzip |
+| R_HOME | /opt/R/4.6.0/lib/R |
+| R_INCLUDE_DIR | /opt/R/4.6.0/lib/R/include |
+| R_LIB_FOR_PAK | /opt/R/4.6.0/lib/R/site-library |
+| R_LIBS_SITE | /opt/R/4.6.0/lib/R/site-library |
+| R_LIBS_USER | /home/runner/work/\_temp/Library |
+| R_PAPERSIZE | letter |
+| R_PAPERSIZE_USER | letter |
+| R_PDFVIEWER | false |
+| R_PLATFORM | x86_64-pc-linux-gnu |
+| R_PRINTCMD | /usr/bin/lpr |
+| R_RD4PDF | times,inconsolata,hyper |
+| R_SESSION_TMPDIR | /tmp/RtmpA7z9IH |
+| R_SHARE_DIR | /opt/R/4.6.0/lib/R/share |
+| R_STRIP_SHARED_LIB | strip --strip-unneeded |
+| R_STRIP_STATIC_LIB | strip --strip-debug |
+| R_TESTS |  |
+| R_TEXI2DVICMD | /usr/bin/texi2dvi |
+| R_UNZIPCMD | /usr/bin/unzip |
+| R_ZIPCMD | /usr/bin/zip |
+| RENV_CONFIG_REPOS_OVERRIDE | https://packagemanager.posit.co/cran/\_\_linux\_\_/noble/latest |
+| RSPM | https://packagemanager.posit.co/cran/\_\_linux\_\_/noble/latest |
+| RUNNER_ARCH | X64 |
+| RUNNER_ENVIRONMENT | github-hosted |
+| RUNNER_NAME | GitHub Actions 1000019408 |
+| RUNNER_OS | Linux |
+| RUNNER_TEMP | /home/runner/work/\_temp |
+| RUNNER_TOOL_CACHE | /opt/hostedtoolcache |
+| RUNNER_TRACKING_ID | github_eb5b79b0-f748-4cc9-8b26-1b1b70febfb5 |
+| RUNNER_WORKSPACE | /home/runner/work/whirl |
+| SED | /usr/bin/sed |
+| SGX_AESM_ADDR | 1 |
+| SHELL | /bin/bash |
+| SHLVL | 1 |
+| SYSTEMD_EXEC_PID | 2094 |
+| TAR | /usr/bin/tar |
+| TERM | dumb |
+| TEXINPUTS | :/home/runner/work/whirl/whirl/vignettes/articles:/opt/R/4.6.0/lib/R/share/texmf/tex/latex |
+| TZ | UTC |
+| USE_BAZEL_FALLBACK_VERSION | silent: |
+| USER | runner |
+| UV_CACHE_DIR | /home/runner/work/\_temp/setup-uv-cache |
+| UV_PYTHON_INSTALL_DIR | /home/runner/work/\_temp/uv-python-dir |
+| VCPKG_INSTALLATION_ROOT | /usr/local/share/vcpkg |
+| VIRTUAL_ENV | /home/runner/work/whirl/whirl/.venv |
+| WHIRL_LOG_MSG | /tmp/RtmpoyZd01/file1c984eee40bb/log_msg.json |
+| XDG_CONFIG_HOME | /home/runner/.config |
+| XDG_RUNTIME_DIR | /run/user/1001 |
 
 NoteOptions
 
-| Option                              | Value                                                                                                                                                                      |
-|:------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| add.smooth                          | TRUE                                                                                                                                                                       |
-| ambiguousMethodSelection            | function (cond) , NULL                                                                                                                                                     |
-| bitmapType                          | cairo                                                                                                                                                                      |
-| browser                             | false                                                                                                                                                                      |
-| browserNLdisabled                   | FALSE                                                                                                                                                                      |
+| Option | Value |
+|:---|:---|
+| add.smooth | TRUE |
+| ambiguousMethodSelection | function (cond) , NULL |
+| bitmapType | cairo |
+| browser | false |
+| browserNLdisabled | FALSE |
 | callr.condition_handler_cli_message | function (msg) , {, custom_handler \<- getOption("cli.default_handler"), if (is.function(custom_handler)) {, custom_handler(msg), }, else {, cli_server_default(msg), }, } |
-| catch.script.errors                 | FALSE                                                                                                                                                                      |
-| CBoundsCheck                        | FALSE                                                                                                                                                                      |
-| check.bounds                        | FALSE                                                                                                                                                                      |
-| citation.bibtex.max                 | 1                                                                                                                                                                          |
-| continue                            | \+                                                                                                                                                                         |
-| contrasts                           | contr.treatment, contr.poly                                                                                                                                                |
-| defaultPackages                     | datasets , utils , grDevices, graphics , stats , methods                                                                                                                   |
-| demo.ask                            | default                                                                                                                                                                    |
-| deparse.cutoff                      | 60                                                                                                                                                                         |
-| device                              | function (width = 7, height = 7, ...) , {, grDevices::pdf(NULL, width, height, ...), }                                                                                     |
-| device.ask.default                  | FALSE                                                                                                                                                                      |
-| digits                              | 7                                                                                                                                                                          |
-| dvipscmd                            | dvips                                                                                                                                                                      |
-| echo                                | FALSE                                                                                                                                                                      |
-| editor                              | vi                                                                                                                                                                         |
-| encoding                            | native.enc                                                                                                                                                                 |
-| example.ask                         | default                                                                                                                                                                    |
-| expressions                         | 5000                                                                                                                                                                       |
-| help.search.types                   | vignette, demo , help                                                                                                                                                      |
-| help.try.all.packages               | FALSE                                                                                                                                                                      |
-| htmltools.preserve.raw              | TRUE                                                                                                                                                                       |
-| HTTPUserAgent                       | R/4.5.3 R (4.5.3 x86_64-pc-linux-gnu x86_64 linux-gnu) on GitHub Actions                                                                                                   |
-| internet.info                       | 2                                                                                                                                                                          |
-| keep.parse.data                     | TRUE                                                                                                                                                                       |
-| keep.parse.data.pkgs                | FALSE                                                                                                                                                                      |
-| keep.source                         | FALSE                                                                                                                                                                      |
-| keep.source.pkgs                    | FALSE                                                                                                                                                                      |
-| knitr.in.progress                   | TRUE                                                                                                                                                                       |
-| locatorBell                         | TRUE                                                                                                                                                                       |
-| mailer                              | mailto                                                                                                                                                                     |
-| matprod                             | default                                                                                                                                                                    |
-| max.contour.segments                | 25000                                                                                                                                                                      |
-| max.print                           | 99999                                                                                                                                                                      |
-| menu.graphics                       | TRUE                                                                                                                                                                       |
-| na.action                           | na.omit                                                                                                                                                                    |
-| Ncpus                               | 1                                                                                                                                                                          |
-| nwarnings                           | 50                                                                                                                                                                         |
-| OutDec                              | .                                                                                                                                                                          |
-| pager                               | /opt/R/4.5.3/lib/R/bin/pager                                                                                                                                               |
-| papersize                           | letter                                                                                                                                                                     |
-| PCRE_limit_recursion                | NA                                                                                                                                                                         |
-| PCRE_study                          | FALSE                                                                                                                                                                      |
-| PCRE_use_JIT                        | TRUE                                                                                                                                                                       |
-| pdfviewer                           | false                                                                                                                                                                      |
-| pkgType                             | source                                                                                                                                                                     |
-| printcmd                            | /usr/bin/lpr                                                                                                                                                               |
-| prompt                              | \>                                                                                                                                                                         |
-| repos                               | https://packagemanager.posit.co/cran/\_\_linux\_\_/noble/latest, https://cran.rstudio.com                                                                                  |
-| rlang_trace_top_env                 | \<environment: R_GlobalEnv\>                                                                                                                                               |
-| scipen                              | 0                                                                                                                                                                          |
-| show.coef.Pvalues                   | TRUE                                                                                                                                                                       |
-| show.error.messages                 | TRUE                                                                                                                                                                       |
-| show.signif.stars                   | TRUE                                                                                                                                                                       |
-| showErrorCalls                      | TRUE                                                                                                                                                                       |
-| showNCalls                          | 50                                                                                                                                                                         |
-| showWarnCalls                       | FALSE                                                                                                                                                                      |
-| str                                 | no, 3, 4, 99, TRUE, function (x, ...) , format(x, trim = TRUE, drop0trailing = TRUE, ...)                                                                                  |
-| str.dendrogram.last                 | \`                                                                                                                                                                         |
-| texi2dvi                            | /usr/bin/texi2dvi                                                                                                                                                          |
-| tikzMetricsDictionary               | dummy-tikzDictionary                                                                                                                                                       |
-| timeout                             | 60                                                                                                                                                                         |
-| try.outFile                         | 3                                                                                                                                                                          |
-| ts.eps                              | 1e-05                                                                                                                                                                      |
-| ts.S.compat                         | FALSE                                                                                                                                                                      |
-| unzip                               | /usr/bin/unzip                                                                                                                                                             |
-| useFancyQuotes                      | FALSE                                                                                                                                                                      |
-| verbose                             | FALSE                                                                                                                                                                      |
-| warn                                | 0                                                                                                                                                                          |
-| warning.length                      | 1000                                                                                                                                                                       |
-| warnPartialMatchArgs                | FALSE                                                                                                                                                                      |
-| warnPartialMatchAttr                | FALSE                                                                                                                                                                      |
-| warnPartialMatchDollar              | FALSE                                                                                                                                                                      |
-| width                               | 80                                                                                                                                                                         |
+| catch.script.errors | FALSE |
+| CBoundsCheck | FALSE |
+| check.bounds | FALSE |
+| citation.bibtex.max | 1 |
+| continue | \+ |
+| contrasts | contr.treatment, contr.poly |
+| defaultPackages | datasets , utils , grDevices, graphics , stats , methods |
+| demo.ask | default |
+| deparse.cutoff | 60 |
+| device | function (width = 7, height = 7, ...) , {, grDevices::pdf(NULL, width, height, ...), } |
+| device.ask.default | FALSE |
+| digits | 7 |
+| dvipscmd | dvips |
+| echo | FALSE |
+| editor | vi |
+| encoding | native.enc |
+| example.ask | default |
+| expressions | 5000 |
+| help.search.types | vignette, demo , help |
+| help.try.all.packages | FALSE |
+| htmltools.preserve.raw | TRUE |
+| HTTPUserAgent | R/4.6.0 R (4.6.0 x86_64-pc-linux-gnu x86_64 linux-gnu) on GitHub Actions |
+| internet.info | 2 |
+| keep.parse.data | TRUE |
+| keep.parse.data.pkgs | FALSE |
+| keep.source | FALSE |
+| keep.source.pkgs | FALSE |
+| knitr.in.progress | TRUE |
+| locatorBell | TRUE |
+| mailer | mailto |
+| matprod | default |
+| max.contour.segments | 25000 |
+| max.print | 99999 |
+| menu.graphics | TRUE |
+| na.action | na.omit |
+| Ncpus | 1 |
+| nwarnings | 50 |
+| OutDec | . |
+| pager | /opt/R/4.6.0/lib/R/bin/pager |
+| papersize | letter |
+| PCRE_limit_recursion | NA |
+| PCRE_study | FALSE |
+| PCRE_use_JIT | TRUE |
+| pdfviewer | false |
+| pkgType | source |
+| printcmd | /usr/bin/lpr |
+| prompt | \> |
+| quiet | TRUE |
+| repos | https://packagemanager.posit.co/cran/\_\_linux\_\_/noble/latest, https://cran.rstudio.com |
+| rlang_trace_top_env | \<environment: R_GlobalEnv\> |
+| scipen | 0 |
+| show.coef.Pvalues | TRUE |
+| show.error.messages | TRUE |
+| show.signif.stars | TRUE |
+| showErrorCalls | TRUE |
+| showNCalls | 50 |
+| showWarnCalls | FALSE |
+| str | no, 3, 4, 99, TRUE, function (x, ...) , format(x, trim = TRUE, drop0trailing = TRUE, ...) |
+| str.dendrogram.last | \` |
+| texi2dvi | /usr/bin/texi2dvi |
+| tikzMetricsDictionary | dummy-tikzDictionary |
+| timeout | 60 |
+| try.outFile | 3 |
+| ts.eps | 1e-05 |
+| ts.S.compat | FALSE |
+| unzip | /usr/bin/unzip |
+| useFancyQuotes | FALSE |
+| verbose | FALSE |
+| warn | 0 |
+| warning.length | 1000 |
+| warnPartialMatchArgs | FALSE |
+| warnPartialMatchAttr | FALSE |
+| warnPartialMatchDollar | FALSE |
+| width | 80 |

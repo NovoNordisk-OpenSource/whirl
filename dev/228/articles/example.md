@@ -6,6 +6,7 @@ a log of it’s execution:
 `example.R:`
 
 ``` r
+
 #' Setup
 
 library(dplyr)
@@ -33,6 +34,7 @@ Linux we can use the `whirl.track_files` option to automatically track
 the used files:
 
 ``` r
+
 library(whirl)
 
 options(whirl.track_files = TRUE)
@@ -43,6 +45,7 @@ The `verbosity_level` is set to `minimal` for nicer printing in this
 vignette. Now we are ready to execute the script:
 
 ``` r
+
 result <- run("example.R")
 #> ✔ example.R: Completed succesfully. See log html.
 
@@ -50,7 +53,7 @@ print(result)
 #> # A tibble: 1 × 6
 #>      id tag    script                                status result       log_dir
 #>   <dbl> <chr>  <chr>                                 <chr>  <list>       <chr>  
-#> 1     1 Step 1 /tmp/Rtmp10fWtT/file1e321e7c39f7/exa… succe… <named list> /tmp/R…
+#> 1     1 Step 1 /tmp/RtmpoyZd01/file1c987804dc66/exa… succe… <named list> /tmp/R…
 ```
 
 The script is now executed and you can access the logs below:
