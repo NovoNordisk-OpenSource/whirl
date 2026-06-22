@@ -128,3 +128,12 @@ zephyr::create_option(
   default = list(),
   description = "List of options to set in the child sessions executing the scripts."
 )
+
+zephyr::create_option(
+  name = "skip_after",
+  default = "never",
+  description = "When to stop running more scripts.
+  The levels are hierarchical: `warning` stops on both warnings and errors,
+  while `error` stops only on errors (warnings will not trigger skipping).
+  Default `never` continues executing all scripts."
+)

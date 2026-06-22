@@ -80,7 +80,8 @@ run <- function(
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
   log_dir = zephyr::get_option("log_dir", "whirl"),
-  with_options = zephyr::get_option("with_options", "whirl")
+  with_options = zephyr::get_option("with_options", "whirl"),
+  skip_after = zephyr::get_option("skip_after", "whirl")
 ) {
   # Additional Settings
   track_files_discards <- zephyr::get_option("track_files_discards") |>
@@ -89,6 +90,11 @@ run <- function(
 
   # Overwrite options locally if supplied directly
   withr::local_options(.new = list(whirl.with_options = with_options))
+
+  if (skip_after == "warning") {
+    skip_after <- c("warning", "error")
+  }
+  withr::local_options(.new = list(whirl.skip_after = skip_after))
 
   # Message when initiating
   d <- NULL

@@ -13,7 +13,8 @@ run(
   track_files = zephyr::get_option("track_files", "whirl"),
   out_formats = zephyr::get_option("out_formats", "whirl"),
   log_dir = zephyr::get_option("log_dir", "whirl"),
-  with_options = zephyr::get_option("with_options", "whirl")
+  with_options = zephyr::get_option("with_options", "whirl"),
+  skip_after = zephyr::get_option("skip_after", "whirl")
 )
 }
 \arguments{
@@ -49,6 +50,11 @@ function that takes the script path as input and returns the log directory.
 For more information see the examples of \code{run()} or \code{vignette('whirl')}.. Default: \code{function (x)  dirname(x)}.}
 
 \item{with_options}{List of options to set in the child sessions executing the scripts.. Default: \code{list()}.}
+
+\item{skip_after}{When to stop running more scripts.
+The levels are hierarchical: \code{warning} stops on both warnings and errors,
+while \code{error} stops only on errors (warnings will not trigger skipping).
+Default \code{never} continues executing all scripts.. Default: \code{"never"}.}
 }
 \value{
 A tibble containing the execution results for all the scripts.

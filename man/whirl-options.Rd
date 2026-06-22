@@ -157,4 +157,17 @@ List of options to set in the child sessions executing the scripts.
 \item Environment: \code{R_WHIRL_WITH_OPTIONS}
 }
 }
+
+\subsection{skip_after}{
+
+When to stop running more scripts.
+The levels are hierarchical: \code{warning} stops on both warnings and errors,
+while \code{error} stops only on errors (warnings will not trigger skipping).
+Default \code{never} continues executing all scripts.
+\itemize{
+\item Default: \code{"never"}
+\item Option: \code{whirl.skip_after}
+\item Environment: \code{R_WHIRL_SKIP_AFTER}
+}
+}
 }

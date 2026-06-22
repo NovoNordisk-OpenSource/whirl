@@ -173,3 +173,54 @@ test_that("Use with_options", {
     unlist() |>
     expect_equal("world")
 })
+
+test_that("skip_after warning works", {
+  skip_on_cran()
+  skip_if_no_quarto()
+
+  res <- test_script(c("success.R", "warning.R", "error.R", "success.R")) |>
+    as.list() |>
+    run(skip_after = "warning")
+
+  res$status |>
+    expect_equal(c("success", "warning", "skipped", "skipped"))
+
+  res$result[[3]] |>
+    expect_null()
+
+  res$result[[4]] |>
+    expect_null()
+})
+
+test_that("skip_after warning also skips after error", {
+  skip_on_cran()
+  skip_if_no_quarto()
+
+  res <- test_script(c("success.R", "error.R", "warning.R", "success.R")) |>
+    as.list() |>
+    run(skip_after = "warning")
+
+  res$status |>
+    expect_equal(c("success", "error", "skipped", "skipped"))
+
+  res$result[[3]] |>
+    expect_null()
+
+  res$result[[4]] |>
+    expect_null()
+})
+
+test_that("skip_after error works", {
+  skip_on_cran()
+  skip_if_no_quarto()
+
+  res <- test_script(c("success.R", "warning.R", "error.R", "success.R")) |>
+    as.list() |>
+    run(skip_after = "error")
+
+  res$status |>
+    expect_equal(c("success", "warning", "error", "skipped"))
+
+  res$result[[4]] |>
+    expect_null()
+})

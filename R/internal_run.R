@@ -14,10 +14,7 @@
 #' @inheritParams options_params
 #' @return A tibble containing the execution results for all the scripts.
 #' @noRd
-internal_run <- function(input,
-                         steps,
-                         queue,
-                         level) {
+internal_run <- function(input, steps, queue, level) {
   # Enrich the input with "name" and "path" elements
   enriched <- enrich_input(input, steps)
 
@@ -38,8 +35,20 @@ internal_run <- function(input,
         queue = queue,
         level = level + 1
       )
+    } else if (
+      !identical(zephyr::get_option("skip_after", "whirl"), "never") &&
+        any(queue$queue$status %in% zephyr::get_option("skip_after", "whirl"))
+    ) {
+      for (file in files) {
+        wrs_report_status(
+          status = "skipped",
+          script = file,
+          logs = character(0)
+        )
+      }
+      queue$skip(scripts = files, tag = name)
+      zephyr::msg_verbose(message = "\n", msg_fun = cli::cli_verbatim)
     } else {
-      # Execute the scripts
       queue$run(scripts = files, tag = name)
       zephyr::msg_verbose(message = "\n", msg_fun = cli::cli_verbatim)
     }

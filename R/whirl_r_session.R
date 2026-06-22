@@ -419,6 +419,9 @@ wrs_report_status <- function(status, script, logs) {
     error = zephyr::msg_danger(
       "{script_msg}: Completed with errors. See {cli::qty(logs_msg)}log{?s} {logs_msg}."
     ),
+    skipped = zephyr::msg_info(
+      "{script_msg}: Skipped due to previous {paste(zephyr::get_option('skip_after', 'whirl'), collapse = ' or ')}."
+    ),
     cli::cli_abort(
       "{script}: Completed with unknown status {.emph {status}}. See {cli::qty(logs_msg)}log{?s} {logs_msg}."
     )

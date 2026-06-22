@@ -15,12 +15,20 @@ util_queue_summary <- function(queue_table) {
       Status = .data$status,
       Hyperlink = vapply(
         X = .data$result,
-        FUN = \(x) utils::head(x[["logs"]], 1),
+        FUN = function(x) {
+          if (is.null(x)) {
+            return("")
+          }
+          utils::head(x[["logs"]], 1)
+        },
         FUN.VALUE = character(1)
       ),
       Information = vapply(
         X = .data$result,
-        FUN = \(x) {
+        FUN = function(x) {
+          if (is.null(x)) {
+            return("")
+          }
           x[["status"]][c("errors", "warnings")] |>
             unlist() |>
             paste0(collapse = "<br>")
@@ -28,5 +36,12 @@ util_queue_summary <- function(queue_table) {
         FUN.VALUE = character(1)
       )
     ) |>
-    dplyr::select("Tag", "Directory", "Filename", "Status", "Hyperlink", "Information")
+    dplyr::select(
+      "Tag",
+      "Directory",
+      "Filename",
+      "Status",
+      "Hyperlink",
+      "Information"
+    )
 }
