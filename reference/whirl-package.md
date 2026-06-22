@@ -22,6 +22,8 @@ Useful links:
 
 Authors:
 
+- Aksel Thomsen <oath@novonordisk.com>
+
 - Lovemore Gakava <lvgk@novonordisk.com>
 
 - Cervan Girard <cgid@novonordisk.com>

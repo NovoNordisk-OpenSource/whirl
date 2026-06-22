@@ -88,6 +88,13 @@ Internal parameters for reuse in functions
   List of options to set in the child sessions executing the scripts..
   Default: [`list()`](https://rdrr.io/r/base/list.html).
 
+- skip_after:
+
+  When to stop running more scripts. The levels are hierarchical:
+  `warning` stops on both warnings and errors, while `error` stops only
+  on errors (warnings will not trigger skipping). Default `never`
+  continues executing all scripts.. Default: `"never"`.
+
 ## Details
 
 See

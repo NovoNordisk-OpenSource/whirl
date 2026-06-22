@@ -181,6 +181,21 @@ Environment: R_WHIRL_WITH_OPTIONS
 
 
 
+
+
+skip_after
+
+
+When to stop running more scripts.
+The levels are hierarchical: warning stops on both warnings and errors,
+while error stops only on errors (warnings will not trigger skipping).
+Default never continues executing all scripts.
+Default: &quot;never&quot;
+Option: whirl.skip_after
+Environment: R_WHIRL_SKIP_AFTER
+
+
+
 "><meta property="og:description" content="
 
 verbosity_level
@@ -363,6 +378,21 @@ Environment: R_WHIRL_WITH_OPTIONS
 
 
 
+
+
+skip_after
+
+
+When to stop running more scripts.
+The levels are hierarchical: warning stops on both warnings and errors,
+while error stops only on errors (warnings will not trigger skipping).
+Default never continues executing all scripts.
+Default: &quot;never&quot;
+Option: whirl.skip_after
+Environment: R_WHIRL_SKIP_AFTER
+
+
+
 "><meta property="og:image" content="https://novonordisk-opensource.github.io/whirl/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -371,7 +401,7 @@ Environment: R_WHIRL_WITH_OPTIONS
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -541,6 +571,18 @@ Any variables matching will not be included in the logs.</p><ul><li><p>Default: 
 <p>List of options to set in the child sessions executing the scripts.</p><ul><li><p>Default: <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code></p></li>
 <li><p>Option: <code>whirl.with_options</code></p></li>
 <li><p>Environment: <code>R_WHIRL_WITH_OPTIONS</code></p></li>
+</ul></div>
+
+<div class="section">
+<h3 id="skip-after">skip_after<a class="anchor" aria-label="anchor" href="#skip-after"></a></h3>
+
+
+<p>When to stop running more scripts.
+The levels are hierarchical: <code>warning</code> stops on both warnings and errors,
+while <code>error</code> stops only on errors (warnings will not trigger skipping).
+Default <code>never</code> continues executing all scripts.</p><ul><li><p>Default: <code>"never"</code></p></li>
+<li><p>Option: <code>whirl.skip_after</code></p></li>
+<li><p>Environment: <code>R_WHIRL_SKIP_AFTER</code></p></li>
 </ul></div>
 
     </div>

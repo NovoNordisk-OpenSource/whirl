@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">whirl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,6 +114,13 @@ Any variables matching will not be included in the logs.. Default: <code>c("BASH
 
 <dt id="arg-with-options">with_options<a class="anchor" aria-label="anchor" href="#arg-with-options"></a></dt>
 <dd><p>List of options to set in the child sessions executing the scripts.. Default: <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p></dd>
+
+
+<dt id="arg-skip-after">skip_after<a class="anchor" aria-label="anchor" href="#arg-skip-after"></a></dt>
+<dd><p>When to stop running more scripts.
+The levels are hierarchical: <code>warning</code> stops on both warnings and errors,
+while <code>error</code> stops only on errors (warnings will not trigger skipping).
+Default <code>never</code> continues executing all scripts.. Default: <code>"never"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
