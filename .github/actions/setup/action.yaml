@@ -32,4 +32,3 @@ runs:
       shell: pwsh
       run: |
         echo "VIRTUAL_ENV=$PWD/.venv" | Out-File -FilePath $env:GITHUB_ENV -Append
-
