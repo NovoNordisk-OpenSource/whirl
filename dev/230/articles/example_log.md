@@ -4,11 +4,11 @@
 
 Execution end time
 
-2026-07-03T10:34:55 Coordinated Universal Time
+2026-07-03T10:58:25 Coordinated Universal Time
 
 Path to script
 
-/tmp/RtmpCefVlA/file1d3a499f5fb9/example.R
+/tmp/RtmpWN9JhJ/file1c712ab94b64/example.R
 
 # Summary
 
@@ -18,17 +18,17 @@ Tipsuccess
 
 | Time                | File                   |
 |:--------------------|:-----------------------|
-| 2026-07-03 10:34:44 | /dev/urandom           |
-| 2026-07-03 10:34:45 | /home/runner/.Rprofile |
+| 2026-07-03 10:58:14 | /dev/urandom           |
+| 2026-07-03 10:58:16 | /home/runner/.Rprofile |
 
 ## Output
 
 | Time | File |
 |:---|:---|
-| 2026-07-03 10:34:44 | /dev/null |
-| 2026-07-03 10:34:44 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage |
-| 2026-07-03 10:34:44 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-wal |
-| 2026-07-03 10:34:44 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-shm |
+| 2026-07-03 10:58:14 | /dev/null |
+| 2026-07-03 10:58:15 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage |
+| 2026-07-03 10:58:15 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-wal |
+| 2026-07-03 10:58:15 | /home/runner/.cache/deno/location_data/28cae0874d2cd1a477303d1189f80977214036c3c5b0efb610c4fbbeddbd8b3e/local_storage-shm |
 
 ## Removed
 
@@ -170,7 +170,7 @@ NoteEnvironment variables
 |:---|:---|
 | \_R_CHECK_SYSTEM_CLOCK\_ | FALSE |
 | ACCEPT_EULA | Y |
-| ACTIONS_ORCHESTRATION_ID | 1de4e95e-0361-4662-970a-c6aad38245e6.pkgdown.pkgdown.\_\_default |
+| ACTIONS_ORCHESTRATION_ID | 7a7e2002-1e2b-4d9d-aa1c-fb2a0d68551b.pkgdown.pkgdown.\_\_default |
 | ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE | /opt/actionarchivecache |
 | ACTIONS_RUNNER_RETURN_JOB_RESULT_FOR_HOSTED | 1 |
 | AGENT_TOOLSDIRECTORY | /opt/hostedtoolcache |
@@ -212,12 +212,12 @@ NoteEnvironment variables
 | GITHUB_ACTOR_ID | 14150030 |
 | GITHUB_API_URL | https://api.github.com |
 | GITHUB_BASE_REF | main |
-| GITHUB_ENV | /home/runner/work/\_temp/\_runner_file_commands/set_env_1209637d-fe04-426d-a07a-bbf7304126a1 |
+| GITHUB_ENV | /home/runner/work/\_temp/\_runner_file_commands/set_env_82de5b1e-cdd1-4f4d-b863-0127f68298a0 |
 | GITHUB_EVENT_NAME | pull_request |
 | GITHUB_GRAPHQL_URL | https://api.github.com/graphql |
 | GITHUB_HEAD_REF | chore/use-pinned-workflow |
 | GITHUB_JOB | pkgdown |
-| GITHUB_OUTPUT | /home/runner/work/\_temp/\_runner_file_commands/set_output_1209637d-fe04-426d-a07a-bbf7304126a1 |
+| GITHUB_OUTPUT | /home/runner/work/\_temp/\_runner_file_commands/set_output_82de5b1e-cdd1-4f4d-b863-0127f68298a0 |
 | GITHUB_REF | refs/pull/230/merge |
 | GITHUB_REF_NAME | 230/merge |
 | GITHUB_REF_PROTECTED | false |
@@ -228,16 +228,16 @@ NoteEnvironment variables
 | GITHUB_REPOSITORY_OWNER_ID | 129066790 |
 | GITHUB_RETENTION_DAYS | 90 |
 | GITHUB_RUN_ATTEMPT | 1 |
-| GITHUB_RUN_ID | 28654796967 |
-| GITHUB_RUN_NUMBER | 543 |
+| GITHUB_RUN_ID | 28656025423 |
+| GITHUB_RUN_NUMBER | 544 |
 | GITHUB_SERVER_URL | https://github.com |
-| GITHUB_SHA | 7fc2eca91553e75c9fa317407419788694547ca7 |
-| GITHUB_STATE | /home/runner/work/\_temp/\_runner_file_commands/save_state_1209637d-fe04-426d-a07a-bbf7304126a1 |
-| GITHUB_STEP_SUMMARY | /home/runner/work/\_temp/\_runner_file_commands/step_summary_1209637d-fe04-426d-a07a-bbf7304126a1 |
+| GITHUB_SHA | 937927ab879ab8f8f4eafddad6521c536a76b0b7 |
+| GITHUB_STATE | /home/runner/work/\_temp/\_runner_file_commands/save_state_82de5b1e-cdd1-4f4d-b863-0127f68298a0 |
+| GITHUB_STEP_SUMMARY | /home/runner/work/\_temp/\_runner_file_commands/step_summary_82de5b1e-cdd1-4f4d-b863-0127f68298a0 |
 | GITHUB_TRIGGERING_ACTOR | akselthomsen |
 | GITHUB_WORKFLOW | All actions |
 | GITHUB_WORKFLOW_REF | NovoNordisk-OpenSource/whirl/.github/workflows/check_and_co.yaml@refs/pull/230/merge |
-| GITHUB_WORKFLOW_SHA | 7fc2eca91553e75c9fa317407419788694547ca7 |
+| GITHUB_WORKFLOW_SHA | 937927ab879ab8f8f4eafddad6521c536a76b0b7 |
 | GITHUB_WORKSPACE | /home/runner/work/whirl/whirl |
 | GOROOT_1_24_X64 | /opt/hostedtoolcache/go/1.24.13/x64 |
 | GOROOT_1_25_X64 | /opt/hostedtoolcache/go/1.25.11/x64 |
@@ -250,14 +250,14 @@ NoteEnvironment variables
 | ImageOS | ubuntu24 |
 | ImageVersion | 20260628.225.1 |
 | IN_PKGDOWN | true |
-| INVOCATION_ID | 56e32ea5631346c6a8ef060519e58e32 |
+| INVOCATION_ID | b422a0bed088460680eca33db3998e52 |
 | JAVA_HOME | /usr/lib/jvm/temurin-17-jdk-amd64 |
 | JAVA_HOME_11_X64 | /usr/lib/jvm/temurin-11-jdk-amd64 |
 | JAVA_HOME_17_X64 | /usr/lib/jvm/temurin-17-jdk-amd64 |
 | JAVA_HOME_21_X64 | /usr/lib/jvm/temurin-21-jdk-amd64 |
 | JAVA_HOME_25_X64 | /usr/lib/jvm/temurin-25-jdk-amd64 |
 | JAVA_HOME_8_X64 | /usr/lib/jvm/temurin-8-jdk-amd64 |
-| JOURNAL_STREAM | 9:10185 |
+| JOURNAL_STREAM | 9:14466 |
 | LANG | C.UTF-8 |
 | LANGUAGE | en |
 | LN_S | ln -s |
@@ -273,17 +273,17 @@ NoteEnvironment variables
 | PIPX_HOME | /opt/pipx |
 | PKGCACHE_HTTP_VERSION | 2 |
 | POWERSHELL_DISTRIBUTION_CHANNEL | GitHub-Actions-Linux |
-| PROCESSX_PS1c333f72dc67_1783074881 | YES |
-| PROCESSX_PS1d3a3266279b_1783074883 | YES |
-| PROCESSX_PS1d585024e829_1783074884 | YES |
+| PROCESSX_PS1b69104d3fa7_1783076291 | YES |
+| PROCESSX_PS1c71725c2213_1783076293 | YES |
+| PROCESSX_PS1c8f3edfa3ae_1783076294 | YES |
 | PSModulePath | /root/.local/share/powershell/Modules:/usr/local/share/powershell/Modules:/opt/microsoft/powershell/7/Modules:/usr/share/az_15.6.1 |
-| PWD | /tmp/RtmpCefVlA/file1d3a174ffb7 |
+| PWD | /tmp/RtmpWN9JhJ/file1c715a87a50e |
 | QUARTO_DENO | /opt/quarto/bin/tools/x86_64/deno |
 | QUARTO_DOCUMENT_FILE | dummy.qmd |
-| QUARTO_EXECUTE_INFO | /tmp/RtmpCefVlA/file1d3a174ffb7/.quarto/quarto-session-temp2110647bc624ad7f/6ac5b0b58116a411 |
+| QUARTO_EXECUTE_INFO | /tmp/RtmpWN9JhJ/file1c715a87a50e/.quarto/quarto-session-tempa41d51228f4f0f6/3f387d9bb48687d4 |
 | QUARTO_PROFILE |  |
-| QUARTO_PROJECT_DIR | /tmp/RtmpCefVlA/file1d3a174ffb7 |
-| QUARTO_PROJECT_ROOT | /tmp/RtmpCefVlA/file1d3a174ffb7 |
+| QUARTO_PROJECT_DIR | /tmp/RtmpWN9JhJ/file1c715a87a50e |
+| QUARTO_PROJECT_ROOT | /tmp/RtmpWN9JhJ/file1c715a87a50e |
 | QUARTO_ROOT | / |
 | R_ARCH |  |
 | R_BROWSER | false |
@@ -302,7 +302,7 @@ NoteEnvironment variables
 | R_PLATFORM | x86_64-pc-linux-gnu |
 | R_PRINTCMD | /usr/bin/lpr |
 | R_RD4PDF | times,inconsolata,hyper |
-| R_SESSION_TMPDIR | /tmp/RtmpyQM92D |
+| R_SESSION_TMPDIR | /tmp/RtmpWjau3b |
 | R_SHARE_DIR | /opt/R/4.6.1/lib/R/share |
 | R_STRIP_SHARED_LIB | strip --strip-unneeded |
 | R_STRIP_STATIC_LIB | strip --strip-debug |
@@ -314,17 +314,17 @@ NoteEnvironment variables
 | RSPM | https://packagemanager.posit.co/cran/\_\_linux\_\_/noble/latest |
 | RUNNER_ARCH | X64 |
 | RUNNER_ENVIRONMENT | github-hosted |
-| RUNNER_NAME | GitHub Actions 1000023729 |
+| RUNNER_NAME | GitHub Actions 1000023743 |
 | RUNNER_OS | Linux |
 | RUNNER_TEMP | /home/runner/work/\_temp |
 | RUNNER_TOOL_CACHE | /opt/hostedtoolcache |
-| RUNNER_TRACKING_ID | github_b497fb1b-a0b3-486a-97d0-58790b5fd412 |
+| RUNNER_TRACKING_ID | github_d521d71d-2779-47f6-8cf8-12084d8b01a7 |
 | RUNNER_WORKSPACE | /home/runner/work/whirl |
 | SED | /usr/bin/sed |
 | SGX_AESM_ADDR | 1 |
 | SHELL | /bin/bash |
 | SHLVL | 1 |
-| SYSTEMD_EXEC_PID | 2063 |
+| SYSTEMD_EXEC_PID | 2077 |
 | TAR | /usr/bin/tar |
 | TERM | dumb |
 | TEXINPUTS | :/home/runner/work/whirl/whirl/vignettes/articles:/opt/R/4.6.1/lib/R/share/texmf/tex/latex |
@@ -335,7 +335,7 @@ NoteEnvironment variables
 | UV_PYTHON_INSTALL_DIR | /home/runner/work/\_temp/uv-python-dir |
 | VCPKG_INSTALLATION_ROOT | /usr/local/share/vcpkg |
 | VIRTUAL_ENV | /home/runner/work/whirl/whirl/.venv |
-| WHIRL_LOG_MSG | /tmp/RtmpCefVlA/file1d3a174ffb7/log_msg.json |
+| WHIRL_LOG_MSG | /tmp/RtmpWN9JhJ/file1c715a87a50e/log_msg.json |
 | XDG_CONFIG_HOME | /home/runner/.config |
 | XDG_RUNTIME_DIR | /run/user/1001 |
 
