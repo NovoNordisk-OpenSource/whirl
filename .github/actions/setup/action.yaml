@@ -11,10 +11,10 @@ runs:
         sudo setcap cap_sys_ptrace=eip /usr/bin/strace
 
     - name: Install Quarto
-      uses: quarto-dev/quarto-actions/setup@v2
+      uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
 
     - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
 
     - name: Install python packages based on pyproject.toml
       shell: bash
@@ -32,4 +32,3 @@ runs:
       shell: pwsh
       run: |
         echo "VIRTUAL_ENV=$PWD/.venv" | Out-File -FilePath $env:GITHUB_ENV -Append
-
