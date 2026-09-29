@@ -1,3 +1,4 @@
+---
 name: Specific setup for whirl
 description: Installs Quarto and enables strace on Linux
 runs:
