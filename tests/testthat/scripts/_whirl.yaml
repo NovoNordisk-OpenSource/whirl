@@ -1,3 +1,4 @@
+---
 steps:
   - name: "First step"
     paths:

@@ -1,17 +1,18 @@
+---
 url: https://novonordisk-opensource.github.io/whirl/
 
 template:
   bootstrap: 5
 
 reference:
-- title: "Execute scripts"
-  contents:
-  - run
-  - write_biocompute
-  - use_whirl
-  - use_biocompute
-  - whirl-options
+  - title: "Execute scripts"
+    contents:
+      - run
+      - write_biocompute
+      - use_whirl
+      - use_biocompute
+      - whirl-options
 
-- title: "Log custom actions"
-  contents:
-  - starts_with("log_")
+  - title: "Log custom actions"
+    contents:
+      - starts_with("log_")

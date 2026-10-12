@@ -1,14 +1,6 @@
 test_that("pandoc works", {
   skip_if_no_quarto()
 
-  x <- whirl_r_session$new()
-
-  file.copy(
-    from = test_script("test-mdformats.html"),
-    to = file.path(x$tmpdir, "log.html")
-  ) |>
-    expect_true()
-
   tmpdir <- withr::local_tempdir()
 
   # Different pandoc installations support different formats
@@ -17,19 +9,11 @@ test_that("pandoc works", {
   mdfmt <- c("gfm", "commonmark", "markua") |>
     intersect(list_pandoc_output_formats())
 
-  mdformats(
-    script = "test1.R",
-    log_html = file.path(x$tmpdir, "log.html"),
-    mdfmt = mdfmt,
-    out_dir = tmpdir,
-    self = x
-  ) |>
+  test_script("success.R") |>
+    run(summary_file = NULL, out_formats = mdfmt, log_dir = tmpdir) |>
     suppressMessages()
 
-  file.path(
-    tmpdir,
-    paste0("test1_log_", c("gfm", "commonmark", "markua"), ".md")
-  ) |>
+  file.path(tmpdir, paste0("success_log_", mdfmt, ".md")) |>
     file.exists() |>
     all() |>
     expect_true()
