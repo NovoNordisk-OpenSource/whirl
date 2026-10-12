@@ -1,6 +1,6 @@
 # Changelog
 
-## whirl (development version)
+## whirl 0.3.3
 
 - Added `skip_after` option to skip remaining steps after an error or
   warning
