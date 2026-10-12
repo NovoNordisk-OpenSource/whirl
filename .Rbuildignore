@@ -25,3 +25,4 @@ summary.html
 ^pyproject.toml$
 ^.venv
 ^.claude
+^.djlintrc$

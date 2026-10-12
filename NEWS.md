@@ -1,4 +1,4 @@
-# whirl (development version)
+# whirl 0.3.3
 
 * Added `skip_after` option to skip remaining steps after an error or warning (#202).
 * Added support for named list syntax to specify step names in `run()` (#201).
