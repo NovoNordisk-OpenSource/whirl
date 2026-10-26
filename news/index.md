@@ -2,6 +2,8 @@
 
 ## whirl 0.3.3
 
+CRAN release: 2026-10-12
+
 - Added `skip_after` option to skip remaining steps after an error or
   warning
   ([\#202](https://github.com/NovoNordisk-OpenSource/whirl/issues/202)).
