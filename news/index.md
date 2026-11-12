@@ -1,5 +1,7 @@
 # Changelog
 
+## whirl (development version)
+
 ## whirl 0.3.3
 
 CRAN release: 2026-10-12
